@@ -1,0 +1,3 @@
+# EasyRPG buildscripts
+
+## Wii specifics

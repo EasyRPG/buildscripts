@@ -1,0 +1,3 @@
+# EasyRPG buildscripts
+
+## iOS specifics
