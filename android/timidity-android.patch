@@ -1,0 +1,72 @@
+diff -Naur timidity.old/android.c timidity/android.c
+--- timidity.old/android.c	1970-01-01 00:00:00.000000000 +0000
++++ timidity/android.c	2015-12-22 01:46:38.529529710 +0000
+@@ -0,0 +1,26 @@
++#ifdef __ANDROID__
++#include <jni.h>
++#include "SDL_system.h"
++#include "string.h"
++
++char* get_timidity_path_jni() {
++	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
++	jobject sdl_activity = (jobject)SDL_AndroidGetActivity();
++	jclass cls = (*env)->GetObjectClass(env, sdl_activity);
++	jmethodID jni_getTimidityPath = (*env)->GetMethodID(env, cls , "getTimidityPath", "()Ljava/lang/String;");
++	jstring return_string = (jstring)(*env)->CallObjectMethod(env, sdl_activity, jni_getTimidityPath);
++			
++	const char *js = (*env)->GetStringUTFChars(env, return_string, NULL);
++	
++	char* ret_str = (char*)malloc(strlen(js) + 1);
++	strncpy(ret_str, js, strlen(js) + 1);
++
++	(*env)->ReleaseStringUTFChars(env, return_string, js);
++	(*env)->DeleteLocalRef(env, sdl_activity);
++	(*env)->DeleteLocalRef(env, cls);
++
++	return ret_str;
++}
++
++#endif
++
+diff -Naur timidity.old/timidity.c timidity/timidity.c
+--- timidity.old/timidity.c	2015-12-21 18:37:58.104738984 +0000
++++ timidity/timidity.c	2015-12-22 01:51:20.954482729 +0000
+@@ -182,7 +186,16 @@
+     }
+   if (bank->tone[i].name)
+     free(bank->tone[i].name);
++#ifdef __ANDROID__
++  char *jni_path = get_timidity_path_jni();
++  bank->tone[i].name=safe_malloc(strlen(w[1])+strlen(jni_path)+2);
++  strcpy(bank->tone[i].name, jni_path);
++  strcat(bank->tone[i].name, "/");
++  strcat(bank->tone[i].name, w[1]);
++  free(jni_path);
++#else
+   strcpy((bank->tone[i].name=safe_malloc(strlen(w[1])+1)),w[1]);
++#endif
+   bank->tone[i].note=bank->tone[i].amp=bank->tone[i].pan=
+     bank->tone[i].strip_loop=bank->tone[i].strip_envelope=
+       bank->tone[i].strip_tail=-1;
+@@ -303,7 +316,20 @@
+     if (read_config_file(CONFIG_FILE)<0) {
+       if (read_config_file(CONFIG_FILE_ETC)<0) {
+         if (read_config_file(CONFIG_FILE_ETC_TIMIDITY_FREEPATS)<0) {
+-          return(-1);
++#ifdef __ANDROID__
++			char *jni_path = get_timidity_path_jni();
++			char* tim_config_path = safe_malloc(strlen(jni_path) + strlen("/timidity.cfg") + 1);
++			strcpy(tim_config_path, jni_path);
++			strcat(tim_config_path, "/timidity.cfg");
++			free(jni_path);
++			if (read_config_file(tim_config_path)<0) {
++			  free(tim_config_path);
++			  return (-1);
++			}
++			free(tim_config_path);
++#else
++			return (-1);
++#endif
+         }
+       }
+     }

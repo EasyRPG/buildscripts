@@ -1,0 +1,24 @@
+--- acinclude.old/libtool.m4	2015-12-25 16:00:13.587357313 +0000
++++ acinclude/libtool.m4	2015-12-25 16:01:11.311545139 +0000
+@@ -2459,8 +2459,8 @@
+   version_type=linux
+   need_lib_prefix=no
+   need_version=no
+-  library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
+-  soname_spec='${libname}${release}${shared_ext}$major'
++  library_names_spec='$libname${shared_ext}'
++  soname_spec='${libname}${shared_ext}'
+   finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
+   shlibpath_var=LD_LIBRARY_PATH
+   shlibpath_overrides_runpath=no
+--- Makefile.in.old	2015-12-25 16:02:44.212847628 +0000
++++ Makefile.in	2015-12-25 16:02:57.194889919 +0000
+@@ -47,7 +47,7 @@
+ LT_REVISION = @LT_REVISION@
+ LT_LDFLAGS  = -no-undefined -rpath $(libdir) -release $(LT_RELEASE) -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
+ 
+-all: $(srcdir)/configure Makefile $(objects) $(objects)/$(TARGET) $(objects)/playwave$(EXE) $(objects)/playmus$(EXE)
++all: $(srcdir)/configure Makefile $(objects) $(objects)/$(TARGET)
+ 
+ $(srcdir)/configure: $(srcdir)/configure.in
+ 	@echo "Warning, configure.in is out of date"

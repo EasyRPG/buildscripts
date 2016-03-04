@@ -1,0 +1,22 @@
+diff -Naur android-ndk-r10e/sources/android/cpufeatures-old/cpu-features.c android-ndk-r10e/sources/android/cpufeatures/cpu-features.c
+--- android-ndk-r10e/sources/android/cpufeatures-old/cpu-features.c	2015-12-25 02:46:05.850132334 +0000
++++ android-ndk-r10e/sources/android/cpufeatures/cpu-features.c	2015-12-25 02:46:49.115276737 +0000
+@@ -500,7 +500,7 @@
+ // C runtime initialization layer.
+ static uint32_t
+ get_elf_hwcap_from_getauxval(int hwcap_type) {
+-    typedef unsigned long getauxval_func_t(unsigned long);
++/*    typedef unsigned long getauxval_func_t(unsigned long);
+ 
+     dlerror();
+     void* libc_handle = dlopen("libc.so", RTLD_NOW);
+@@ -519,7 +519,8 @@
+         ret = (uint32_t)(*func)(hwcap_type);
+     }
+     dlclose(libc_handle);
+-    return ret;
++    return ret;*/
++    return 0;
+ }
+ #endif
+ 
