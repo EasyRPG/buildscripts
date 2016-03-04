@@ -1,0 +1,12 @@
+diff -Naur .\libmad-0.15.1b-old/mad.h .\libmad-0.15.1b/mad.h
+--- .\libmad-0.15.1b-old/mad.h	2016-01-16 20:23:40 +0000
++++ .\libmad-0.15.1b/mad.h	2016-01-16 20:24:19 +0000
+@@ -24,7 +24,7 @@
+ extern "C" {
+ # endif
+ 
+-# define FPM_INTEL
++
+ 
+ 
+ 

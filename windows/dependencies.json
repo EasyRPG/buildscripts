@@ -1,0 +1,357 @@
+{
+	"SDL2": {
+		"Source": "https://www.libsdl.org/release/SDL2-2.0.4.tar.gz",
+		"Preprocessor": ["HAVE_LIBC"],
+		"IncludeDirs": ["include"],
+		"HeaderDirs": ["include"],
+		"SourceFiles": [
+			"src/thread/generic/SDL_syscond.c",
+			"src/audio/xaudio2/SDL_xaudio2.c"
+		],
+		"SourceDirs": [
+			"src",
+			"src/atomic",
+			"src/audio",
+			"src/audio/directsound",
+			"src/audio/disk",
+			"src/audio/dummy",
+			"src/audio/winmm",
+			"src/core/windows",
+			"src/cpuinfo",
+			"src/dynapi",
+			"src/events",
+			"src/file",
+			"src/filesystem/windows",
+			"src/haptic",
+			"src/haptic/windows",
+			"src/joystick",
+			"src/joystick/windows",
+			"src/libm",
+			"src/loadso/windows",
+			"src/power",
+			"src/power/windows",
+			"src/render",
+			"src/render/direct3d",
+			"src/render/direct3d11",
+			"src/render/opengl",
+			"src/render/opengles2",
+			"src/render/software",
+			"src/stdlib",
+			"src/thread",
+			"src/thread/windows",
+			"src/timer",
+			"src/timer/windows",
+			"src/video",
+			"src/video/dummy",
+			"src/video/windows"
+		]
+	},
+	"SDL2_image": {
+		"Source": "https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.1.tar.gz",
+		"DependsOn": [
+			"libpng",
+			"SDL2"
+		],
+		"Preprocessor": [
+			"LOAD_BMP",
+			"LOAD_PNG"
+		],
+		"HeaderDirs": ["."],
+		"SourceDirs": ["."]
+	},
+	"SDL2_mixer": {
+		"Source": "https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.1.tar.gz",
+		"DependsOn": [
+			"libmad",
+			"libmodplug",
+			"libogg",
+			"libvorbis",
+			"native_midi",
+			"smpeg",
+			"SDL2"
+		],
+		"Preprocessor": [
+			"MODPLUG_STATIC",
+			"MODPLUG_HEADER=&lt;modplug.h&gt;",
+			"WAV_MUSIC",
+			"MODPLUG_MUSIC",
+			"MP3_MAD_MUSIC",
+			"OGG_MUSIC",
+			"MID_MUSIC",
+			"USE_NATIVE_MIDI"
+		],
+		"Preprocessor_Debug_x86": [
+			"FPM_DEFAULT"
+		],
+		"Preprocessor_Debug_amd64": [
+			"FPM_64BIT"
+		],
+		"Preprocessor_Release_x86": [
+			"FPM_INTEL"
+		],
+		"Preprocessor_Release_amd64": [
+			"FPM_64BIT"
+		],
+		"Preprocessor_Debug_arm": [
+			"FPM_DEFAULT"
+		],
+		"Preprocessor_Release_arm": [
+			"FPM_DEFAULT"
+		],
+		"IncludeDirs": ["native_midi"],
+		"HeaderDirs": ["."],
+		"SourceDirs": ["."]
+	},
+	"SDL2main": {
+		"BaseDir": "SDL2-2.0.4",
+		"DependsOn": ["SDL2"],
+		"SourceDirs": ["src/main/windows"]
+	},
+	"native_midi": {
+		"BaseDir": "SDL2_mixer-2.0.1",
+		"SourceDirs": ["native_midi"],
+		"DepondsOn": ["SDL2"]
+	},
+	"freetype": {
+		"Source": "http://sourceforge.net/projects/freetype/files/freetype2/2.6.2/freetype-2.6.2.tar.gz",
+		"Preprocessor": [
+			"FT2_BUILD_LIBRARY",
+			"FT_CONFIG_OPTION_USE_HARFBUZZ"
+		],
+		"DependsOn": [
+			"harfbuzz"
+		],
+		"IncludeDirs": ["include"],
+		"HeaderDirs": ["include"],
+		"HeaderDirsRecursive": true,
+		"SourceFiles": [
+			"builds/windows/ftdebug.c",
+			"src/autofit/autofit.c",
+			"src/bdf/bdf.c",
+			"src/cff/cff.c",
+			"src/base/ftbase.c",
+			"src/base/ftbitmap.c",
+			"src/cache/ftcache.c",
+			"src/base/ftfstype.c",
+			"src/base/ftgasp.c",
+			"src/base/ftglyph.c",
+			"src/gzip/ftgzip.c",
+			"src/base/ftinit.c",
+			"src/lzw/ftlzw.c",
+			"src/base/ftstroke.c",
+			"src/base/ftsystem.c",
+			"src/smooth/smooth.c",
+			"src/base/ftbbox.c",
+			"src/base/ftmm.c",
+			"src/base/ftpfr.c",
+			"src/base/ftsynth.c",
+			"src/base/fttype1.c",
+			"src/base/ftwinfnt.c",
+			"src/base/ftlcdfil.c",
+			"src/base/ftgxval.c",
+			"src/base/ftotval.c",
+			"src/base/ftpatent.c",
+			"src/pcf/pcf.c",
+			"src/pfr/pfr.c",
+			"src/psaux/psaux.c",
+			"src/pshinter/pshinter.c",
+			"src/psnames/psmodule.c",
+			"src/raster/raster.c",
+			"src/sfnt/sfnt.c",
+			"src/truetype/truetype.c",
+			"src/type1/type1.c",
+			"src/cid/type1cid.c",
+			"src/type42/type42.c",
+			"src/winfonts/winfnt.c"
+		]
+	},
+	"freetype_noharfbuzz": {
+		"BaseDir": "freetype-2.6.2",
+		"HeaderDirs": ["include"],
+		"HeaderDirsRecursive": true
+	},
+	"harfbuzz": {
+		"Source": "https://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.1.3.tar.bz2",
+		"Preprocessor": [
+			"HAVE_FREETYPE",
+			"HAVE_OT",
+			"HAVE_UNISCRIBE",
+			"HAVE_ICU",
+			"HAVE_ICU_BUILTIN"
+		],
+		"DependsOn": [
+			"freetype_noharfbuzz",
+			"ICU"
+		],
+		"IncludeDirs": ["src"],
+		"HeaderDirs": ["src"],
+		"SourceFiles": [
+			"src/hb-blob.cc",
+			"src/hb-buffer-serialize.cc",
+			"src/hb-buffer.cc",
+			"src/hb-common.cc",
+			"src/hb-face.cc",
+			"src/hb-font.cc",
+			"src/hb-icu.cc",
+			"src/hb-set.cc",
+			"src/hb-shape.cc",
+			"src/hb-shape-plan.cc",
+			"src/hb-shaper.cc",
+			"src/hb-ot-tag.cc",
+			"src/hb-unicode.cc",
+			"src/hb-warning.cc",
+			"src/hb-ft.cc",
+			"src/hb-uniscribe.cc",
+			"src/hb-ot-font.cc",
+			"src/hb-ot-layout.cc",
+			"src/hb-ot-map.cc",
+			"src/hb-ot-shape.cc",
+			"src/hb-ot-shape-complex-arabic.cc",
+			"src/hb-ot-shape-complex-default.cc",
+			"src/hb-ot-shape-complex-hangul.cc",
+			"src/hb-ot-shape-complex-hebrew.cc",
+			"src/hb-ot-shape-complex-indic.cc",
+			"src/hb-ot-shape-complex-indic-table.cc",
+			"src/hb-ot-shape-complex-myanmar.cc",
+			"src/hb-ot-shape-complex-thai.cc",
+			"src/hb-ot-shape-complex-tibetan.cc",
+			"src/hb-ot-shape-complex-use.cc",
+			"src/hb-ot-shape-complex-use-table.cc",
+			"src/hb-ot-shape-normalize.cc",
+			"src/hb-ot-shape-fallback.cc"
+		]
+	},
+	"libexpat": {
+		"Source": "http://sourceforge.net/projects/expat/files/expat/2.1.0/expat-2.1.0.tar.gz",
+		"Preprocessor": ["COMPILED_FROM_DSP"],
+		"HeaderDirs": ["lib"],
+		"SourceDirs": ["lib"]
+	},
+	"libmad": {
+		"Source": "http://sourceforge.net/projects/mad/files/libmad/0.15.1b/libmad-0.15.1b.tar.gz",
+		"Preprocessor": [
+			"HAVE_CONFIG_H",
+			"ASO_ZEROCHECK"
+		],
+		"Preprocessor_Debug_x86": [
+			"FPM_DEFAULT"
+		],
+		"Preprocessor_Debug_amd64": [
+			"FPM_64BIT"
+		],
+		"Preprocessor_Release_x86": [
+			"FPM_INTEL"
+		],
+		"Preprocessor_Release_amd64": [
+			"FPM_64BIT"
+		],
+		"Preprocessor_Debug_arm": [
+			"FPM_DEFAULT"
+		],
+		"Preprocessor_Release_arm": [
+			"FPM_DEFAULT"
+		],
+		"IncludeDirs": ["msvc++"],
+		"HeaderDirs": ["."],
+		"SourceDirs": ["."],
+		"SourceExcludes": ["minimad.c"]
+	},
+	"smpeg": {
+		"Source": "https://www.libsdl.org/projects/smpeg/release/smpeg2-2.0.0.tar.gz",
+		"Preprocessor": [
+			"WIN32",
+			"NOCONTROLS"
+		],
+		"DependsOn": ["SDL2"],
+		"IncludeDirs": ["."],
+		"HeaderDirs": ["."],
+		"SourceDirs": [
+			".",
+			"audio",
+			"video"
+		],
+		"SourceExcludes": "plaympeg.c"
+	},
+	"libmodplug": {
+		"Source": "http://sourceforge.net/projects/modplug-xmms/files/libmodplug/0.8.8.5/libmodplug-0.8.8.5.tar.gz",
+		"Preprocessor": ["MODPLUG_STATIC"],
+		"IncludeDirs": ["src", "src/libmodplug"],
+		"HeaderDirs": ["src"],
+		"SourceDirs": ["src"]
+	},
+	"libogg": {
+		"Source": "http://downloads.xiph.org/releases/ogg/libogg-1.3.2.tar.gz",
+		"IncludeDirs": ["include"],
+		"HeaderTargetDir": "ogg",
+		"HeaderDirs": ["include/ogg"],
+		"SourceDirs": ["src"]
+	},
+	"libpng": {
+		"Source": "http://prdownloads.sourceforge.net/libpng/libpng-1.6.20.tar.gz",
+		"DependsOn": ["zlib"],
+		"HeaderDirs": ["."],
+		"SourceDirs": ["."],
+		"SourceExcludes": [
+			"example.c",
+			"pngtest.c"
+		]
+	},
+	"libvorbis": {
+		"Source": "http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.5.tar.gz",
+		"DependsOn": ["libogg"],
+		"IncludeDirs": ["include"],
+		"HeaderTargetDir": "vorbis",
+		"HeaderDirs": ["include/vorbis"],
+		"SourceDirs": ["lib"],
+		"SourceExcludes": [
+			"barkmel.c",
+			"psytune.c",
+			"tone.c",
+			"vorbisfile.c"
+		]
+	},
+	"libvorbisfile": {
+		"BaseDir": "libvorbis-1.3.5",
+		"DependsOn": ["libvorbis"],
+		"SourceFiles": ["lib/vorbisfile.c"]
+	},
+	"pixman": {
+		"Source": "http://cairographics.org/releases/pixman-0.32.8.tar.gz",
+		"Preprocessor": [
+			"PACKAGE=pixman",
+			"PACKAGE_VERSION=",
+			"PACKAGE_BUGREPORT="
+		],
+		"Preprocessor_Debug_x86": [
+			"USE_SSE2"
+		],
+		"Preprocessor_Debug_amd64": [
+			"USE_SSE2"
+		],
+		"Preprocessor_Release_x86": [
+			"USE_SSE2"
+		],
+		"Preprocessor_Release_amd64": [
+			"USE_SSE2"
+		],
+		"IncludeDirs": ["pixman"],
+		"HeaderDirs": ["pixman"],
+		"SourceDirs": ["pixman"],
+		"SourceExcludes": ["pixman-region.c", "pixman-vmx.c"],
+		"DebugFast": true
+	},
+	"zlib": {
+		"Source": "http://zlib.net/zlib-1.2.8.tar.gz",
+		"HeaderDirs": ["."],
+		"SourceDirs": ["."]
+	},
+	"ICU": {
+		"Source": "http://download.icu-project.org/files/icu4c/56.1/icu4c-56_1-src.tgz",
+		"BaseDir": "icu",
+		"HeaderDirs": [
+			"source/common/unicode",
+			"source/i18n/unicode"
+		],
+		"HeaderTargetDir": "unicode"
+	}
+}

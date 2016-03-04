@@ -1,0 +1,11 @@
+diff -Naur .\smpeg2-2.0.0-old/audio/MPEGaudio.cpp .\smpeg2-2.0.0/audio/MPEGaudio.cpp
+--- .\smpeg2-2.0.0-old/audio/MPEGaudio.cpp	2013-06-01 15:19:04 +0000
++++ .\smpeg2-2.0.0/audio/MPEGaudio.cpp	2016-02-15 22:47:15 +0000
+@@ -25,6 +25,7 @@
+ 
+ #include "MPEGaudio.h"
+ #include "MPEGstream.h"
++#include <string.h>
+ 
+ MPEGaudio:: MPEGaudio(MPEGstream *stream, bool initSDL)
+     : sdl_audio(initSDL)

@@ -1,0 +1,155 @@
+﻿diff -Naur .\libmodplug-0.8.8.5-old/src/libmodplug/sndfile.h .\libmodplug-0.8.8.5/src/libmodplug/sndfile.h
+--- .\libmodplug-0.8.8.5-old/src/libmodplug/sndfile.h	2014-03-09 23:49:07 +0000
++++ .\libmodplug-0.8.8.5/src/libmodplug/sndfile.h	2015-10-10 23:08:14 +0000
+@@ -602,7 +602,7 @@
+ 	UINT GetMaxPosition() const;
+ 	void SetCurrentPos(UINT nPos);
+ 	void SetCurrentOrder(UINT nOrder);
+-	void GetTitle(LPSTR s) const { lstrcpyn(s,m_szNames[0],32); }
++	void GetTitle(LPSTR s) const { strncpy(s,m_szNames[0],32); }
+ 	LPCSTR GetTitle() const { return m_szNames[0]; }
+ 	UINT GetSampleName(UINT nSample,LPSTR s=NULL) const;
+ 	UINT GetInstrumentName(UINT nInstr,LPSTR s=NULL) const;
+diff -Naur .\libmodplug-0.8.8.5-old/src/load_abc.cpp .\libmodplug-0.8.8.5/src/load_abc.cpp
+--- .\libmodplug-0.8.8.5-old/src/load_abc.cpp	2014-03-09 23:53:33 +0000
++++ .\libmodplug-0.8.8.5/src/load_abc.cpp	2015-10-11 00:12:42 +0000
+@@ -2251,11 +2251,11 @@
+ 	if( m->n ) {
+ 		k = m->n - m->name;
+ 		for( i=0; i<14; i++ ) {
+-			char t[strlen(m->name) + 1];
++			char *t = (char*)malloc(strlen(m->name) + 1);
+ 			strcpy(t, m->name);
+ 			t[k] = "CDEFGABcdefgab"[i];
+ 			l = strlen(m->subst);
+-			char s[2 * l + 1];
++			char *s = (char*)malloc(2 * l + 1);
+ 			char *p = s;
+ 			for( j=0; j<l; j++ ) {
+ 				a = m->subst[j];
+@@ -2272,6 +2272,8 @@
+ 			}
+ 			*p = '\0';
+ 			abc_substitute(h, t, s);
++			free(t);
++			free(s);
+ 		}
+ 	}
+ 	else
+diff -Naur .\libmodplug-0.8.8.5-old/src/load_amf.cpp .\libmodplug-0.8.8.5/src/load_amf.cpp
+--- .\libmodplug-0.8.8.5-old/src/load_amf.cpp	2014-02-02 23:31:02 +0000
++++ .\libmodplug-0.8.8.5/src/load_amf.cpp	2015-10-10 23:08:23 +0000
+@@ -170,7 +170,7 @@
+ 	DWORD dwMemPos;
+ 	
+ 	if ((!lpStream) || (dwMemLength < 2048)) return FALSE;
+-	if ((!strncmp((LPCTSTR)lpStream, "ASYLUM Music Format V1.0", 25)) && (dwMemLength > 4096))
++	if ((!strncmp((const char*)lpStream, "ASYLUM Music Format V1.0", 25)) && (dwMemLength > 4096))
+ 	{
+ 		UINT numorders, numpats, numsamples;
+ 
+diff -Naur .\libmodplug-0.8.8.5-old/src/load_it.cpp .\libmodplug-0.8.8.5/src/load_it.cpp
+--- .\libmodplug-0.8.8.5-old/src/load_it.cpp	2013-08-22 23:55:58 +0000
++++ .\libmodplug-0.8.8.5/src/load_it.cpp	2015-10-10 23:08:23 +0000
+@@ -625,7 +625,7 @@
+ 	dwPatNamLen = 0;
+ 	dwChnNamLen = 0;
+ 	header.id = 0x4D504D49; // IMPM
+-	lstrcpyn((char *)header.songname, m_szNames[0], 27);
++	strncpy((char *)header.songname, m_szNames[0], 27);
+ 	header.reserved1 = 0x1004;
+ 	header.ordnum = 0;
+ 	while ((header.ordnum < MAX_ORDERS) && (Order[header.ordnum] < 0xFF)) header.ordnum++;
+diff -Naur .\libmodplug-0.8.8.5-old/src/load_med.cpp .\libmodplug-0.8.8.5/src/load_med.cpp
+--- .\libmodplug-0.8.8.5-old/src/load_med.cpp	2013-08-22 23:55:58 +0000
++++ .\libmodplug-0.8.8.5/src/load_med.cpp	2015-10-10 23:08:23 +0000
+@@ -736,7 +736,7 @@
+ 				if (maxnamelen > 32) maxnamelen = 32;
+ 				for (UINT i=0; i<ientries; i++) if (i < m_nSamples)
+ 				{
+-					lstrcpyn(m_szNames[i+1], psznames + i*ientrysz, maxnamelen);
++					strncpy(m_szNames[i+1], psznames + i*ientrysz, maxnamelen);
+ 					m_szNames[i+1][31] = '\0';
+ 				}
+ 			}
+@@ -767,7 +767,7 @@
+ 					if (trknamelen > MAX_CHANNELNAME) trknamelen = MAX_CHANNELNAME;
+ 					if ((trknameofs) && (trknamelen < dwMemLength) && (trknameofs < dwMemLength - trknamelen))
+ 					{
+-						lstrcpyn(ChnSettings[i].szName, (LPCSTR)(lpStream+trknameofs), MAX_CHANNELNAME);
++						strncpy(ChnSettings[i].szName, (LPCSTR)(lpStream+trknameofs), MAX_CHANNELNAME);
+ 						ChnSettings[i].szName[MAX_CHANNELNAME-1] = '\0';
+ 					}
+ 				}
+diff -Naur .\libmodplug-0.8.8.5-old/src/load_mod.cpp .\libmodplug-0.8.8.5/src/load_mod.cpp
+--- .\libmodplug-0.8.8.5-old/src/load_mod.cpp	2014-02-03 05:09:25 +0000
++++ .\libmodplug-0.8.8.5/src/load_mod.cpp	2015-10-10 23:08:23 +0000
+@@ -436,9 +436,9 @@
+ 	fwrite(ord, 128, 1, f);
+ 	// Writing signature
+ 	if (m_nChannels == 4)
+-		lstrcpy((LPSTR)&bTab, "M.K.");
++		strcpy((LPSTR)&bTab, "M.K.");
+ 	else
+-		wsprintf((LPSTR)&bTab, "%luCHN", m_nChannels);
++		sprintf((LPSTR)&bTab, "%luCHN", m_nChannels);
+ 	fwrite(bTab, 4, 1, f);
+ 	// Writing patterns
+ 	for (UINT ipat=0; ipat<nbp; ipat++) if (Patterns[ipat])
+diff -Naur .\libmodplug-0.8.8.5-old/src/load_ptm.cpp .\libmodplug-0.8.8.5/src/load_ptm.cpp
+--- .\libmodplug-0.8.8.5-old/src/load_ptm.cpp	2013-08-22 23:55:58 +0000
++++ .\libmodplug-0.8.8.5/src/load_ptm.cpp	2015-10-10 23:08:23 +0000
+@@ -109,7 +109,7 @@
+ 		MODINSTRUMENT *pins = &Ins[ismp+1];
+ 		PTMSAMPLE *psmp = (PTMSAMPLE *)(lpStream+dwMemPos);
+ 
+-		lstrcpyn(m_szNames[ismp+1], psmp->samplename, 28);
++		strncpy(m_szNames[ismp+1], psmp->samplename, 28);
+ 		memcpy(pins->name, psmp->filename, 12);
+ 		pins->name[12] = 0;
+ 		pins->nGlobalVol = 64;
+diff -Naur .\libmodplug-0.8.8.5-old/src/load_xm.cpp .\libmodplug-0.8.8.5/src/load_xm.cpp
+--- .\libmodplug-0.8.8.5-old/src/load_xm.cpp	2013-08-22 23:55:58 +0000
++++ .\libmodplug-0.8.8.5/src/load_xm.cpp	2015-10-10 23:08:33 +0000
+@@ -601,7 +601,7 @@
+ 	fwrite("Extended Module: ", 17, 1, f);
+ 	fwrite(m_szNames[0], 20, 1, f);
+ 	s[0] = 0x1A;
+-	lstrcpy((LPSTR)&s[1], (nPacking) ? "MOD Plugin packed   " : "FastTracker v2.00   ");
++	strcpy((LPSTR)&s[1], (nPacking) ? "MOD Plugin packed   " : "FastTracker v2.00   ");
+ 	s[21] = 0x04;
+ 	s[22] = 0x01;
+ 	fwrite(s, 23, 1, f);
+diff -Naur .\libmodplug-0.8.8.5-old/src/sndfile.cpp .\libmodplug-0.8.8.5/src/sndfile.cpp
+--- .\libmodplug-0.8.8.5-old/src/sndfile.cpp	2014-02-03 00:14:41 +0000
++++ .\libmodplug-0.8.8.5/src/sndfile.cpp	2015-10-10 23:08:23 +0000
+@@ -376,13 +376,13 @@
+ //-----------------------------
+ {
+ 	memset(&m_MidiCfg, 0, sizeof(m_MidiCfg));
+-	lstrcpy(&m_MidiCfg.szMidiGlb[MIDIOUT_START*32], "FF");
+-	lstrcpy(&m_MidiCfg.szMidiGlb[MIDIOUT_STOP*32], "FC");
+-	lstrcpy(&m_MidiCfg.szMidiGlb[MIDIOUT_NOTEON*32], "9c n v");
+-	lstrcpy(&m_MidiCfg.szMidiGlb[MIDIOUT_NOTEOFF*32], "9c n 0");
+-	lstrcpy(&m_MidiCfg.szMidiGlb[MIDIOUT_PROGRAM*32], "Cc p");
+-	lstrcpy(&m_MidiCfg.szMidiSFXExt[0], "F0F000z");
+-	for (int iz=0; iz<16; iz++) wsprintf(&m_MidiCfg.szMidiZXXExt[iz*32], "F0F001%02X", iz*8);
++	strcpy(&m_MidiCfg.szMidiGlb[MIDIOUT_START*32], "FF");
++	strcpy(&m_MidiCfg.szMidiGlb[MIDIOUT_STOP*32], "FC");
++	strcpy(&m_MidiCfg.szMidiGlb[MIDIOUT_NOTEON*32], "9c n v");
++	strcpy(&m_MidiCfg.szMidiGlb[MIDIOUT_NOTEOFF*32], "9c n 0");
++	strcpy(&m_MidiCfg.szMidiGlb[MIDIOUT_PROGRAM*32], "Cc p");
++	strcpy(&m_MidiCfg.szMidiSFXExt[0], "F0F000z");
++	for (int iz=0; iz<16; iz++) sprintf(&m_MidiCfg.szMidiZXXExt[iz*32], "F0F001%02X", iz*8);
+ }
+ 
+ 
+@@ -1767,7 +1767,7 @@
+ 	if (nPat >= MAX_PATTERNS) return FALSE;
+ 	if (lpszName == NULL) return(FALSE);
+ 
+-	if (lpszName) lstrcpyn(szName, lpszName, MAX_PATTERNNAME);
++	if (lpszName) strncpy(szName, lpszName, MAX_PATTERNNAME);
+ 	szName[MAX_PATTERNNAME-1] = 0;
+ 	if (!m_lpszPatternNames) m_nPatternNames = 0;
+ 	if (nPat >= m_nPatternNames)

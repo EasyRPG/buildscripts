@@ -1,0 +1,68 @@
+This repo provides build files to compile the libs used by the EasyRPG project
+for Visual Studio easily.
+
+Requirements
+============
+
+Any version of Visual Studio 2015 or compatible Windows SDK installed. The libs will compile with older compilers, but EasyRPG Player won't.
+
+The powershell script (setup.ps1) requires execution permissions. Open a
+powershell with admin permissions and run "set-executionpolicy remotesigned" once.
+
+How to compile
+==============
+
+Run setup.ps1 from a powershell session. This downloads all required files and creates
+visual studio projects suitable for compiling.
+
+Open a Visual Studio Command Prompt (32 or 64bit) and execute "build TOOLSET"
+Replace TOOLSET with one listed below (e.g. v140)
+The only official supported toolset is v140, but others should work, too.
+
+Compiler flags and requirements:
+Release builds: /O2, /MD, /Zi and /arch:SSE2 enabled.
+Debug builds: /MDd and /Zi enabled.
+CPU requirements: Intel Pentium 4 or newer, AMD Athlon 64 or newer
+OS requirements: Depending on the toolset, v140 needs Windows Vista SP1 or newer.
+
+Common toolsets
+===============
+
+Command line arguments for the target toolset (assuming that the toolset is
+installed):
+v140 - Visual Studio 2015
+v140_xp - Visual Studio 2015 with Windows XP support
+
+After compiling
+===============
+
+The resulting files appear in build.
+The boost (http://www.boost.org/) headers are not included because of their
+gigantic filesize. You can obtain them with the command "get-boost".
+
+You must also set the environment variable EASYDEV_MSVC to the "build" folder
+otherwise the EasyRPG project file can't find the libraries.
+To create new environment variables enter the "Windows Control Panel" and
+select "System" (or enter "environment variable" in the search field).
+Sometimes new environment variables are not detected. Logout and -in again in
+order to fix this.
+
+Library list
+============
+expat 2.1.0
+freetype 2.6.2
+harfbuzz 1.1.3
+icu4c-56.1
+libmad 0.15.1b
+libmodplug 0.8.8.5
+libogg 1.3.2
+libpng 1.6.20
+libvorbis 1.3.5
+libvorbisfile 1.3.5 (included with libvorbis)
+native_midi (included with SDL_mixer)
+pixman 0.32.8
+SDL2-2.0.4
+SDL2_image-2.0.1
+SDL2_mixer-2.0.1
+smpeg 2.0.0
+zlib 1.2.8

@@ -1,0 +1,38 @@
+diff -Naur .\pixman-0.32.8-old/pixman/pixman-sse2.c .\pixman-0.32.8/pixman/pixman-sse2.c
+--- .\pixman-0.32.8-old/pixman/pixman-sse2.c	2015-09-22 10:20:40 +0000
++++ .\pixman-0.32.8/pixman/pixman-sse2.c	2016-01-16 20:34:36 +0000
+@@ -30,6 +30,8 @@
+ #include <config.h>
+ #endif
+ 
++#if defined(_M_IX86) || defined(_M_X64)
++
+ /* PSHUFD is slow on a lot of old processors, and new processors have SSSE3 */
+ #define PSHUFD_IS_FAST 0
+ 
+@@ -6538,3 +6540,5 @@
+ 
+     return imp;
+ }
++
++#endif
+\ No newline at end of file
+diff -Naur .\pixman-0.32.8-old/pixman/pixman-ssse3.c .\pixman-0.32.8/pixman/pixman-ssse3.c
+--- .\pixman-0.32.8-old/pixman/pixman-ssse3.c	2015-06-30 09:48:31 +0000
++++ .\pixman-0.32.8/pixman/pixman-ssse3.c	2016-01-16 20:34:20 +0000
+@@ -27,6 +27,8 @@
+ #include <config.h>
+ #endif
+ 
++#if defined(_M_IX86) || defined(_M_X64)
++
+ #include <stdlib.h>
+ #include <mmintrin.h>
+ #include <xmmintrin.h>
+@@ -349,3 +351,5 @@
+ 
+     return imp;
+ }
++
++#endif
+\ No newline at end of file
