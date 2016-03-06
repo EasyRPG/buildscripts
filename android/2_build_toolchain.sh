@@ -1,3 +1,4 @@
+#!/bin/bash
 export WORKSPACE=$PWD
 
 export NDK_ROOT=$WORKSPACE/android-ndk-r10e
@@ -157,6 +158,7 @@ export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export TARGET_HOST="arm-linux-androideabi"
 
 # Install boost header
+mkdir -p $PLATFORM_PREFIX/include
 cp -r boost_1_60_0/boost/ $PLATFORM_PREFIX/include/boost/
 
 # Install libpng
@@ -405,7 +407,7 @@ cd ..
 # Install libmad
 cd libmad-0.15.1b
 make clean
-FPM="-DFPM_DEFAULT" ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --enable-fpm=default
 make -j2
 make install
 cd ..

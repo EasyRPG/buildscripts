@@ -129,7 +129,7 @@ tar xf icu4c-56_1-src.tgz
 rm icu4c-56_1-src.tgz
 
 # Install icudata
-rm -f icudata.tar.xz
-wget https://easy-rpg.org/jenkins/job/icudata/lastSuccessfulBuild/artifact/icu/source/data/out/icudata.tar.xz
-tar xf icudata.tar.xz
-rm icudata.tar.xz
+rm -f icudata.tar.gz
+wget https://easy-rpg.org/jenkins/job/icudata/lastSuccessfulBuild/artifact/icu/source/data/out/icudata.tar.gz
+tar xf icudata.tar.gz
+rm icudata.tar.gz
