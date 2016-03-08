@@ -9,11 +9,11 @@ msbuild.exe /? >NUL 2>&1 || (
 
 IF "%EASYDEV_MSVC%"=="" SET EASYDEV_MSVC=%CD%\build
 
+set PATH=%CD%/msys/bin;%PATH%
+
 wget --no-check-certificate https://easy-rpg.org/jenkins/job/icudata/lastSuccessfulBuild/artifact/icu/source/data/out/icudata.tar.gz
 tar xf icudata.tar.gz
 copy /Y icudt56l.dat projects\icu\source\data\in
-
-set PATH=%CD%/msys/bin;%PATH%
 
 set __tmp=%CD%\projects\icu-native\source
 set ICU_CROSS_BUILD=%__tmp:\=/%
