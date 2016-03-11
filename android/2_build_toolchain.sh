@@ -158,7 +158,6 @@ export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export TARGET_HOST="arm-linux-androideabi"
 
 # Install boost header
-mkdir -p $PLATFORM_PREFIX/include
 cp -r boost_1_60_0/boost/ $PLATFORM_PREFIX/include/boost/
 
 # Install libpng
@@ -260,7 +259,7 @@ export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export TARGET_HOST="arm-linux-androideabi"
 
 # Install boost header
-mkdir $PLATFORM_PREFIX/include
+mkdir -p $PLATFORM_PREFIX/include
 cp -r boost_1_60_0/boost/ $PLATFORM_PREFIX/include/boost/
 
 # Install libpng
