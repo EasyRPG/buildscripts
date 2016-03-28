@@ -1,14 +1,10 @@
+#!/bin/bash
+
 #	Please complete :
 KEYSTORE_PATH=
 KEYSTORE_PASSWORD=
 
-#	Tip : desactivate mips compilation (which can cause problem)
-#	in Player/builds/android/jni/Application.mk
-#	in the APP_ABI variable
-
-#!/bin/bash
 export WORKSPACE=$(pwd)
-
 export EASYDEV_ANDROID=$(pwd)
 
 #export ndk path
@@ -43,7 +39,7 @@ cd $ANDROID_FOLDER
 
 #Sign the apk
 cd $ANDROID_FOLDER/app/build/outputs/apk
-jarsigner -sigalg MD5withRSA -digestalg SHA1 -keystore $KEYSTORE_PATH -storepass $KEYSTORE_PASSWORD app-release-unsigned.apk.apk nightly
-zipalign 4 app-release-unsigned.apk.apk EasyRpgPlayerActivity.apk
+jarsigner -sigalg MD5withRSA -digestalg SHA1 -keystore $KEYSTORE_PATH -storepass $KEYSTORE_PASSWORD app-release-unsigned.apk nightly
+zipalign 4 app-release-unsigned.apk EasyRpgPlayerActivity.apk
 
 cd $WORKSPACE
