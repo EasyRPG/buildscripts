@@ -17,6 +17,7 @@ export PATH=$PATH:$NDK_ROOT
 
 #export sdk path
 export SDK_ROOT=$WORKSPACE/android-sdk
+export ANDROID_HOME=$WORKSPACE/android-sdk
 export PATH=$PATH:$SDK_ROOT/tools:$SDK_ROOT/build-tools/23.0.2/
 
 git clone https://github.com/EasyRPG/Player.git
