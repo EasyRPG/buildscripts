@@ -32,14 +32,14 @@ git clone https://github.com/Ghabry/timidity_gus.git assets/timidity
 android update project --path "." --target 1
 
 # Build
-ndk-build -j4 NDK_LIBS_OUT=./jniLibs
+ndk-build -j2 NDK_LIBS_OUT=./jniLibs
 cd $ANDROID_FOLDER
 ./gradlew clean
 ./gradlew assembleRelease
 
 #Sign the apk
 cd $ANDROID_FOLDER/app/build/outputs/apk
-jarsigner -sigalg MD5withRSA -digestalg SHA1 -keystore $KEYSTORE_PATH -storepass $KEYSTORE_PASSWORD app-release-unsigned.apk nightly
+jarsigner -sigalg SHA1withRSA -digestalg SHA1 -keystore $KEYSTORE_PATH -storepass $KEYSTORE_PASSWORD app-release-unsigned.apk nightly
 zipalign 4 app-release-unsigned.apk EasyRpgPlayerActivity.apk
 
 cd $WORKSPACE
