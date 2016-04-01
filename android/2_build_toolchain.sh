@@ -24,9 +24,6 @@ export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export TARGET_HOST="i686-linux-android"
 
-# Install boost header
-cp -r boost_1_60_0/boost/ $PLATFORM_PREFIX/include/boost/
-
 # Install libpng
 cd libpng-1.6.21
 make clean
@@ -157,9 +154,6 @@ export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export TARGET_HOST="arm-linux-androideabi"
 
-# Install boost header
-cp -r boost_1_60_0/boost/ $PLATFORM_PREFIX/include/boost/
-
 # Install libpng
 cd libpng-1.6.21
 make clean
@@ -258,10 +252,6 @@ export LDFLAGS="-L$PLATFORM_PREFIX_ARM/lib -L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export TARGET_HOST="arm-linux-androideabi"
 
-# Install boost header
-mkdir -p $PLATFORM_PREFIX/include
-cp -r boost_1_60_0/boost/ $PLATFORM_PREFIX/include/boost/
-
 # Install libpng
 cd libpng-1.6.21
 make clean
@@ -359,9 +349,6 @@ export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/support/
 export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export TARGET_HOST="mipsel-linux-android"
-
-# Install boost header
-cp -r boost_1_60_0/boost/ $PLATFORM_PREFIX/include/boost/
 
 # Install libpng
 cd libpng-1.6.21

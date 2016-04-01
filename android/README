@@ -2,7 +2,7 @@ Android tools to compile EasyRPG for Android devices
 
 Specific building requirements for Linux :
 
-	a Java 6 SDK
+	a Java (>=6) SDK
     autoconf
     mercurial
 
