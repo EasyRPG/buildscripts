@@ -62,12 +62,6 @@ elif [ $os = $darwin ] ; then
 	rm android-ndk-r10e-darwin-x86_64.bin
 fi
 
-# Install boost header
-rm -f boost_1_60_0.tar.bz2
-wget http://sourceforge.net/projects/boost/files/boost/1.60.0/boost_1_60_0.tar.bz2
-tar xf boost_1_60_0.tar.bz2
-rm boost_1_60_0.tar.bz2
-
 # Install libpng
 rm -f libpng-1.6.21.tar.xz
 wget http://prdownloads.sourceforge.net/libpng/libpng-1.6.21.tar.xz
