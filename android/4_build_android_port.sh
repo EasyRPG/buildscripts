@@ -6,6 +6,8 @@ KEYSTORE_PASSWORD=
 
 export WORKSPACE=$(pwd)
 export EASYDEV_ANDROID=$(pwd)
+#Number of CPU
+NBPROC=$(getconf _NPROCESSORS_ONLN)
 
 #export ndk path
 export NDK_ROOT=$WORKSPACE/android-ndk-r10e
@@ -32,7 +34,7 @@ git clone https://github.com/Ghabry/timidity_gus.git assets/timidity
 android update project --path "." --target 1
 
 # Build
-ndk-build -j2 NDK_LIBS_OUT=./jniLibs
+ndk-build -j$NBPROC NDK_LIBS_OUT=./jniLibs
 cd $ANDROID_FOLDER
 ./gradlew clean
 ./gradlew assembleRelease
