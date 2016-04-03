@@ -2,8 +2,9 @@ Android tools to compile EasyRPG for Android devices
 
 Specific building requirements for Linux :
 
-    autoconf 
-    mercurial 
+	a Java (>=6) SDK
+    autoconf
+    mercurial
 
 1. Open « 4_build_android_port » and give to « KEYSTORE_PATH » and « KEYSTORE_PASSWORD » the value of your keystore’s path and password
 2. Run « 0_build_everything.sh »

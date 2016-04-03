@@ -1,6 +1,8 @@
 #!/bin/bash
 export WORKSPACE=$PWD
 export NDK_ROOT=$WORKSPACE/android-ndk-r10e
+#Number of CPU
+NBPROC=$(getconf _NPROCESSORS_ONLN)
 
 git clone https://github.com/EasyRPG/liblcf.git
 
@@ -18,7 +20,7 @@ export TARGET_HOST="i686-linux-android"
 autoreconf -i
 make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --disable-xml
-make -j2
+make -j$NBPROC
 make install
 
 # armeabi
@@ -32,7 +34,7 @@ export TARGET_HOST="arm-linux-androideabi"
 
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --disable-xml
 make clean
-make -j2
+make -j$NBPROC
 make install
 
 # armeabi-v7a
@@ -43,7 +45,7 @@ export LDFLAGS="-L$PLATFORM_PREFIX_ARM/lib -L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --disable-xml
 make clean
-make -j2
+make -j$NBPROC
 make install
 
 # mips
@@ -57,7 +59,7 @@ export TARGET_HOST="mipsel-linux-android"
 
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --disable-xml
 make clean
-make -j2
+make -j$NBPROC
 make install
 
 
