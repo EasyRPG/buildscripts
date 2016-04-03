@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# abort on errors
+set -e
+
 # Supported os : "darwin" or "linux"
 os=`uname`
 darwin="Darwin"
@@ -13,117 +16,109 @@ fi
 
 export WORKSPACE=$PWD
 
-#Compile toolchain
+# helper
+function msg {
+  echo ""
+  echo $1
+}
 
-#Android SDK : "android-sdk" folder
-#Linux
-if [ $os = $linux ] ; then
-	rm -f android-sdk_r24.4.1-linux.tgz
-	wget http://dl.google.com/android/android-sdk_r24.4.1-linux.tgz
-	tar xf android-sdk_r24.4.1-linux.tgz
-	rm android-sdk_r24.4.1-linux.tgz
+function download_and_extract {
+	url=$1
+	file=${url##*/}
+
+	msg "Downloading and extracting $file..."
+
+	wget -nv -N $url
+	tar xf $file
+}
+
+# prepare toolchain
+
+msg " [1] Installing Android SDK"
+rm -rf android-sdk/
+# Linux
+if [ $os = $linux ]; then
+	download_and_extract http://dl.google.com/android/android-sdk_r24.4.1-linux.tgz
 	mv android-sdk-linux android-sdk
 #Mac
-elif [ $os = $darwin ] ; then
-	rm -f android-sdk_r24.4.1-macosx.zip
-	wget http://dl.google.com/android/android-sdk_r24.4.1-macosx.zip
-	tar xf android-sdk_r24.4.1-macosx.zip
-	rm android-sdk_r24.4.1-macosx.zip
+elif [ $os = $darwin ]; then
+	download_and_extract http://dl.google.com/android/android-sdk_r24.4.1-macosx.zip
 	mv android-sdk-macosx android-sdk
+else
+	msg "Your platform is unsupported!"
+	exit 1
 fi
 
 PATH=$PATH:$WORKSPACE/android-sdk/tools
 
-# Install SDK12 and Platform-tools
-num=$(android list sdk --all | grep "Android SDK Build-tools, revision 23.0.2" | head -n1 | awk '{gsub(/[^0-9]/,"", $1);print $1}')
-echo "y" | android update sdk -u -a -t $num
+msg " [2] Installing SDK12 and Platform-tools"
+# "Android SDK Build-tools, revision 23.0.2"
+echo "y" | android update sdk -u -a -t build-tools-23.0.2
+# "Android SDK Platform-tools"
+echo "y" | android update sdk -u -a -t platform-tools
+# "SDK Platform Android 3.1, API 12"
+echo "y" | android update sdk -u -a -t android-12
 
-num=$(android list sdk --all | grep "Android SDK Platform-tools" | head -n1 | awk '{gsub(/[^0-9]/,"", $1);print $1}')
-echo "y" | android update sdk -u -a -t $num
-
-num=$(android list sdk --all | grep "SDK Platform Android 3.1, API 12" | head -n1 | awk '{gsub(/[^0-9]/,"", $1);print $1}')
-echo "y" | android update sdk -u -a -t $num
-
-
-#Android NDK : "android-ndk-r10e" folder
+msg " [3] Android NDK"
+rm -rf android-ndk-r10e/
 #Linux
 if [ $os = $linux ] ; then
-	rm -f android-ndk-r10e-linux-x86_64.bin
-	wget http://dl.google.com/android/ndk/android-ndk-r10e-linux-x86_64.bin
+	wget -nv -N http://dl.google.com/android/ndk/android-ndk-r10e-linux-x86_64.bin
 	chmod u+x android-ndk-r10e-linux-x86_64.bin
 	./android-ndk-r10e-linux-x86_64.bin
-	rm android-ndk-r10e-linux-x86_64.bin
 #Mac
 elif [ $os = $darwin ] ; then
-	rm -f android-ndk-r10e-darwin-x86_64.bin
-	wget http://dl.google.com/android/ndk/android-ndk-r10e-darwin-x86_64.bin
+	wget -nv -N http://dl.google.com/android/ndk/android-ndk-r10e-darwin-x86_64.bin
 	chmod u+x android-ndk-r10e-darwin-x86_64.bin
 	./android-ndk-r10e-darwin-x86_64.bin
-	rm android-ndk-r10e-darwin-x86_64.bin
 fi
 
-# Install libpng
-rm -f libpng-1.6.21.tar.xz
-wget http://prdownloads.sourceforge.net/libpng/libpng-1.6.21.tar.xz
-tar xf libpng-1.6.21.tar.xz
-rm libpng-1.6.21.tar.xz
+msg " [4] preparing libraries"
 
-# Install freetype
-rm -f freetype-2.6.3.tar.bz2
-wget http://download.savannah.gnu.org/releases/freetype/freetype-2.6.3.tar.bz2
-tar xf freetype-2.6.3.tar.bz2
-rm freetype-2.6.3.tar.bz2
+# libpng
+rm -rf libpng-1.6.21/
+download_and_extract http://prdownloads.sourceforge.net/libpng/libpng-1.6.21.tar.xz
 
-# Install harfbuzz
-rm -f harfbuzz-1.2.3.tar.bz2
-wget http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.2.3.tar.bz2
-tar xf harfbuzz-1.2.3.tar.bz2
-rm harfbuzz-1.2.3.tar.bz2
+# freetype
+rm -rf freetype-2.6.3/
+download_and_extract http://download.savannah.gnu.org/releases/freetype/freetype-2.6.3.tar.bz2
 
-# Install pixman
-rm -f pixman-0.34.0.tar.gz
-wget http://cairographics.org/releases/pixman-0.34.0.tar.gz
-tar xf pixman-0.34.0.tar.gz
-rm pixman-0.34.0.tar.gz
+# harfbuzz
+rm -rf harfbuzz-1.2.3/
+download_and_extract http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.2.3.tar.bz2
 
-# Install libogg
-rm -f libogg-1.3.2.tar.xz
-wget http://downloads.xiph.org/releases/ogg/libogg-1.3.2.tar.xz
-tar xf libogg-1.3.2.tar.xz
-rm libogg-1.3.2.tar.xz
+# pixman
+rm -rf pixman-0.34.0/
+download_and_extract http://cairographics.org/releases/pixman-0.34.0.tar.gz
 
-# Install libvorbis
-rm -f libvorbis-1.3.5.tar.xz
-wget http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.5.tar.xz
-tar xf libvorbis-1.3.5.tar.xz
-rm libvorbis-1.3.5.tar.xz
+# libogg
+rm -rf libogg-1.3.2/
+download_and_extract http://downloads.xiph.org/releases/ogg/libogg-1.3.2.tar.xz
 
-# Install libmad
-rm -f libmad-0.15.1b.tar.gz
-wget ftp://ftp.mars.org/pub/mpeg/libmad-0.15.1b.tar.gz
-tar xf libmad-0.15.1b.tar.gz
-rm libmad-0.15.1b.tar.gz
+# libvorbis
+rm -rf libvorbis-1.3.5/
+download_and_extract http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.5.tar.xz
 
-# Install libmodplug
-rm -f libmodplug-0.8.8.5.tar.gz
-wget http://sourceforge.net/projects/modplug-xmms/files/libmodplug/0.8.8.5/libmodplug-0.8.8.5.tar.gz
-tar xf libmodplug-0.8.8.5.tar.gz
-rm libmodplug-0.8.8.5.tar.gz
+# libmad
+rm -rf libmad-0.15.1b/
+download_and_extract ftp://ftp.mars.org/pub/mpeg/libmad-0.15.1b.tar.gz
 
-# Install SDL2
+# libmodplug
+rm -rf libmodplug-0.8.8.5/
+download_and_extract http://sourceforge.net/projects/modplug-xmms/files/libmodplug/0.8.8.5/libmodplug-0.8.8.5.tar.gz
+
+msg "Cloning SDL2"
+rm -rf SDL/
 hg clone http://hg.libsdl.org/SDL
 
-# Install SDL2_mixer
+msg "Cloning SDL2_mixer"
+rm -rf SDL_mixer/
 hg clone http://hg.libsdl.org/SDL_mixer
 
-# Install ICU
-rm -f icu4c-56_1-src.tgz
-wget http://download.icu-project.org/files/icu4c/56.1/icu4c-56_1-src.tgz
-tar xf icu4c-56_1-src.tgz
-rm icu4c-56_1-src.tgz
+# ICU
+rm -rf icu
+download_and_extract http://download.icu-project.org/files/icu4c/56.1/icu4c-56_1-src.tgz
 
-# Install icudata
-rm -f icudata.tar.gz
-wget https://easy-rpg.org/jenkins/job/icudata/lastSuccessfulBuild/artifact/icu/source/data/out/icudata.tar.gz
-tar xf icudata.tar.gz
-rm icudata.tar.gz
+# icudata
+rm -f icudt*.dat
+download_and_extract https://easy-rpg.org/jenkins/job/icudata/lastSuccessfulBuild/artifact/icu/source/data/out/icudata.tar.gz

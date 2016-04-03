@@ -5,3 +5,20 @@ android-sdk/
 
 # toolchains
 *-toolchain/
+
+# archives
+*.tar.*
+*.tgz
+*.bin
+
+# extracted libs
+lib*-*/
+pixman-*/
+freetype-*/
+harfbuzz-*/
+SDL/
+SDL_mixer/
+
+# icu
+icu/
+icudt*.dat
