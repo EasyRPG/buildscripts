@@ -108,7 +108,7 @@ patch -Np0 < ../sdl-mixer-config.patch
 make clean
 sh autogen.sh
 sh autogen.sh
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --enable-music-mp3-mad-gpl --disable-sdltest --disable-music-mod
+./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --enable-music-mp3-mad-gpl --disable-music-mp3-smpeg --disable-sdltest --disable-music-mod
 make -j$NBPROC
 make install
 cd ..
@@ -223,7 +223,7 @@ cd ..
 # Install SDL2_mixer
 cd SDL_mixer
 make clean
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --enable-music-mp3-mad-gpl --disable-sdltest --disable-music-mod
+./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --enable-music-mp3-mad-gpl --disable-music-mp3-smpeg --disable-sdltest --disable-music-mod
 make -j$NBPROC
 make install
 cd ..
@@ -321,7 +321,7 @@ cd ..
 # Install SDL2_mixer
 cd SDL_mixer
 make clean
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --enable-music-mp3-mad-gpl --disable-sdltest --disable-music-mod
+./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --enable-music-mp3-mad-gpl --disable-music-mp3-smpeg --disable-sdltest --disable-music-mod
 make -j$NBPROC
 make install
 cd ..
