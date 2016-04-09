@@ -1,21 +1,54 @@
 #!/bin/bash
+
+# abort on error
+set -e
+
 export WORKSPACE=$PWD
 
 export NDK_ROOT=$WORKSPACE/android-ndk-r10e
 export SDK_ROOT=$WORKSPACE/android-sdk
 
-#Number of CPU
+# Number of CPU
 NBPROC=$(getconf _NPROCESSORS_ONLN)
-
-# Patch cpufeatures, hangs in Android 4.0.3
-patch -Np0 < cpufeatures.patch
 
 # Setup PATH
 PATH=$PATH:$NDK_ROOT:$SDK_ROOT/tools
 
+if [ ! -f .patches-applied ]; then
+	echo "patching libraries"
+
+	# Patch cpufeatures, hangs in Android 4.0.3
+	patch -Np0 < cpufeatures.patch
+
+	# disable pixman examples and tests
+	cd pixman-0.34.0
+	sed -i.bak 's/SUBDIRS = pixman demos test/SUBDIRS = pixman/' Makefile.am
+	autoreconf -fi
+	cd ..
+
+	# modernize libmad
+	cd libmad-0.15.1b
+	patch -Np1 < ../libmad-pkg-config.diff
+	autoreconf -fi
+	cd ..
+
+	#
+	cd SDL_mixer
+	patch -Np1 -d timidity < ../timidity-android.patch
+	patch -Np0 < ../sdl-mixer-config.patch
+	sh autogen.sh
+	cd ..
+
+	touch .patches-applied
+fi
 
 ####################################################
 # Install standalone toolchain x86
+
+cd $WORKSPACE
+
+echo "preparing x86 toolchain"
+
 export PLATFORM_PREFIX=$WORKSPACE/x86-toolchain
 $NDK_ROOT/build/tools/make-standalone-toolchain.sh --platform=android-9 --ndk-dir=$NDK_ROOT --toolchain=x86-4.9 --install-dir=$PLATFORM_PREFIX --stl=gnustl
 
@@ -29,63 +62,56 @@ export TARGET_HOST="i686-linux-android"
 
 # Install libpng
 cd libpng-1.6.21
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+make clean
 make -j$NBPROC
 make install
 cd ..
 
 # Install freetype
 cd freetype-2.6.3
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --with-harfbuzz=no
+make clean
 make -j$NBPROC
 make install
 cd ..
 
 # Install pixman
 cd pixman-0.34.0
-sed -i.bak 's/SUBDIRS = pixman demos test/SUBDIRS = pixman/' Makefile.am
-autoreconf -fi
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+make clean
 make -j$NBPROC
 make install
 cd ..
 
 # Install libogg
-tar xf libogg-1.3.2.tar.xz
 cd libogg-1.3.2
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+make clean
 make -j$NBPROC
 make install
 cd ..
 
 # Install libvorbis
-tar xf libvorbis-1.3.5.tar.xz
 cd libvorbis-1.3.5
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+make clean
 make -j$NBPROC
 make install
 cd ..
 
 # Install libmad
 cd libmad-0.15.1b
-patch -Np1 < ../libmad-pkg-config.diff
-autoreconf -fi
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+make clean
 make -j$NBPROC
 make install
 cd ..
 
 # Install libmodplug
-tar xf libmodplug-0.8.8.5.tar.gz
 cd libmodplug-0.8.8.5
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+make clean
 make -j$NBPROC
 make install
 cd ..
@@ -103,12 +129,8 @@ cd ..
 
 # Install SDL2_mixer
 cd SDL_mixer
-patch -Np1 -d timidity < ../timidity-android.patch
-patch -Np0 < ../sdl-mixer-config.patch
-make clean
-sh autogen.sh
-sh autogen.sh
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --enable-music-mp3-mad-gpl --disable-music-mp3-smpeg --disable-sdltest --disable-music-mod
+make clean
 make -j$NBPROC
 make install
 cd ..
@@ -134,9 +156,8 @@ export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/cxx-stl/stlport/
 export LDFLAGS="-lc -Wl,-rpath-link=$PLATFORM_PREFIX/lib -L$PLATFORM_PREFIX/lib/"
 
 chmod u+x configure
+./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no --enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
 make clean
-./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no  --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no --enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
-
 make -j$NBPROC
 make install
 
@@ -145,7 +166,10 @@ unset LDFLAGS
 
 ################################################################
 # Install standalone toolchain ARMeabi
+
 cd $WORKSPACE
+
+echo "preparing ARMeabi toolchain"
 
 export PATH=$OLD_PATH
 export PLATFORM_PREFIX=$WORKSPACE/armeabi-toolchain
@@ -159,40 +183,40 @@ export TARGET_HOST="arm-linux-androideabi"
 
 # Install libpng
 cd libpng-1.6.21
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+make clean
 make -j$NBPROC
 make install
 cd ..
 
 # Install freetype
 cd freetype-2.6.3
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --with-harfbuzz=no
+make clean
 make -j$NBPROC
 make install
 cd ..
 
 # Install pixman
 cd pixman-0.34.0
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+make clean
 make -j$NBPROC
 make install
 cd ..
 
 # Install libogg
 cd libogg-1.3.2
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+make clean
 make -j$NBPROC
 make install
 cd ..
 
 # Install libvorbis
 cd libvorbis-1.3.5
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+make clean
 make -j$NBPROC
 make install
 cd ..
@@ -201,14 +225,15 @@ cd ..
 cd libmad-0.15.1b
 make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+make clean
 make -j$NBPROC
 make install
 cd ..
 
 # Install libmodplug
 cd libmodplug-0.8.8.5
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+make clean
 make -j$NBPROC
 make install
 cd ..
@@ -222,8 +247,8 @@ cd ..
 
 # Install SDL2_mixer
 cd SDL_mixer
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --enable-music-mp3-mad-gpl --disable-music-mp3-smpeg --disable-sdltest --disable-music-mod
+make clean
 make -j$NBPROC
 make install
 cd ..
@@ -235,15 +260,16 @@ export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/cxx-stl/stlport/
 export LDFLAGS="-lc -Wl,-rpath-link=$PLATFORM_PREFIX/lib -L$PLATFORM_PREFIX/lib/"
 
 chmod u+x configure
-make clean
 ./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no  --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no --enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
-
+make clean
 make -j$NBPROC
 make install
 
 ################################################################
 # Install standalone toolchain ARMeabi-v7a
 cd $WORKSPACE
+
+echo "preparing ARMeabi-v7a toolchain"
 
 # Setting up new toolchain not required, only difference is CPPFLAGS
 
@@ -257,56 +283,56 @@ export TARGET_HOST="arm-linux-androideabi"
 
 # Install libpng
 cd libpng-1.6.21
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+make clean
 make -j$NBPROC
 make install
 cd ..
 
 # Install freetype
 cd freetype-2.6.3
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --with-harfbuzz=no
+make clean
 make -j$NBPROC
 make install
 cd ..
 
 # Install pixman
 cd pixman-0.34.0
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+make clean
 make -j$NBPROC
 make install
 cd ..
 
 # Install libogg
 cd libogg-1.3.2
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+make clean
 make -j$NBPROC
 make install
 cd ..
 
 # Install libvorbis
 cd libvorbis-1.3.5
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+make clean
 make -j$NBPROC
 make install
 cd ..
 
 # Install libmad
 cd libmad-0.15.1b
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+make clean
 make -j$NBPROC
 make install
 cd ..
 
 # Install libmodplug
 cd libmodplug-0.8.8.5
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+make clean
 make -j$NBPROC
 make install
 cd ..
@@ -320,8 +346,8 @@ cd ..
 
 # Install SDL2_mixer
 cd SDL_mixer
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --enable-music-mp3-mad-gpl --disable-music-mp3-smpeg --disable-sdltest --disable-music-mod
+make clean
 make -j$NBPROC
 make install
 cd ..
@@ -333,15 +359,16 @@ export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/cxx-stl/stlport/
 export LDFLAGS="-lc -Wl,-rpath-link=$PLATFORM_PREFIX/lib -L$PLATFORM_PREFIX/lib/"
 
 chmod u+x configure
-make clean
 ./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no  --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no --enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
-
+make clean
 make -j$NBPROC
 make install
 
 ################################################################
 # Install standalone toolchain MIPS
 cd $WORKSPACE
+
+echo "preparing MIPS toolchain"
 
 export PATH=$OLD_PATH
 export PLATFORM_PREFIX=$WORKSPACE/mips-toolchain
@@ -355,56 +382,56 @@ export TARGET_HOST="mipsel-linux-android"
 
 # Install libpng
 cd libpng-1.6.21
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+make clean
 make -j$NBPROC
 make install
 cd ..
 
 # Install freetype
 cd freetype-2.6.3
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --with-harfbuzz=no
+make clean
 make -j$NBPROC
 make install
 cd ..
 
 # Install pixman
 cd pixman-0.34.0
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+make clean
 make -j$NBPROC
 make install
 cd ..
 
 # Install libogg
 cd libogg-1.3.2
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+make clean
 make -j$NBPROC
 make install
 cd ..
 
 # Install libvorbis
 cd libvorbis-1.3.5
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+make clean
 make -j$NBPROC
 make install
 cd ..
 
 # Install libmad
 cd libmad-0.15.1b
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --enable-fpm=default
+make clean
 make -j$NBPROC
 make install
 cd ..
 
 # Install libmodplug
 cd libmodplug-0.8.8.5
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+make clean
 make -j$NBPROC
 make install
 cd ..
@@ -418,8 +445,8 @@ cd ..
 
 # Install SDL2_mixer
 cd SDL_mixer
-make clean
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --enable-music-mp3-mad-gpl --disable-sdltest --disable-music-mod
+make clean
 make -j$NBPROC
 make install
 cd ..
@@ -431,10 +458,12 @@ export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/cxx-stl/stlport/
 export LDFLAGS="-lc -Wl,-rpath-link=$PLATFORM_PREFIX/lib -L$PLATFORM_PREFIX/lib/"
 
 chmod u+x configure
-make clean
 ./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no  --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no --enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
-
+make clean
 make -j$NBPROC
 make install
 
 cd $WORKSPACE
+
+# Cleanup library build folders and other stuff
+rm -rf freetype-*/ harfbuzz-*/ icu/ libmad-*/ libmodplug-*/ libogg-*/ libpng-*/ libvorbis-*/ pixman-*/ SDL/ SDL_mixer/ .patches-applied
