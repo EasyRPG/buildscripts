@@ -32,7 +32,13 @@ if [ ! -f .patches-applied ]; then
 	autoreconf -fi
 	cd ..
 
-	#
+	# use android config
+	cd SDL
+	mv include/SDL_config_android.h include/SDL_config.h
+	mkdir -p jni
+	cd ..
+
+	# enable jni config loading
 	cd SDL_mixer
 	patch -Np1 -d timidity < ../timidity-android.patch
 	patch -Np0 < ../sdl-mixer-config.patch
@@ -42,9 +48,104 @@ if [ ! -f .patches-applied ]; then
 	touch .patches-applied
 fi
 
+# Install libpng
+function install_lib_png {
+	cd libpng-1.6.21
+	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+	make clean
+	make -j$NBPROC
+	make install
+	cd ..
+}
+
+# Install freetype
+function install_lib_freetype() {
+	cd freetype-2.6.3
+	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --with-harfbuzz=no
+	make clean
+	make -j$NBPROC
+	make install
+	cd ..
+}
+
+# Install pixman
+function install_lib_pixman() {
+	cd pixman-0.34.0
+	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+	make clean
+	make -j$NBPROC
+	make install
+	cd ..
+}
+
+# Install libogg
+function install_lib_ogg() {
+	cd libogg-1.3.2
+	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+	make clean
+	make -j$NBPROC
+	make install
+	cd ..
+}
+
+# Install libvorbis
+function install_lib_vorbis() {
+	cd libvorbis-1.3.5
+	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+	make clean
+	make -j$NBPROC
+	make install
+	cd ..
+}
+
+# Install libmodplug
+function install_lib_modplug() {
+	cd libmodplug-0.8.8.5
+	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+	make clean
+	make -j$NBPROC
+	make install
+	cd ..
+}
+
+# Install libmad
+function install_lib_mad() {
+	cd libmad-0.15.1b
+	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static $@
+	make clean
+	make -j$NBPROC
+	make install
+	cd ..
+}
+
+# Install SDL2
+function install_lib_sdl {
+	# $1 => platform (armeabi armeabi-v7a x86 mips)
+
+	cd SDL
+	echo "APP_STL := gnustl_static" > "jni/Application.mk"
+	echo "APP_ABI := $1" >> "jni/Application.mk"
+	ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk APP_PLATFORM=android-9
+	cp libs/$1/* $PLATFORM_PREFIX/lib/
+	cp include/* $PLATFORM_PREFIX/include/
+	cd ..
+}
+
+# Install SDL2_mixer
+function install_lib_mixer() {
+	cd SDL_mixer
+	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-sdltest \
+		--enable-music-mp3-mad-gpl --disable-music-mp3-smpeg
+	make clean
+	make -j$NBPROC
+	make install
+	cd ..
+}
+
+export OLD_PATH=$PATH
+
 ####################################################
 # Install standalone toolchain x86
-
 cd $WORKSPACE
 
 echo "preparing x86 toolchain"
@@ -52,7 +153,6 @@ echo "preparing x86 toolchain"
 export PLATFORM_PREFIX=$WORKSPACE/x86-toolchain
 $NDK_ROOT/build/tools/make-standalone-toolchain.sh --platform=android-9 --ndk-dir=$NDK_ROOT --toolchain=x86-4.9 --install-dir=$PLATFORM_PREFIX --stl=gnustl
 
-export OLD_PATH=$PATH
 export PATH=$PLATFORM_PREFIX/bin:$PATH
 
 export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/support/include"
@@ -60,82 +160,17 @@ export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export TARGET_HOST="i686-linux-android"
 
-# Install libpng
-cd libpng-1.6.21
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-make clean
-make -j$NBPROC
-make install
-cd ..
+install_lib_png
+install_lib_freetype
+install_lib_pixman
+install_lib_ogg
+install_lib_vorbis
+install_lib_modplug
+install_lib_mad
+install_lib_sdl "x86"
+install_lib_mixer
 
-# Install freetype
-cd freetype-2.6.3
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --with-harfbuzz=no
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install pixman
-cd pixman-0.34.0
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install libogg
-cd libogg-1.3.2
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install libvorbis
-cd libvorbis-1.3.5
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install libmad
-cd libmad-0.15.1b
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install libmodplug
-cd libmodplug-0.8.8.5
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install SDL2
-cd SDL
-mv include/SDL_config_android.h include/SDL_config.h
-mkdir jni
-echo "APP_STL := gnustl_static" > "jni/Application.mk"
-echo "APP_ABI := armeabi armeabi-v7a x86 mips" >> "jni/Application.mk"
-ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk APP_PLATFORM=android-9
-cp libs/x86/* $PLATFORM_PREFIX/lib/
-cp include/* $PLATFORM_PREFIX/include/
-cd ..
-
-# Install SDL2_mixer
-cd SDL_mixer
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --enable-music-mp3-mad-gpl --disable-music-mp3-smpeg --disable-sdltest --disable-music-mod
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install ICU
+# Install host ICU
 unset CPPFLAGS
 unset LDFLAGS
 
@@ -181,77 +216,15 @@ export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export TARGET_HOST="arm-linux-androideabi"
 
-# Install libpng
-cd libpng-1.6.21
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install freetype
-cd freetype-2.6.3
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --with-harfbuzz=no
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install pixman
-cd pixman-0.34.0
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install libogg
-cd libogg-1.3.2
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install libvorbis
-cd libvorbis-1.3.5
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install libmad
-cd libmad-0.15.1b
-make clean
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install libmodplug
-cd libmodplug-0.8.8.5
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install SDL2
-cd SDL
-# Was already compiled because of Android.mk voodoo
-cp libs/armeabi/* $PLATFORM_PREFIX/lib/
-cp include/* $PLATFORM_PREFIX/include/
-cd ..
-
-# Install SDL2_mixer
-cd SDL_mixer
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --enable-music-mp3-mad-gpl --disable-music-mp3-smpeg --disable-sdltest --disable-music-mod
-make clean
-make -j$NBPROC
-make install
-cd ..
+install_lib_png
+install_lib_freetype
+install_lib_pixman
+install_lib_ogg
+install_lib_vorbis
+install_lib_modplug
+install_lib_mad
+install_lib_sdl "armeabi"
+install_lib_mixer
 
 # Cross compile ICU
 cd icu/source
@@ -260,7 +233,7 @@ export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/cxx-stl/stlport/
 export LDFLAGS="-lc -Wl,-rpath-link=$PLATFORM_PREFIX/lib -L$PLATFORM_PREFIX/lib/"
 
 chmod u+x configure
-./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no  --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no --enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
+./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no --enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
 make clean
 make -j$NBPROC
 make install
@@ -281,76 +254,15 @@ export LDFLAGS="-L$PLATFORM_PREFIX_ARM/lib -L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export TARGET_HOST="arm-linux-androideabi"
 
-# Install libpng
-cd libpng-1.6.21
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install freetype
-cd freetype-2.6.3
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --with-harfbuzz=no
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install pixman
-cd pixman-0.34.0
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install libogg
-cd libogg-1.3.2
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install libvorbis
-cd libvorbis-1.3.5
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install libmad
-cd libmad-0.15.1b
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install libmodplug
-cd libmodplug-0.8.8.5
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install SDL2
-cd SDL
-# Was already compiled because of Android.mk voodoo
-cp libs/armeabi-v7a/* $PLATFORM_PREFIX/lib/
-cp include/* $PLATFORM_PREFIX/include/
-cd ..
-
-# Install SDL2_mixer
-cd SDL_mixer
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --enable-music-mp3-mad-gpl --disable-music-mp3-smpeg --disable-sdltest --disable-music-mod
-make clean
-make -j$NBPROC
-make install
-cd ..
+install_lib_png
+install_lib_freetype
+install_lib_pixman
+install_lib_ogg
+install_lib_vorbis
+install_lib_modplug
+install_lib_mad
+install_lib_sdl "armeabi-v7a"
+install_lib_mixer
 
 # Cross compile ICU
 cd icu/source
@@ -359,7 +271,7 @@ export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/cxx-stl/stlport/
 export LDFLAGS="-lc -Wl,-rpath-link=$PLATFORM_PREFIX/lib -L$PLATFORM_PREFIX/lib/"
 
 chmod u+x configure
-./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no  --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no --enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
+./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no --enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
 make clean
 make -j$NBPROC
 make install
@@ -380,76 +292,15 @@ export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export TARGET_HOST="mipsel-linux-android"
 
-# Install libpng
-cd libpng-1.6.21
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install freetype
-cd freetype-2.6.3
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --with-harfbuzz=no
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install pixman
-cd pixman-0.34.0
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install libogg
-cd libogg-1.3.2
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install libvorbis
-cd libvorbis-1.3.5
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install libmad
-cd libmad-0.15.1b
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --enable-fpm=default
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install libmodplug
-cd libmodplug-0.8.8.5
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-make clean
-make -j$NBPROC
-make install
-cd ..
-
-# Install SDL2
-cd SDL
-# Was already compiled because of Android.mk voodoo
-cp libs/mips/* $PLATFORM_PREFIX/lib/
-cp include/* $PLATFORM_PREFIX/include/
-cd ..
-
-# Install SDL2_mixer
-cd SDL_mixer
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --enable-music-mp3-mad-gpl --disable-sdltest --disable-music-mod
-make clean
-make -j$NBPROC
-make install
-cd ..
+install_lib_png
+install_lib_freetype
+install_lib_pixman
+install_lib_ogg
+install_lib_vorbis
+install_lib_modplug
+install_lib_mad "--enable-fpm=default"
+install_lib_sdl "mips"
+install_lib_mixer
 
 # Cross compile ICU
 cd icu/source
@@ -458,12 +309,13 @@ export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/cxx-stl/stlport/
 export LDFLAGS="-lc -Wl,-rpath-link=$PLATFORM_PREFIX/lib -L$PLATFORM_PREFIX/lib/"
 
 chmod u+x configure
-./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no  --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no --enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
+./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no --enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
 make clean
 make -j$NBPROC
 make install
 
-cd $WORKSPACE
-
+################################################################
 # Cleanup library build folders and other stuff
+
+cd $WORKSPACE
 rm -rf freetype-*/ harfbuzz-*/ icu/ libmad-*/ libmodplug-*/ libogg-*/ libpng-*/ libvorbis-*/ pixman-*/ SDL/ SDL_mixer/ .patches-applied
