@@ -128,9 +128,9 @@ function install_lib_khax() {
 set_build_flags
 # Install libraries
 
-# ctru must be first, adds important system headers
-install_lib_ctru
 install_lib_zlib
+# Installs important system headers but does not create include/lib dir (zlib does this)
+install_lib_ctru
 install_lib "libpng-1.6.21"
 install_lib "freetype-2.6.3" "--with-harfbuzz=no"
 install_lib "pixman-0.34.0"

@@ -19,8 +19,13 @@ NBPROC=$(getconf _NPROCESSORS_ONLN)
 if [ ! -f .patches-applied ]; then
 	echo "patching libraries"
 
-	# Fix compilation problems on 3DS
 	cp -r icu icu-native
+
+	# Fix ICU compilation problems on Wii
+	patch -Np0 < icu-wii.patch
+
+	# Byte swap to generate proper icudata
+	patch -Np0 < icu-pkg_genc.patch
 
 	# disable pixman examples and tests
 	cd pixman-0.34.0
@@ -31,11 +36,13 @@ if [ ! -f .patches-applied ]; then
 	# Fix broken load_abc.cpp
 	patch -Np0 < libmodplug.patch
 
+	# Fix mpg123 compilation
+	patch -Np0 < mpg123.patch
+
 	# Patch SDL+SDL_mixer
 	cd sdl-wii
 	git reset --hard
 	cd ..
-	# add search folders for timidity
 	patch --binary -p0 -i sdl-wii.patch
 
 	touch .patches-applied

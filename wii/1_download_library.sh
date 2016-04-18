@@ -31,6 +31,7 @@ function git_clone {
 
 msg " [1] Installing devkitPPC"
 
+rm -rf $PWD/devkitPro
 wget -nv https://sourceforge.net/projects/devkitpro/files/Automated%20Installer/devkitPPCupdate.pl
 perl devkitPPCupdate.pl $PWD/devkitPro
 
