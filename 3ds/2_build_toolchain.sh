@@ -3,11 +3,12 @@
 # abort on error
 set -e
 
-export DEVKITPRO=/home/jenkins/devkitPro
+export WORKSPACE=$PWD
+
+export DEVKITPRO=${WORKSPACE}/devkitPro
 export DEVKITARM=${DEVKITPRO}/devkitARM
 export PATH=$DEVKITARM/bin:$PATH
 
-export WORKSPACE=$PWD
 export PLATFORM_PREFIX=$WORKSPACE
 export TARGET_HOST=arm-none-eabi
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig

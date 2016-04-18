@@ -3,11 +3,12 @@
 # abort on error
 set -e
 
-export DEVKITPRO=/home/jenkins/devkitPro
-export DEVKITPPC=${DEVKITPRO}/devkitPPC
-export PATH=$DEVKITARM/bin:$PATH
-
 export WORKSPACE=$PWD
+
+export DEVKITPRO=${WORKSPACE}/devkitPro
+export DEVKITPPC=${DEVKITPRO}/devkitPPC
+export PATH=$DEVKITPPC/bin:$PATH
+
 export PLATFORM_PREFIX=$WORKSPACE
 export TARGET_HOST=powerpc-eabi
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
