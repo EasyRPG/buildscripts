@@ -127,6 +127,9 @@ function install_lib_khax() {
 
 set_build_flags
 # Install libraries
+
+# ctru must be first, adds important system headers
+install_lib_ctru
 install_lib_zlib
 install_lib "libpng-1.6.21"
 install_lib "freetype-2.6.3" "--with-harfbuzz=no"
@@ -136,6 +139,5 @@ install_lib "libogg-1.3.2"
 install_lib "libmodplug-0.8.8.5"
 install_lib_icu
 install_lib "mpg123-1.23.3" "--enable-fifo=no --enable-ipv6=no --enable-network=no --enable-int-quality=no --with-cpu=generic --with-default-audio=dummy"
-install_lib_ctru
 install_lib_sf2d
 install_lib_khax

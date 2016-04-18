@@ -3,8 +3,6 @@
 # abort on errors
 set -e
 
-export WORKSPACE=$PWD
-
 # helper
 function msg {
   echo ""
@@ -31,6 +29,7 @@ function git_clone {
 
 msg " [1] Installing devkitARM"
 
+rm -rf $PWD/devkitPro
 wget -nv https://sourceforge.net/projects/devkitpro/files/Automated%20Installer/devkitARMupdate.pl
 perl devkitARMupdate.pl $PWD/devkitPro
 
