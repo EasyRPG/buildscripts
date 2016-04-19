@@ -1,6 +1,6 @@
 # EasyRPG buildscripts
 
-## Wii Toolchain and libraries
+## Nintendo 3DS Toolchain and libraries
 
 Specific building requirements for Linux:
 
@@ -14,4 +14,4 @@ Run `0_build_everything.sh` in a terminal
 Usage:
 
 Set environment variable `DEVKITPRO` to `$PWD/devkitPro`
-and `DEVKITPPC` to `$DEVKITPRO/devkitPPC`
+and `DEVKITARM` to `$DEVKITPRO/devkitARM`

@@ -1,0 +1,98 @@
+diff -Naur sdl-wii-orig/SDL/Makefile sdl-wii/SDL/Makefile
+--- sdl-wii-orig/SDL/Makefile	2016-04-18 11:53:38.317140200 +0000
++++ sdl-wii/SDL/Makefile	2016-04-18 12:00:21.986308532 +0000
+@@ -87,7 +87,7 @@
+ 	@echo ----
+ 
+ # Compilation flags.
+-COMMON_FLAGS	:= -g -O3 -Wall $(MACHDEP) 
++COMMON_FLAGS	:= -O2 -Wall $(MACHDEP) 
+ INCLUDES		:= -Iinclude -I$(LIBOGC_INC)
+ DEFINES			:= -DGEKKO
+ CFLAGS			:= $(COMMON_FLAGS) $(INCLUDES) $(DEFINES)
+diff -Naur sdl-wii-orig/SDL/src/video/wii/SDL_wiivideo.c sdl-wii/SDL/src/video/wii/SDL_wiivideo.c
+--- sdl-wii-orig/SDL/src/video/wii/SDL_wiivideo.c	2016-04-18 11:53:38.394140423 +0000
++++ sdl-wii/SDL/src/video/wii/SDL_wiivideo.c	2016-04-18 12:00:11.129277041 +0000
+@@ -282,7 +282,7 @@
+ 	mode_320.h = mode_640.h / 2;
+ 
+ 	// Set the current format.
+-	vformat->BitsPerPixel	= 16;
++	vformat->BitsPerPixel=32;
+ 	vformat->BytesPerPixel	= 2;
+ 
+ 	this->hidden->buffer = NULL;
+diff -Naur sdl-wii-orig/SDL_mixer/Makefile sdl-wii/SDL_mixer/Makefile
+--- sdl-wii-orig/SDL_mixer/Makefile	2016-04-18 11:53:38.415140482 +0000
++++ sdl-wii/SDL_mixer/Makefile	2016-04-18 12:05:52.909270086 +0000
+@@ -80,8 +80,8 @@
+ 	@cp $(SRC_DIR)/SDL_mixer.h $(INCLUDE_DIR)
+ 
+ # Compilation flags.
+-COMMON_FLAGS	:= -g -O3 -mrvl -Wall $(MACHDEP)
+-INCLUDES		:= -Iinclude -I$(LIBOGC_INC) -I$(LIBOGC_INC)/SDL -I$(LIBOGC_INC)/mpeg -I$(DEVKITPRO)/libsmpeg/include -Isrc/mikmod -Isrc/timidity
++COMMON_FLAGS	:= -O2 -mrvl -Wall $(MACHDEP)
++INCLUDES		:= -Iinclude -I$(LIBOGC_INC) -I$(WORKSPACE)/include -I$(WORKSPACE)/include/SDL -I$(WORKSPACE)/include/mpeg -Isrc/mikmod -Isrc/timidity
+ # -include sys/wait.h 
+ # -include sys/syslimits.h
+ # -Isrc/native_midi
+@@ -90,10 +90,10 @@
+ # -DOGG_MUSIC 
+ # 
+ #   -DCMD_MUSIC
+-CFLAGS			:= -L$(PORTLIBS)/lib -I$(PORTLIBS)/include $(COMMON_FLAGS) $(INCLUDES) $(DEFINES)
++CFLAGS			:= -L$(PORTLIBS)/lib -I$(PORTLIBS)/include $(COMMON_FLAGS) $(INCLUDES) -DGEKKO -DWAV_MUSIC -DMODPLUG_STATIC -DMODPLUG_MUSIC -DMID_MUSIC -DUSE_TIMIDITY_MIDI -DOGG_MUSIC -DOGG_USE_TREMOR
+ 
+ # Test link flags.
+-LDFLAGS			:= $(COMMON_FLAGS) -L$(LIB_DIR) -L$(LIBOGC_LIB) -L$(DEVKITPRO)/libsmpeg/lib -lSDL_mixer -lsmpeg -lSDL -lfat -lwiiuse -lbte -logc -lm -lvorbisidec
++LDFLAGS			:= $(COMMON_FLAGS) -L$(LIB_DIR) -L$(LIBOGC_LIB) -L$(WORKSPACE)/lib -lSDL_mixer -lsmpeg -lSDL -lfat -lwiiuse -lbte -logc -lm -lvorbisidec
+ 
+ # How to link an ELF.
+ $(TEST_OBJ_DIR)/%.elf: $(TEST_OBJ_DIR)/%.o $(LIB_DIR)/libSDL_mixer.a $(DEVKITPRO)/libSDL/lib/libSDL.a
+diff -Naur sdl-wii-orig/SDL_mixer/src/mikmod/mikmod.h sdl-wii/SDL_mixer/src/mikmod/mikmod.h
+--- sdl-wii-orig/SDL_mixer/src/mikmod/mikmod.h	2016-04-18 11:53:38.417140488 +0000
++++ sdl-wii/SDL_mixer/src/mikmod/mikmod.h	2016-04-18 12:00:41.786365972 +0000
+@@ -94,7 +94,7 @@
+ typedef unsigned short  UWORD;      /* 2 bytes, unsigned */
+ typedef signed int      SLONG;      /* 4 bytes, signed */
+ typedef unsigned int    ULONG;      /* 4 bytes, unsigned */
+-typedef int             BOOL;       /* 0=false, <>0 true */
++typedef unsigned int BOOL;       /* 0=false, <>0 true */
+ 
+ #else
+ /* 32 bit architectures */
+@@ -106,7 +106,7 @@
+ typedef signed long     SLONG;      /* 4 bytes, signed */
+ #if !defined(__OS2__)&&!defined(__EMX__)&&!defined(WIN32)
+ typedef unsigned long   ULONG;      /* 4 bytes, unsigned */
+-typedef int             BOOL;       /* 0=false, <>0 true */
++typedef unsigned int BOOL;       /* 0=false, <>0 true */
+ #endif
+ #endif
+ 
+diff -Naur sdl-wii-orig/SDL_mixer/src/timidity/common.c sdl-wii/SDL_mixer/src/timidity/common.c
+--- sdl-wii-orig/SDL_mixer/src/timidity/common.c	2016-04-18 11:53:38.419140494 +0000
++++ sdl-wii/SDL_mixer/src/timidity/common.c	2016-04-18 11:59:40.987189631 +0000
+@@ -114,6 +114,8 @@
+ #ifdef DEFAULT_PATH
+   if (pathlist==NULL) {
+     /* Generate path list */
++    add_to_pathlist("sd:/data/timidity");
++    add_to_pathlist("usb:/data/timidity");
+     add_to_pathlist(DEFAULT_PATH);
+   }
+ #endif
+diff -Naur sdl-wii-orig/SDL_mixer/src/timidity/config.h sdl-wii/SDL_mixer/src/timidity/config.h
+--- sdl-wii-orig/SDL_mixer/src/timidity/config.h	2016-04-18 11:53:38.419140494 +0000
++++ sdl-wii/SDL_mixer/src/timidity/config.h	2016-04-18 11:59:40.987189631 +0000
+@@ -170,8 +170,8 @@
+ /* You could specify a complete path, e.g. "/etc/timidity.cfg", and
+    then specify the library directory in the configuration file. */
+ #define CONFIG_FILE	"timidity.cfg"
+-#define CONFIG_FILE_ETC "/etc/timidity.cfg"
+-#define CONFIG_FILE_ETC_TIMIDITY "/etc/timidity/timidity.cfg"
++#define CONFIG_FILE_ETC "sd:/data/timidity/timidity.cfg"
++#define CONFIG_FILE_ETC_TIMIDITY "usb:/data/timidity/timidity.cfg"
+ 
+ #if defined(__WIN32__) || defined(__OS2__)
+ #define DEFAULT_PATH	"\\TIMIDITY"
