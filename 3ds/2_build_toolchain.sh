@@ -33,7 +33,7 @@ if [ ! -f .patches-applied ]; then
 	patch -Np0 < libmodplug.patch
 
 	# Give libkhax a proper makefile
-	cp Makefile_libkhax lpp-3ds_libraries/source_libkhax/Makefile
+	patch -Np0 < lpp_khax.patch
 
 	# Fix mpg123 compilation
 	patch -Np0 < mpg123.patch
@@ -117,12 +117,12 @@ function install_lib_sf2d() {
 }
 
 function install_lib_khax() {
-	cd lpp-3ds_libraries/source_libkhax/
+	cd lpp-3ds_libraries
 	make clean
 	make
-	cp *.h ../../include/
-	cp -r lib/* ../../lib/
-	cd ../..
+	cp source_libkhax/*.h ../include/
+	cp -r lib/* ../lib/
+	cd ..
 }
 
 set_build_flags
@@ -133,7 +133,7 @@ install_lib_zlib
 install_lib_ctru
 install_lib "libpng-1.6.21"
 install_lib "freetype-2.6.3" "--with-harfbuzz=no"
-install_lib "pixman-0.34.0"
+install_lib "pixman-0.34.0" "--disable-arm-neon --disable-arm-simd"
 install_lib "tremor-lowmem"
 install_lib "libogg-1.3.2"
 install_lib "libmodplug-0.8.8.5"
