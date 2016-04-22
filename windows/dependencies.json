@@ -359,6 +359,55 @@
 		"DependsOn": ["libvorbis"],
 		"SourceFiles": ["lib/vorbisfile.c"]
 	},
+	"mpg123": {
+		"Source": "http://www.mpg123.de/download/mpg123-1.23.3.tar.bz2",
+		"Preprocessor": [
+			"WIN32",
+			"_CRT_SECURE_NO_WARNINGS",
+			"OPT_GENERIC",
+			"OPT_I486"
+		],
+		"IncludeDirs": [
+			"src",
+			"src/compat",
+			"src/libmpg123",
+			"src/libout123",
+			"ports/MSVC++"
+		],
+		"HeaderDirs": [
+			"ports/MSVC++"
+		],
+		"SourceFiles": [
+			"src/libmpg123/compat.c",
+			"src/libmpg123/dct64.c",
+			"src/libmpg123/dct64_i386.c",
+			"src/libmpg123/dct64_i486.c",
+			"src/libmpg123/equalizer.c",
+			"src/libmpg123/feature.c",
+			"src/libmpg123/format.c",
+			"src/libmpg123/frame.c",
+			"src/libmpg123/icy.c",
+			"src/libmpg123/icy2utf8.c",
+			"src/libmpg123/id3.c",
+			"src/libmpg123/index.c",
+			"src/libmpg123/layer1.c",
+			"src/libmpg123/layer2.c",
+			"src/libmpg123/layer3.c",
+			"src/libmpg123/libmpg123.c",
+			"src/libmpg123/ntom.c",
+			"src/libmpg123/optimize.c",
+			"src/libmpg123/parse.c",
+			"src/libmpg123/readers.c",
+			"src/libmpg123/stringbuf.c",
+			"src/libmpg123/synth.c",
+			"src/libmpg123/synth_8bit.c",
+			"src/libmpg123/synth_i486.c",
+			"src/libmpg123/synth_real.c",
+			"src/libmpg123/synth_s32.c",
+			"src/libmpg123/tabinit.c",
+			"ports/MSVC++/msvc.c"
+		]
+	},
 	"pixman": {
 		"Source": "http://cairographics.org/releases/pixman-0.32.8.tar.gz",
 		"Preprocessor": [
@@ -397,5 +446,22 @@
 			"source/i18n/unicode"
 		],
 		"HeaderTargetDir": "unicode"
+	},
+	"glew32": {
+		"Source": "https://sourceforge.net/projects/glew/files/glew/1.13.0/glew-1.13.0.tgz",
+		"Preprocessor": [
+			"WIN32",
+			"WIN32_LEAN_AND_MEAN",
+			"GLEW_STATIC"
+		],
+		"IncludeDirs": [
+			"include"
+		],
+		"HeaderDirs": [
+			"include/GL"
+		],
+		"SourceFiles": [
+			"src/glew.c"
+		]
 	}
 }
