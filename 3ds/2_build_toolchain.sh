@@ -67,12 +67,25 @@ function install_lib_zlib {
 	cd ..
 }
 
+# Install pixman
+function install_lib_pixman {
+	cd pixman-0.34.0
+	export CFLAGS="$CFLAGS -DPIXMAN_NO_TLS"
+	export CPPFLAGS="$CFLAGS"
+	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --disable-arm-neon --disable-arm-simd
+	make clean
+	make -j$NBPROC
+	make install
+	set_build_flags
+	cd ..
+}
+
 # Install ICU
-function install_lib_icu() {
+function install_lib_icu {
 	# Compile native version
-        unset CFLAGS
-        unset CPPFLAGS
-        unset LDFLAGS
+	unset CFLAGS
+	unset CPPFLAGS
+	unset LDFLAGS
 
 	cp icudt56l.dat icu/source/data/in/
 	cp icudt56l.dat icu-native/source/data/in/
@@ -133,7 +146,7 @@ install_lib_zlib
 install_lib_ctru
 install_lib "libpng-1.6.21"
 install_lib "freetype-2.6.3" "--with-harfbuzz=no"
-install_lib "pixman-0.34.0" "--disable-arm-neon --disable-arm-simd"
+install_lib_pixman
 install_lib "tremor-lowmem"
 install_lib "libogg-1.3.2"
 install_lib "libmodplug-0.8.8.5"
