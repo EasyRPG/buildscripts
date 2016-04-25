@@ -135,7 +135,8 @@ function install_lib_sdl {
 function install_lib_mixer() {
 	cd SDL_mixer
 	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-sdltest \
-		--enable-music-mp3-mad-gpl --disable-music-mp3-smpeg
+		--enable-music-mp3-mad-gpl --disable-music-mp3-smpeg \
+		--disable-shared --enable-static
 	make clean
 	make -j$NBPROC
 	make install
