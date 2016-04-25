@@ -118,6 +118,19 @@ function install_lib_mad() {
 	cd ..
 }
 
+# Install mpg123
+function install_lib_mpg123() {
+	cd mpg123-1.23.3
+	CPPFLAGS="$CPPFLAGS -DHAVE_MMAP" ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX \
+		--disable-shared --enable-static \
+		--enable-fifo=no --enable-ipv6=no --enable-network=no --enable-int-quality=no \
+		--with-cpu=generic --with-default-audio=dummy
+	make clean
+	make -j$NBPROC
+	make install
+	cd ..
+}
+
 # Install SDL2
 function install_lib_sdl {
 	# $1 => platform (armeabi armeabi-v7a x86 mips)
@@ -168,6 +181,7 @@ install_lib_ogg
 install_lib_vorbis
 install_lib_modplug
 install_lib_mad
+install_lib_mpg123
 install_lib_sdl "x86"
 install_lib_mixer
 
@@ -224,6 +238,7 @@ install_lib_ogg
 install_lib_vorbis
 install_lib_modplug
 install_lib_mad
+install_lib_mpg123
 install_lib_sdl "armeabi"
 install_lib_mixer
 
@@ -262,6 +277,7 @@ install_lib_ogg
 install_lib_vorbis
 install_lib_modplug
 install_lib_mad
+install_lib_mpg123
 install_lib_sdl "armeabi-v7a"
 install_lib_mixer
 
@@ -300,6 +316,7 @@ install_lib_ogg
 install_lib_vorbis
 install_lib_modplug
 install_lib_mad "--enable-fpm=default"
+install_lib_mpg123
 install_lib_sdl "mips"
 install_lib_mixer
 
