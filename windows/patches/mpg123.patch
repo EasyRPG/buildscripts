@@ -1,6 +1,18 @@
+diff -Naur .\mpg123-1.23.3-orig/src/libmpg123/debug.h .\mpg123-1.23.3/src/libmpg123/debug.h
+--- .\mpg123-1.23.3-orig/src/libmpg123/debug.h	2016-03-22 22:09:45 +0000
++++ .\mpg123-1.23.3/src/libmpg123/debug.h	2016-04-25 20:40:28 +0000
+@@ -28,6 +28,8 @@
+ #define DBGPRFX ""
+ #endif
+ 
++#undef DEBUG
++
+ #ifdef DEBUG
+ 
+ #include <stdio.h>
 diff -Naur .\mpg123-1.23.3-orig/ports/MSVC++/mpg123.h .\mpg123-1.23.3/ports/MSVC++/mpg123.h
 --- .\mpg123-1.23.3-orig/ports/MSVC++/mpg123.h	2016-03-22 22:09:45 +0000
-+++ .\mpg123-1.23.3/ports/MSVC++/mpg123.h	2016-04-22 23:17:03 +0000
++++ .\mpg123-1.23.3/ports/MSVC++/mpg123.h	2016-04-25 20:39:48 +0000
 @@ -28,7 +28,1454 @@
  #define ftello ftell
  
