@@ -120,7 +120,7 @@ function install_lib_sdlmixer() {
 set_build_flags
 # Install libraries
 install_lib_zlib
-install_lib "libpng-1.6.21"
+install_lib "libpng-1.6.23"
 install_lib "freetype-2.6.3" "--with-harfbuzz=no"
 install_lib "pixman-0.34.0" "--disable-vmx"
 install_lib "tremor-lowmem"
@@ -128,5 +128,7 @@ install_lib "libogg-1.3.2"
 install_lib "libmodplug-0.8.8.5"
 install_lib_icu
 install_lib "mpg123-1.23.3" "--enable-fifo=no --enable-ipv6=no --enable-network=no --enable-int-quality=no --with-cpu=generic --with-default-audio=dummy"
+install_lib "libsndfile-1.0.27"
+install_lib "speexdsp-1.2rc3"
 install_lib_sdl
 install_lib_sdlmixer

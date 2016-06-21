@@ -76,8 +76,8 @@ fi
 msg " [4] preparing libraries"
 
 # libpng
-rm -rf libpng-1.6.21/
-download_and_extract http://prdownloads.sourceforge.net/libpng/libpng-1.6.21.tar.xz
+rm -rf libpng-1.6.23/
+download_and_extract http://prdownloads.sourceforge.net/libpng/libpng-1.6.23.tar.xz
 
 # freetype
 rm -rf freetype-2.6.3/
@@ -108,8 +108,16 @@ rm -rf libmodplug-0.8.8.5/
 download_and_extract http://sourceforge.net/projects/modplug-xmms/files/libmodplug/0.8.8.5/libmodplug-0.8.8.5.tar.gz
 
 # mpg123
-rm -f mpg123-1.23.3/
-download_and_extract http://www.mpg123.de/download/mpg123-1.23.3.tar.bz2
+rm -f mpg123-1.23.4
+download_and_extract http://www.mpg123.de/download/mpg123-1.23.4.tar.bz2
+
+# libsndfile
+rm -rf libsndfile-1.0.27
+download_and_extract http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.27.tar.gz
+
+# speexdsp
+rm -rf speexdsp-1.2rc3 
+download_and_extract http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz
 
 msg "Cloning SDL2"
 rm -rf SDL/

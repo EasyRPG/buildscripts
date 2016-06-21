@@ -50,7 +50,7 @@ fi
 
 # Install libpng
 function install_lib_png {
-	cd libpng-1.6.21
+	cd libpng-1.6.23
 	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
 	make clean
 	make -j$NBPROC
@@ -120,7 +120,7 @@ function install_lib_mad() {
 
 # Install mpg123
 function install_lib_mpg123() {
-	cd mpg123-1.23.3
+	cd mpg123-1.23.4
 	CPPFLAGS="$CPPFLAGS -DHAVE_MMAP" ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX \
 		--disable-shared --enable-static \
 		--enable-fifo=no --enable-ipv6=no --enable-network=no --enable-int-quality=no \
@@ -336,4 +336,4 @@ make install
 # Cleanup library build folders and other stuff
 
 cd $WORKSPACE
-rm -rf freetype-*/ harfbuzz-*/ icu/ libmad-*/ libmodplug-*/ libogg-*/ libpng-*/ libvorbis-*/ pixman-*/ SDL/ SDL_mixer/ .patches-applied
+rm -rf freetype-*/ harfbuzz-*/ icu/ libmad-*/ libmodplug-*/ libogg-*/ libpng-*/ libvorbis-*/ pixman-*/ mpg123-*/ libsndfile-*/ speexdsp-*/ SDL/ SDL_mixer/ .patches-applied
