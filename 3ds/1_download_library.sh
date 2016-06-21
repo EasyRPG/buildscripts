@@ -90,11 +90,11 @@ download_and_extract http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.ta
 msg " [3] Downloading platform libraries"
 
 # 3DS specific
-rm -f ctrulib
+rm -rf ctrulib
 git_clone https://github.com/smealum/ctrulib.git
 
-rm -f sf2dlib
+rm -rf sf2dlib
 git_clone https://github.com/xerpi/sf2dlib.git
 
-rm -f libkhax
+rm -rf libkhax
 git_clone https://github.com/Rinnegatamante/lpp-3ds_libraries.git
