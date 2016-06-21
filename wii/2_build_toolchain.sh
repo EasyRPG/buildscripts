@@ -39,6 +39,9 @@ if [ ! -f .patches-applied ]; then
 	# Fix mpg123 compilation
 	patch -Np0 < mpg123.patch
 
+	# Fix libsndfile compilation
+	patch -Np0 < libsndfile.patch
+
 	# Patch SDL+SDL_mixer
 	cd sdl-wii
 	git reset --hard
