@@ -156,6 +156,26 @@ function install_lib_mixer() {
 	cd ..
 }
 
+# Install libsndfile
+function install_lib_sndfile() {
+	cd libsndfile-1.0.27
+	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static $@
+	make clean
+	make -j$NBPROC
+	make install
+	cd ..
+}
+
+# Install speexdsp
+function install_lib_speexdsp() {
+	cd speexdsp-1.2rc3
+	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static $@
+	make clean
+	make -j$NBPROC
+	make install
+	cd ..
+}
+
 export OLD_PATH=$PATH
 
 ####################################################
@@ -184,6 +204,8 @@ install_lib_mad
 install_lib_mpg123
 install_lib_sdl "x86"
 install_lib_mixer
+install_lib_sndfile
+install_lib_speexdsp "--enable-sse --disable-neon"
 
 # Install host ICU
 unset CPPFLAGS
@@ -241,6 +263,8 @@ install_lib_mad
 install_lib_mpg123
 install_lib_sdl "armeabi"
 install_lib_mixer
+install_lib_sndfile
+install_lib_speexdsp "--disable-sse --disable-neon"
 
 # Cross compile ICU
 cd icu/source
@@ -280,6 +304,8 @@ install_lib_mad
 install_lib_mpg123
 install_lib_sdl "armeabi-v7a"
 install_lib_mixer
+install_lib_sndfile
+install_lib_speexdsp "--disable-sse --enable-neon"
 
 # Cross compile ICU
 cd icu/source
@@ -319,6 +345,8 @@ install_lib_mad "--enable-fpm=default"
 install_lib_mpg123
 install_lib_sdl "mips"
 install_lib_mixer
+install_lib_sndfile
+install_lib_speexdsp "--disable-sse --disable-neon"
 
 # Cross compile ICU
 cd icu/source
