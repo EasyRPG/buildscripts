@@ -38,6 +38,12 @@ if [ ! -f .patches-applied ]; then
 	# Fix mpg123 compilation
 	patch -Np0 < mpg123.patch
 
+	# Fix libsndfile compilation
+	patch -Np0 < libsndfile.patch
+	cd libsndfile-1.0.27
+	autoreconf -fi
+	cd ..
+
 	touch .patches-applied
 fi
 
@@ -152,7 +158,7 @@ install_lib "libogg-1.3.2"
 install_lib "libmodplug-0.8.8.5"
 install_lib_icu
 install_lib "mpg123-1.23.3" "--enable-fifo=no --enable-ipv6=no --enable-network=no --enable-int-quality=no --with-cpu=generic --with-default-audio=dummy"
-# install_lib "libsndfile-1.0.27" Broken
+install_lib "libsndfile-1.0.27"
 install_lib "speexdsp-1.2rc3"
 install_lib_sf2d
 install_lib_khax

@@ -108,7 +108,7 @@ rm -rf libmodplug-0.8.8.5/
 download_and_extract http://sourceforge.net/projects/modplug-xmms/files/libmodplug/0.8.8.5/libmodplug-0.8.8.5.tar.gz
 
 # mpg123
-rm -f mpg123-1.23.4
+rm -rf mpg123-1.23.4
 download_and_extract http://www.mpg123.de/download/mpg123-1.23.4.tar.bz2
 
 # libsndfile
