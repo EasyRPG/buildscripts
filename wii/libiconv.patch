@@ -1,0 +1,58 @@
+diff -rupN libiconv/srclib/signal.in.h libiconv-1.14/srclib/signal.in.h
+--- libiconv/srclib/signal.in.h	2011-08-07 15:42:06.000000000 +0200
++++ libiconv-1.14/srclib/signal.in.h	2013-12-12 14:41:48.442936362 +0100
+@@ -175,6 +175,10 @@ typedef int verify_NSIG_constraint[NSIG
+ #   undef sigismember
+ #  endif
+ # else
++#  ifdef GEKKO
++/* hide the dummy function from sys/signal.h */
++#   undef sigismember
++#  endif
+ _GL_FUNCDECL_SYS (sigismember, int, (const sigset_t *set, int sig)
+                                     _GL_ARG_NONNULL ((1)));
+ # endif
+@@ -188,6 +192,10 @@ _GL_CXXALIASWARN (sigismember);
+ #   undef sigemptyset
+ #  endif
+ # else
++#  ifdef GEKKO
++/* hide the dummy function from sys/signal.h */
++#   undef sigemptyset
++#  endif
+ _GL_FUNCDECL_SYS (sigemptyset, int, (sigset_t *set) _GL_ARG_NONNULL ((1)));
+ # endif
+ _GL_CXXALIAS_SYS (sigemptyset, int, (sigset_t *set));
+@@ -200,6 +208,10 @@ _GL_CXXALIASWARN (sigemptyset);
+ #   undef sigaddset
+ #  endif
+ # else
++#  ifdef GEKKO
++/* hide the dummy function from sys/signal.h */
++#   undef sigaddset
++#  endif
+ _GL_FUNCDECL_SYS (sigaddset, int, (sigset_t *set, int sig)
+                                   _GL_ARG_NONNULL ((1)));
+ # endif
+@@ -213,6 +225,10 @@ _GL_CXXALIASWARN (sigaddset);
+ #   undef sigdelset
+ #  endif
+ # else
++#  ifdef GEKKO
++/* hide the dummy function from sys/signal.h */
++#   undef sigdelset
++#  endif
+ _GL_FUNCDECL_SYS (sigdelset, int, (sigset_t *set, int sig)
+                                   _GL_ARG_NONNULL ((1)));
+ # endif
+@@ -226,6 +242,10 @@ _GL_CXXALIASWARN (sigdelset);
+ #   undef sigfillset
+ #  endif
+ # else
++#  ifdef GEKKO
++/* hide the dummy function from sys/signal.h */
++#   undef sigfillset
++#  endif
+ _GL_FUNCDECL_SYS (sigfillset, int, (sigset_t *set) _GL_ARG_NONNULL ((1)));
+ # endif
+ _GL_CXXALIAS_SYS (sigfillset, int, (sigset_t *set));

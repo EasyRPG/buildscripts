@@ -89,6 +89,10 @@ download_and_extract http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.27
 rm -rf speexdsp-1.2rc3
 download_and_extract http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz
 
+# iconv
+rm -rf libiconv-1.14
+download_and_extract http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.14.tar.gz
+
 msg " [3] Downloading platform libraries"
 
 # SDL+SDL_mixer
