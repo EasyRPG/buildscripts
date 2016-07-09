@@ -28,9 +28,6 @@ fi
 cd Player/builds/android
 ANDROID_FOLDER=$(pwd)
 
-# Update the Player
-git pull https://github.com/EasyRPG/Player.git
-
 # Obtain timidity (for midi player)
 cd $ANDROID_FOLDER/app/src/main
 git clone https://github.com/Ghabry/timidity_gus.git assets/timidity
