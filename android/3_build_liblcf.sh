@@ -7,6 +7,7 @@ NBPROC=$(getconf _NPROCESSORS_ONLN)
 git clone https://github.com/EasyRPG/liblcf.git
 
 cd liblcf
+git pull
 
 # x86
 export PLATFORM_PREFIX=$WORKSPACE/x86-toolchain
