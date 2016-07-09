@@ -26,6 +26,7 @@
 	  <PreprocessorDefinitions>UNICODE;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(EASYDEV_MSVC)\include</AdditionalIncludeDirectories>
 	  <ProgramDataBaseFileName>$(OutDir)$(ProjectName).pdb</ProgramDataBaseFileName>
+	  <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
 	</ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup />

@@ -408,6 +408,50 @@
 			"ports/MSVC++/msvc.c"
 		]
 	},
+	"libsndfile": {
+		"Source": "http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.26.tar.gz",
+		"Preprocessor": [
+			"LIBSNDFILE_PRIVATE_CONFIG",
+			"_USE_MATH_DEFINES"
+		],
+		"IncludeDirs": [
+			"src"
+		],
+		"HeaderDirs": ["src"],
+		"SourceDirs": [
+			"src",
+			"src/ALAC",
+			"src/G72x",
+			"src/GSM610"
+		],
+		"SourceExcludes": [
+			"test"
+		]
+	},
+	"libspeexdsp": {
+		"Source": "http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz",
+		"Preprocessor": [
+			"HAVE_CONFIG_H"
+		],
+		"IncludeDirs": [
+			"include",
+			"win32"
+		],
+		"HeaderTargetDir": "speex",
+		"HeaderDirs": ["include/speex"],
+		"SourceFiles": [
+			"libspeexdsp/buffer.c",
+			"libspeexdsp/fftwrap.c",
+			"libspeexdsp/filterbank.c",
+			"libspeexdsp/jitter.c",
+			"libspeexdsp/kiss_fft.c",
+			"libspeexdsp/kiss_fftr.c",
+			"libspeexdsp/mdf.c",
+			"libspeexdsp/preprocess.c",
+			"libspeexdsp/resample.c",
+			"libspeexdsp/scal.c"
+		]
+	},
 	"pixman": {
 		"Source": "http://cairographics.org/releases/pixman-0.32.8.tar.gz",
 		"Preprocessor": [

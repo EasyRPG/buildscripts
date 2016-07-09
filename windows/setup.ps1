@@ -189,9 +189,9 @@ foreach ($name in $deps.psobject.properties.name) {
             }
             if ($item.HeaderDirsRecursive) {
                 # Simplification: Recursive copies everything instead of *.h only
-                $filelist += ("xcopy /Y /I /S $($item.BaseDir)\$searchdir $env:EASYDEV_MSVC\include\$incdir")
+                $filelist += ("xcopy /Y /I /S `"$($item.BaseDir)\$searchdir`" `"$env:EASYDEV_MSVC\include\$incdir`"")
             } else {
-                $filelist += ("xcopy /Y /I $($item.BaseDir)\$searchdir\*.h $env:EASYDEV_MSVC\include\$incdir")
+                $filelist += ("xcopy /Y /I `"$($item.BaseDir)\$searchdir\*.h`" `"$env:EASYDEV_MSVC\include\$incdir`"")
             }
         }
         $template = $template.Replace("{PostBuildEvent}", "<Command>call $name.cmd</Command>")
