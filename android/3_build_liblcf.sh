@@ -4,10 +4,13 @@ export NDK_ROOT=$WORKSPACE/android-ndk-r10e
 #Number of CPU
 NBPROC=$(getconf _NPROCESSORS_ONLN)
 
-git clone https://github.com/EasyRPG/liblcf.git
-
+# Cloning or pulling the liblcf repository
+if [ -d liblcf/.git ]; then
+  git -C liblcf pull
+else
+  git clone https://github.com/EasyRPG/liblcf.git
+fi
 cd liblcf
-git pull
 
 # x86
 export PLATFORM_PREFIX=$WORKSPACE/x86-toolchain
