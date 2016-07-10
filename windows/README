@@ -37,8 +37,6 @@ After compiling
 ===============
 
 The resulting files appear in build.
-The boost (http://www.boost.org/) headers are not included because of their
-gigantic filesize. You can obtain them with the command "get-boost".
 
 You must also set the environment variable EASYDEV_MSVC to the "build" folder
 otherwise the EasyRPG project file can't find the libraries.
@@ -58,6 +56,7 @@ libmad 0.15.1b
 libmodplug 0.8.8.5
 libogg 1.3.2
 libpng 1.6.20
+libsndfile 1.0.26
 libvorbis 1.3.5
 libvorbisfile 1.3.5 (included with libvorbis)
 mpg123 1.23.3
@@ -67,4 +66,5 @@ SDL2-2.0.4
 SDL2_image-2.0.1
 SDL2_mixer-2.0.1
 smpeg 2.0.0
+speexdsp 1.2rc3
 zlib 1.2.8

@@ -11,6 +11,7 @@ libmad: GPLv2 or later
 libmodplug: Public Domain
 libogg: BSD
 libpng: zlib
+libsndfile: LGPL
 libvorbis: BSD
 mpg123: LGPLv2.1
 pixman: MIT
@@ -18,4 +19,5 @@ SDL2: zlib
 SDL2 image: zlib
 SDL2 mixer: zlib
 smpeg: LGPL
+speexdsp: BSD
 zlib: zlib
