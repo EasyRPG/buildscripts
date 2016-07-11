@@ -51,13 +51,22 @@ fi
 
 PATH=$PATH:$WORKSPACE/android-sdk/tools
 
-msg " [2] Installing SDK12 and Platform-tools"
-# "Android SDK Build-tools, revision 23.0.2"
+msg " [2] Installing SDK and Platform-tools"
+# Android SDK Build-tools, revision 23.0.2
 echo "y" | android update sdk -u -a -t build-tools-23.0.2
-# "Android SDK Platform-tools"
+# Android SDK Platform-tools
 echo "y" | android update sdk -u -a -t platform-tools
-# "SDK Platform Android 3.1, API 12"
+# SDK Platform Android 3.1, API 12
 echo "y" | android update sdk -u -a -t android-12
+# Android SDK Platform 23, API 23
+echo "y" | android update sdk -u -a -t android-23
+# Android Support Library
+echo "y" | android update sdk -u -a -t extra-android-support
+# Android Support Library Repository
+echo "y" | android update sdk -u -a -t extra-android-m2repository
+# Google Repository
+echo "y" | android update sdk -u -a -t extra-google-m2repository
+
 
 msg " [3] Android NDK"
 rm -rf android-ndk-r10e/
