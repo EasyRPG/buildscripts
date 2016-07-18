@@ -42,8 +42,8 @@ rm -rf zlib-1.2.8
 download_and_extract http://zlib.net/zlib-1.2.8.tar.gz
 
 # libpng
-rm -rf libpng-1.6.21/
-download_and_extract http://prdownloads.sourceforge.net/libpng/libpng-1.6.21.tar.xz
+rm -rf libpng-1.6.23/
+download_and_extract http://prdownloads.sourceforge.net/libpng/libpng-1.6.23.tar.xz
 
 # freetype
 rm -rf freetype-2.6.3/
@@ -80,6 +80,18 @@ download_and_extract https://easy-rpg.org/jenkins/job/icudata/lastSuccessfulBuil
 # mpg123
 rm -rf mpg123-1.23.3/
 download_and_extract http://www.mpg123.de/download/mpg123-1.23.3.tar.bz2
+
+# libsndfile
+rm -rf libsndfile-1.0.27
+download_and_extract http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.27.tar.gz
+
+# speexdsp
+rm -rf speexdsp-1.2rc3
+download_and_extract http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz
+
+# iconv
+rm -rf libiconv-1.14
+download_and_extract http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.14.tar.gz
 
 msg " [3] Downloading platform libraries"
 
