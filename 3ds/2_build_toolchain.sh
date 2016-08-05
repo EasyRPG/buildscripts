@@ -12,6 +12,7 @@ export PATH=$DEVKITARM/bin:$PATH
 export PLATFORM_PREFIX=$WORKSPACE
 export TARGET_HOST=arm-none-eabi
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
+export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 
 # Number of CPU
 NBPROC=$(getconf _NPROCESSORS_ONLN)
