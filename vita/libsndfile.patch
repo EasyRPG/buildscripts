@@ -1,0 +1,86 @@
+diff -Naur libsndfile-1.0.27-orig/configure.ac libsndfile-1.0.27/configure.ac
+--- libsndfile-1.0.27-orig/configure.ac	2016-08-04 23:30:27.895338874 +0200
++++ libsndfile-1.0.27/configure.ac	2016-08-04 23:30:45.715337901 +0200
+@@ -227,6 +227,9 @@
+ 		;;
+ 	esac
+ 
++TYPEOF_SF_COUNT_T="int32_t"
++SIZEOF_SF_COUNT_T=4
++
+ if test $SIZEOF_SF_COUNT_T = 4 ; then
+ 	SF_COUNT_MAX="0x7FFFFFFF"
+ 	fi
+diff -Naur libsndfile-1.0.27-orig/Makefile.am libsndfile-1.0.27/Makefile.am
+--- libsndfile-1.0.27-orig/Makefile.am	2016-08-04 23:30:27.895338874 +0200
++++ libsndfile-1.0.27/Makefile.am	2016-08-04 23:30:45.715337901 +0200
+@@ -8,8 +8,8 @@
+ octave_dir = Octave
+ endif
+ 
+-SUBDIRS = M4 man doc Win32 src $(octave_dir) examples regtest tests programs
+-DIST_SUBDIRS = M4 man doc Win32 src Octave examples regtest tests programs
++SUBDIRS = M4 man doc Win32 src $(octave_dir)
++DIST_SUBDIRS = M4 man doc Win32 src Octave
+ 
+ EXTRA_DIST = libsndfile.spec.in sndfile.pc.in Scripts/android-configure.sh \
+ 	Scripts/linux-to-win-cross-configure.sh Scripts/build-test-tarball.mk.in
+diff -Naur libsndfile-1.0.27-orig/src/file_io.c libsndfile-1.0.27/src/file_io.c
+--- libsndfile-1.0.27-orig/src/file_io.c	2016-08-04 23:30:27.918672206 +0200
++++ libsndfile-1.0.27/src/file_io.c	2016-08-04 23:31:50.462001030 +0200
+@@ -505,12 +505,7 @@
+ 	if ((sizeof (off_t) < sizeof (sf_count_t)) && len > 0x7FFFFFFF)
+ 		return -1 ;
+ 
+-	retval = ftruncate (psf->file.filedes, len) ;
+-
+-	if (retval == -1)
+-		psf_log_syserr (psf, errno) ;
+-
+-	return retval ;
++	return -1;
+ } /* psf_ftruncate */
+ 
+ void
+diff -Naur libsndfile-1.0.27-orig/src/GSM610/gsm610_priv.h libsndfile-1.0.27/src/GSM610/gsm610_priv.h
+--- libsndfile-1.0.27-orig/src/GSM610/gsm610_priv.h	2016-08-04 23:30:27.918672206 +0200
++++ libsndfile-1.0.27/src/GSM610/gsm610_priv.h	2016-08-04 23:30:45.715337901 +0200
+@@ -18,12 +18,12 @@
+ /* Added by Erik de Castro Lopo */
+ 
+ 
++#include <stdint.h>
++//typedef short				int16_t ;		/* 16 bit signed int	*/
++//typedef int					int32_t ;	/* 32 bit signed int	*/
+ 
+-typedef short				int16_t ;		/* 16 bit signed int	*/
+-typedef int					int32_t ;	/* 32 bit signed int	*/
+-
+-typedef unsigned short		uint16_t ;		/* unsigned int16_t	*/
+-typedef unsigned int		uint32_t ;	/* unsigned int32_t	*/
++//typedef unsigned short		uint16_t ;		/* unsigned int16_t	*/
++//typedef unsigned int		uint32_t ;	/* unsigned int32_t	*/
+ 
+ struct gsm_state
+ {	int16_t			dp0 [280] ;
+diff -Naur libsndfile-1.0.27-orig/src/wavlike.c libsndfile-1.0.27/src/wavlike.c
+--- libsndfile-1.0.27-orig/src/wavlike.c	2016-08-04 23:30:27.918672206 +0200
++++ libsndfile-1.0.27/src/wavlike.c	2016-08-04 23:30:45.715337901 +0200
+@@ -700,7 +700,7 @@
+ } /* srate2blocksize */
+ 
+ int
+-wavlike_read_bext_chunk (SF_PRIVATE *psf, uint32_t chunksize)
++wavlike_read_bext_chunk (SF_PRIVATE *psf, unsigned int chunksize)
+ {
+ 	SF_BROADCAST_INFO_16K * b ;
+ 	uint32_t bytes = 0 ;
+@@ -787,7 +787,7 @@
+ } /* wavlike_write_bext_chunk */
+ 
+ int
+-wavlike_read_cart_chunk (SF_PRIVATE *psf, uint32_t chunksize)
++wavlike_read_cart_chunk (SF_PRIVATE *psf, unsigned int chunksize)
+ {	SF_CART_INFO_16K *c ;
+ 	uint32_t bytes = 0 ;
+ 	int k ;
