@@ -34,6 +34,10 @@ if [ ! -f .patches-applied ]; then
 	patch -Np0 < libmodplug.patch
 
 	# Give libkhax a proper makefile
+	# Revert to old lpp-3ds version because our patch fails otherwise
+	cd lpp-3ds_libraries
+	git reset --hard 03f57eff
+	cd ..
 	patch -Np0 < lpp_khax.patch
 
 	# Fix mpg123 compilation
