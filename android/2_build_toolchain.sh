@@ -369,3 +369,4 @@ make install
 
 cd $WORKSPACE
 rm -rf freetype-*/ harfbuzz-*/ icu/ libmad-*/ libmodplug-*/ libogg-*/ libpng-*/ libvorbis-*/ pixman-*/ mpg123-*/ libsndfile-*/ speexdsp-*/ SDL/ SDL_mixer/ .patches-applied
+rm -f *.bz2 *.gz *.xz *.tgz *.pl icudt*
