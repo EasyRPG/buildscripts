@@ -61,7 +61,7 @@ function install_lib_png {
 # Install freetype
 function install_lib_freetype() {
 	cd freetype-2.6.3
-	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --with-harfbuzz=no
+	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --with-harfbuzz=no --without-bzip2
 	make clean
 	make -j$NBPROC
 	make install

@@ -128,7 +128,7 @@ set_build_flags
 # Install libraries
 install_lib_zlib
 install_lib "libpng-1.6.23"
-install_lib "freetype-2.6.3" "--with-harfbuzz=no"
+install_lib "freetype-2.6.3" "--with-harfbuzz=no --without-bzip2"
 install_lib "pixman-0.34.0" "--disable-vmx"
 install_lib "tremor-lowmem"
 install_lib "libogg-1.3.2"

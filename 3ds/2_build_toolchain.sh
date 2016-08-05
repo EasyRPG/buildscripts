@@ -152,7 +152,7 @@ install_lib_zlib
 # Installs important system headers but does not create include/lib dir (zlib does this)
 install_lib_ctru
 install_lib "libpng-1.6.23"
-install_lib "freetype-2.6.3" "--with-harfbuzz=no"
+install_lib "freetype-2.6.3" "--with-harfbuzz=no --without-bzip2"
 install_lib_pixman
 install_lib "tremor-lowmem"
 install_lib "libogg-1.3.2"
