@@ -43,6 +43,9 @@ if [ ! -f .patches-applied ]; then
 	# Make CPU textures fast in libvita2d
 	sed -i.bak 's/SCE_KERNEL_MEMBLOCK_TYPE_USER_CDRAM_RW/SCE_KERNEL_MEMBLOCK_TYPE_USER_RW/g' libvita2d/libvita2d/source/vita2d_texture.c
 
+	# Update PS Vita headers
+	cp -r vita-headers/include/psp2 vitasdk/arm-vita-eabi/include
+
 	touch .patches-applied
 fi
 

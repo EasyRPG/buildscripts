@@ -94,3 +94,5 @@ msg " [3] Downloading platform libraries"
 git_clone https://github.com/xerpi/libvita2d
 
 git_clone https://github.com/vitadev/vdpm
+
+git_clone https://github.com/vitasdk/vita-headers
