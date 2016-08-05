@@ -103,10 +103,18 @@ function install_lib_icu() {
 	cd ../..
 }
 
+function install_vdpm() {
+	pushd vdpm
+	cp config.sample config
+	./install-all.sh
+	popd
+}
+
 function install_lib_vita2d() {
-	# Provide freetype dependency
-	cp -r include/freetype2 $VITASDK/arm-vita-eabi/include/
-	
+	# vdpm adds some dependencies but freetype headers are still missing
+	# for proper compilation of libvita2d
+	cp -r include/freetype2/ $VITASDK/arm-vita-eabi/include/freetype2/
+
 	pushd libvita2d/libvita2d
 	make
 	make install
@@ -128,4 +136,5 @@ install_lib "libsndfile-1.0.27"
 install_lib "speexdsp-1.2rc3"
 
 # Platform libs
+install_vdpm
 install_lib_vita2d

@@ -92,3 +92,5 @@ download_and_extract http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.ta
 msg " [3] Downloading platform libraries"
 
 git_clone https://github.com/xerpi/libvita2d
+
+git_clone https://github.com/vitadev/vdpm
