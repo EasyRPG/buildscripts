@@ -61,7 +61,7 @@ function install_lib_png {
 # Install freetype
 function install_lib_freetype() {
 	cd freetype-2.6.3
-	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --with-harfbuzz=no
+	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --with-harfbuzz=no --without-bzip2
 	make clean
 	make -j$NBPROC
 	make install
@@ -192,6 +192,7 @@ export PATH=$PLATFORM_PREFIX/bin:$PATH
 export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/support/include"
 export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
+export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export TARGET_HOST="i686-linux-android"
 
 install_lib_png
@@ -251,6 +252,7 @@ export PATH=$PLATFORM_PREFIX/bin:$PATH
 export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/support/include -I$NDK_ROOT/sources/android/cpufeatures"
 export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
+export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export TARGET_HOST="arm-linux-androideabi"
 
 install_lib_png
@@ -292,6 +294,7 @@ export PLATFORM_PREFIX=$WORKSPACE/armeabi-v7a-toolchain
 export CPPFLAGS="-I$PLATFORM_PREFIX_ARM/include -I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/support/include -I$NDK_ROOT/sources/android/cpufeatures -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3"
 export LDFLAGS="-L$PLATFORM_PREFIX_ARM/lib -L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
+export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export TARGET_HOST="arm-linux-androideabi"
 
 install_lib_png
@@ -333,6 +336,7 @@ export PATH=$PLATFORM_PREFIX/bin:$PATH
 export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/support/include -I$NDK_ROOT/sources/android/cpufeatures"
 export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
+export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export TARGET_HOST="mipsel-linux-android"
 
 install_lib_png
@@ -365,3 +369,4 @@ make install
 
 cd $WORKSPACE
 rm -rf freetype-*/ harfbuzz-*/ icu/ libmad-*/ libmodplug-*/ libogg-*/ libpng-*/ libvorbis-*/ pixman-*/ mpg123-*/ libsndfile-*/ speexdsp-*/ SDL/ SDL_mixer/ .patches-applied
+rm -f *.bz2 *.gz *.xz *.tgz *.pl icudt*

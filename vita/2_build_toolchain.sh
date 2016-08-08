@@ -5,14 +5,14 @@ set -e
 
 export WORKSPACE=$PWD
 
-export DEVKITPRO=${WORKSPACE}/devkitPro
-export DEVKITARM=${DEVKITPRO}/devkitARM
-export PATH=$DEVKITARM/bin:$PATH
+export PATH=$PWD/vitasdk/bin:$PATH
 
 export PLATFORM_PREFIX=$WORKSPACE
-export TARGET_HOST=arm-none-eabi
+export TARGET_HOST=arm-vita-eabi
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
+
+export VITASDK=$PWD/vitasdk
 
 # Number of CPU
 NBPROC=$(getconf _NPROCESSORS_ONLN)
@@ -20,8 +20,9 @@ NBPROC=$(getconf _NPROCESSORS_ONLN)
 if [ ! -f .patches-applied ]; then
 	echo "patching libraries"
 
-	# Fix compilation problems on 3DS
 	cp -r icu icu-native
+
+	# Fix ICU compilation problems
 	patch -Np0 < icu.patch
 
 	# disable pixman examples and tests
@@ -33,27 +34,23 @@ if [ ! -f .patches-applied ]; then
 	# Fix broken load_abc.cpp
 	patch -Np0 < libmodplug.patch
 
-	# Give libkhax a proper makefile
-	# Revert to old lpp-3ds version because our patch fails otherwise
-	cd lpp-3ds_libraries
-	git reset --hard 03f57eff
-	cd ..
-	patch -Np0 < lpp_khax.patch
-
 	# Fix mpg123 compilation
 	patch -Np0 < mpg123.patch
 
 	# Fix libsndfile compilation
 	patch -Np0 < libsndfile.patch
-	cd libsndfile-1.0.27
-	autoreconf -fi
-	cd ..
+
+	# Make CPU textures fast in libvita2d
+	sed -i.bak 's/SCE_KERNEL_MEMBLOCK_TYPE_USER_CDRAM_RW/SCE_KERNEL_MEMBLOCK_TYPE_USER_RW/g' libvita2d/libvita2d/source/vita2d_texture.c
+
+	# Update PS Vita headers
+	cp -r vita-headers/include/psp2 vitasdk/arm-vita-eabi/include
 
 	touch .patches-applied
 fi
 
 function set_build_flags {
-	export CFLAGS="-I$WORKSPACE/include -g0 -O2 -mword-relocations -fomit-frame-pointer -ffast-math -march=armv6k -mtune=mpcore -mfloat-abi=hard"
+	export CFLAGS="-I$WORKSPACE/include -g0 -O2"
 	export CPPFLAGS="$CFLAGS"
 	export LDFLAGS="-L$WORKSPACE/lib"
 }
@@ -63,7 +60,7 @@ function install_lib {
 	cd $1
 	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static $2
 	make clean
-	make -j$NBPRO
+	make -j1
 	make install
 	cd ..
 }
@@ -78,25 +75,12 @@ function install_lib_zlib {
 	cd ..
 }
 
-# Install pixman
-function install_lib_pixman {
-	cd pixman-0.34.0
-	export CFLAGS="$CFLAGS -DPIXMAN_NO_TLS"
-	export CPPFLAGS="$CFLAGS"
-	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --disable-arm-neon --disable-arm-simd
-	make clean
-	make -j$NBPROC
-	make install
-	set_build_flags
-	cd ..
-}
-
 # Install ICU
-function install_lib_icu {
+function install_lib_icu() {
 	# Compile native version
-	unset CFLAGS
-	unset CPPFLAGS
-	unset LDFLAGS
+        unset CFLAGS
+        unset CPPFLAGS
+        unset LDFLAGS
 
 	cp icudt56l.dat icu/source/data/in/
 	cp icudt56l.dat icu-native/source/data/in/
@@ -122,48 +106,38 @@ function install_lib_icu {
 	cd ../..
 }
 
-function install_lib_ctru() {
-	cd ctrulib/libctru/
-	make clean
-	make -j$NBPROC
-	cp -r include/* ../../include/
-	cp -r lib/* ../../lib/
-	cd ../..
+function install_vdpm() {
+	pushd vdpm
+	cp config.sample config
+	./install-all.sh
+	popd
 }
 
-function install_lib_sf2d() {
-	cd sf2dlib/libsf2d/
-	make clean
-	make
-	cp -r include/* ../../include/
-	cp -r lib/* ../../lib/
-	cd ../..
-}
+function install_lib_vita2d() {
+	# vdpm adds some dependencies but freetype headers are still missing
+	# for proper compilation of libvita2d
+	cp -r include/freetype2/ $VITASDK/arm-vita-eabi/include/freetype2/
 
-function install_lib_khax() {
-	cd lpp-3ds_libraries
-	make clean
+	pushd libvita2d/libvita2d
 	make
-	cp source_libkhax/*.h ../include/
-	cp -r lib/* ../lib/
-	cd ..
+	make install
+	popd
 }
 
 set_build_flags
 # Install libraries
-
 install_lib_zlib
-# Installs important system headers but does not create include/lib dir (zlib does this)
-install_lib_ctru
 install_lib "libpng-1.6.23"
 install_lib "freetype-2.6.3" "--with-harfbuzz=no --without-bzip2"
-install_lib_pixman
-install_lib "tremor-lowmem"
+install_lib "pixman-0.34.0"
 install_lib "libogg-1.3.2"
+install_lib "libvorbis-1.3.5"
 install_lib "libmodplug-0.8.8.5"
 install_lib_icu
 install_lib "mpg123-1.23.3" "--enable-fifo=no --enable-ipv6=no --enable-network=no --enable-int-quality=no --with-cpu=generic --with-default-audio=dummy"
 install_lib "libsndfile-1.0.27"
 install_lib "speexdsp-1.2rc3"
-install_lib_sf2d
-install_lib_khax
+
+# Platform libs
+install_vdpm
+install_lib_vita2d
