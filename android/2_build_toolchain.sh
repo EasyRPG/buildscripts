@@ -26,12 +26,6 @@ if [ ! -f .patches-applied ]; then
 	autoreconf -fi
 	cd ..
 
-	# modernize libmad
-	cd libmad-0.15.1b
-	patch -Np1 < ../libmad-pkg-config.diff
-	autoreconf -fi
-	cd ..
-
 	# use android config
 	cd SDL
 	mv include/SDL_config_android.h include/SDL_config.h
@@ -108,16 +102,6 @@ function install_lib_modplug() {
 	cd ..
 }
 
-# Install libmad
-function install_lib_mad() {
-	cd libmad-0.15.1b
-	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static $@
-	make clean
-	make -j$NBPROC
-	make install
-	cd ..
-}
-
 # Install mpg123
 function install_lib_mpg123() {
 	cd mpg123-1.23.4
@@ -139,17 +123,19 @@ function install_lib_sdl {
 	echo "APP_STL := gnustl_static" > "jni/Application.mk"
 	echo "APP_ABI := $1" >> "jni/Application.mk"
 	ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk APP_PLATFORM=android-9
+	mkdir -p $PLATFORM_PREFIX/lib
+	mkdir -p $PLATFORM_PREFIX/include/SDL2
 	cp libs/$1/* $PLATFORM_PREFIX/lib/
-	cp include/* $PLATFORM_PREFIX/include/
+	cp include/* $PLATFORM_PREFIX/include/SDL2/
 	cd ..
 }
 
 # Install SDL2_mixer
 function install_lib_mixer() {
 	cd SDL_mixer
-	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-sdltest \
-		--enable-music-mp3-mad-gpl --disable-music-mp3-smpeg \
-		--disable-shared --enable-static
+	SDL_CFLAGS="-I $PLATFORM_PREFIX/include/SDL2" SDL_LIBS="-lSDL2" \
+		./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static \
+		--disable-sdltest --disable-music-mp3
 	make clean
 	make -j$NBPROC
 	make install
@@ -201,7 +187,6 @@ install_lib_pixman
 install_lib_ogg
 install_lib_vorbis
 install_lib_modplug
-install_lib_mad
 install_lib_mpg123
 install_lib_sdl "x86"
 install_lib_mixer
@@ -261,7 +246,6 @@ install_lib_pixman
 install_lib_ogg
 install_lib_vorbis
 install_lib_modplug
-install_lib_mad
 install_lib_mpg123
 install_lib_sdl "armeabi"
 install_lib_mixer
@@ -303,7 +287,6 @@ install_lib_pixman
 install_lib_ogg
 install_lib_vorbis
 install_lib_modplug
-install_lib_mad
 install_lib_mpg123
 install_lib_sdl "armeabi-v7a"
 install_lib_mixer
@@ -345,7 +328,6 @@ install_lib_pixman
 install_lib_ogg
 install_lib_vorbis
 install_lib_modplug
-install_lib_mad "--enable-fpm=default"
 install_lib_mpg123
 install_lib_sdl "mips"
 install_lib_mixer
@@ -368,5 +350,5 @@ make install
 # Cleanup library build folders and other stuff
 
 cd $WORKSPACE
-rm -rf freetype-*/ harfbuzz-*/ icu/ libmad-*/ libmodplug-*/ libogg-*/ libpng-*/ libvorbis-*/ pixman-*/ mpg123-*/ libsndfile-*/ speexdsp-*/ SDL/ SDL_mixer/ .patches-applied
+rm -rf freetype-*/ harfbuzz-*/ icu/ libmodplug-*/ libogg-*/ libpng-*/ libvorbis-*/ pixman-*/ mpg123-*/ libsndfile-*/ speexdsp-*/ SDL/ SDL_mixer/ .patches-applied
 rm -f *.bz2 *.gz *.xz *.tgz *.pl icudt*
