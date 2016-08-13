@@ -61,7 +61,7 @@ function install_lib {
 
 # Install mpg123
 function install_lib_mpg123() {
-	cd mpg123-1.23.4
+	cd mpg123-1.23.6
 	CPPFLAGS="$CPPFLAGS -DHAVE_MMAP" ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX \
 		--disable-shared --enable-static \
 		--enable-fifo=no --enable-ipv6=no --enable-network=no --enable-int-quality=no \
@@ -137,8 +137,8 @@ if [ x$ENABLE_CCACHE = x1 ]; then
 	export CXX="ccache $TARGET_HOST-g++"
 fi
 
-install_lib libpng-1.6.23
-install_lib freetype-2.6.3 --with-harfbuzz=no --without-bzip2
+install_lib libpng-1.6.24
+install_lib freetype-2.6.5 --with-harfbuzz=no --without-bzip2
 install_lib pixman-0.34.0
 install_lib libogg-1.3.2
 install_lib libvorbis-1.3.5
@@ -182,8 +182,8 @@ if [ x$ENABLE_CCACHE = x1 ]; then
 	export CXX="ccache $TARGET_HOST-g++"
 fi
 
-install_lib libpng-1.6.23
-install_lib freetype-2.6.3 --with-harfbuzz=no --without-bzip2
+install_lib libpng-1.6.24
+install_lib freetype-2.6.5 --with-harfbuzz=no --without-bzip2
 install_lib pixman-0.34.0
 install_lib libogg-1.3.2
 install_lib libvorbis-1.3.5
@@ -226,8 +226,8 @@ if [ x$ENABLE_CCACHE = x1 ]; then
 	export CXX="ccache $TARGET_HOST-g++"
 fi
 
-install_lib libpng-1.6.23
-install_lib freetype-2.6.3 --with-harfbuzz=no --without-bzip2
+install_lib libpng-1.6.24
+install_lib freetype-2.6.5 --with-harfbuzz=no --without-bzip2
 install_lib pixman-0.34.0
 install_lib libogg-1.3.2
 install_lib libvorbis-1.3.5
@@ -270,8 +270,8 @@ if [ x$ENABLE_CCACHE = x1 ]; then
 	export CXX="ccache $TARGET_HOST-g++"
 fi
 
-install_lib libpng-1.6.23
-install_lib freetype-2.6.3 --with-harfbuzz=no --without-bzip2
+install_lib libpng-1.6.24
+install_lib freetype-2.6.5 --with-harfbuzz=no --without-bzip2
 install_lib pixman-0.34.0
 install_lib libogg-1.3.2
 install_lib libvorbis-1.3.5
