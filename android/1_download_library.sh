@@ -10,7 +10,6 @@ linux="Linux"
 
 if [ $os = $darwin ] ; then
 	echo "Darwin detected"
-	brew install hg
 	brew install autoconf
 fi
 
@@ -22,14 +21,32 @@ function msg {
   echo $1
 }
 
+function extract {
+	file=$1
+	shift
+
+	[ $# -ne 0 ] && msg "Extracting $file..."
+
+	tar xf $file $@
+}
+
+function download {
+	url=$1
+	shift
+
+	[ $# -ne 0 ] && msg "Downloading $url..."
+
+	wget -nv -N $url $@
+}
+
 function download_and_extract {
 	url=$1
 	file=${url##*/}
 
 	msg "Downloading and extracting $file..."
 
-	wget -nv -N $url
-	tar xf $file
+	download $url
+	extract $file
 }
 
 # prepare toolchain
@@ -124,13 +141,17 @@ download_and_extract http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.27
 rm -rf speexdsp-1.2rc3 
 download_and_extract http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz
 
-msg "Cloning SDL2"
+# SDL2
 rm -rf SDL/
-hg clone http://hg.libsdl.org/SDL
+download https://hg.libsdl.org/SDL/archive/tip.tar.gz -O SDL.tar.gz --no-timestamping
+mkdir -p SDL
+extract SDL.tar.gz --strip-components=1 -C SDL
 
-msg "Cloning SDL2_mixer"
+# SDL_mixer
 rm -rf SDL_mixer/
-hg clone http://hg.libsdl.org/SDL_mixer
+download https://hg.libsdl.org/SDL_mixer/archive/tip.tar.gz -O SDL_mixer.tar.gz --no-timestamping
+mkdir -p SDL_mixer
+extract SDL_mixer.tar.gz --strip-components=1 -C SDL_mixer
 
 # ICU
 rm -rf icu

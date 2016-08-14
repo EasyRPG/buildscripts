@@ -6,7 +6,6 @@ Specific building requirements for Linux :
 
  - bash
  - autotools (autoconf, automake & libtool)
- - mercurial (hg)
  - git
  - core tools like make, sed, patch & pkg-config
  - a Java (>=6) SDK
