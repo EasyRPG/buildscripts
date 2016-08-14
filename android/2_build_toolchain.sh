@@ -14,6 +14,12 @@ NBPROC=$(getconf _NPROCESSORS_ONLN)
 # Setup PATH
 PATH=$PATH:$NDK_ROOT:$SDK_ROOT/tools
 
+# Use ccache?
+hash ccache >/dev/null 2>&1
+if [ $? -eq 0 -a x$NO_CCACHE = x ]; then
+	ENABLE_CCACHE=1
+fi
+
 if [ ! -f .patches-applied ]; then
 	echo "patching libraries"
 
@@ -126,6 +132,10 @@ export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export TARGET_HOST="i686-linux-android"
+if [ x$ENABLE_CCACHE = x1 ]; then
+	export CC="ccache $TARGET_HOST-gcc"
+	export CXX="ccache $TARGET_HOST-g++"
+fi
 
 install_lib libpng-1.6.23
 install_lib freetype-2.6.3 --with-harfbuzz=no --without-bzip2
@@ -167,6 +177,10 @@ export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export TARGET_HOST="arm-linux-androideabi"
+if [ x$ENABLE_CCACHE = x1 ]; then
+	export CC="ccache $TARGET_HOST-gcc"
+	export CXX="ccache $TARGET_HOST-g++"
+fi
 
 install_lib libpng-1.6.23
 install_lib freetype-2.6.3 --with-harfbuzz=no --without-bzip2
@@ -207,6 +221,10 @@ export LDFLAGS="-L$PLATFORM_PREFIX_ARM/lib -L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export TARGET_HOST="arm-linux-androideabi"
+if [ x$ENABLE_CCACHE = x1 ]; then
+	export CC="ccache $TARGET_HOST-gcc"
+	export CXX="ccache $TARGET_HOST-g++"
+fi
 
 install_lib libpng-1.6.23
 install_lib freetype-2.6.3 --with-harfbuzz=no --without-bzip2
@@ -247,6 +265,10 @@ export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export TARGET_HOST="mipsel-linux-android"
+if [ x$ENABLE_CCACHE = x1 ]; then
+	export CC="ccache $TARGET_HOST-gcc"
+	export CXX="ccache $TARGET_HOST-g++"
+fi
 
 install_lib libpng-1.6.23
 install_lib freetype-2.6.3 --with-harfbuzz=no --without-bzip2
