@@ -95,6 +95,21 @@ function install_lib_mixer() {
 
 export OLD_PATH=$PATH
 
+# Install host ICU
+cd $WORKSPACE
+
+echo "preparing ICU host build"
+
+chmod u+x icu/source/configure
+cp -r icu icu-native
+cp icudt56l.dat icu/source/data/in/
+cp icudt56l.dat icu-native/source/data/in/
+cd icu-native/source
+sed -i 's/SMALL_BUFFER_MAX_SIZE 512/SMALL_BUFFER_MAX_SIZE 2048/' tools/toolutil/pkg_genc.h
+./configure --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools --enable-extras=no --enable-icuio=no --with-data-packaging=static
+make -j$NBPROC
+export ICU_CROSS_BUILD=$PWD
+
 ####################################################
 # Install standalone toolchain x86
 cd $WORKSPACE
@@ -124,34 +139,16 @@ install_lib_mpg123
 install_lib_sdl "x86"
 install_lib_mixer
 
-# Install host ICU
-unset CPPFLAGS
-unset LDFLAGS
-
-cp -r icu icu-native
-cp icudt56l.dat icu/source/data/in/
-cp icudt56l.dat icu-native/source/data/in/
-cd icu-native/source
-sed -i.bak 's/SMALL_BUFFER_MAX_SIZE 512/SMALL_BUFFER_MAX_SIZE 2048/' tools/toolutil/pkg_genc.h
-chmod u+x configure
-./configure --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools --enable-extras=no --enable-icuio=no --with-data-packaging=static
-make -j$NBPROC
-export ICU_CROSS_BUILD=$PWD
-
 # Cross compile ICU
-cd ../../icu/source
+cd icu/source
 
 export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/cxx-stl/stlport/stlport -O3 -fno-short-wchar -DU_USING_ICU_NAMESPACE=0 -DU_GNUC_UTF16_STRING=0 -fno-short-enums -nostdlib"
 export LDFLAGS="-lc -Wl,-rpath-link=$PLATFORM_PREFIX/lib -L$PLATFORM_PREFIX/lib/"
 
-chmod u+x configure
 ./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no --enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
 make clean
 make -j$NBPROC
 make install
-
-unset CPPFLAGS
-unset LDFLAGS
 
 ################################################################
 # Install standalone toolchain ARMeabi
@@ -189,7 +186,6 @@ cd icu/source
 export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/cxx-stl/stlport/stlport -O3 -fno-short-wchar -DU_USING_ICU_NAMESPACE=0 -DU_GNUC_UTF16_STRING=0 -fno-short-enums -nostdlib"
 export LDFLAGS="-lc -Wl,-rpath-link=$PLATFORM_PREFIX/lib -L$PLATFORM_PREFIX/lib/"
 
-chmod u+x configure
 ./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no --enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
 make clean
 make -j$NBPROC
@@ -230,7 +226,6 @@ cd icu/source
 export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/cxx-stl/stlport/stlport -O3 -fno-short-wchar -DU_USING_ICU_NAMESPACE=0 -DU_GNUC_UTF16_STRING=0 -fno-short-enums -nostdlib -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3"
 export LDFLAGS="-lc -Wl,-rpath-link=$PLATFORM_PREFIX/lib -L$PLATFORM_PREFIX/lib/"
 
-chmod u+x configure
 ./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no --enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
 make clean
 make -j$NBPROC
@@ -271,7 +266,6 @@ cd icu/source
 export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/cxx-stl/stlport/stlport -O3 -fno-short-wchar -DU_USING_ICU_NAMESPACE=0 -DU_GNUC_UTF16_STRING=0 -fno-short-enums -nostdlib"
 export LDFLAGS="-lc -Wl,-rpath-link=$PLATFORM_PREFIX/lib -L$PLATFORM_PREFIX/lib/"
 
-chmod u+x configure
 ./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no --enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
 make clean
 make -j$NBPROC
