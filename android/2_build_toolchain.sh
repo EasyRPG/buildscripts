@@ -140,6 +140,7 @@ fi
 install_lib libpng-1.6.24
 install_lib freetype-2.6.5 --with-harfbuzz=no --without-bzip2
 install_lib pixman-0.34.0
+install_lib expat-2.2.0
 install_lib libogg-1.3.2
 install_lib libvorbis-1.3.5
 install_lib libmodplug-0.8.8.5
@@ -185,6 +186,7 @@ fi
 install_lib libpng-1.6.24
 install_lib freetype-2.6.5 --with-harfbuzz=no --without-bzip2
 install_lib pixman-0.34.0
+install_lib expat-2.2.0
 install_lib libogg-1.3.2
 install_lib libvorbis-1.3.5
 install_lib libmodplug-0.8.8.5
@@ -229,6 +231,7 @@ fi
 install_lib libpng-1.6.24
 install_lib freetype-2.6.5 --with-harfbuzz=no --without-bzip2
 install_lib pixman-0.34.0
+install_lib expat-2.2.0
 install_lib libogg-1.3.2
 install_lib libvorbis-1.3.5
 install_lib libmodplug-0.8.8.5
@@ -273,6 +276,7 @@ fi
 install_lib libpng-1.6.24
 install_lib freetype-2.6.5 --with-harfbuzz=no --without-bzip2
 install_lib pixman-0.34.0
+install_lib expat-2.2.0
 install_lib libogg-1.3.2
 install_lib libvorbis-1.3.5
 install_lib libmodplug-0.8.8.5
@@ -297,5 +301,6 @@ make install
 # Cleanup library build folders and other stuff
 
 cd $WORKSPACE
-rm -rf freetype-*/ harfbuzz-*/ icu/ icu-native/ libmodplug-*/ libogg-*/ libpng-*/ libvorbis-*/ pixman-*/ mpg123-*/ libsndfile-*/ speexdsp-*/ SDL/ SDL_mixer/ .patches-applied
-rm -f *.bz2 *.gz *.xz *.tgz *.bin icudt*
+rm -rf freetype-*/ harfbuzz-*/ icu/ icu-native/ libmodplug-*/ libogg-*/ libpng-*/ libvorbis-*/ \
+	pixman-*/ mpg123-*/ libsndfile-*/ speexdsp-*/ SDL/ SDL_mixer/ expat-*/
+rm -f *.bz2 *.gz *.xz *.tgz *.bin icudt* .patches-applied
