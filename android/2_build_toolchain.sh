@@ -297,5 +297,5 @@ make install
 # Cleanup library build folders and other stuff
 
 cd $WORKSPACE
-rm -rf freetype-*/ harfbuzz-*/ icu/ libmodplug-*/ libogg-*/ libpng-*/ libvorbis-*/ pixman-*/ mpg123-*/ libsndfile-*/ speexdsp-*/ SDL/ SDL_mixer/ .patches-applied
-rm -f *.bz2 *.gz *.xz *.tgz *.pl icudt*
+rm -rf freetype-*/ harfbuzz-*/ icu/ icu-native/ libmodplug-*/ libogg-*/ libpng-*/ libvorbis-*/ pixman-*/ mpg123-*/ libsndfile-*/ speexdsp-*/ SDL/ SDL_mixer/ .patches-applied
+rm -f *.bz2 *.gz *.xz *.tgz *.bin icudt*
