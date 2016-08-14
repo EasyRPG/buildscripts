@@ -42,60 +42,11 @@ if [ ! -f .patches-applied ]; then
 	touch .patches-applied
 fi
 
-# Install libpng
-function install_lib_png {
-	cd libpng-1.6.23
-	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-	make clean
-	make -j$NBPROC
-	make install
-	cd ..
-}
-
-# Install freetype
-function install_lib_freetype() {
-	cd freetype-2.6.3
-	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --with-harfbuzz=no --without-bzip2
-	make clean
-	make -j$NBPROC
-	make install
-	cd ..
-}
-
-# Install pixman
-function install_lib_pixman() {
-	cd pixman-0.34.0
-	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-	make clean
-	make -j$NBPROC
-	make install
-	cd ..
-}
-
-# Install libogg
-function install_lib_ogg() {
-	cd libogg-1.3.2
-	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-	make clean
-	make -j$NBPROC
-	make install
-	cd ..
-}
-
-# Install libvorbis
-function install_lib_vorbis() {
-	cd libvorbis-1.3.5
-	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
-	make clean
-	make -j$NBPROC
-	make install
-	cd ..
-}
-
-# Install libmodplug
-function install_lib_modplug() {
-	cd libmodplug-0.8.8.5
-	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
+# generic autotools library installer
+function install_lib {
+	cd $1
+	shift
+	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static $@
 	make clean
 	make -j$NBPROC
 	make install
@@ -142,26 +93,6 @@ function install_lib_mixer() {
 	cd ..
 }
 
-# Install libsndfile
-function install_lib_sndfile() {
-	cd libsndfile-1.0.27
-	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static $@
-	make clean
-	make -j$NBPROC
-	make install
-	cd ..
-}
-
-# Install speexdsp
-function install_lib_speexdsp() {
-	cd speexdsp-1.2rc3
-	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static $@
-	make clean
-	make -j$NBPROC
-	make install
-	cd ..
-}
-
 export OLD_PATH=$PATH
 
 ####################################################
@@ -181,17 +112,17 @@ export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export TARGET_HOST="i686-linux-android"
 
-install_lib_png
-install_lib_freetype
-install_lib_pixman
-install_lib_ogg
-install_lib_vorbis
-install_lib_modplug
+install_lib libpng-1.6.23
+install_lib freetype-2.6.3 --with-harfbuzz=no --without-bzip2
+install_lib pixman-0.34.0
+install_lib libogg-1.3.2
+install_lib libvorbis-1.3.5
+install_lib libmodplug-0.8.8.5
+install_lib libsndfile-1.0.27
+install_lib speexdsp-1.2rc3 --enable-sse --disable-neon
 install_lib_mpg123
 install_lib_sdl "x86"
 install_lib_mixer
-install_lib_sndfile
-install_lib_speexdsp "--enable-sse --disable-neon"
 
 # Install host ICU
 unset CPPFLAGS
@@ -240,17 +171,17 @@ export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export TARGET_HOST="arm-linux-androideabi"
 
-install_lib_png
-install_lib_freetype
-install_lib_pixman
-install_lib_ogg
-install_lib_vorbis
-install_lib_modplug
+install_lib libpng-1.6.23
+install_lib freetype-2.6.3 --with-harfbuzz=no --without-bzip2
+install_lib pixman-0.34.0
+install_lib libogg-1.3.2
+install_lib libvorbis-1.3.5
+install_lib libmodplug-0.8.8.5
+install_lib libsndfile-1.0.27
+install_lib speexdsp-1.2rc3 --disable-sse --disable-neon
 install_lib_mpg123
 install_lib_sdl "armeabi"
 install_lib_mixer
-install_lib_sndfile
-install_lib_speexdsp "--disable-sse --disable-neon"
 
 # Cross compile ICU
 cd icu/source
@@ -281,17 +212,17 @@ export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export TARGET_HOST="arm-linux-androideabi"
 
-install_lib_png
-install_lib_freetype
-install_lib_pixman
-install_lib_ogg
-install_lib_vorbis
-install_lib_modplug
+install_lib libpng-1.6.23
+install_lib freetype-2.6.3 --with-harfbuzz=no --without-bzip2
+install_lib pixman-0.34.0
+install_lib libogg-1.3.2
+install_lib libvorbis-1.3.5
+install_lib libmodplug-0.8.8.5
+install_lib libsndfile-1.0.27
+install_lib speexdsp-1.2rc3 --disable-sse --enable-neon
 install_lib_mpg123
 install_lib_sdl "armeabi-v7a"
 install_lib_mixer
-install_lib_sndfile
-install_lib_speexdsp "--disable-sse --enable-neon"
 
 # Cross compile ICU
 cd icu/source
@@ -322,17 +253,17 @@ export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export TARGET_HOST="mipsel-linux-android"
 
-install_lib_png
-install_lib_freetype
-install_lib_pixman
-install_lib_ogg
-install_lib_vorbis
-install_lib_modplug
+install_lib libpng-1.6.23
+install_lib freetype-2.6.3 --with-harfbuzz=no --without-bzip2
+install_lib pixman-0.34.0
+install_lib libogg-1.3.2
+install_lib libvorbis-1.3.5
+install_lib libmodplug-0.8.8.5
+install_lib libsndfile-1.0.27
+install_lib speexdsp-1.2rc3 --disable-sse --disable-neon
 install_lib_mpg123
 install_lib_sdl "mips"
 install_lib_mixer
-install_lib_sndfile
-install_lib_speexdsp "--disable-sse --disable-neon"
 
 # Cross compile ICU
 cd icu/source
