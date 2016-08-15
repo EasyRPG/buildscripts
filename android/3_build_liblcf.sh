@@ -8,9 +8,9 @@ export NDK_ROOT=$WORKSPACE/android-ndk-r10e
 
 # helper
 function msg {
-  echo ""
-  echo $1
-  echo ""
+	echo ""
+	echo $1
+	echo ""
 }
 
 # Number of CPU
@@ -18,9 +18,9 @@ NBPROC=$(getconf _NPROCESSORS_ONLN)
 
 # Cloning or pulling the liblcf repository
 if [ -d liblcf/.git ]; then
-  git -C liblcf pull
+	git -C liblcf pull
 else
-  git clone https://github.com/EasyRPG/liblcf.git
+	git clone https://github.com/EasyRPG/liblcf.git
 fi
 cd liblcf
 
@@ -39,7 +39,7 @@ export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export TARGET_HOST="i686-linux-android"
 
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --disable-xml
+./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
 make clean
 make -j$NBPROC
 make install
@@ -56,7 +56,7 @@ export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export TARGET_HOST="arm-linux-androideabi"
 
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --disable-xml
+./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
 make clean
 make -j$NBPROC
 make install
@@ -71,7 +71,7 @@ export LDFLAGS="-L$PLATFORM_PREFIX_ARM/lib -L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --disable-xml
+./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
 make clean
 make -j$NBPROC
 make install
@@ -88,7 +88,7 @@ export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export TARGET_HOST="mipsel-linux-android"
 
-./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --disable-xml
+./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
 make clean
 make -j$NBPROC
 make install

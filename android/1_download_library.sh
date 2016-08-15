@@ -17,8 +17,8 @@ export WORKSPACE=$PWD
 
 # helper
 function msg {
-  echo ""
-  echo $1
+	echo ""
+	echo $1
 }
 
 function extract {
@@ -102,12 +102,12 @@ fi
 msg " [4] preparing libraries"
 
 # libpng
-rm -rf libpng-1.6.23/
-download_and_extract http://prdownloads.sourceforge.net/libpng/libpng-1.6.23.tar.xz
+rm -rf libpng-1.6.24/
+download_and_extract http://prdownloads.sourceforge.net/libpng/libpng-1.6.24.tar.xz
 
 # freetype
-rm -rf freetype-2.6.3/
-download_and_extract http://download.savannah.gnu.org/releases/freetype/freetype-2.6.3.tar.bz2
+rm -rf freetype-2.6.5/
+download_and_extract http://download.savannah.gnu.org/releases/freetype/freetype-2.6.5.tar.bz2
 
 # harfbuzz
 rm -rf harfbuzz-1.2.3/
@@ -116,6 +116,10 @@ download_and_extract http://www.freedesktop.org/software/harfbuzz/release/harfbu
 # pixman
 rm -rf pixman-0.34.0/
 download_and_extract http://cairographics.org/releases/pixman-0.34.0.tar.gz
+
+# expat
+rm -rf expat-2.2.0/
+download_and_extract http://sourceforge.net/projects/expat/files/expat/2.2.0/expat-2.2.0.tar.bz2
 
 # libogg
 rm -rf libogg-1.3.2/
@@ -130,15 +134,15 @@ rm -rf libmodplug-0.8.8.5/
 download_and_extract http://sourceforge.net/projects/modplug-xmms/files/libmodplug/0.8.8.5/libmodplug-0.8.8.5.tar.gz
 
 # mpg123
-rm -rf mpg123-1.23.4
-download_and_extract http://www.mpg123.de/download/mpg123-1.23.4.tar.bz2
+rm -rf mpg123-1.23.6
+download_and_extract http://www.mpg123.de/download/mpg123-1.23.6.tar.bz2
 
 # libsndfile
 rm -rf libsndfile-1.0.27
 download_and_extract http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.27.tar.gz
 
 # speexdsp
-rm -rf speexdsp-1.2rc3 
+rm -rf speexdsp-1.2rc3
 download_and_extract http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz
 
 # SDL2
