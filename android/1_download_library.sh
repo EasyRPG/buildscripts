@@ -17,8 +17,8 @@ export WORKSPACE=$PWD
 
 # helper
 function msg {
-  echo ""
-  echo $1
+	echo ""
+	echo $1
 }
 
 function extract {
@@ -142,7 +142,7 @@ rm -rf libsndfile-1.0.27
 download_and_extract http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.27.tar.gz
 
 # speexdsp
-rm -rf speexdsp-1.2rc3 
+rm -rf speexdsp-1.2rc3
 download_and_extract http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz
 
 # SDL2

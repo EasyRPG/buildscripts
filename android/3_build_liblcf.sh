@@ -8,9 +8,9 @@ export NDK_ROOT=$WORKSPACE/android-ndk-r10e
 
 # helper
 function msg {
-  echo ""
-  echo $1
-  echo ""
+	echo ""
+	echo $1
+	echo ""
 }
 
 # Number of CPU
@@ -18,9 +18,9 @@ NBPROC=$(getconf _NPROCESSORS_ONLN)
 
 # Cloning or pulling the liblcf repository
 if [ -d liblcf/.git ]; then
-  git -C liblcf pull
+	git -C liblcf pull
 else
-  git clone https://github.com/EasyRPG/liblcf.git
+	git clone https://github.com/EasyRPG/liblcf.git
 fi
 cd liblcf
 

@@ -112,7 +112,9 @@ cp icudt56l.dat icu/source/data/in/
 cp icudt56l.dat icu-native/source/data/in/
 cd icu-native/source
 sed -i 's/SMALL_BUFFER_MAX_SIZE 512/SMALL_BUFFER_MAX_SIZE 2048/' tools/toolutil/pkg_genc.h
-./configure --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools --enable-extras=no --enable-icuio=no --with-data-packaging=static
+./configure --enable-static --enable-shared=no --enable-tests=no --enable-samples=no \
+	--enable-dyload=no --enable-tools --enable-extras=no --enable-icuio=no \
+	--with-data-packaging=static
 make -j$NBPROC
 export ICU_CROSS_BUILD=$PWD
 
@@ -123,7 +125,8 @@ cd $WORKSPACE
 echo "preparing x86 toolchain"
 
 export PLATFORM_PREFIX=$WORKSPACE/x86-toolchain
-$NDK_ROOT/build/tools/make-standalone-toolchain.sh --platform=android-9 --ndk-dir=$NDK_ROOT --toolchain=x86-4.9 --install-dir=$PLATFORM_PREFIX --stl=gnustl
+$NDK_ROOT/build/tools/make-standalone-toolchain.sh --platform=android-9 --ndk-dir=$NDK_ROOT \
+	--toolchain=x86-4.9 --install-dir=$PLATFORM_PREFIX --stl=gnustl
 
 export PATH=$PLATFORM_PREFIX/bin:$PATH
 
@@ -156,7 +159,9 @@ cd icu/source
 export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/cxx-stl/stlport/stlport -O3 -fno-short-wchar -DU_USING_ICU_NAMESPACE=0 -DU_GNUC_UTF16_STRING=0 -fno-short-enums -nostdlib"
 export LDFLAGS="-lc -Wl,-rpath-link=$PLATFORM_PREFIX/lib -L$PLATFORM_PREFIX/lib/"
 
-./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no --enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
+./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no --enable-static --enable-shared=no \
+	--enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no \
+	--enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
 make clean
 make -j$NBPROC
 make install
@@ -170,7 +175,8 @@ echo "preparing ARMeabi toolchain"
 
 export PATH=$OLD_PATH
 export PLATFORM_PREFIX=$WORKSPACE/armeabi-toolchain
-$NDK_ROOT/build/tools/make-standalone-toolchain.sh --platform=android-9 --ndk-dir=$NDK_ROOT --toolchain=arm-linux-androideabi-4.9 --install-dir=$PLATFORM_PREFIX  --stl=gnustl
+$NDK_ROOT/build/tools/make-standalone-toolchain.sh --platform=android-9 --ndk-dir=$NDK_ROOT \
+	--toolchain=arm-linux-androideabi-4.9 --install-dir=$PLATFORM_PREFIX --stl=gnustl
 export PATH=$PLATFORM_PREFIX/bin:$PATH
 
 export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/support/include -I$NDK_ROOT/sources/android/cpufeatures"
@@ -202,7 +208,9 @@ cd icu/source
 export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/cxx-stl/stlport/stlport -O3 -fno-short-wchar -DU_USING_ICU_NAMESPACE=0 -DU_GNUC_UTF16_STRING=0 -fno-short-enums -nostdlib"
 export LDFLAGS="-lc -Wl,-rpath-link=$PLATFORM_PREFIX/lib -L$PLATFORM_PREFIX/lib/"
 
-./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no --enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
+./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no --enable-static --enable-shared=no \
+	--enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no \
+	--enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
 make clean
 make -j$NBPROC
 make install
@@ -247,7 +255,9 @@ cd icu/source
 export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/cxx-stl/stlport/stlport -O3 -fno-short-wchar -DU_USING_ICU_NAMESPACE=0 -DU_GNUC_UTF16_STRING=0 -fno-short-enums -nostdlib -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3"
 export LDFLAGS="-lc -Wl,-rpath-link=$PLATFORM_PREFIX/lib -L$PLATFORM_PREFIX/lib/"
 
-./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no --enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
+./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no --enable-static --enable-shared=no \
+	--enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no \
+	--enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
 make clean
 make -j$NBPROC
 make install
@@ -260,7 +270,8 @@ echo "preparing MIPS toolchain"
 
 export PATH=$OLD_PATH
 export PLATFORM_PREFIX=$WORKSPACE/mips-toolchain
-$NDK_ROOT/build/tools/make-standalone-toolchain.sh --platform=android-9 --ndk-dir=$NDK_ROOT --toolchain=mipsel-linux-android-4.9 --install-dir=$PLATFORM_PREFIX  --stl=gnustl
+$NDK_ROOT/build/tools/make-standalone-toolchain.sh --platform=android-9 --ndk-dir=$NDK_ROOT \
+	--toolchain=mipsel-linux-android-4.9 --install-dir=$PLATFORM_PREFIX --stl=gnustl
 export PATH=$PLATFORM_PREFIX/bin:$PATH
 
 export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/support/include -I$NDK_ROOT/sources/android/cpufeatures"
@@ -292,7 +303,9 @@ cd icu/source
 export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/cxx-stl/stlport/stlport -O3 -fno-short-wchar -DU_USING_ICU_NAMESPACE=0 -DU_GNUC_UTF16_STRING=0 -fno-short-enums -nostdlib"
 export LDFLAGS="-lc -Wl,-rpath-link=$PLATFORM_PREFIX/lib -L$PLATFORM_PREFIX/lib/"
 
-./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no --enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
+./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no --enable-static --enable-shared=no \
+	--enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no \
+	--enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
 make clean
 make -j$NBPROC
 make install

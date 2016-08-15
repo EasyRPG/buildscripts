@@ -22,9 +22,9 @@ export PATH=$PATH:$SDK_ROOT/tools:$SDK_ROOT/build-tools/23.0.2/
 
 # EasyRPG Player
 if [ -d Player/.git ]; then
-  git -C Player pull
+	git -C Player pull
 else
-  git clone https://github.com/EasyRPG/Player.git
+	git clone https://github.com/EasyRPG/Player.git
 fi
 
 cd Player/builds/android
@@ -33,9 +33,9 @@ ANDROID_FOLDER=$(pwd)
 # Timidity (midi player)
 cd $ANDROID_FOLDER/app/src/main
 if [ -d assets/timidity/.git ]; then
-  git -C assets/timidity pull
+	git -C assets/timidity pull
 else
-  git clone https://github.com/Ghabry/timidity_gus.git assets/timidity
+	git clone https://github.com/Ghabry/timidity_gus.git assets/timidity
 fi
 
 # The target 1 should be API 12 if the user followed the script number 1 :
