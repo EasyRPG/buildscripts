@@ -85,6 +85,10 @@ download_and_extract http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.27
 rm -rf speexdsp-1.2rc3/
 download_and_extract http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz
 
+# wildmidi
+rm -rf wildmidi-0.3.9/
+download_and_extract https://github.com/Mindwerks/wildmidi/archive/wildmidi-0.3.9.tar.gz
+
 # iconv
 rm -rf libiconv-1.14/
 download_and_extract http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.14.tar.gz

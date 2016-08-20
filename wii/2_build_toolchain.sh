@@ -52,6 +52,9 @@ if [ ! -f .patches-applied ]; then
 	# Fix libsndfile compilation
 	patch -Np0 < libsndfile.patch
 
+	# Fix wildmidi linking
+	patch -Np0 < wildmidi.patch
+
 	# Fix iconv compilation
 	patch -Np0 < libiconv.patch
 
@@ -153,6 +156,22 @@ function install_lib_icu() {
 	echo " -> done"
 }
 
+function install_lib_wildmidi() {
+	echo ""
+	echo "**** Building WildMidi ****"
+	echo ""
+
+	cd wildmidi-wildmidi-0.3.9
+	cmake . -DCMAKE_SYSTEM_NAME=Generic -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWANT_PLAYER=OFF
+	make clean
+	make
+	cp -up include/wildmidi_lib.h $WORKSPACE/include
+	cp -up libWildMidi.a $WORKSPACE/lib
+	cd ..
+
+	echo " -> done"
+}
+
 function install_lib_sdl() {
 	echo ""
 	echo "**** Building SDL ****"
@@ -195,6 +214,7 @@ install_lib mpg123-1.23.6 --enable-fifo=no --enable-ipv6=no --enable-network=no 
 	--enable-int-quality=no --with-cpu=generic --with-default-audio=dummy
 install_lib libsndfile-1.0.27
 install_lib speexdsp-1.2rc3
+install_lib_wildmidi
 install_lib libiconv-1.14
 install_lib_sdl
 install_lib_sdlmixer
