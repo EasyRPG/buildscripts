@@ -15,9 +15,11 @@ NBPROC=$(getconf _NPROCESSORS_ONLN)
 PATH=$PATH:$NDK_ROOT:$SDK_ROOT/tools
 
 # Use ccache?
-hash ccache >/dev/null 2>&1
-if [ $? -eq 0 -a x$NO_CCACHE = x ]; then
-	ENABLE_CCACHE=1
+if [ -z ${NO_CCACHE+x} ]; then
+	if hash ccache >/dev/null 2>&1; then
+		ENABLE_CCACHE=1
+		echo "CCACHE enabled"
+	fi
 fi
 
 if [ ! -f .patches-applied ]; then
@@ -135,7 +137,7 @@ export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export TARGET_HOST="i686-linux-android"
-if [ x$ENABLE_CCACHE = x1 ]; then
+if [ "$ENABLE_CCACHE" ]; then
 	export CC="ccache $TARGET_HOST-gcc"
 	export CXX="ccache $TARGET_HOST-g++"
 fi
@@ -184,7 +186,7 @@ export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export TARGET_HOST="arm-linux-androideabi"
-if [ x$ENABLE_CCACHE = x1 ]; then
+if [ "$ENABLE_CCACHE" ]; then
 	export CC="ccache $TARGET_HOST-gcc"
 	export CXX="ccache $TARGET_HOST-g++"
 fi
@@ -231,7 +233,7 @@ export LDFLAGS="-L$PLATFORM_PREFIX_ARM/lib -L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export TARGET_HOST="arm-linux-androideabi"
-if [ x$ENABLE_CCACHE = x1 ]; then
+if [ "$ENABLE_CCACHE" ]; then
 	export CC="ccache $TARGET_HOST-gcc"
 	export CXX="ccache $TARGET_HOST-g++"
 fi
@@ -279,7 +281,7 @@ export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export TARGET_HOST="mipsel-linux-android"
-if [ x$ENABLE_CCACHE = x1 ]; then
+if [ "$ENABLE_CCACHE" ]; then
 	export CC="ccache $TARGET_HOST-gcc"
 	export CXX="ccache $TARGET_HOST-g++"
 fi
