@@ -75,8 +75,8 @@ echo "y" | android update sdk -u -a -t build-tools-23.0.2
 echo "y" | android update sdk -u -a -t platform-tools
 # SDK Platform Android 3.1, API 12
 echo "y" | android update sdk -u -a -t android-12
-# Android SDK Platform 23, API 23
-echo "y" | android update sdk -u -a -t android-23
+# SDK Platform Android 7.0, API 24
+echo "y" | android update sdk -u -a -t android-24
 # Android Support Library
 echo "y" | android update sdk -u -a -t extra-android-support
 # Android Support Library Repository
