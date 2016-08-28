@@ -40,12 +40,6 @@ if [ ! -f .patches-applied ]; then
 	# Fix libsndfile compilation
 	patch -Np0 < libsndfile.patch
 
-	# Make CPU textures fast in libvita2d
-	sed -i.bak 's/SCE_KERNEL_MEMBLOCK_TYPE_USER_CDRAM_RW/SCE_KERNEL_MEMBLOCK_TYPE_USER_RW/g' libvita2d/libvita2d/source/vita2d_texture.c
-
-	# Update PS Vita headers
-	cp -r vita-headers/include/psp2 vitasdk/arm-vita-eabi/include
-
 	touch .patches-applied
 fi
 
@@ -113,17 +107,6 @@ function install_vdpm() {
 	popd
 }
 
-function install_lib_vita2d() {
-	# vdpm adds some dependencies but freetype headers are still missing
-	# for proper compilation of libvita2d
-	cp -r include/freetype2/ $VITASDK/arm-vita-eabi/include/freetype2/
-
-	pushd libvita2d/libvita2d
-	make
-	make install
-	popd
-}
-
 set_build_flags
 # Install libraries
 install_lib_zlib
@@ -140,4 +123,3 @@ install_lib "speexdsp-1.2rc3"
 
 # Platform libs
 install_vdpm
-install_lib_vita2d

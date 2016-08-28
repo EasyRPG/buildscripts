@@ -30,8 +30,8 @@ function git_clone {
 msg " [1] Installing vitasdk"
 
 rm -rf $PWD/vitasdk
-VITASDK_VER=c86e2b4b45bd9cad07abbbcb208519b0357a639a
-wget -O "vitasdk-nightly.tar.bz2" "https://bintray.com/vitasdk/vitasdk/download_file?file_path=vitasdk-linux-nightly-${VITASDK_VER}.tar.bz2"
+VITASDK_VER=3be413e9bbd9b81353ee1a7f402f7d068b623c94
+wget -O "vitasdk-nightly.tar.bz2" "https://bintray.com/vitasdk/vitasdk/download_file?file_path=vitasdk-gcc-4.9-linux-nightly-${VITASDK_VER}.tar.bz2"
 mkdir vitasdk
 tar xf "vitasdk-nightly.tar.bz2" -C $PWD/vitasdk --strip-components=1
 
@@ -90,8 +90,6 @@ rm -rf speexdsp-1.2rc3
 download_and_extract http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz
 
 msg " [3] Downloading platform libraries"
-
-git_clone https://github.com/xerpi/libvita2d
 
 git_clone https://github.com/vitadev/vdpm
 
