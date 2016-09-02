@@ -141,6 +141,10 @@ download_and_extract http://www.mpg123.de/download/mpg123-1.23.6.tar.bz2
 rm -rf libsndfile-1.0.27
 download_and_extract http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.27.tar.gz
 
+# libxmp-lite
+rm -rf libxmp-lite-4.4.0/
+download_and_extract http://sourceforge.net/projects/xmp/files/libxmp/4.4.0/libxmp-lite-4.4.0.tar.gz
+
 # speexdsp
 rm -rf speexdsp-1.2rc3
 download_and_extract http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz

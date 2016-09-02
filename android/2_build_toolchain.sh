@@ -34,6 +34,12 @@ if [ ! -f .patches-applied ]; then
 	autoreconf -fi
 	cd ..
 
+	# update autoconf stuff to recognize android
+	cd libxmp-lite-4.4.0
+	wget -nv -O config.sub 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD'
+	autoreconf -fi
+	cd ..
+
 	# use android config
 	cd SDL
 	mv include/SDL_config_android.h include/SDL_config.h
@@ -152,6 +158,7 @@ install_lib libmodplug-0.8.8.5
 install_lib libsndfile-1.0.27
 install_lib speexdsp-1.2rc3 --enable-sse --disable-neon
 install_lib_mpg123
+install_lib libxmp-lite-4.4.0
 install_lib_sdl "x86"
 install_lib_mixer
 
@@ -201,6 +208,7 @@ install_lib libmodplug-0.8.8.5
 install_lib libsndfile-1.0.27
 install_lib speexdsp-1.2rc3 --disable-sse --disable-neon
 install_lib_mpg123
+install_lib libxmp-lite-4.4.0
 install_lib_sdl "armeabi"
 install_lib_mixer
 
@@ -248,6 +256,7 @@ install_lib libmodplug-0.8.8.5
 install_lib libsndfile-1.0.27
 install_lib speexdsp-1.2rc3 --disable-sse --enable-neon
 install_lib_mpg123
+install_lib libxmp-lite-4.4.0
 install_lib_sdl "armeabi-v7a"
 install_lib_mixer
 
@@ -296,6 +305,7 @@ install_lib libmodplug-0.8.8.5
 install_lib libsndfile-1.0.27
 install_lib speexdsp-1.2rc3 --disable-sse --disable-neon
 install_lib_mpg123
+install_lib libxmp-lite-4.4.0
 install_lib_sdl "mips"
 install_lib_mixer
 
@@ -317,5 +327,5 @@ make install
 
 cd $WORKSPACE
 rm -rf freetype-*/ harfbuzz-*/ icu/ icu-native/ libmodplug-*/ libogg-*/ libpng-*/ libvorbis-*/ \
-	pixman-*/ mpg123-*/ libsndfile-*/ speexdsp-*/ SDL/ SDL_mixer/ expat-*/
+	pixman-*/ mpg123-*/ libsndfile-*/ speexdsp-*/ SDL/ SDL_mixer/ expat-*/ libxmp-lite-*/
 rm -f *.bz2 *.gz *.xz *.tgz *.bin icudt* .patches-applied
