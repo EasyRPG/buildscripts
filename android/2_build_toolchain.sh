@@ -34,6 +34,12 @@ if [ ! -f .patches-applied ]; then
 	autoreconf -fi
 	cd ..
 
+	# update autoconf stuff to recognize android
+	cd libxmp-lite-4.4.0
+	wget -nv -O config.sub 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD'
+	autoreconf -fi
+	cd ..
+
 	# use android config
 	cd SDL
 	mv include/SDL_config_android.h include/SDL_config.h
@@ -94,7 +100,7 @@ function install_lib_mixer() {
 	cd SDL_mixer
 	SDL_CFLAGS="-I $PLATFORM_PREFIX/include/SDL2" SDL_LIBS="-lSDL2" \
 		./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static \
-		--disable-sdltest --disable-music-mp3
+		--disable-sdltest --disable-music-mp3 --disable-music-mod
 	make clean
 	make -j$NBPROC
 	make install
@@ -148,10 +154,10 @@ install_lib pixman-0.34.0
 install_lib expat-2.2.0
 install_lib libogg-1.3.2
 install_lib libvorbis-1.3.5
-install_lib libmodplug-0.8.8.5
 install_lib libsndfile-1.0.27
 install_lib speexdsp-1.2rc3 --enable-sse --disable-neon
 install_lib_mpg123
+install_lib libxmp-lite-4.4.0
 install_lib_sdl "x86"
 install_lib_mixer
 
@@ -197,10 +203,10 @@ install_lib pixman-0.34.0
 install_lib expat-2.2.0
 install_lib libogg-1.3.2
 install_lib libvorbis-1.3.5
-install_lib libmodplug-0.8.8.5
 install_lib libsndfile-1.0.27
 install_lib speexdsp-1.2rc3 --disable-sse --disable-neon
 install_lib_mpg123
+install_lib libxmp-lite-4.4.0
 install_lib_sdl "armeabi"
 install_lib_mixer
 
@@ -244,10 +250,10 @@ install_lib pixman-0.34.0
 install_lib expat-2.2.0
 install_lib libogg-1.3.2
 install_lib libvorbis-1.3.5
-install_lib libmodplug-0.8.8.5
 install_lib libsndfile-1.0.27
 install_lib speexdsp-1.2rc3 --disable-sse --enable-neon
 install_lib_mpg123
+install_lib libxmp-lite-4.4.0
 install_lib_sdl "armeabi-v7a"
 install_lib_mixer
 
@@ -292,10 +298,10 @@ install_lib pixman-0.34.0
 install_lib expat-2.2.0
 install_lib libogg-1.3.2
 install_lib libvorbis-1.3.5
-install_lib libmodplug-0.8.8.5
 install_lib libsndfile-1.0.27
 install_lib speexdsp-1.2rc3 --disable-sse --disable-neon
 install_lib_mpg123
+install_lib libxmp-lite-4.4.0
 install_lib_sdl "mips"
 install_lib_mixer
 
@@ -316,6 +322,6 @@ make install
 # Cleanup library build folders and other stuff
 
 cd $WORKSPACE
-rm -rf freetype-*/ harfbuzz-*/ icu/ icu-native/ libmodplug-*/ libogg-*/ libpng-*/ libvorbis-*/ \
-	pixman-*/ mpg123-*/ libsndfile-*/ speexdsp-*/ SDL/ SDL_mixer/ expat-*/
+rm -rf freetype-*/ harfbuzz-*/ icu/ icu-native/ libogg-*/ libpng-*/ libvorbis-*/ pixman-*/ \
+	mpg123-*/ libsndfile-*/ speexdsp-*/ SDL/ SDL_mixer/ expat-*/ libxmp-lite-*/
 rm -f *.bz2 *.gz *.xz *.tgz *.bin icudt* .patches-applied

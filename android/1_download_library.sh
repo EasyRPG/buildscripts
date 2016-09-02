@@ -129,10 +129,6 @@ download_and_extract http://downloads.xiph.org/releases/ogg/libogg-1.3.2.tar.xz
 rm -rf libvorbis-1.3.5/
 download_and_extract http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.5.tar.xz
 
-# libmodplug
-rm -rf libmodplug-0.8.8.5/
-download_and_extract http://sourceforge.net/projects/modplug-xmms/files/libmodplug/0.8.8.5/libmodplug-0.8.8.5.tar.gz
-
 # mpg123
 rm -rf mpg123-1.23.6
 download_and_extract http://www.mpg123.de/download/mpg123-1.23.6.tar.bz2
@@ -140,6 +136,10 @@ download_and_extract http://www.mpg123.de/download/mpg123-1.23.6.tar.bz2
 # libsndfile
 rm -rf libsndfile-1.0.27
 download_and_extract http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.27.tar.gz
+
+# libxmp-lite
+rm -rf libxmp-lite-4.4.0/
+download_and_extract http://sourceforge.net/projects/xmp/files/libxmp/4.4.0/libxmp-lite-4.4.0.tar.gz
 
 # speexdsp
 rm -rf speexdsp-1.2rc3

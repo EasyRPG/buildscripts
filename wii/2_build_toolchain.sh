@@ -215,6 +215,7 @@ install_lib mpg123-1.23.6 --enable-fifo=no --enable-ipv6=no --enable-network=no 
 install_lib libsndfile-1.0.27
 install_lib speexdsp-1.2rc3
 install_lib_wildmidi
+install_lib libxmp-lite-4.4.0
 install_lib libiconv-1.14
 install_lib_sdl
 install_lib_sdlmixer
