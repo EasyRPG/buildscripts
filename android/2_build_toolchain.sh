@@ -100,7 +100,7 @@ function install_lib_mixer() {
 	cd SDL_mixer
 	SDL_CFLAGS="-I $PLATFORM_PREFIX/include/SDL2" SDL_LIBS="-lSDL2" \
 		./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static \
-		--disable-sdltest --disable-music-mp3
+		--disable-sdltest --disable-music-mp3 --disable-music-mod
 	make clean
 	make -j$NBPROC
 	make install
@@ -154,7 +154,6 @@ install_lib pixman-0.34.0
 install_lib expat-2.2.0
 install_lib libogg-1.3.2
 install_lib libvorbis-1.3.5
-install_lib libmodplug-0.8.8.5
 install_lib libsndfile-1.0.27
 install_lib speexdsp-1.2rc3 --enable-sse --disable-neon
 install_lib_mpg123
@@ -204,7 +203,6 @@ install_lib pixman-0.34.0
 install_lib expat-2.2.0
 install_lib libogg-1.3.2
 install_lib libvorbis-1.3.5
-install_lib libmodplug-0.8.8.5
 install_lib libsndfile-1.0.27
 install_lib speexdsp-1.2rc3 --disable-sse --disable-neon
 install_lib_mpg123
@@ -252,7 +250,6 @@ install_lib pixman-0.34.0
 install_lib expat-2.2.0
 install_lib libogg-1.3.2
 install_lib libvorbis-1.3.5
-install_lib libmodplug-0.8.8.5
 install_lib libsndfile-1.0.27
 install_lib speexdsp-1.2rc3 --disable-sse --enable-neon
 install_lib_mpg123
@@ -301,7 +298,6 @@ install_lib pixman-0.34.0
 install_lib expat-2.2.0
 install_lib libogg-1.3.2
 install_lib libvorbis-1.3.5
-install_lib libmodplug-0.8.8.5
 install_lib libsndfile-1.0.27
 install_lib speexdsp-1.2rc3 --disable-sse --disable-neon
 install_lib_mpg123
@@ -326,6 +322,6 @@ make install
 # Cleanup library build folders and other stuff
 
 cd $WORKSPACE
-rm -rf freetype-*/ harfbuzz-*/ icu/ icu-native/ libmodplug-*/ libogg-*/ libpng-*/ libvorbis-*/ \
-	pixman-*/ mpg123-*/ libsndfile-*/ speexdsp-*/ SDL/ SDL_mixer/ expat-*/ libxmp-lite-*/
+rm -rf freetype-*/ harfbuzz-*/ icu/ icu-native/ libogg-*/ libpng-*/ libvorbis-*/ pixman-*/ \
+	mpg123-*/ libsndfile-*/ speexdsp-*/ SDL/ SDL_mixer/ expat-*/ libxmp-lite-*/
 rm -f *.bz2 *.gz *.xz *.tgz *.bin icudt* .patches-applied
