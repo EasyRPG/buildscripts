@@ -146,16 +146,24 @@ rm -rf speexdsp-1.2rc3
 download_and_extract http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz
 
 # SDL2
-rm -rf SDL/
-download https://hg.libsdl.org/SDL/archive/tip.tar.gz -O SDL.tar.gz --no-timestamping
-mkdir -p SDL
-extract SDL.tar.gz --strip-components=1 -C SDL
+rm -rf SDL2-2.0.4/
+download_and_extract http://libsdl.org/release/SDL2-2.0.4.tar.gz
 
 # SDL_mixer
-rm -rf SDL_mixer/
-download https://hg.libsdl.org/SDL_mixer/archive/tip.tar.gz -O SDL_mixer.tar.gz --no-timestamping
-mkdir -p SDL_mixer
-extract SDL_mixer.tar.gz --strip-components=1 -C SDL_mixer
+rm -rf SDL2_mixer-2.0.1/
+download_and_extract http://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.1.tar.gz
+
+# SDL2 (hg)
+#rm -rf SDL/
+#download https://hg.libsdl.org/SDL/archive/tip.tar.gz -O SDL.tar.gz --no-timestamping
+#mkdir -p SDL
+#extract SDL.tar.gz --strip-components=1 -C SDL
+
+# SDL_mixer (hg)
+#rm -rf SDL_mixer/
+#download https://hg.libsdl.org/SDL_mixer/archive/tip.tar.gz -O SDL_mixer.tar.gz --no-timestamping
+#mkdir -p SDL_mixer
+#extract SDL_mixer.tar.gz --strip-components=1 -C SDL_mixer
 
 # ICU
 rm -rf icu

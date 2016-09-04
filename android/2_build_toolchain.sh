@@ -40,13 +40,13 @@ if [ ! -f .patches-applied ]; then
 	cd ..
 
 	# use android config
-	cd SDL
+	cd SDL2-2.0.4
 	mv include/SDL_config_android.h include/SDL_config.h
 	mkdir -p jni
 	cd ..
 
 	# enable jni config loading
-	cd SDL_mixer
+	cd SDL2_mixer-2.0.1
 	patch -Np1 -d timidity < ../timidity-android.patch
 	patch -Np0 < ../sdl-mixer-config.patch
 	sh autogen.sh
@@ -83,7 +83,7 @@ function install_lib_mpg123() {
 function install_lib_sdl {
 	# $1 => platform (armeabi armeabi-v7a x86 mips)
 
-	cd SDL
+	cd SDL2-2.0.4
 	echo "APP_STL := gnustl_static" > "jni/Application.mk"
 	echo "APP_ABI := $1" >> "jni/Application.mk"
 	ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk APP_PLATFORM=android-9
@@ -96,7 +96,7 @@ function install_lib_sdl {
 
 # Install SDL2_mixer
 function install_lib_mixer() {
-	cd SDL_mixer
+	cd SDL2_mixer-2.0.1
 	SDL_CFLAGS="-I $PLATFORM_PREFIX/include/SDL2" SDL_LIBS="-lSDL2" \
 		./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static \
 		--disable-sdltest --disable-music-mp3 --disable-music-mod
@@ -322,5 +322,5 @@ make install
 
 cd $WORKSPACE
 rm -rf freetype-*/ harfbuzz-*/ icu/ icu-native/ libogg-*/ libpng-*/ libvorbis-*/ pixman-*/ \
-	mpg123-*/ libsndfile-*/ speexdsp-*/ SDL/ SDL_mixer/ expat-*/ libxmp-lite-*/
+	mpg123-*/ libsndfile-*/ speexdsp-*/ SDL2-2.0.4/ SDL2_mixer-2.0.1/ expat-*/ libxmp-lite-*/
 rm -f *.bz2 *.gz *.xz *.tgz *.bin icudt* .patches-applied
