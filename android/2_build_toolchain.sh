@@ -34,10 +34,9 @@ if [ ! -f .patches-applied ]; then
 	autoreconf -fi
 	cd ..
 
-	# update autoconf stuff to recognize android
+	# update autoconf stuff and preprocessor macro to recognize android
 	cd libxmp-lite-4.4.0
-	wget -nv -O config.sub 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD'
-	autoreconf -fi
+	patch -Np1 < ../xmplite-android.patch
 	cd ..
 
 	# use android config
