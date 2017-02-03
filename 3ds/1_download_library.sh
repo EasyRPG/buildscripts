@@ -94,11 +94,5 @@ download_and_extract https://github.com/Mindwerks/wildmidi/archive/wildmidi-0.3.
 msg " [3] Downloading platform libraries"
 
 # 3DS specific
-rm -rf ctrulib-1.2.0
-download_and_extract https://github.com/smealum/ctrulib/archive/v1.2.0.tar.gz
-
 rm -rf sf2dlib
 git_clone https://github.com/xerpi/sf2dlib.git
-
-rm -rf citro3d
-git_clone https://github.com/fincs/citro3d.git

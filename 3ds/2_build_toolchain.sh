@@ -4,11 +4,11 @@
 set -e
 
 export WORKSPACE=$PWD
-export CTRULIB=$PWD
 
 export DEVKITPRO=${WORKSPACE}/devkitPro
 export DEVKITARM=${DEVKITPRO}/devkitARM
 export PATH=$DEVKITARM/bin:$PATH
+export CTRULIB=${DEVKITARM}/libctru
 
 export PLATFORM_PREFIX=$WORKSPACE
 export TARGET_HOST=arm-none-eabi
@@ -126,15 +126,6 @@ function install_lib_wildmidi() {
         cd ..
 }
 
-function install_lib_ctru() {
-	cd ctrulib-1.2.0/libctru/
-	make clean
-	make -j$NBPROC
-	cp -r include/* ../../include/
-	cp -r lib/* ../../lib/
-	cd ../..
-}
-
 function install_lib_sf2d() {
 	cd sf2dlib/libsf2d/
 	make clean
@@ -144,21 +135,10 @@ function install_lib_sf2d() {
 	cd ../..
 }
 
-function install_lib_citro3d() {
-	cd citro3d
-	make clean
-	make
-	cp -r include/* ../include/
-	cp -r lib/* ../lib/
-	cd ..
-}
-
 set_build_flags
 # Install libraries
 
 install_lib_zlib
-# Installs important system headers but does not create include/lib dir (zlib does this)
-install_lib_ctru
 install_lib "libpng-1.6.23"
 install_lib "freetype-2.6.3" "--with-harfbuzz=no --without-bzip2"
 install_lib_pixman
@@ -170,5 +150,4 @@ install_lib "mpg123-1.23.3" "--enable-fifo=no --enable-ipv6=no --enable-network=
 install_lib "libsndfile-1.0.27"
 install_lib "speexdsp-1.2rc3"
 install_lib_wildmidi
-install_lib_citro3d
 install_lib_sf2d
