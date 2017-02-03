@@ -53,7 +53,7 @@ if [ ! -f .patches-applied ]; then
 	patch -Np0 < libsndfile.patch
 
 	# Fix wildmidi linking
-	#patch -Np0 < wildmidi.patch
+	patch -Np0 < wildmidi.patch
 
 	# Fix iconv compilation
 	patch -Np0 < libiconv.patch
