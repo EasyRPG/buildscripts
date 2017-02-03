@@ -36,8 +36,8 @@ perl devkitARMupdate.pl $PWD/devkitPro
 msg " [2] Downloading generic libraries"
 
 # zlib
-rm -rf zlib-1.2.8
-download_and_extract http://zlib.net/zlib-1.2.8.tar.gz
+rm -rf zlib-1.2.11
+download_and_extract http://zlib.net/zlib-1.2.11.tar.gz
 
 # libpng
 rm -rf libpng-1.6.23/
