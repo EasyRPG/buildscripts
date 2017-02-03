@@ -478,7 +478,7 @@
 		"DebugFast": true
 	},
 	"zlib": {
-		"Source": "http://zlib.net/zlib-1.2.8.tar.gz",
+		"Source": "http://zlib.net/zlib-1.2.11.tar.gz",
 		"HeaderDirs": ["."],
 		"SourceDirs": ["."]
 	},

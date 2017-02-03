@@ -61,7 +61,7 @@ function install_lib {
 
 # Install zlib
 function install_lib_zlib {
-	cd zlib-1.2.8
+	cd zlib-1.2.11
 	CHOST=$TARGET_HOST ./configure --static --prefix=$PLATFORM_PREFIX
 	make clean
 	make -j$NBPROC
