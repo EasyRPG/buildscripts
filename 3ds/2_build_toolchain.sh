@@ -4,6 +4,7 @@
 set -e
 
 export WORKSPACE=$PWD
+export CTRULIB=$PWD
 
 export DEVKITPRO=${WORKSPACE}/devkitPro
 export DEVKITARM=${DEVKITPRO}/devkitARM
@@ -32,13 +33,6 @@ if [ ! -f .patches-applied ]; then
 
 	# Fix broken load_abc.cpp
 	patch -Np0 < libmodplug.patch
-
-	# Give libkhax a proper makefile
-	# Revert to old lpp-3ds version because our patch fails otherwise
-	cd lpp-3ds_libraries
-	git reset --hard 03f57eff
-	cd ..
-	patch -Np0 < lpp_khax.patch
 
 	# Fix mpg123 compilation
 	patch -Np0 < mpg123.patch
@@ -122,8 +116,18 @@ function install_lib_icu {
 	cd ../..
 }
 
+function install_lib_wildmidi() {
+        cd wildmidi-wildmidi-0.3.9
+        cmake . -DCMAKE_SYSTEM_NAME=Generic -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWANT_PLAYER=OFF
+        make clean
+        make 
+        cp -up include/wildmidi_lib.h $WORKSPACE/include
+        cp -up libWildMidi.a $WORKSPACE/lib
+        cd ..
+}
+
 function install_lib_ctru() {
-	cd ctrulib/libctru/
+	cd ctrulib-1.2.0/libctru/
 	make clean
 	make -j$NBPROC
 	cp -r include/* ../../include/
@@ -140,11 +144,11 @@ function install_lib_sf2d() {
 	cd ../..
 }
 
-function install_lib_khax() {
-	cd lpp-3ds_libraries
+function install_lib_citro3d() {
+	cd citro3d
 	make clean
 	make
-	cp source_libkhax/*.h ../include/
+	cp -r include/* ../include/
 	cp -r lib/* ../lib/
 	cd ..
 }
@@ -165,5 +169,6 @@ install_lib_icu
 install_lib "mpg123-1.23.3" "--enable-fifo=no --enable-ipv6=no --enable-network=no --enable-int-quality=no --with-cpu=generic --with-default-audio=dummy"
 install_lib "libsndfile-1.0.27"
 install_lib "speexdsp-1.2rc3"
+install_lib_wildmidi
+install_lib_citro3d
 install_lib_sf2d
-install_lib_khax

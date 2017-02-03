@@ -87,14 +87,18 @@ download_and_extract http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.27
 rm -rf speexdsp-1.2rc3
 download_and_extract http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz
 
+# wildmidi
+rm -rf wildmidi-wildmidi-0.3.11/
+download_and_extract https://github.com/Mindwerks/wildmidi/archive/wildmidi-0.3.11.tar.gz
+
 msg " [3] Downloading platform libraries"
 
 # 3DS specific
-rm -rf ctrulib
-git_clone https://github.com/smealum/ctrulib.git
+rm -rf ctrulib-1.2.0
+download_and_extract https://github.com/smealum/ctrulib/archive/v1.2.0.tar.gz
 
 rm -rf sf2dlib
 git_clone https://github.com/xerpi/sf2dlib.git
 
-rm -rf libkhax
-git_clone https://github.com/Rinnegatamante/lpp-3ds_libraries.git
+rm -rf citro3d
+git_clone https://github.com/fincs/citro3d.git
