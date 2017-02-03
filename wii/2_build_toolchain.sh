@@ -53,7 +53,7 @@ if [ ! -f .patches-applied ]; then
 	patch -Np0 < libsndfile.patch
 
 	# Fix wildmidi linking
-	patch -Np0 < wildmidi.patch
+	#patch -Np0 < wildmidi.patch
 
 	# Fix iconv compilation
 	patch -Np0 < libiconv.patch
@@ -104,7 +104,7 @@ function install_lib_zlib {
 	echo "**** Building zlib ****"
 	echo ""
 
-	cd zlib-1.2.8
+	cd zlib-1.2.11
 	CHOST=$TARGET_HOST ./configure --static --prefix=$PLATFORM_PREFIX
 	make clean
 	make
@@ -161,7 +161,7 @@ function install_lib_wildmidi() {
 	echo "**** Building WildMidi ****"
 	echo ""
 
-	cd wildmidi-wildmidi-0.3.9
+	cd wildmidi-wildmidi-0.3.11
 	cmake . -DCMAKE_SYSTEM_NAME=Generic -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWANT_PLAYER=OFF
 	make clean
 	make

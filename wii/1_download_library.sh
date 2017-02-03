@@ -38,8 +38,8 @@ perl devkitPPCupdate.pl $PWD/devkitPro
 msg " [2] Downloading generic libraries"
 
 # zlib
-rm -rf zlib-1.2.8/
-download_and_extract http://zlib.net/zlib-1.2.8.tar.gz
+rm -rf zlib-1.2.11/
+download_and_extract http://zlib.net/zlib-1.2.11.tar.gz
 
 # libpng
 rm -rf libpng-1.6.24/
@@ -90,8 +90,8 @@ rm -rf speexdsp-1.2rc3/
 download_and_extract http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz
 
 # wildmidi
-rm -rf wildmidi-0.3.9/
-download_and_extract https://github.com/Mindwerks/wildmidi/archive/wildmidi-0.3.9.tar.gz
+rm -rf wildmidi-wildmidi-0.3.11/
+download_and_extract https://github.com/Mindwerks/wildmidi/archive/wildmidi-0.3.11.tar.gz
 
 # iconv
 rm -rf libiconv-1.14/
