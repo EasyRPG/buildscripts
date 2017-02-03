@@ -66,12 +66,12 @@ rm -rf tremor-lowmem/
 download_and_extract http://downloads.sourceforge.net/sourceforge/devkitpro/tremor-lowmem-src.tar.bz2
 
 # ICU
-#rm -rf icu/
-#download_and_extract http://download.icu-project.org/files/icu4c/56.1/icu4c-56_1-src.tgz
+rm -rf icu/
+download_and_extract http://download.icu-project.org/files/icu4c/58.1/icu4c-58_1-src.tgz
 
 # icudata
-#rm -f icudt*.dat
-#download_and_extract https://easy-rpg.org/jenkins/job/icudata/lastSuccessfulBuild/artifact/icu/source/data/out/icudata.tar.gz
+rm -f icudt*.dat
+download_and_extract https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata.tar.gz
 
 # mpg123
 rm -rf mpg123-1.23.6/
@@ -92,10 +92,6 @@ download_and_extract http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.ta
 # wildmidi
 rm -rf wildmidi-wildmidi-0.3.11/
 download_and_extract https://github.com/Mindwerks/wildmidi/archive/wildmidi-0.3.11.tar.gz
-
-# iconv
-rm -rf libiconv-1.14/
-download_and_extract http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.14.tar.gz
 
 msg " [3] Downloading platform libraries"
 

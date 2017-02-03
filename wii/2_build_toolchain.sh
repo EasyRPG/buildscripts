@@ -28,11 +28,11 @@ fi
 if [ ! -f .patches-applied ]; then
 	echo "patching libraries"
 
-	#cp -rup icu icu-native
+	cp -rup icu icu-native
 	# Fix ICU compilation problems on Wii
-	#patch -Np0 < icu-wii.patch
-	# Byte swap to generate proper icudata
-	#patch -Np0 < icu-pkg_genc.patch
+	patch -Np0 < icu-wii.patch
+	# Emit correct bigendian icudata header
+	patch -Np0 < icu-pkg_genc.patch
 
 	# disable pixman examples and tests
 	cd pixman-0.34.0
@@ -55,9 +55,6 @@ if [ ! -f .patches-applied ]; then
 	# Fix wildmidi linking
 	patch -Np0 < wildmidi.patch
 
-	# Fix iconv compilation
-	patch -Np0 < libiconv.patch
-
 	# Patch SDL+SDL_mixer
 	cd sdl-wii
 	git reset --hard
@@ -71,6 +68,9 @@ function set_build_flags {
 	if [ "$ENABLE_CCACHE" ]; then
 		export CC="ccache $TARGET_HOST-gcc"
 		export CXX="ccache $TARGET_HOST-g++"
+	else
+		export CC="$TARGET_HOST-gcc"
+		export CXX="$TARGET_HOST-g++"
 	fi
 	export CFLAGS="-I$WORKSPACE/include -g -O2 -DGEKKO"
 	export CPPFLAGS="$CFLAGS"
@@ -121,16 +121,19 @@ function install_lib_icu() {
 	echo ""
 
 	# Compile native version
+	unset CC
+	unset CXX
 	unset CFLAGS
 	unset CPPFLAGS
 	unset LDFLAGS
 
-	cp icudt56l.dat icu/source/data/in/
-	cp icudt56l.dat icu-native/source/data/in/
+	cp icudt58l.dat icu/source/data/in/
+	cp icudt58l.dat icu-native/source/data/in/
 	cd icu-native/source
 	sed -i.bak 's/SMALL_BUFFER_MAX_SIZE 512/SMALL_BUFFER_MAX_SIZE 2048/' tools/toolutil/pkg_genc.h
 	chmod u+x configure
-	./configure --enable-static --enable-shared=no --enable-tests=no --enable-samples=no \
+	CPPFLAGS="-DBUILD_DATA_WITHOUT_ASSEMBLY -DU_DISABLE_OBJ_CODE" ./configure \
+		--enable-static --enable-shared=no --enable-tests=no --enable-samples=no \
 		--enable-dyload=no --enable-tools --enable-extras=no --enable-icuio=no \
 		--with-data-packaging=static
 	make
@@ -209,13 +212,12 @@ install_lib freetype-2.6.5 --with-harfbuzz=no --without-bzip2
 install_lib pixman-0.34.0 --disable-vmx
 install_lib expat-2.2.0
 install_lib tremor-lowmem
-#install_lib_icu
+install_lib_icu
 install_lib mpg123-1.23.6 --enable-fifo=no --enable-ipv6=no --enable-network=no \
 	--enable-int-quality=no --with-cpu=generic --with-default-audio=dummy
 install_lib libsndfile-1.0.27
 install_lib speexdsp-1.2rc3
 install_lib_wildmidi
 install_lib libxmp-lite-4.4.0
-install_lib libiconv-1.14
 install_lib_sdl
 install_lib_sdlmixer
