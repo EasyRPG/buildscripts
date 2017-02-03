@@ -8,7 +8,7 @@ export WORKSPACE=$PWD
 export DEVKITPRO=${WORKSPACE}/devkitPro
 export DEVKITARM=${DEVKITPRO}/devkitARM
 export PATH=$DEVKITARM/bin:$PATH
-export CTRULIB=${DEVKITARM}/libctru
+export CTRULIB=${DEVKITPRO}/libctru
 
 export PLATFORM_PREFIX=$WORKSPACE
 export TARGET_HOST=arm-none-eabi
@@ -17,6 +17,14 @@ export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 
 # Number of CPU
 NBPROC=$(getconf _NPROCESSORS_ONLN)
+
+# Use ccache?
+if [ -z ${NO_CCACHE+x} ]; then
+        if hash ccache >/dev/null 2>&1; then
+                ENABLE_CCACHE=1
+                echo "CCACHE enabled"
+        fi
+fi
 
 if [ ! -f .patches-applied ]; then
 	echo "patching libraries"
@@ -47,6 +55,13 @@ if [ ! -f .patches-applied ]; then
 fi
 
 function set_build_flags {
+        if [ "$ENABLE_CCACHE" ]; then
+                export CC="ccache $TARGET_HOST-gcc"
+                export CXX="ccache $TARGET_HOST-g++"
+	else
+		export CC="$TARGET_HOST-gcc"
+		export CXX="$TARGET_HOST-g++"
+        fi
 	export CFLAGS="-I$WORKSPACE/include -g0 -O2 -mword-relocations -fomit-frame-pointer -ffast-math -march=armv6k -mtune=mpcore -mfloat-abi=hard"
 	export CPPFLAGS="$CFLAGS"
 	export LDFLAGS="-L$WORKSPACE/lib"
@@ -88,12 +103,14 @@ function install_lib_pixman {
 # Install ICU
 function install_lib_icu {
 	# Compile native version
+	unset CC
+	unset CXX
 	unset CFLAGS
 	unset CPPFLAGS
 	unset LDFLAGS
 
-	cp icudt56l.dat icu/source/data/in/
-	cp icudt56l.dat icu-native/source/data/in/
+	cp icudt58l.dat icu/source/data/in/
+	cp icudt58l.dat icu-native/source/data/in/
 	cd icu-native/source
 	sed -i.bak 's/SMALL_BUFFER_MAX_SIZE 512/SMALL_BUFFER_MAX_SIZE 2048/' tools/toolutil/pkg_genc.h
 	chmod u+x configure
@@ -117,7 +134,7 @@ function install_lib_icu {
 }
 
 function install_lib_wildmidi() {
-        cd wildmidi-wildmidi-0.3.9
+        cd wildmidi-wildmidi-0.3.11
         cmake . -DCMAKE_SYSTEM_NAME=Generic -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWANT_PLAYER=OFF
         make clean
         make 

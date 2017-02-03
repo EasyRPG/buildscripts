@@ -69,11 +69,11 @@ download_and_extract http://sourceforge.net/projects/modplug-xmms/files/libmodpl
 
 # ICU
 rm -rf icu
-download_and_extract http://download.icu-project.org/files/icu4c/56.1/icu4c-56_1-src.tgz
+download_and_extract http://download.icu-project.org/files/icu4c/58.1/icu4c-58_1-src.tgz
 
 # icudata
 rm -f icudt*.dat
-download_and_extract https://easy-rpg.org/jenkins/job/icudata/lastSuccessfulBuild/artifact/icu/source/data/out/icudata.tar.gz
+download_and_extract https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata.tar.gz
 
 # mpg123
 rm -rf mpg123-1.23.3
