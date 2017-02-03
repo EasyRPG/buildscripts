@@ -51,6 +51,9 @@ if [ ! -f .patches-applied ]; then
 	autoreconf -fi
 	cd ..
 
+	# Backport of PR161
+	patch -Np0 < wildmidi.patch
+
 	touch .patches-applied
 fi
 
@@ -62,7 +65,7 @@ function set_build_flags {
 		export CC="$TARGET_HOST-gcc"
 		export CXX="$TARGET_HOST-g++"
         fi
-	export CFLAGS="-I$WORKSPACE/include -g0 -O2 -mword-relocations -fomit-frame-pointer -ffast-math -march=armv6k -mtune=mpcore -mfloat-abi=hard"
+	export CFLAGS="-I$WORKSPACE/include -g0 -O2 -mword-relocations -fomit-frame-pointer -ffast-math -march=armv6k -mtune=mpcore -mfloat-abi=hard -D_3DS"
 	export CPPFLAGS="$CFLAGS"
 	export LDFLAGS="-L$WORKSPACE/lib"
 }
