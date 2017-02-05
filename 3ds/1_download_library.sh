@@ -5,8 +5,8 @@ set -e
 
 # helper
 function msg {
-  echo ""
-  echo $1
+	echo ""
+	echo $1
 }
 
 function download_and_extract {
@@ -88,8 +88,8 @@ rm -rf speexdsp-1.2rc3
 download_and_extract http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz
 
 # wildmidi
-rm -rf wildmidi-wildmidi-0.3.11/
-download_and_extract https://github.com/Mindwerks/wildmidi/archive/wildmidi-0.3.11.tar.gz
+rm -rf wildmidi-wildmidi-0.4.0
+download_and_extract https://github.com/Mindwerks/wildmidi/archive/wildmidi-0.4.0.tar.gz
 
 msg " [3] Downloading platform libraries"
 

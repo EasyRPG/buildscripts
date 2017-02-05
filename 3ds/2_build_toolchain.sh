@@ -20,10 +20,10 @@ NBPROC=$(getconf _NPROCESSORS_ONLN)
 
 # Use ccache?
 if [ -z ${NO_CCACHE+x} ]; then
-        if hash ccache >/dev/null 2>&1; then
-                ENABLE_CCACHE=1
-                echo "CCACHE enabled"
-        fi
+	if hash ccache >/dev/null 2>&1; then
+		ENABLE_CCACHE=1
+		echo "CCACHE enabled"
+	fi
 fi
 
 if [ ! -f .patches-applied ]; then
@@ -51,20 +51,20 @@ if [ ! -f .patches-applied ]; then
 	autoreconf -fi
 	cd ..
 
-	# Backport of PR161
+	# Fix wildmidi linking
 	patch -Np0 < wildmidi.patch
 
 	touch .patches-applied
 fi
 
 function set_build_flags {
-        if [ "$ENABLE_CCACHE" ]; then
-                export CC="ccache $TARGET_HOST-gcc"
-                export CXX="ccache $TARGET_HOST-g++"
+	if [ "$ENABLE_CCACHE" ]; then
+		export CC="ccache $TARGET_HOST-gcc"
+		export CXX="ccache $TARGET_HOST-g++"
 	else
 		export CC="$TARGET_HOST-gcc"
 		export CXX="$TARGET_HOST-g++"
-        fi
+	fi
 	export CFLAGS="-I$WORKSPACE/include -g0 -O2 -mword-relocations -fomit-frame-pointer -ffast-math -march=armv6k -mtune=mpcore -mfloat-abi=hard -D_3DS"
 	export CPPFLAGS="$CFLAGS"
 	export LDFLAGS="-L$WORKSPACE/lib"
@@ -137,13 +137,13 @@ function install_lib_icu {
 }
 
 function install_lib_wildmidi() {
-        cd wildmidi-wildmidi-0.3.11
-        cmake . -DCMAKE_SYSTEM_NAME=Generic -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWANT_PLAYER=OFF
-        make clean
-        make 
-        cp -up include/wildmidi_lib.h $WORKSPACE/include
-        cp -up libWildMidi.a $WORKSPACE/lib
-        cd ..
+	cd wildmidi-wildmidi-0.4.0
+	cmake . -DCMAKE_SYSTEM_NAME=Generic -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWANT_PLAYER=OFF
+	make clean
+	make
+	cp -up include/wildmidi_lib.h $WORKSPACE/include
+	cp -up libWildMidi.a $WORKSPACE/lib
+	cd ..
 }
 
 function install_lib_sf2d() {

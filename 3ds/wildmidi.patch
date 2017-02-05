@@ -1,13 +1,20 @@
-diff -Naur wildmidi-wildmidi-0.3.11-orig/src/file_io.c wildmidi-wildmidi-0.3.11/src/file_io.c
---- wildmidi-wildmidi-0.3.11-orig/src/file_io.c	2017-02-03 23:50:47.174642650 +0100
-+++ wildmidi-wildmidi-0.3.11/src/file_io.c	2017-02-03 23:51:31.661728117 +0100
-@@ -129,6 +129,9 @@
- #elif defined(WILDMIDI_AMIGA)
- 	BPTR buffer_fd;
- 	long filsize;
-+#elif defined(_3DS)
-+	int buffer_fd;
-+	struct stat buffer_stat;
- #else /* unix builds */
- 	int buffer_fd;
- 	struct stat buffer_stat;
+diff -Naur wildmidi-wildmidi-0.4.0.orig/src/file_io.c wildmidi-wildmidi-0.4.0/src/file_io.c
+--- wildmidi-wildmidi-0.4.0.orig/src/file_io.c	2016-06-16 10:47:00.000000000 +0200
++++ wildmidi-wildmidi-0.4.0/src/file_io.c	2016-11-06 16:59:38.204000293 +0100
+@@ -68,14 +68,14 @@
+ #else
+     struct stat buffer_stat;
+ #endif
+-#if !defined(_WIN32) && !defined(__DJGPP__)
++#if !defined(_WIN32) && !defined(__DJGPP__) && !defined(GEKKO) && !defined(_3DS)
+     const char *home = NULL;
+     struct passwd *pwd_ent;
+     char buffer_dir[1024];
+ #endif /* unix builds */
+     char *buffer_file = NULL;
+ 
+-#if !defined(_WIN32) && !defined(__DJGPP__)
++#if !defined(_WIN32) && !defined(__DJGPP__) && !defined(GEKKO) && !defined(_3DS)
+     if (strncmp(filename, "~/", 2) == 0) {
+         if ((pwd_ent = getpwuid(getuid()))) {
+             home = pwd_ent->pw_dir;

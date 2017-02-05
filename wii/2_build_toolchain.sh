@@ -164,7 +164,7 @@ function install_lib_wildmidi() {
 	echo "**** Building WildMidi ****"
 	echo ""
 
-	cd wildmidi-wildmidi-0.3.11
+	cd wildmidi-wildmidi-0.4.0
 	cmake . -DCMAKE_SYSTEM_NAME=Generic -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWANT_PLAYER=OFF
 	make clean
 	make
