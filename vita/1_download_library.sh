@@ -19,6 +19,13 @@ function download_and_extract {
 	tar xf $file
 }
 
+function download_and_extract_shaders {
+	mkdir vitashaders
+	cd vitashaders
+	download_and_extract https://github.com/frangarcj/vita-shader-collection/releases/download/gtu-0.1-v74/vita-shader-collection.tar.gz
+	cd ..
+}
+
 function git_clone {
 	url=$1
 	file=${url##*/}
@@ -27,19 +34,11 @@ function git_clone {
 	git clone $url
 }
 
-msg " [1] Installing vitasdk"
-
-rm -rf $PWD/vitasdk
-VITASDK_VER=3be413e9bbd9b81353ee1a7f402f7d068b623c94
-wget -O "vitasdk-nightly.tar.bz2" "https://bintray.com/vitasdk/vitasdk/download_file?file_path=vitasdk-gcc-4.9-linux-nightly-${VITASDK_VER}.tar.bz2"
-mkdir vitasdk
-tar xf "vitasdk-nightly.tar.bz2" -C $PWD/vitasdk --strip-components=1
-
 msg " [2] Downloading generic libraries"
 
 # zlib
-rm -rf zlib-1.2.8
-download_and_extract http://zlib.net/zlib-1.2.8.tar.gz
+rm -rf zlib-1.2.11
+download_and_extract http://zlib.net/zlib-1.2.11.tar.gz
 
 # libpng
 rm -rf libpng-1.6.23/
@@ -65,17 +64,13 @@ download_and_extract http://downloads.xiph.org/releases/ogg/libogg-1.3.2.tar.xz
 rm -rf libvorbis-1.3.5/
 download_and_extract http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.5.tar.xz
 
-# libmodplug
-rm -rf libmodplug-0.8.8.5/
-download_and_extract http://sourceforge.net/projects/modplug-xmms/files/libmodplug/0.8.8.5/libmodplug-0.8.8.5.tar.gz
-
 # ICU
 rm -rf icu
-download_and_extract http://download.icu-project.org/files/icu4c/56.1/icu4c-56_1-src.tgz
+download_and_extract http://download.icu-project.org/files/icu4c/58.1/icu4c-58_1-src.tgz
 
 # icudata
 rm -f icudt*.dat
-download_and_extract https://easy-rpg.org/jenkins/job/icudata/lastSuccessfulBuild/artifact/icu/source/data/out/icudata.tar.gz
+download_and_extract https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata.tar.gz
 
 # mpg123
 rm -rf mpg123-1.23.3
@@ -89,8 +84,14 @@ download_and_extract http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.27
 rm -rf speexdsp-1.2rc3
 download_and_extract http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz
 
+# libvitashaders
+rm -rf vitashaders
+download_and_extract_shaders
+
 msg " [3] Downloading platform libraries"
 
-git_clone https://github.com/vitadev/vdpm
+git_clone https://github.com/vitasdk/vdpm
 
 git_clone https://github.com/vitasdk/vita-headers
+
+git_clone https://github.com/frangarcj/vita2dlib

@@ -1,7 +1,7 @@
 diff -Naur icu-native/source/common/putilimp.h icu/source/common/putilimp.h
---- icu-native/source/common/putilimp.h	2015-10-08 03:53:52.000000000 +0000
-+++ icu/source/common/putilimp.h	2016-04-18 17:54:21.832844690 +0000
-@@ -101,6 +101,7 @@
+--- icu-native/source/common/putilimp.h	2017-02-03 23:12:43.468839423 +0100
++++ icu/source/common/putilimp.h	2017-02-03 23:12:24.501980770 +0100
+@@ -103,6 +103,7 @@
  #   define U_NL_LANGINFO_CODESET CODESET
  #endif
  
@@ -9,7 +9,7 @@ diff -Naur icu-native/source/common/putilimp.h icu/source/common/putilimp.h
  #ifdef U_TZSET
      /* Use the predefined value. */
  #elif U_PLATFORM_USES_ONLY_WIN32_API
-@@ -145,6 +146,7 @@
+@@ -147,6 +148,7 @@
  #else
  #   define U_TZNAME tzname
  #endif
@@ -17,220 +17,25 @@ diff -Naur icu-native/source/common/putilimp.h icu/source/common/putilimp.h
  
  #ifdef U_HAVE_MMAP
      /* Use the predefined value. */
-diff -Naur icu-native/source/common/umutex.cpp icu/source/common/umutex.cpp
---- icu-native/source/common/umutex.cpp	2015-10-08 03:53:48.000000000 +0000
-+++ icu/source/common/umutex.cpp	2016-04-18 17:54:21.832844690 +0000
-@@ -192,7 +192,7 @@
- //
- //-------------------------------------------------------------------------------------------
+diff -Naur icu-native/source/i18n/digitlst.cpp icu/source/i18n/digitlst.cpp
+--- icu-native/source/i18n/digitlst.cpp	2017-02-03 23:12:43.458839321 +0100
++++ icu/source/i18n/digitlst.cpp	2017-02-03 23:20:49.026494913 +0100
+@@ -50,6 +50,7 @@
+ #include <stdio.h>
+ #include <limits>
  
--# include <pthread.h>
-+//# include <pthread.h>
- 
- // Each UMutex consists of a pthread_mutex_t.
- // All are statically initialized and ready for use.
-@@ -203,7 +203,7 @@
-     if (mutex == NULL) {
-         mutex = &globalMutex;
-     }
--    int sysErr = pthread_mutex_lock(&mutex->fMutex);
-+    int sysErr = 0;//pthread_mutex_lock(&mutex->fMutex);
-     (void)sysErr;   // Suppress unused variable warnings.
-     U_ASSERT(sysErr == 0);
- }
-@@ -215,7 +215,7 @@
-     if (mutex == NULL) {
-         mutex = &globalMutex;
-     }
--    int sysErr = pthread_mutex_unlock(&mutex->fMutex);
-+    int sysErr = 0;//pthread_mutex_unlock(&mutex->fMutex);
-     (void)sysErr;   // Suppress unused variable warnings.
-     U_ASSERT(sysErr == 0);
- }
-@@ -226,21 +226,21 @@
-     if (mutex == NULL) {
-         mutex = &globalMutex;
-     }
--    int sysErr = pthread_cond_wait(&cond->fCondition, &mutex->fMutex);
-+    int sysErr = 0;//pthread_cond_wait(&cond->fCondition, &mutex->fMutex);
-     (void)sysErr;
-     U_ASSERT(sysErr == 0);
- }
- 
- U_CAPI void U_EXPORT2
- umtx_condBroadcast(UConditionVar *cond) {
--    int sysErr = pthread_cond_broadcast(&cond->fCondition);
-+    int sysErr = 0;//pthread_cond_broadcast(&cond->fCondition);
-     (void)sysErr;
-     U_ASSERT(sysErr == 0);
- }
- 
- U_CAPI void U_EXPORT2
- umtx_condSignal(UConditionVar *cond) {
--    int sysErr = pthread_cond_signal(&cond->fCondition);
-+    int sysErr = 0;//pthread_cond_signal(&cond->fCondition);
-     (void)sysErr;
-     U_ASSERT(sysErr == 0);
- }
-@@ -249,8 +249,8 @@
- 
- U_NAMESPACE_BEGIN
- 
--static pthread_mutex_t initMutex = PTHREAD_MUTEX_INITIALIZER;
--static pthread_cond_t initCondition = PTHREAD_COND_INITIALIZER;
-+//static pthread_mutex_t initMutex = PTHREAD_MUTEX_INITIALIZER;
-+//static pthread_cond_t initCondition = PTHREAD_COND_INITIALIZER;
- 
- 
- // This function is called when a test of a UInitOnce::fState reveals that
-@@ -263,19 +263,19 @@
- //
- U_COMMON_API UBool U_EXPORT2
- umtx_initImplPreInit(UInitOnce &uio) {
--    pthread_mutex_lock(&initMutex);
-+    //pthread_mutex_lock(&initMutex);
-     int32_t state = uio.fState;
-     if (state == 0) {
-         umtx_storeRelease(uio.fState, 1);
--        pthread_mutex_unlock(&initMutex);
-+        //pthread_mutex_unlock(&initMutex);
-         return TRUE;   // Caller will next call the init function.
-     } else {
-         while (uio.fState == 1) {
-             // Another thread is currently running the initialization.
-             // Wait until it completes.
--            pthread_cond_wait(&initCondition, &initMutex);
-+            //pthread_cond_wait(&initCondition, &initMutex);
-         }
--        pthread_mutex_unlock(&initMutex);
-+        //pthread_mutex_unlock(&initMutex);
-         U_ASSERT(uio.fState == 2);
-         return FALSE;
-     }
-@@ -291,10 +291,10 @@
- 
- U_COMMON_API void U_EXPORT2
- umtx_initImplPostInit(UInitOnce &uio) {
--    pthread_mutex_lock(&initMutex);
-+    //pthread_mutex_lock(&initMutex);
-     umtx_storeRelease(uio.fState, 2);
--    pthread_cond_broadcast(&initCondition);
--    pthread_mutex_unlock(&initMutex);
-+    //pthread_cond_broadcast(&initCondition);
-+    //pthread_mutex_unlock(&initMutex);
- }
- 
- U_NAMESPACE_END
-diff -Naur icu-native/source/common/umutex.h icu/source/common/umutex.h
---- icu-native/source/common/umutex.h	2015-10-08 03:53:40.000000000 +0000
-+++ icu/source/common/umutex.h	2016-04-18 17:54:21.833844693 +0000
-@@ -373,7 +373,12 @@
-  *  POSIX platform
-  */
- 
--#include <pthread.h>
-+//#include <pthread.h>
++#if 0
+ #if !defined(U_USE_STRTOD_L)
+ # if U_PLATFORM_USES_ONLY_WIN32_API
+ #   define U_USE_STRTOD_L 1
+@@ -59,6 +60,9 @@
+ #   define U_USE_STRTOD_L 0
+ # endif
+ #endif
++#endif
 +
-+#define PTHREAD_MUTEX_INITIALIZER 0
-+#define PTHREAD_COND_INITIALIZER 0
-+typedef int pthread_mutex_t;
-+typedef int pthread_cond_t;
++#define U_USE_STRTOD_L 0
  
- struct UMutex {
-     pthread_mutex_t  fMutex;
-diff -Naur icu-native/source/i18n/collationfastlatinbuilder.cpp icu/source/i18n/collationfastlatinbuilder.cpp
---- icu-native/source/i18n/collationfastlatinbuilder.cpp	2015-10-08 03:53:08.000000000 +0000
-+++ icu/source/i18n/collationfastlatinbuilder.cpp	2016-04-18 17:54:21.835844701 +0000
-@@ -147,7 +147,7 @@
-             // missing data
-             return FALSE;
-         }
--        result.append(0);  // reserve a slot for this group
-+        result.append((UChar)0);  // reserve a slot for this group
-     }
- 
-     firstDigitPrimary = data.getFirstPrimaryForGroup(UCOL_REORDER_CODE_DIGIT);
-@@ -564,7 +564,7 @@
-     if(U_FAILURE(errorCode)) { return FALSE; }
-     int32_t miniCEsStart = result.length();
-     for(int32_t i = 0; i < CollationFastLatin::NUM_FAST_CHARS; ++i) {
--        result.append(0);  // initialize to completely ignorable
-+        result.append((UChar)0);  // initialize to completely ignorable
-     }
-     int32_t indexBase = result.length();
-     for(int32_t i = 0; i < CollationFastLatin::NUM_FAST_CHARS; ++i) {
-diff -Naur icu-native/source/i18n/collationruleparser.cpp icu/source/i18n/collationruleparser.cpp
---- icu-native/source/i18n/collationruleparser.cpp	2015-10-08 03:53:18.000000000 +0000
-+++ icu/source/i18n/collationruleparser.cpp	2016-04-18 17:54:21.835844701 +0000
-@@ -788,7 +788,7 @@
-             return i;
-         }
-         if(PatternProps::isWhiteSpace(c)) {
--            raw.append(0x20);
-+            raw.append((UChar)0x20);
-             i = skipWhiteSpace(i + 1);
-         } else {
-             raw.append(c);
-diff -Naur icu-native/source/i18n/decimfmt.cpp icu/source/i18n/decimfmt.cpp
---- icu-native/source/i18n/decimfmt.cpp	2015-10-08 03:53:12.000000000 +0000
-+++ icu/source/i18n/decimfmt.cpp	2016-04-18 17:54:21.841844719 +0000
-@@ -442,7 +442,7 @@
-         patternUsed = pattern;
-     }
- 
--    if (patternUsed->indexOf(kCurrencySign) != -1) {
-+    if (patternUsed->indexOf((UChar)kCurrencySign) != -1) {
-         // initialize for currency, not only for plural format,
-         // but also for mix parsing
-         if (fCurrencyPluralInfo == NULL) {
-@@ -1643,7 +1643,7 @@
-         // if we didn't see a decimal and it is required, check to see if the pattern had one
-         if(!sawDecimal && isDecimalPatternMatchRequired()) 
-         {
--            if(formatPattern.indexOf(DecimalFormatSymbols::kDecimalSeparatorSymbol) != 0) 
-+            if(formatPattern.indexOf((UChar)DecimalFormatSymbols::kDecimalSeparatorSymbol) != 0) 
-             {
-                 parsePosition.setIndex(oldStart);
-                 parsePosition.setErrorIndex(position);
-@@ -1769,7 +1769,7 @@
-     // check if we missed a required decimal point
-     if(fastParseOk && isDecimalPatternMatchRequired()) 
-     {
--        if(formatPattern.indexOf(DecimalFormatSymbols::kDecimalSeparatorSymbol) != 0) 
-+        if(formatPattern.indexOf((UChar)DecimalFormatSymbols::kDecimalSeparatorSymbol) != 0) 
-         {
-             parsePosition.setIndex(oldStart);
-             parsePosition.setErrorIndex(position);
-diff -Naur icu-native/source/i18n/decimfmtimpl.cpp icu/source/i18n/decimfmtimpl.cpp
---- icu-native/source/i18n/decimfmtimpl.cpp	2015-10-08 03:53:10.000000000 +0000
-+++ icu/source/i18n/decimfmtimpl.cpp	2016-04-18 17:54:21.844844728 +0000
-@@ -241,9 +241,9 @@
-     if (scale == 0) {
-         // Needed to preserve equality. fMultiplier == 0 means
-         // multiplier is 1.
--        fMultiplier.set(0);
-+        fMultiplier.set((int32_t)0);
-     } else {
--        fMultiplier.set(1);
-+        fMultiplier.set((int32_t)1);
-         fMultiplier.shiftDecimalRight(scale);
-     }
- }
-@@ -706,7 +706,7 @@
- void
- DecimalFormatImpl::setMultiplier(int32_t m) {
-     if (m == 0 || m == 1) {
--        fMultiplier.set(0);
-+        fMultiplier.set((int32_t)0);
-     } else {
-         fMultiplier.set(m);
-     }
-@@ -1481,7 +1481,7 @@
-             }
-         } else {
-             if (i < roundingIncrementUpperExp && i >= roundingIncrementLowerExp) {
--                result.append(fEffPrecision.fMantissa.fRoundingIncrement.getDigitByExponent(i) + kPatternZeroDigit);
-+                result.append((int32_t)fEffPrecision.fMantissa.fRoundingIncrement.getDigitByExponent(i) + kPatternZeroDigit);
-             } else if (minInterval.contains(i)) {
-                 result.append(kPatternZeroDigit);
-             } else {
+ #if U_USE_STRTOD_L && !U_PLATFORM_USES_ONLY_WIN32_API
+ # if U_PLATFORM == U_PF_CYGWIN
+
