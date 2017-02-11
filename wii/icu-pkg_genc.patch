@@ -1,192 +1,22 @@
-diff -Naur icu-orig/source/tools/toolutil/pkg_genc.c icu-native/source/tools/toolutil/pkg_genc.c
---- icu-orig/source/tools/toolutil/pkg_genc.c	2015-10-08 03:54:04.000000000 +0000
-+++ icu-native/source/tools/toolutil/pkg_genc.c	2016-04-18 19:59:27.110288837 +0000
-@@ -5,6 +5,18 @@
-  */
- #include "unicode/utypes.h"
- 
-+#define __bswap_constant_16(x) \
-+  ((((x) >> 8) & 0xff) | (((x) & 0xff) << 8))
-+
-+# define __bswap_16(x) __bswap_constant_16 (x)
-+
-+/* Swap bytes in 32 bit value.  */
-+#define __bswap_constant_32(x) \
-+  ((((x) & 0xff000000) >> 24) | (((x) & 0x00ff0000) >>  8) | \
-+   (((x) & 0x0000ff00) <<  8) | (((x) & 0x000000ff) << 24))
-+
-+# define __bswap_32(x) __bswap_constant_32 (x)
-+
- #if U_PLATFORM_HAS_WIN32_API
- #   define VC_EXTRALEAN
- #   define WIN32_LEAN_AND_MEAN
-@@ -678,7 +690,7 @@
-         /* set defaults */
- #ifdef U_ELF
-         /* set EM_386 because elf.h does not provide better defaults */
--        *pCPU=EM_386;
-+        *pCPU=__bswap_16(EM_PPC);
-         *pBits=32;
-         *pIsBigEndian=(UBool)(U_IS_BIG_ENDIAN ? ELFDATA2MSB : ELFDATA2LSB);
- #elif U_PLATFORM_HAS_WIN32_API
-@@ -737,11 +749,11 @@
-     *pIsBigEndian=(UBool)(buffer.header32.e_ident[EI_DATA]==ELFDATA2MSB);
-     if(*pIsBigEndian!=U_IS_BIG_ENDIAN) {
-         fprintf(stderr, "genccode: currently only same-endianness ELF formats are supported\n");
--        exit(U_UNSUPPORTED_ERROR);
-+        //exit(U_UNSUPPORTED_ERROR);
-     }
-     /* TODO: Support byte swapping */
- 
--    *pCPU=buffer.header32.e_machine;
-+    *pCPU=__bswap_16(buffer.header32.e_machine);
- #elif U_PLATFORM_HAS_WIN32_API
-     if(length<sizeof(IMAGE_FILE_HEADER)) {
-         fprintf(stderr, "genccode: match-arch file %s is too short\n", filename);
-@@ -786,19 +798,19 @@
-             U_IS_BIG_ENDIAN ? ELFDATA2MSB : ELFDATA2LSB,
-             EV_CURRENT /* EI_VERSION */
-         },
--        ET_REL,
--        EM_386,
--        EV_CURRENT, /* e_version */
-+        __bswap_16(ET_REL),
-+        __bswap_16(EM_PPC),
-+        __bswap_32(1), /* e_version */
-         0, /* e_entry */
-         0, /* e_phoff */
--        (Elf32_Off)sizeof(Elf32_Ehdr), /* e_shoff */
-+        (Elf32_Off)__bswap_32(sizeof(Elf32_Ehdr)), /* e_shoff */
-         0, /* e_flags */
--        (Elf32_Half)sizeof(Elf32_Ehdr), /* eh_size */
-+        (Elf32_Half)__bswap_16(sizeof(Elf32_Ehdr)), /* eh_size */
-         0, /* e_phentsize */
-         0, /* e_phnum */
--        (Elf32_Half)sizeof(Elf32_Shdr), /* e_shentsize */
--        5, /* e_shnum */
--        2 /* e_shstrndx */
-+        (Elf32_Half)__bswap_16(sizeof(Elf32_Shdr)), /* e_shentsize */
-+        __bswap_16(5), /* e_shnum */
-+        __bswap_16(2) /* e_shstrndx */
-     };
- 
-     /* 32-bit Elf section header table */
-@@ -807,52 +819,52 @@
-             0
-         },
-         { /* .symtab */
--            1, /* sh_name */
--            SHT_SYMTAB,
-+            __bswap_32(1), /* sh_name */
-+            __bswap_32(SHT_SYMTAB),
-             0, /* sh_flags */
-             0, /* sh_addr */
--            (Elf32_Off)(sizeof(header32)+sizeof(sectionHeaders32)), /* sh_offset */
--            (Elf32_Word)(2*sizeof(Elf32_Sym)), /* sh_size */
--            3, /* sh_link=sect hdr index of .strtab */
--            1, /* sh_info=One greater than the symbol table index of the last
-+            (Elf32_Off)__bswap_32((sizeof(header32)+sizeof(sectionHeaders32))), /* sh_offset */
-+            (Elf32_Word)__bswap_32((2*sizeof(Elf32_Sym))), /* sh_size */
-+            __bswap_32(3), /* sh_link=sect hdr index of .strtab */
-+            __bswap_32(1), /* sh_info=One greater than the symbol table index of the last
-                 * local symbol (with STB_LOCAL). */
--            4, /* sh_addralign */
--            (Elf32_Word)(sizeof(Elf32_Sym)) /* sh_entsize */
-+            __bswap_32(4), /* sh_addralign */
-+            (Elf32_Word)__bswap_32(sizeof(Elf32_Sym)) /* sh_entsize */
-         },
-         { /* .shstrtab */
--            9, /* sh_name */
--            SHT_STRTAB,
-+            __bswap_32(9), /* sh_name */
-+            __bswap_32(SHT_STRTAB),
-             0, /* sh_flags */
-             0, /* sh_addr */
--            (Elf32_Off)(sizeof(header32)+sizeof(sectionHeaders32)+2*sizeof(Elf32_Sym)), /* sh_offset */
--            40, /* sh_size */
-+            (Elf32_Off)__bswap_32((sizeof(header32)+sizeof(sectionHeaders32)+2*sizeof(Elf32_Sym))), /* sh_offset */
-+            __bswap_32(40), /* sh_size */
-             0, /* sh_link */
-             0, /* sh_info */
--            1, /* sh_addralign */
-+            __bswap_32(1), /* sh_addralign */
-             0 /* sh_entsize */
-         },
-         { /* .strtab */
--            19, /* sh_name */
--            SHT_STRTAB,
-+            __bswap_32(19), /* sh_name */
-+            __bswap_32(SHT_STRTAB),
-             0, /* sh_flags */
-             0, /* sh_addr */
--            (Elf32_Off)(sizeof(header32)+sizeof(sectionHeaders32)+2*sizeof(Elf32_Sym)+40), /* sh_offset */
--            (Elf32_Word)sizeof(entry), /* sh_size */
-+            (Elf32_Off)__bswap_32((sizeof(header32)+sizeof(sectionHeaders32)+2*sizeof(Elf32_Sym)+40)), /* sh_offset */
-+            (Elf32_Word)__bswap_32(sizeof(entry)), /* sh_size */
-             0, /* sh_link */
-             0, /* sh_info */
--            1, /* sh_addralign */
-+            __bswap_32(1), /* sh_addralign */
-             0 /* sh_entsize */
-         },
-         { /* .rodata */
--            27, /* sh_name */
--            SHT_PROGBITS,
--            SHF_ALLOC, /* sh_flags */
-+            __bswap_32(27), /* sh_name */
-+            __bswap_32(SHT_PROGBITS),
-+            __bswap_32(SHF_ALLOC), /* sh_flags */
-             0, /* sh_addr */
--            (Elf32_Off)(sizeof(header32)+sizeof(sectionHeaders32)+2*sizeof(Elf32_Sym)+40+sizeof(entry)), /* sh_offset */
-+            (Elf32_Off)__bswap_32((sizeof(header32)+sizeof(sectionHeaders32)+2*sizeof(Elf32_Sym)+40+sizeof(entry))), /* sh_offset */
-             0, /* sh_size */
-             0, /* sh_link */
-             0, /* sh_info */
--            16, /* sh_addralign */
-+            __bswap_32(16), /* sh_addralign */
-             0 /* sh_entsize */
-         }
-     };
-@@ -863,12 +875,12 @@
-             0
-         },
-         { /* data entry point */
--            1, /* st_name */
-+            __bswap_32(1), /* st_name */
-             0, /* st_value */
-             0, /* st_size */
-             ELF64_ST_INFO(STB_GLOBAL, STT_OBJECT),
-             0, /* st_other */
--            4 /* st_shndx=index of related section table entry */
-+            __bswap_16(4) /* st_shndx=index of related section table entry */
-         }
-     };
- 
-@@ -1069,18 +1081,19 @@
- #ifdef U_ELF
-     if(bits==32) {
-         header32.e_ident[EI_DATA]= makeBigEndian ? ELFDATA2MSB : ELFDATA2LSB;
--        header32.e_machine=cpu;
-+        header32.e_machine=__builtin_bswap16(cpu);
- 
-         /* 16-align .rodata in the .o file, just in case */
--        paddingSize=sectionHeaders32[4].sh_offset & 0xf;
--        if(paddingSize!=0) {
--                paddingSize=0x10-paddingSize;
--                sectionHeaders32[4].sh_offset+=paddingSize;
--        }
-+        paddingSize=0;//sectionHeaders32[4].sh_offset & 0xf;
-+        //if(paddingSize!=0) {
-+        //       paddingSize=0x10-paddingSize;
-+        //        sectionHeaders32[4].sh_offset+=paddingSize;
-+	//	sectionHeaders32[4].sh_offset=__builtin_bswap32(sectionHeaders32[4].sh_offset);
-+        //}
- 
--        sectionHeaders32[4].sh_size=(Elf32_Word)size;
-+        sectionHeaders32[4].sh_size=(Elf32_Word)__builtin_bswap32(size);
- 
--        symbols32[1].st_size=(Elf32_Word)size;
-+        symbols32[1].st_size=(Elf32_Word)__builtin_bswap32(size);
- 
-         /* write .o headers */
-         T_FileStream_write(out, &header32, (int32_t)sizeof(header32));
+diff -Naur icu-orig/source/tools/toolutil/pkg_gencmn.c icu-native/source/tools/toolutil/pkg_gencmn.c
+--- icu-orig/source/tools/toolutil/pkg_gencmn.c	2017-02-04 00:17:49.890595524 +0100
++++ icu-native/source/tools/toolutil/pkg_gencmn.c	2017-02-04 00:20:52.285692721 +0100
+@@ -371,7 +371,7 @@
+             "} U_EXPORT2 %s_dat = {\n"
+             "    32, 0xda, 0x27, {\n"
+             "        %lu, 0,\n"
+-            "        %u, %u, %u, 0,\n"
++            "        U_IS_BIG_ENDIAN, U_CHARSET_FAMILY, U_SIZEOF_UCHAR, 0,\n"
+             "        {0x54, 0x6f, 0x43, 0x50},\n"
+             "        {1, 0, 0, 0},\n"
+             "        {0, 0, 0, 0}\n"
+@@ -381,9 +381,6 @@
+             (unsigned long)fileCount,
+             entrypointName,
+             (unsigned long)sizeof(UDataInfo),
+-            U_IS_BIG_ENDIAN,
+-            U_CHARSET_FAMILY,
+-            U_SIZEOF_UCHAR,
+             (unsigned long)fileCount
+         );
+         T_FileStream_writeLine(out, buffer);

@@ -7,8 +7,8 @@ export WORKSPACE=$PWD
 
 # helper
 function msg {
-  echo ""
-  echo $1
+	echo ""
+	echo $1
 }
 
 function download_and_extract {
@@ -38,8 +38,8 @@ perl devkitPPCupdate.pl $PWD/devkitPro
 msg " [2] Downloading generic libraries"
 
 # zlib
-rm -rf zlib-1.2.8/
-download_and_extract http://zlib.net/zlib-1.2.8.tar.gz
+rm -rf zlib-1.2.11/
+download_and_extract http://zlib.net/zlib-1.2.11.tar.gz
 
 # libpng
 rm -rf libpng-1.6.24/
@@ -66,12 +66,12 @@ rm -rf tremor-lowmem/
 download_and_extract http://downloads.sourceforge.net/sourceforge/devkitpro/tremor-lowmem-src.tar.bz2
 
 # ICU
-#rm -rf icu/
-#download_and_extract http://download.icu-project.org/files/icu4c/56.1/icu4c-56_1-src.tgz
+rm -rf icu/
+download_and_extract http://download.icu-project.org/files/icu4c/58.1/icu4c-58_1-src.tgz
 
 # icudata
-#rm -f icudt*.dat
-#download_and_extract https://easy-rpg.org/jenkins/job/icudata/lastSuccessfulBuild/artifact/icu/source/data/out/icudata.tar.gz
+rm -f icudt*.dat
+download_and_extract https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata.tar.gz
 
 # mpg123
 rm -rf mpg123-1.23.6/
@@ -90,12 +90,8 @@ rm -rf speexdsp-1.2rc3/
 download_and_extract http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz
 
 # wildmidi
-rm -rf wildmidi-0.3.9/
-download_and_extract https://github.com/Mindwerks/wildmidi/archive/wildmidi-0.3.9.tar.gz
-
-# iconv
-rm -rf libiconv-1.14/
-download_and_extract http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.14.tar.gz
+rm -rf wildmidi-wildmidi-0.4.0
+download_and_extract https://github.com/Mindwerks/wildmidi/archive/wildmidi-0.4.0.tar.gz
 
 msg " [3] Downloading platform libraries"
 

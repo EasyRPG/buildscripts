@@ -1,9 +1,12 @@
 diff -Naur mpg123-1.23.6-orig/src/compat/compat.c mpg123-1.23.6/src/compat/compat.c
---- mpg123-1.23.6-orig/src/compat/compat.c	2016-03-22 22:09:45.000000000 +0000
-+++ mpg123-1.23.6/src/compat/compat.c	2016-04-18 20:06:57.466698335 +0000
-@@ -206,9 +206,9 @@
+--- mpg123-1.23.6-orig/src/compat/compat.c	2017-02-04 00:39:47.893003203 +0100
++++ mpg123-1.23.6/src/compat/compat.c	2017-02-04 00:40:06.303132628 +0100
+@@ -204,11 +204,11 @@
+ #endif
+ 
  	new_sa.sa_handler = handler;
- 	sigemptyset(&new_sa.sa_mask);
+-	sigemptyset(&new_sa.sa_mask);
++	//sigemptyset(&new_sa.sa_mask);
  	new_sa.sa_flags = 0;
 -	if(sigaction(signum, &new_sa, &old_sa) == -1)
 -		return ((void (*)()) -1);
@@ -15,8 +18,8 @@ diff -Naur mpg123-1.23.6-orig/src/compat/compat.c mpg123-1.23.6/src/compat/compa
  #endif
  #endif
 diff -Naur mpg123-1.23.6-orig/src/control_generic.c mpg123-1.23.6/src/control_generic.c
---- mpg123-1.23.6-orig/src/control_generic.c	2016-03-22 22:09:45.000000000 +0000
-+++ mpg123-1.23.6/src/control_generic.c	2016-04-18 20:07:10.490738975 +0000
+--- mpg123-1.23.6-orig/src/control_generic.c	2017-02-04 00:39:47.863002993 +0100
++++ mpg123-1.23.6/src/control_generic.c	2017-02-04 00:39:52.949705308 +0100
 @@ -28,7 +28,7 @@
  #include <ctype.h>
  #if !defined (WIN32) || defined (__CYGWIN__)
@@ -36,8 +39,8 @@ diff -Naur mpg123-1.23.6-orig/src/control_generic.c mpg123-1.23.6/src/control_ge
     and print out each line with specified prefix. */
  static void generic_send_lines(const char* fmt, mpg123_string *inlines)
 diff -Naur mpg123-1.23.6-orig/src/mpg123.c mpg123-1.23.6/src/mpg123.c
---- mpg123-1.23.6-orig/src/mpg123.c	2016-03-22 22:09:45.000000000 +0000
-+++ mpg123-1.23.6/src/mpg123.c	2016-04-18 20:06:57.467698338 +0000
+--- mpg123-1.23.6-orig/src/mpg123.c	2017-02-04 00:39:47.866336351 +0100
++++ mpg123-1.23.6/src/mpg123.c	2017-02-04 00:39:52.949705308 +0100
 @@ -44,6 +44,8 @@
  
  #include "debug.h"

@@ -5,8 +5,8 @@ set -e
 
 # helper
 function msg {
-  echo ""
-  echo $1
+	echo ""
+	echo $1
 }
 
 function download_and_extract {
@@ -36,8 +36,8 @@ perl devkitARMupdate.pl $PWD/devkitPro
 msg " [2] Downloading generic libraries"
 
 # zlib
-rm -rf zlib-1.2.8
-download_and_extract http://zlib.net/zlib-1.2.8.tar.gz
+rm -rf zlib-1.2.11
+download_and_extract http://zlib.net/zlib-1.2.11.tar.gz
 
 # libpng
 rm -rf libpng-1.6.23/
@@ -69,11 +69,11 @@ download_and_extract http://sourceforge.net/projects/modplug-xmms/files/libmodpl
 
 # ICU
 rm -rf icu
-download_and_extract http://download.icu-project.org/files/icu4c/56.1/icu4c-56_1-src.tgz
+download_and_extract http://download.icu-project.org/files/icu4c/58.1/icu4c-58_1-src.tgz
 
 # icudata
 rm -f icudt*.dat
-download_and_extract https://easy-rpg.org/jenkins/job/icudata/lastSuccessfulBuild/artifact/icu/source/data/out/icudata.tar.gz
+download_and_extract https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata.tar.gz
 
 # mpg123
 rm -rf mpg123-1.23.3
@@ -87,14 +87,12 @@ download_and_extract http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.27
 rm -rf speexdsp-1.2rc3
 download_and_extract http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz
 
+# wildmidi
+rm -rf wildmidi-wildmidi-0.4.0
+download_and_extract https://github.com/Mindwerks/wildmidi/archive/wildmidi-0.4.0.tar.gz
+
 msg " [3] Downloading platform libraries"
 
 # 3DS specific
-rm -rf ctrulib
-git_clone https://github.com/smealum/ctrulib.git
-
 rm -rf sf2dlib
 git_clone https://github.com/xerpi/sf2dlib.git
-
-rm -rf libkhax
-git_clone https://github.com/Rinnegatamante/lpp-3ds_libraries.git

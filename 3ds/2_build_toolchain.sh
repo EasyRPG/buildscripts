@@ -8,6 +8,7 @@ export WORKSPACE=$PWD
 export DEVKITPRO=${WORKSPACE}/devkitPro
 export DEVKITARM=${DEVKITPRO}/devkitARM
 export PATH=$DEVKITARM/bin:$PATH
+export CTRULIB=${DEVKITPRO}/libctru
 
 export PLATFORM_PREFIX=$WORKSPACE
 export TARGET_HOST=arm-none-eabi
@@ -16,6 +17,14 @@ export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 
 # Number of CPU
 NBPROC=$(getconf _NPROCESSORS_ONLN)
+
+# Use ccache?
+if [ -z ${NO_CCACHE+x} ]; then
+	if hash ccache >/dev/null 2>&1; then
+		ENABLE_CCACHE=1
+		echo "CCACHE enabled"
+	fi
+fi
 
 if [ ! -f .patches-applied ]; then
 	echo "patching libraries"
@@ -33,13 +42,6 @@ if [ ! -f .patches-applied ]; then
 	# Fix broken load_abc.cpp
 	patch -Np0 < libmodplug.patch
 
-	# Give libkhax a proper makefile
-	# Revert to old lpp-3ds version because our patch fails otherwise
-	cd lpp-3ds_libraries
-	git reset --hard 03f57eff
-	cd ..
-	patch -Np0 < lpp_khax.patch
-
 	# Fix mpg123 compilation
 	patch -Np0 < mpg123.patch
 
@@ -49,11 +51,21 @@ if [ ! -f .patches-applied ]; then
 	autoreconf -fi
 	cd ..
 
+	# Fix wildmidi linking
+	patch -Np0 < wildmidi.patch
+
 	touch .patches-applied
 fi
 
 function set_build_flags {
-	export CFLAGS="-I$WORKSPACE/include -g0 -O2 -mword-relocations -fomit-frame-pointer -ffast-math -march=armv6k -mtune=mpcore -mfloat-abi=hard"
+	if [ "$ENABLE_CCACHE" ]; then
+		export CC="ccache $TARGET_HOST-gcc"
+		export CXX="ccache $TARGET_HOST-g++"
+	else
+		export CC="$TARGET_HOST-gcc"
+		export CXX="$TARGET_HOST-g++"
+	fi
+	export CFLAGS="-I$WORKSPACE/include -g0 -O2 -mword-relocations -fomit-frame-pointer -ffast-math -march=armv6k -mtune=mpcore -mfloat-abi=hard -D_3DS"
 	export CPPFLAGS="$CFLAGS"
 	export LDFLAGS="-L$WORKSPACE/lib"
 }
@@ -70,7 +82,7 @@ function install_lib {
 
 # Install zlib
 function install_lib_zlib {
-	cd zlib-1.2.8
+	cd zlib-1.2.11
 	CHOST=$TARGET_HOST ./configure --static --prefix=$PLATFORM_PREFIX
 	make clean
 	make -j$NBPROC
@@ -94,12 +106,14 @@ function install_lib_pixman {
 # Install ICU
 function install_lib_icu {
 	# Compile native version
+	unset CC
+	unset CXX
 	unset CFLAGS
 	unset CPPFLAGS
 	unset LDFLAGS
 
-	cp icudt56l.dat icu/source/data/in/
-	cp icudt56l.dat icu-native/source/data/in/
+	cp icudt58l.dat icu/source/data/in/
+	cp icudt58l.dat icu-native/source/data/in/
 	cd icu-native/source
 	sed -i.bak 's/SMALL_BUFFER_MAX_SIZE 512/SMALL_BUFFER_MAX_SIZE 2048/' tools/toolutil/pkg_genc.h
 	chmod u+x configure
@@ -122,13 +136,14 @@ function install_lib_icu {
 	cd ../..
 }
 
-function install_lib_ctru() {
-	cd ctrulib/libctru/
+function install_lib_wildmidi() {
+	cd wildmidi-wildmidi-0.4.0
+	cmake . -DCMAKE_SYSTEM_NAME=Generic -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWANT_PLAYER=OFF
 	make clean
-	make -j$NBPROC
-	cp -r include/* ../../include/
-	cp -r lib/* ../../lib/
-	cd ../..
+	make
+	cp -up include/wildmidi_lib.h $WORKSPACE/include
+	cp -up libWildMidi.a $WORKSPACE/lib
+	cd ..
 }
 
 function install_lib_sf2d() {
@@ -140,21 +155,10 @@ function install_lib_sf2d() {
 	cd ../..
 }
 
-function install_lib_khax() {
-	cd lpp-3ds_libraries
-	make clean
-	make
-	cp source_libkhax/*.h ../include/
-	cp -r lib/* ../lib/
-	cd ..
-}
-
 set_build_flags
 # Install libraries
 
 install_lib_zlib
-# Installs important system headers but does not create include/lib dir (zlib does this)
-install_lib_ctru
 install_lib "libpng-1.6.23"
 install_lib "freetype-2.6.3" "--with-harfbuzz=no --without-bzip2"
 install_lib_pixman
@@ -165,5 +169,5 @@ install_lib_icu
 install_lib "mpg123-1.23.3" "--enable-fifo=no --enable-ipv6=no --enable-network=no --enable-int-quality=no --with-cpu=generic --with-default-audio=dummy"
 install_lib "libsndfile-1.0.27"
 install_lib "speexdsp-1.2rc3"
+install_lib_wildmidi
 install_lib_sf2d
-install_lib_khax
