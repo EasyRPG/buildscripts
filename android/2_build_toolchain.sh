@@ -30,7 +30,7 @@ if [ ! -f .patches-applied ]; then
 
 	# disable pixman examples and tests
 	cd pixman-0.34.0
-	sed -i.bak 's/SUBDIRS = pixman demos test/SUBDIRS = pixman/' Makefile.am
+	sed -i '.bak' 's/SUBDIRS = pixman demos test/SUBDIRS = pixman/' Makefile.am
 	autoreconf -fi
 	cd ..
 
@@ -118,7 +118,7 @@ cp -r icu icu-native
 cp icudt56l.dat icu/source/data/in/
 cp icudt56l.dat icu-native/source/data/in/
 cd icu-native/source
-sed -i 's/SMALL_BUFFER_MAX_SIZE 512/SMALL_BUFFER_MAX_SIZE 2048/' tools/toolutil/pkg_genc.h
+sed -i '.bak' 's/SMALL_BUFFER_MAX_SIZE 512/SMALL_BUFFER_MAX_SIZE 2048/' tools/toolutil/pkg_genc.h
 ./configure --enable-static --enable-shared=no --enable-tests=no --enable-samples=no \
 	--enable-dyload=no --enable-tools --enable-extras=no --enable-icuio=no \
 	--with-data-packaging=static

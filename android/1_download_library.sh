@@ -49,20 +49,23 @@ function download_and_extract {
 	extract $file
 }
 
-# prepare toolchain
+# Prepare toolchain
 
+# Download Android SDK
 msg " [1] Installing Android SDK"
 rm -rf android-sdk/
+
+SDK_URL=http://dl.google.com/android/android-sdk_r24.4.1
 # Linux
 if [ $os = $linux ]; then
-	download_and_extract http://dl.google.com/android/android-sdk_r24.4.1-linux.tgz
+	download_and_extract ${SDK_URL}-linux.tgz
 	mv android-sdk-linux android-sdk
-# Mac
+# MacOS
 elif [ $os = $darwin ]; then
-	download_and_extract http://dl.google.com/android/android-sdk_r24.4.1-macosx.zip
+	download_and_extract ${SDK_URL}-macosx.zip
 	mv android-sdk-macosx android-sdk
 else
-	msg "Your platform is unsupported!"
+	msg "Only Linux and MacOS are supported for the moment :(."
 	exit 1
 fi
 
@@ -75,8 +78,8 @@ echo "y" | android update sdk -u -a -t build-tools-23.0.2
 echo "y" | android update sdk -u -a -t platform-tools
 # SDK Platform Android 3.1, API 12
 echo "y" | android update sdk -u -a -t android-12
-# SDK Platform Android 7.0, API 24
-echo "y" | android update sdk -u -a -t android-24
+# SDK Platform Android 6.0, API 23
+echo "y" | android update sdk -u -a -t android-23
 # Android Support Library
 echo "y" | android update sdk -u -a -t extra-android-support
 # Android Support Library Repository
@@ -171,4 +174,4 @@ download_and_extract http://download.icu-project.org/files/icu4c/56.1/icu4c-56_1
 
 # icudata
 rm -f icudt*.dat
-download_and_extract https://easy-rpg.org/jenkins/job/icudata/lastSuccessfulBuild/artifact/icu/source/data/out/icudata.tar.gz
+download_and_extract https://easyrpg.org/downloads/tmp/icudata56.tar.gz
