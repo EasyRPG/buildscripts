@@ -38,8 +38,9 @@ else
 	git clone https://github.com/Ghabry/timidity_gus.git assets/timidity
 fi
 
-# The target 1 should be API 12 if the user followed the script number 1 :
-android update project --path "." --target 1
+# The target 1 should be API 23 if the user followed the script number 1 :
+TARGET=$(android list | grep 'android-23' | awk '{print $2}')
+android update project --path "." --target $TARGET
 
 # Build
 ndk-build -j$NBPROC NDK_LIBS_OUT=./jniLibs
