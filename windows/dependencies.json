@@ -283,7 +283,7 @@
 		"SourceDirs": ["src"]
 	},
 	"libpng": {
-		"Source": "http://prdownloads.sourceforge.net/libpng/libpng-1.6.20.tar.gz",
+		"Source": "http://prdownloads.sourceforge.net/libpng/libpng-1.6.29.tar.gz",
 		"DependsOn": ["zlib"],
 		"HeaderDirs": ["."],
 		"SourceDirs": ["."],
@@ -405,7 +405,7 @@
 		]
 	},
 	"pixman": {
-		"Source": "http://cairographics.org/releases/pixman-0.32.8.tar.gz",
+		"Source": "http://cairographics.org/releases/pixman-0.34.0.tar.gz",
 		"Preprocessor": [
 			"PACKAGE=pixman",
 			"PACKAGE_VERSION=",
