@@ -11,7 +11,8 @@ IF "%EASYDEV_MSVC%"=="" SET EASYDEV_MSVC=%CD%\build
 
 set PATH=%CD%/msys/bin;%PATH%
 
-wget --no-check-certificate https://easy-rpg.org/jenkins/job/icudata/lastSuccessfulBuild/artifact/icu/source/data/out/icudata.tar.gz
+REM icudata 58 URL https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata.tar.gz
+wget --no-check-certificate https://easyrpg.org/downloads/tmp/icudata56.tar.gz -O icudata.tar.gz
 tar xf icudata.tar.gz
 copy /Y icudt56l.dat projects\icu\source\data\in
 

@@ -62,12 +62,10 @@
 	"SDL2_mixer": {
 		"Source": "https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.1.tar.gz",
 		"DependsOn": [
-			"libmad",
 			"libmodplug",
 			"libogg",
 			"libvorbis",
 			"native_midi",
-			"smpeg",
 			"SDL2"
 		],
 		"Preprocessor": [
@@ -75,7 +73,6 @@
 			"MODPLUG_HEADER=&lt;modplug.h&gt;",
 			"WAV_MUSIC",
 			"MODPLUG_MUSIC",
-			"MP3_MAD_MUSIC",
 			"OGG_MUSIC",
 			"MID_MUSIC",
 			"USE_NATIVE_MIDI"
@@ -270,51 +267,6 @@
 		"Preprocessor": ["COMPILED_FROM_DSP"],
 		"HeaderDirs": ["lib"],
 		"SourceDirs": ["lib"]
-	},
-	"libmad": {
-		"Source": "http://sourceforge.net/projects/mad/files/libmad/0.15.1b/libmad-0.15.1b.tar.gz",
-		"Preprocessor": [
-			"HAVE_CONFIG_H",
-			"ASO_ZEROCHECK"
-		],
-		"Preprocessor_Debug_x86": [
-			"FPM_DEFAULT"
-		],
-		"Preprocessor_Debug_amd64": [
-			"FPM_64BIT"
-		],
-		"Preprocessor_Release_x86": [
-			"FPM_INTEL"
-		],
-		"Preprocessor_Release_amd64": [
-			"FPM_64BIT"
-		],
-		"Preprocessor_Debug_arm": [
-			"FPM_DEFAULT"
-		],
-		"Preprocessor_Release_arm": [
-			"FPM_DEFAULT"
-		],
-		"IncludeDirs": ["msvc++"],
-		"HeaderDirs": ["."],
-		"SourceDirs": ["."],
-		"SourceExcludes": ["minimad.c"]
-	},
-	"smpeg": {
-		"Source": "https://www.libsdl.org/projects/smpeg/release/smpeg2-2.0.0.tar.gz",
-		"Preprocessor": [
-			"WIN32",
-			"NOCONTROLS"
-		],
-		"DependsOn": ["SDL2"],
-		"IncludeDirs": ["."],
-		"HeaderDirs": ["."],
-		"SourceDirs": [
-			".",
-			"audio",
-			"video"
-		],
-		"SourceExcludes": "plaympeg.c"
 	},
 	"libmodplug": {
 		"Source": "http://sourceforge.net/projects/modplug-xmms/files/libmodplug/0.8.8.5/libmodplug-0.8.8.5.tar.gz",
