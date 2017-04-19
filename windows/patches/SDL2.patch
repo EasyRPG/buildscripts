@@ -1,7 +1,7 @@
-diff -Naur .\SDL2-2.0.4-old/src/dynapi/SDL_dynapi.h .\SDL2-2.0.4/src/dynapi/SDL_dynapi.h
---- .\SDL2-2.0.4-old/src/dynapi/SDL_dynapi.h	2016-01-12 19:39:01 +0000
-+++ .\SDL2-2.0.4/src/dynapi/SDL_dynapi.h	2016-01-13 22:22:19 +0000
-@@ -53,7 +53,7 @@
+diff -Naur .\SDL2-2.0.5-old/src/dynapi/SDL_dynapi.h .\SDL2-2.0.5/src/dynapi/SDL_dynapi.h
+--- .\SDL2-2.0.5-old/src/dynapi/SDL_dynapi.h	2016-01-12 19:39:01 +0000
++++ .\SDL2-2.0.5/src/dynapi/SDL_dynapi.h	2016-01-13 22:22:19 +0000
+@@ -59,7 +59,7 @@
  
  /* everyone else. This is where we turn on the API if nothing forced it off. */
  #ifndef SDL_DYNAMIC_API
@@ -10,17 +10,4 @@ diff -Naur .\SDL2-2.0.4-old/src/dynapi/SDL_dynapi.h .\SDL2-2.0.4/src/dynapi/SDL_
  #endif
  
  #endif
-diff -Naur .\SDL2-2.0.4-old/src/render/direct3d/SDL_render_d3d.c .\SDL2-2.0.4/src/render/direct3d/SDL_render_d3d.c
---- .\SDL2-2.0.4-old/src/render/direct3d/SDL_render_d3d.c	2016-01-02 19:56:31 +0000
-+++ .\SDL2-2.0.4/src/render/direct3d/SDL_render_d3d.c	2016-01-13 22:24:01 +0000
-@@ -1003,6 +1003,10 @@
- {
-     D3D_RenderData *data = (D3D_RenderData *)renderer->driverdata;
-     D3D_TextureData *texturedata = (D3D_TextureData *)texture->driverdata;
-+	
-+    if (!texturedata) {
-+        return 0;
-+    }
  
-     if (D3D_RecreateTextureRep(data->device, &texturedata->texture, texture->format, texture->w, texture->h) < 0) {
-         return -1;

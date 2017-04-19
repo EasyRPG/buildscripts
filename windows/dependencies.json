@@ -1,6 +1,6 @@
 {
 	"SDL2": {
-		"Source": "https://www.libsdl.org/release/SDL2-2.0.4.tar.gz",
+		"Source": "https://www.libsdl.org/release/SDL2-2.0.5.tar.gz",
 		"Preprocessor": ["HAVE_LIBC"],
 		"IncludeDirs": ["include"],
 		"HeaderDirs": ["include"],
@@ -212,7 +212,7 @@
 		]
 	},
 	"harfbuzz": {
-		"Source": "https://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.1.3.tar.bz2",
+		"Source": "https://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.3.2.tar.bz2",
 		"Preprocessor": [
 			"HAVE_FREETYPE",
 			"HAVE_OT",
@@ -263,7 +263,7 @@
 		]
 	},
 	"libexpat": {
-		"Source": "http://sourceforge.net/projects/expat/files/expat/2.1.0/expat-2.1.0.tar.gz",
+		"Source": "http://sourceforge.net/projects/expat/files/expat/2.2.0/expat-2.2.0.tar.bz2",
 		"Preprocessor": ["COMPILED_FROM_DSP"],
 		"HeaderDirs": ["lib"],
 		"SourceDirs": ["lib"]
@@ -312,7 +312,7 @@
 		"SourceFiles": ["lib/vorbisfile.c"]
 	},
 	"mpg123": {
-		"Source": "http://www.mpg123.de/download/mpg123-1.23.3.tar.bz2",
+		"Source": "http://www.mpg123.de/download/mpg123-1.23.8.tar.bz2",
 		"Preprocessor": [
 			"WIN32",
 			"_CRT_SECURE_NO_WARNINGS",
@@ -361,7 +361,7 @@
 		]
 	},
 	"libsndfile": {
-		"Source": "http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.26.tar.gz",
+		"Source": "http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.28.tar.gz",
 		"Preprocessor": [
 			"LIBSNDFILE_PRIVATE_CONFIG",
 			"_USE_MATH_DEFINES"
@@ -435,7 +435,7 @@
 		"SourceDirs": ["."]
 	},
 	"ICU": {
-		"Source": "http://download.icu-project.org/files/icu4c/56.1/icu4c-56_1-src.tgz",
+		"Source": "http://download.icu-project.org/files/icu4c/59.1/icu4c-59_1-src.tgz",
 		"BaseDir": "icu",
 		"HeaderDirs": [
 			"source/common/unicode",
@@ -444,7 +444,7 @@
 		"HeaderTargetDir": "unicode"
 	},
 	"glew32": {
-		"Source": "https://sourceforge.net/projects/glew/files/glew/1.13.0/glew-1.13.0.tgz",
+		"Source": "https://sourceforge.net/projects/glew/files/glew/2.0.0/glew-2.0.0.tgz",
 		"Preprocessor": [
 			"WIN32",
 			"WIN32_LEAN_AND_MEAN",

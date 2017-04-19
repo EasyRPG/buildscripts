@@ -1,62 +1,6 @@
-diff -Naur .\libsndfile-1.0.26-orig/src/alac.c .\libsndfile-1.0.26/src/alac.c
---- .\libsndfile-1.0.26-orig/src/alac.c	2015-11-09 09:48:42 +0000
-+++ .\libsndfile-1.0.26/src/alac.c	2016-07-10 13:45:18 +0000
-@@ -170,7 +170,7 @@
- 	{	ALAC_ENCODER *penc = &plac->encoder ;
- 		SF_CHUNK_INFO chunk_info ;
- 		sf_count_t readcount ;
--		uint8_t *kuki_data [plac->kuki_size] ;
-+		uint8_t *kuki_data = (uint8_t*)malloc(plac->kuki_size);
- 		uint32_t pakt_size = 0, saved_partial_block_frames ;
- 
- 		plac->final_write_block = 1 ;
-@@ -196,6 +196,7 @@
- 		chunk_info.datalen = pakt_size ;
- 		psf_save_write_chunk (&psf->wchunks, &chunk_info) ;
- 
-+		free (kuki_data);
- 		free (chunk_info.data) ;
- 		chunk_info.data = NULL ;
- 
-@@ -402,7 +403,7 @@
- static int
- alac_decode_block (SF_PRIVATE *psf, ALAC_PRIVATE *plac)
- {	ALAC_DECODER *pdec = &plac->decoder ;
--	uint8_t		byte_buffer [psf->sf.channels * ALAC_BYTE_BUFFER_SIZE] ;
-+	uint8_t*	byte_buffer = (uint8_t*)malloc(psf->sf.channels * ALAC_BYTE_BUFFER_SIZE) ;
- 	uint32_t	packet_size ;
- 	BitBuffer	bit_buffer ;
- 
-@@ -431,6 +432,8 @@
- 
- 	plac->partial_block_frames = 0 ;
- 
-+	free(byte_buffer);
-+
- 	return 1 ;
- } /* alac_decode_block */
- 
-@@ -438,7 +441,7 @@
- static int
- alac_encode_block (SF_PRIVATE * psf, ALAC_PRIVATE *plac)
- {	ALAC_ENCODER *penc = &plac->encoder ;
--	uint8_t	byte_buffer [psf->sf.channels * ALAC_BYTE_BUFFER_SIZE] ;
-+	uint8_t* byte_buffer = (uint8_t*)malloc(psf->sf.channels * ALAC_BYTE_BUFFER_SIZE);
- 	uint32_t num_bytes = 0 ;
- 
- 	alac_encode (penc, plac->partial_block_frames, plac->buffer, byte_buffer, &num_bytes) ;
-@@ -448,6 +451,8 @@
- 	if ((plac->pakt_info = alac_pakt_append (plac->pakt_info, num_bytes)) == NULL)
- 		return 0 ;
- 
-+	free(byte_buffer);
-+
- 	plac->partial_block_frames = 0 ;
- 
- 	return 1 ;
-diff -Naur .\libsndfile-1.0.26-orig/src/common.c .\libsndfile-1.0.26/src/common.c
---- .\libsndfile-1.0.26-orig/src/common.c	2015-11-09 20:49:24 +0000
-+++ .\libsndfile-1.0.26/src/common.c	2016-07-09 22:33:59 +0000
+diff -Naur .\libsndfile-1.0.28-orig/src/common.c .\libsndfile-1.0.28/src/common.c
+--- .\libsndfile-1.0.28-orig/src/common.c	2015-11-09 20:49:24 +0000
++++ .\libsndfile-1.0.28/src/common.c	2016-07-09 22:33:59 +0000
 @@ -1641,7 +1641,7 @@
  		tmpdir = tmpdir == NULL ? "/tmp" : tmpdir ;
  		} ;
@@ -66,9 +10,9 @@ diff -Naur .\libsndfile-1.0.26-orig/src/common.c .\libsndfile-1.0.26/src/common.
  	{	snprintf (fname, fnamelen, "%s/%x%x-alac.tmp", tmpdir, psf_rand_int32 (), psf_rand_int32 ()) ;
  		if ((file = fopen (fname, "wb+")) != NULL)
  			return file ;
-diff -Naur .\libsndfile-1.0.26-orig/src/config.h .\libsndfile-1.0.26/src/config.h
---- .\libsndfile-1.0.26-orig/src/config.h	1970-01-01 00:00:00 +0000
-+++ .\libsndfile-1.0.26/src/config.h	2016-07-09 22:33:59 +0000
+diff -Naur .\libsndfile-1.0.28-orig/src/config.h .\libsndfile-1.0.28/src/config.h
+--- .\libsndfile-1.0.28-orig/src/config.h	1970-01-01 00:00:00 +0000
++++ .\libsndfile-1.0.28/src/config.h	2016-07-09 22:33:59 +0000
 @@ -0,0 +1,322 @@
 +// Based on: https://github.com/lordmulder/libsndfile-MSVC
 +/*
@@ -392,9 +336,9 @@ diff -Naur .\libsndfile-1.0.26-orig/src/config.h .\libsndfile-1.0.26/src/config.
 +/* Set to 1 to use C99 printf/snprintf in MinGW. */
 +/* #undef __USE_MINGW_ANSI_STDIO */
 +#endif
-diff -Naur .\libsndfile-1.0.26-orig/src/sndfile.h .\libsndfile-1.0.26/src/sndfile.h
---- .\libsndfile-1.0.26-orig/src/sndfile.h	1970-01-01 00:00:00 +0000
-+++ .\libsndfile-1.0.26/src/sndfile.h	2016-07-09 22:33:59 +0000
+diff -Naur .\libsndfile-1.0.28-orig/src/sndfile.h .\libsndfile-1.0.28/src/sndfile.h
+--- .\libsndfile-1.0.28-orig/src/sndfile.h	1970-01-01 00:00:00 +0000
++++ .\libsndfile-1.0.28/src/sndfile.h	2016-07-09 22:33:59 +0000
 @@ -0,0 +1,831 @@
 +/*
 +** Copyright (C) 1999-2015 Erik de Castro Lopo <erikd@mega-nerd.com>
