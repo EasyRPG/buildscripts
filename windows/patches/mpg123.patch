@@ -28,7 +28,7 @@ diff -Naur .\mpg123-1.23.8-orig/ports/MSVC++/mpg123.h .\mpg123-1.23.8/ports/MSVC
 +
 +#ifndef MPG123_LIB_H
 +#define MPG123_LIB_H
-+
++typedef long ssize_t;
 +
 +/** \file fmt123.h Audio format definitions. */
 +
