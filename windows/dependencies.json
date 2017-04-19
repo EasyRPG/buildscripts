@@ -65,8 +65,7 @@
 			"libmodplug",
 			"libogg",
 			"libvorbis",
-			"native_midi",
-			"SDL2"
+			"native_midi"
 		],
 		"Preprocessor": [
 			"MODPLUG_STATIC",
@@ -100,17 +99,17 @@
 		"SourceDirs": ["."]
 	},
 	"SDL2main": {
-		"BaseDir": "SDL2-2.0.4",
+		"BaseDir": "SDL2-2.0.5",
 		"DependsOn": ["SDL2"],
 		"SourceDirs": ["src/main/windows"]
 	},
 	"native_midi": {
 		"BaseDir": "SDL2_mixer-2.0.1",
 		"SourceDirs": ["native_midi"],
-		"DepondsOn": ["SDL2"]
+		"DependsOn": ["SDL2"]
 	},
 	"freetype": {
-		"Source": "http://sourceforge.net/projects/freetype/files/freetype2/2.6.2/freetype-2.6.2.tar.gz",
+		"Source": "http://sourceforge.net/projects/freetype/files/freetype2/2.6.5/freetype-2.6.5.tar.gz",
 		"Preprocessor": [
 			"FT2_BUILD_LIBRARY",
 			"FT_CONFIG_OPTION_USE_HARFBUZZ"
@@ -163,7 +162,7 @@
 		]
 	},
 	"freetype_noharfbuzz": {
-		"BaseDir": "freetype-2.6.2",
+		"BaseDir": "freetype-2.6.5",
 		"Preprocessor": [
 			"FT2_BUILD_LIBRARY"
 		],
@@ -330,7 +329,6 @@
 			"ports/MSVC++"
 		],
 		"SourceFiles": [
-			"src/libmpg123/compat.c",
 			"src/libmpg123/dct64.c",
 			"src/libmpg123/dct64_i386.c",
 			"src/libmpg123/dct64_i486.c",
