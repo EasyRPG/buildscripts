@@ -8,11 +8,13 @@ glew: MIT
 harfbuzz: MIT
 icu4c: ICU license
 libmodplug: Public Domain
+libmpg123: LGPLv2.1
 libogg: BSD
 libpng: zlib
-libsndfile: LGPL
+libsndfile: LGPLv2.1
 libvorbis: BSD
-libmpg123: LGPLv2.1
+libwildmidi: LGPLv3
+libxmp-lite: MIT
 pixman: MIT
 SDL2: zlib
 SDL2 image: zlib
