@@ -99,7 +99,8 @@ foreach ($name in $deps.psobject.properties.name) {
         echo "Downloading $name"
         $fname = $item.Source.Split("/")[-1]
         wget $item.Source --no-check-certificate -O "$project_dir/$fname" 2>&1 | Out-Null
-        if ($?) {            Write-Error "Downloading $name failed"
+        if ($?) {
+            Write-Error "Downloading $name failed"
             exit
         }
     }
