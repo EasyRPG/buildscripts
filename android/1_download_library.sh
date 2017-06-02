@@ -9,8 +9,12 @@ darwin="Darwin"
 linux="Linux"
 
 if [ $os = $darwin ] ; then
-	echo "Darwin detected"
-	brew install autoconf
+	echo "#############################################################"
+	echo "#"
+	echo "# Mac OSX / Darwin detected. Please make sure the needed"
+	echo "# tools are installed. See the README.md file for reference."
+	echo "#"
+	echo "#############################################################"
 fi
 
 export WORKSPACE=$PWD

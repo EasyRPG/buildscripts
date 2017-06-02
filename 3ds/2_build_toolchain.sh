@@ -35,7 +35,7 @@ if [ ! -f .patches-applied ]; then
 
 	# disable pixman examples and tests
 	cd pixman-0.34.0
-	sed -i.bak 's/SUBDIRS = pixman demos test/SUBDIRS = pixman/' Makefile.am
+	perl -pi -e 's/SUBDIRS = pixman demos test/SUBDIRS = pixman/' Makefile.am
 	autoreconf -fi
 	cd ..
 
@@ -115,7 +115,7 @@ function install_lib_icu {
 	cp icudt58l.dat icu/source/data/in/
 	cp icudt58l.dat icu-native/source/data/in/
 	cd icu-native/source
-	sed -i.bak 's/SMALL_BUFFER_MAX_SIZE 512/SMALL_BUFFER_MAX_SIZE 2048/' tools/toolutil/pkg_genc.h
+	perl -pi -e 's/SMALL_BUFFER_MAX_SIZE 512/SMALL_BUFFER_MAX_SIZE 2048/' tools/toolutil/pkg_genc.h
 	chmod u+x configure
 	./configure --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools --enable-extras=no --enable-icuio=no --with-data-packaging=static
 	make -j$NBPROC

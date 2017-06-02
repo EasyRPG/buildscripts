@@ -2,13 +2,20 @@
 
 ## Android Toolchain and libraries
 
-Specific building requirements for Linux :
+Specific building requirements for Linux/OS X:
 
  - bash
  - autotools (autoconf, automake & libtool)
  - git
  - core tools like make, sed, patch & pkg-config
  - a Java (>=6) SDK
+
+Example installation under OSX:
+
+    brew install autoconf
+    brew install automake
+    brew install pkg-config
+    brew install libtool
 
 Local build process:
 
