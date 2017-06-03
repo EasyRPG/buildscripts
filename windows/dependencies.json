@@ -319,7 +319,7 @@
 		"SourceFiles": ["lib/vorbisfile.c"]
 	},
 	"mpg123": {
-		"Source": "http://www.mpg123.de/download/mpg123-1.23.8.tar.bz2",
+		"Source": "http://www.mpg123.de/download/mpg123-1.25.0.tar.bz2",
 		"Preprocessor": [
 			"OPT_GENERIC",
 			"OPT_I486"
@@ -332,7 +332,8 @@
 			"ports/MSVC++"
 		],
 		"HeaderDirs": [
-			"ports/MSVC++"
+			"ports/MSVC++",
+			"src/libmpg123"
 		],
 		"SourceFiles": [
 			"src/compat/compat.c",
