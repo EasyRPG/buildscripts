@@ -1,27 +1,12 @@
-diff -Naur .\icu-orig/source/common/umapfile.c .\icu/source/common/umapfile.c
---- .\icu-orig/source/common/umapfile.c	2015-10-08 03:53:48 +0000
-+++ .\icu/source/common/umapfile.c	2016-04-16 10:43:16 +0000
-@@ -129,19 +129,20 @@
-            and mappingAttributesPtr == NULL for that case. */
- 
-         /* create an unnamed Windows file-mapping object for the specified file */
--        map=CreateFileMapping(file, mappingAttributesPtr, PAGE_READONLY, 0, 0, NULL);
-+		return FALSE;
-+        /*map=CreateFileMapping(file, mappingAttributesPtr, PAGE_READONLY, 0, 0, NULL);
-         CloseHandle(file);
-         if(map==NULL) {
-             return FALSE;
-         }
- 
--        /* map a view of the file into our address space */
-+        * map a view of the file into our address space *
-         pData->pHeader=(const DataHeader *)MapViewOfFile(map, FILE_MAP_READ, 0, 0, 0);
-         if(pData->pHeader==NULL) {
-             CloseHandle(map);
-             return FALSE;
-         }
--        pData->map=map;
-+        pData->map=map;*/
-         return TRUE;
-     }
- 
+﻿diff -Naur .\icu-old/source/tools/escapesrc/escapesrc.cpp .\icu/source/tools/escapesrc/escapesrc.cpp 
+--- .\icu-old/source/tools/escapesrc/escapesrc.cpp	2014-03-09 23:49:07 +0000
++++ .\icu/source/tools/escapesrc/escapesrc.cpp 	2017-04-19 23:08:14 +0000
+@@ -4,7 +4,7 @@
+ #include <stdio.h>
+ #include <string>
+ #include <stdlib.h>
+-#include <unistd.h>
++//#include <unistd.h>
+ #include <errno.h>
+ #include <string.h>
+ #include <iostream>

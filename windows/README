@@ -4,7 +4,8 @@ for Visual Studio easily.
 Requirements
 ============
 
-Any version of Visual Studio 2015 or compatible Windows SDK installed. The libs will compile with older compilers, but EasyRPG Player won't.
+Any version of Visual Studio 2015 or compatible Windows SDK installed.
+The libs will compile with older compilers, but EasyRPG Player won't.
 
 The powershell script (setup.ps1) requires execution permissions. Open a
 powershell with admin permissions and run "set-executionpolicy remotesigned" once.
@@ -47,24 +48,24 @@ order to fix this.
 
 Library list
 ============
-expat 2.1.0
-freetype 2.6.2
-glew 1.13.0
-harfbuzz 1.1.3
-icu4c-56.1
-libmad 0.15.1b
+expat 2.2.0
+freetype 2.6.5
+glew 2.0.0
+harfbuzz 1.3.2
+icu4c-59.1
 libmodplug 0.8.8.5
+libmpg123 1.25.0
 libogg 1.3.2
-libpng 1.6.20
-libsndfile 1.0.26
+libpng 1.6.29
+libsndfile 1.0.28
 libvorbis 1.3.5
 libvorbisfile 1.3.5 (included with libvorbis)
-mpg123 1.23.3
+libwildmidi 0.4.1
+libxmp-lite 4.4.1
 native_midi (included with SDL_mixer)
-pixman 0.32.8
-SDL2-2.0.4
+pixman 0.34.0
+SDL2-2.0.5
 SDL2_image-2.0.1
 SDL2_mixer-2.0.1
-smpeg 2.0.0
 speexdsp 1.2rc3
 zlib 1.2.11

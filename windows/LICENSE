@@ -7,17 +7,17 @@ freetype: FreeType License or GPLv2 or later (see docs/LICENSE.TXT)
 glew: MIT
 harfbuzz: MIT
 icu4c: ICU license
-libmad: GPLv2 or later
 libmodplug: Public Domain
+libmpg123: LGPLv2.1
 libogg: BSD
 libpng: zlib
-libsndfile: LGPL
+libsndfile: LGPLv2.1
 libvorbis: BSD
-mpg123: LGPLv2.1
+libwildmidi: LGPLv3
+libxmp-lite: MIT
 pixman: MIT
 SDL2: zlib
 SDL2 image: zlib
 SDL2 mixer: zlib
-smpeg: LGPL
 speexdsp: BSD
 zlib: zlib

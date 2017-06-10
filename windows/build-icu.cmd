@@ -11,9 +11,9 @@ IF "%EASYDEV_MSVC%"=="" SET EASYDEV_MSVC=%CD%\build
 
 set PATH=%CD%/msys/bin;%PATH%
 
-wget --no-check-certificate https://easy-rpg.org/jenkins/job/icudata/lastSuccessfulBuild/artifact/icu/source/data/out/icudata.tar.gz
+wget --no-check-certificate https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata.tar.gz -O icudata.tar.gz
 tar xf icudata.tar.gz
-copy /Y icudt56l.dat projects\icu\source\data\in
+copy /Y icudt58l.dat projects\icu\source\data\in
 
 set __tmp=%CD%\projects\icu-native\source
 set ICU_CROSS_BUILD=%__tmp:\=/%
@@ -24,7 +24,7 @@ if "%Platform%"=="ARM" (
 
 pushd projects\icu\source
 if "%Platform%"=="ARM" (
-  set CPPFLAGS=-D_ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE=1
+  set CPPFLAGS=-D_ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE -DU_PLATFORM_HAS_WINUWP_API
   sh runConfigureICU Cygwin/MSVC --with-cross-build=%ICU_CROSS_BUILD% --host=i686-pc-mingw32 --enable-debug --disable-release --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no --enable-icuio=no --with-data-packaging=static
 ) else (
   sh runConfigureICU --enable-debug --disable-release Cygwin/MSVC --enable-static --disable-shared --disable-tests --disable-samples --enable-extras=no --enable-icuio=no --with-data-packaging=static --prefix "$EASYDEV_MSVC/lib"
