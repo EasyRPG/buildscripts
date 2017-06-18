@@ -9,6 +9,8 @@ msbuild.exe /? >NUL 2>&1 || (
 
 IF "%EASYDEV_MSVC%"=="" SET EASYDEV_MSVC=%CD%\build
 
+IF "%PLATFORM%"=="" SET PLATFORM=X86
+
 set PATH=%CD%/msys/bin;%PATH%
 
 wget --no-check-certificate https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata.tar.gz -O icudata.tar.gz
@@ -18,12 +20,12 @@ copy /Y icu*.dat projects\icu\source\data\in
 set __tmp=%CD%\projects\icu-native\source
 set ICU_CROSS_BUILD=%__tmp:\=/%
 
-if "%Platform%"=="ARM" (
+if "%PLATFORM%"=="ARM" (
   xcopy /Y /I /E projects\icu projects\icu-native
 )
 
 pushd projects\icu\source
-if "%Platform%"=="ARM" (
+if "%PLATFORM%"=="ARM" (
   set CPPFLAGS=-D_ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE -DU_PLATFORM_HAS_WINUWP_API
   sh runConfigureICU Cygwin/MSVC --with-cross-build=%ICU_CROSS_BUILD% --host=i686-pc-mingw32 --enable-debug --disable-release --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no --enable-icuio=no --with-data-packaging=static
 ) else (
@@ -32,10 +34,10 @@ if "%Platform%"=="ARM" (
 make clean
 make
 
-xcopy /Y /I lib\*.lib %EASYDEV_MSVC%\lib\%Platform%\Debug
+xcopy /Y /I lib\*.lib %EASYDEV_MSVC%\lib\%PLATFORM%\Debug
 
 del lib\*.lib
-if "%Platform%"=="ARM" (
+if "%PLATFORM%"=="ARM" (
   sh runConfigureICU Cygwin/MSVC --with-cross-build=%ICU_CROSS_BUILD% --host=i686-pc-mingw32 --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no --enable-icuio=no --with-data-packaging=static
 ) else (
   sh runConfigureICU Cygwin/MSVC --enable-static --disable-shared --disable-tests --disable-samples --enable-extras=no --enable-icuio=no --with-data-packaging=static --prefix "$EASYDEV_MSVC/lib"
@@ -43,11 +45,11 @@ if "%Platform%"=="ARM" (
 make clean
 make
 
-xcopy /Y /I lib\*.lib %EASYDEV_MSVC%\lib\%Platform%\Release
+xcopy /Y /I lib\*.lib %EASYDEV_MSVC%\lib\%PLATFORM%\Release
 
 popd
 
-if "%Platform%"=="ARM" (
-  xcopy /Y /I winrt\*.lib %EASYDEV_MSVC%\lib\%Platform%\Debug
-  xcopy /Y /I winrt\*.lib %EASYDEV_MSVC%\lib\%Platform%\Release
+if "%PLATFORM%"=="ARM" (
+  xcopy /Y /I winrt\*.lib %EASYDEV_MSVC%\lib\%PLATFORM%\Debug
+  xcopy /Y /I winrt\*.lib %EASYDEV_MSVC%\lib\%PLATFORM%\Release
 )

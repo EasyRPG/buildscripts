@@ -13,6 +13,10 @@ if [%1]==[] (
 
 set TARGETTOOLSET=%1
 
+IF "%EASYDEV_MSVC%"=="" SET EASYDEV_MSVC=%CD%\build
+
+IF "%PLATFORM%"=="" SET PLATFORM=X86
+
 echo Compiling using toolset %TARGETTOOLSET%
 echo.
 @echo on
