@@ -13,7 +13,7 @@ set PATH=%CD%/msys/bin;%PATH%
 
 wget --no-check-certificate https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata.tar.gz -O icudata.tar.gz
 tar xf icudata.tar.gz
-copy /Y icudt58l.dat projects\icu\source\data\in
+copy /Y icu*.dat projects\icu\source\data\in
 
 set __tmp=%CD%\projects\icu-native\source
 set ICU_CROSS_BUILD=%__tmp:\=/%
