@@ -1,0 +1,20 @@
+diff -Naur SDL2_mixer-2.0.1-orig/Makefile.in SDL2_mixer-2.0.1/Makefile.in
+--- SDL2_mixer-2.0.1-orig/Makefile.in	2017-06-19 07:03:31.000000000 -0600
++++ SDL2_mixer-2.0.1/Makefile.in	2017-06-19 07:04:06.000000000 -0600
+@@ -47,7 +47,7 @@
+ LT_REVISION = @LT_REVISION@
+ LT_LDFLAGS  = -no-undefined -rpath $(libdir) -release $(LT_RELEASE) -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
+ 
+-all: $(srcdir)/configure Makefile $(objects) $(objects)/$(TARGET) $(objects)/playwave$(EXE) $(objects)/playmus$(EXE)
++all: $(srcdir)/configure Makefile $(objects) $(objects)/$(TARGET)
+ 
+ $(srcdir)/configure: $(srcdir)/configure.in
+ 	@echo "Warning, configure.in is out of date"
+diff -Naur SDL2_mixer-2.0.1-orig/configure.in SDL2_mixer-2.0.1/configure.in
+--- SDL2_mixer-2.0.1-orig/configure.in	2017-06-19 07:03:25.000000000 -0600
++++ SDL2_mixer-2.0.1/configure.in	2017-06-19 07:04:05.000000000 -0600
+@@ -1,3 +1,4 @@
++AC_CONFIG_MACRO_DIRS([acinclude])
+ dnl Process this file with autoconf to produce a configure script.
+ AC_INIT(README.txt)
+ AC_CONFIG_AUX_DIR(build-scripts)
