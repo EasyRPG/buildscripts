@@ -106,6 +106,64 @@ function install_lib_mixer() {
 	cd ..
 }
 
+function build() {
+	# $1: Toolchain Name
+	# $2: Toolchain architecture
+	# $3: Android arch
+	# $4: host for configure
+	# $5: additional CPP flags
+
+	cd $WORKSPACE
+
+	echo "preparing $1 toolchain"
+
+	export PATH=$OLD_PATH
+	export PLATFORM_PREFIX=$WORKSPACE/$2-toolchain
+	$NDK_ROOT/build/tools/make_standalone_toolchain.py --api=9 \
+		--install-dir=$PLATFORM_PREFIX --stl=libc++ --arch=$3
+
+	export PATH=$PLATFORM_PREFIX/bin:$PATH
+
+	export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/cpufeatures $5"
+	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
+	export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
+	export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
+	export TARGET_HOST="$4"
+	export CC="$TARGET_HOST-clang"
+	export CXX="$TARGET_HOST-clang++"
+	if [ "$ENABLE_CCACHE" ]; then
+		export CC="ccache $TARGET_HOST-clang"
+		export CXX="ccache $TARGET_HOST-clang++"
+	fi
+
+	install_lib libpng-1.6.24
+	install_lib freetype-2.6.5 --with-harfbuzz=no --without-bzip2
+	install_lib pixman-0.34.0
+	install_lib expat-2.2.0
+	install_lib libogg-1.3.2
+	install_lib libvorbis-1.3.5
+	install_lib libsndfile-1.0.27
+	install_lib speexdsp-1.2rc3 --disable-sse --disable-neon
+	install_lib_mpg123
+	install_lib libxmp-lite-4.4.0
+	install_lib_sdl "$2"
+	install_lib_mixer
+
+	# Cross compile ICU
+	cd icu/source
+
+	export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/cxx-stl/stlport/stlport -O3 -fno-short-wchar -DU_USING_ICU_NAMESPACE=0 -DU_GNUC_UTF16_STRING=0 -fno-short-enums -nostdlib $5"
+	export LDFLAGS="-lc -Wl,-rpath-link=$PLATFORM_PREFIX/lib -L$PLATFORM_PREFIX/lib/"
+
+	./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no --enable-static --enable-shared=no \
+		--enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no \
+		--enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
+	make clean
+	make -j$NBPROC
+	make install
+
+}
+
 export OLD_PATH=$PATH
 
 # Install host ICU
@@ -127,204 +185,23 @@ export ICU_CROSS_BUILD=$PWD
 
 ####################################################
 # Install standalone toolchain x86
-cd $WORKSPACE
 
-echo "preparing x86 toolchain"
-
-export PLATFORM_PREFIX=$WORKSPACE/x86-toolchain
-$NDK_ROOT/build/tools/make_standalone_toolchain.py --api=9 \
-	--install-dir=$PLATFORM_PREFIX --stl=libc++ --arch=x86
-
-export PATH=$PLATFORM_PREFIX/bin:$PATH
-
-export CPPFLAGS="-I$PLATFORM_PREFIX/include"
-export LDFLAGS="-L$PLATFORM_PREFIX/lib"
-export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
-export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
-export TARGET_HOST="i686-linux-android"
-export CC="$TARGET_HOST-clang"
-export CXX="$TARGET_HOST-clang++"
-if [ "$ENABLE_CCACHE" ]; then
-	export CC="ccache $TARGET_HOST-clang"
-	export CXX="ccache $TARGET_HOST-clang++"
-fi
-
-install_lib libpng-1.6.24
-install_lib freetype-2.6.5 --with-harfbuzz=no --without-bzip2
-install_lib pixman-0.34.0
-install_lib expat-2.2.0
-install_lib libogg-1.3.2
-install_lib libvorbis-1.3.5
-install_lib libsndfile-1.0.27
-install_lib speexdsp-1.2rc3 --enable-sse --disable-neon
-install_lib_mpg123
-install_lib libxmp-lite-4.4.0
-install_lib_sdl "x86"
-install_lib_mixer
-
-# Cross compile ICU
-cd icu/source
-
-export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/cxx-stl/stlport/stlport -O3 -fno-short-wchar -DU_USING_ICU_NAMESPACE=0 -DU_GNUC_UTF16_STRING=0 -fno-short-enums -nostdlib"
-export LDFLAGS="-lc -Wl,-rpath-link=$PLATFORM_PREFIX/lib -L$PLATFORM_PREFIX/lib/"
-
-./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no --enable-static --enable-shared=no \
-	--enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no \
-	--enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
-make clean
-make -j$NBPROC
-make install
+build "x86" "x86" "x86" "i686-linux-android" ""
 
 ################################################################
 # Install standalone toolchain ARMeabi
 
-cd $WORKSPACE
-
-echo "preparing ARMeabi toolchain"
-
-export PATH=$OLD_PATH
-export PLATFORM_PREFIX=$WORKSPACE/armeabi-toolchain
-$NDK_ROOT/build/tools/make_standalone_toolchain.py --api=9 \
-	--install-dir=$PLATFORM_PREFIX --stl=libc++ --arch=arm
-
-export PATH=$PLATFORM_PREFIX/bin:$PATH
-
-export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/cpufeatures"
-export LDFLAGS="-L$PLATFORM_PREFIX/lib"
-export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
-export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
-export TARGET_HOST="arm-linux-androideabi"
-export CC="$TARGET_HOST-clang"
-export CXX="$TARGET_HOST-clang++"
-if [ "$ENABLE_CCACHE" ]; then
-	export CC="ccache $TARGET_HOST-clang"
-	export CXX="ccache $TARGET_HOST-clang++"
-fi
-
-install_lib libpng-1.6.24
-install_lib freetype-2.6.5 --with-harfbuzz=no --without-bzip2
-install_lib pixman-0.34.0
-install_lib expat-2.2.0
-install_lib libogg-1.3.2
-install_lib libvorbis-1.3.5
-install_lib libsndfile-1.0.27
-install_lib speexdsp-1.2rc3 --disable-sse --disable-neon
-install_lib_mpg123
-install_lib libxmp-lite-4.4.0
-install_lib_sdl "armeabi"
-install_lib_mixer
-
-# Cross compile ICU
-cd icu/source
-
-export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/cxx-stl/stlport/stlport -O3 -fno-short-wchar -DU_USING_ICU_NAMESPACE=0 -DU_GNUC_UTF16_STRING=0 -fno-short-enums -nostdlib"
-export LDFLAGS="-lc -Wl,-rpath-link=$PLATFORM_PREFIX/lib -L$PLATFORM_PREFIX/lib/"
-
-./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no --enable-static --enable-shared=no \
-	--enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no \
-	--enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
-make clean
-make -j$NBPROC
-make install
+build "ARMeabi" "armeabi" "arm" "arm-linux-androideabi" ""
 
 ################################################################
 # Install standalone toolchain ARMeabi-v7a
-cd $WORKSPACE
 
-echo "preparing ARMeabi-v7a toolchain"
-
-# Setting up new toolchain not required, only difference is CPPFLAGS
-
-export PLATFORM_PREFIX_ARM=$WORKSPACE/armeabi-toolchain
-export PLATFORM_PREFIX=$WORKSPACE/armeabi-v7a-toolchain
-
-export CPPFLAGS="-I$PLATFORM_PREFIX_ARM/include -I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/cpufeatures -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3"
-export LDFLAGS="-L$PLATFORM_PREFIX_ARM/lib -L$PLATFORM_PREFIX/lib"
-export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
-export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
-export TARGET_HOST="arm-linux-androideabi"
-export CC="$TARGET_HOST-clang"
-export CXX="$TARGET_HOST-clang++"
-if [ "$ENABLE_CCACHE" ]; then
-	export CC="ccache $TARGET_HOST-clang"
-	export CXX="ccache $TARGET_HOST-clang++"
-fi
-
-install_lib libpng-1.6.24
-install_lib freetype-2.6.5 --with-harfbuzz=no --without-bzip2
-install_lib pixman-0.34.0
-install_lib expat-2.2.0
-install_lib libogg-1.3.2
-install_lib libvorbis-1.3.5
-install_lib libsndfile-1.0.27
-install_lib speexdsp-1.2rc3 --disable-sse --enable-neon
-install_lib_mpg123
-install_lib libxmp-lite-4.4.0
-install_lib_sdl "armeabi-v7a"
-install_lib_mixer
-
-# Cross compile ICU
-cd icu/source
-
-export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/cxx-stl/stlport/stlport -O3 -fno-short-wchar -DU_USING_ICU_NAMESPACE=0 -DU_GNUC_UTF16_STRING=0 -fno-short-enums -nostdlib -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3"
-export LDFLAGS="-lc -Wl,-rpath-link=$PLATFORM_PREFIX/lib -L$PLATFORM_PREFIX/lib/"
-
-./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no --enable-static --enable-shared=no \
-	--enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no \
-	--enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
-make clean
-make -j$NBPROC
-make install
+build "ARMeabi-v7a" "armeabi-v7a" "arm" "arm-linux-androideabi" "-march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3"
 
 ################################################################
 # Install standalone toolchain MIPS
-cd $WORKSPACE
 
-echo "preparing MIPS toolchain"
-
-export PATH=$OLD_PATH
-export PLATFORM_PREFIX=$WORKSPACE/mips-toolchain
-$NDK_ROOT/build/tools/make_standalone_toolchain.py --api=9 \
-	--install-dir=$PLATFORM_PREFIX --stl=libc++ --arch=mips
-export PATH=$PLATFORM_PREFIX/bin:$PATH
-
-export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/cpufeatures"
-export LDFLAGS="-L$PLATFORM_PREFIX/lib"
-export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
-export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
-export TARGET_HOST="mipsel-linux-android"
-export CC="$TARGET_HOST-clang"
-export CXX="$TARGET_HOST-clang++"
-if [ "$ENABLE_CCACHE" ]; then
-	export CC="ccache $TARGET_HOST-clang"
-	export CXX="ccache $TARGET_HOST-clang++"
-fi
-
-install_lib libpng-1.6.24
-install_lib freetype-2.6.5 --with-harfbuzz=no --without-bzip2
-install_lib pixman-0.34.0
-install_lib expat-2.2.0
-install_lib libogg-1.3.2
-install_lib libvorbis-1.3.5
-install_lib libsndfile-1.0.27
-install_lib speexdsp-1.2rc3 --disable-sse --disable-neon
-install_lib_mpg123
-install_lib libxmp-lite-4.4.0
-install_lib_sdl "mips"
-install_lib_mixer
-
-# Cross compile ICU
-cd icu/source
-
-export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/cxx-stl/stlport/stlport -O3 -fno-short-wchar -DU_USING_ICU_NAMESPACE=0 -DU_GNUC_UTF16_STRING=0 -fno-short-enums -nostdlib"
-export LDFLAGS="-lc -Wl,-rpath-link=$PLATFORM_PREFIX/lib -L$PLATFORM_PREFIX/lib/"
-
-./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no --enable-static --enable-shared=no \
-	--enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no \
-	--enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
-make clean
-make -j$NBPROC
-make install
+build "MIPS" "mips" "mips" "mipsel-linux-android" ""
 
 ################################################################
 # Cleanup library build folders and other stuff

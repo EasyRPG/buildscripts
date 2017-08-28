@@ -68,10 +68,9 @@ msg " -> done"
 
 # armeabi-v7a
 msg " Building liblcf for ARMEABI-V7A..."
-export PLATFORM_PREFIX_ARM=$WORKSPACE/armeabi-toolchain
 export PLATFORM_PREFIX=$WORKSPACE/armeabi-v7a-toolchain
-export CPPFLAGS="-I$PLATFORM_PREFIX_ARM/include -I$PLATFORM_PREFIX/include  -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3"
-export LDFLAGS="-L$PLATFORM_PREFIX_ARM/lib -L$PLATFORM_PREFIX/lib"
+export CPPFLAGS="-I$PLATFORM_PREFIX/include -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3"
+export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 
