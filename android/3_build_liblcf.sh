@@ -33,11 +33,13 @@ msg " Building liblcf for X86..."
 export PLATFORM_PREFIX=$WORKSPACE/x86-toolchain
 export OLD_PATH=$PATH
 export PATH=$PLATFORM_PREFIX/bin:$PATH
-export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/support/include"
+export CPPFLAGS="-I$PLATFORM_PREFIX/include "
 export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export TARGET_HOST="i686-linux-android"
+export CC="$TARGET_HOST-clang"
+export CXX="$TARGET_HOST-clang++"
 
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
 make clean
@@ -50,11 +52,13 @@ msg " Building liblcf for ARMEABI..."
 export PLATFORM_PREFIX=$WORKSPACE/armeabi-toolchain
 export PATH=$OLD_PATH
 export PATH=$PLATFORM_PREFIX/bin:$PATH
-export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/support/include"
+export CPPFLAGS="-I$PLATFORM_PREFIX/include"
 export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export TARGET_HOST="arm-linux-androideabi"
+export CC="$TARGET_HOST-clang"
+export CXX="$TARGET_HOST-clang++"
 
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
 make clean
@@ -66,7 +70,7 @@ msg " -> done"
 msg " Building liblcf for ARMEABI-V7A..."
 export PLATFORM_PREFIX_ARM=$WORKSPACE/armeabi-toolchain
 export PLATFORM_PREFIX=$WORKSPACE/armeabi-v7a-toolchain
-export CPPFLAGS="-I$PLATFORM_PREFIX_ARM/include -I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/support/include -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3"
+export CPPFLAGS="-I$PLATFORM_PREFIX_ARM/include -I$PLATFORM_PREFIX/include  -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3"
 export LDFLAGS="-L$PLATFORM_PREFIX_ARM/lib -L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
@@ -82,11 +86,13 @@ msg " Building liblcf for MIPS..."
 export PLATFORM_PREFIX=$WORKSPACE/mips-toolchain
 export PATH=$OLD_PATH
 export PATH=$PLATFORM_PREFIX/bin:$PATH
-export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/support/include"
+export CPPFLAGS="-I$PLATFORM_PREFIX/include"
 export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export TARGET_HOST="mipsel-linux-android"
+export CC="$TARGET_HOST-clang"
+export CXX="$TARGET_HOST-clang++"
 
 ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static
 make clean

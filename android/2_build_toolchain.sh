@@ -5,7 +5,7 @@ set -e
 
 export WORKSPACE=$PWD
 
-export NDK_ROOT=$WORKSPACE/android-ndk-r10e
+export NDK_ROOT=$WORKSPACE/android-ndk-r15c
 export SDK_ROOT=$WORKSPACE/android-sdk
 
 # Number of CPU
@@ -40,7 +40,7 @@ if [ ! -f .patches-applied ]; then
 	cd ..
 
 	# use android config
-	cd SDL2-2.0.4
+	cd SDL2-2.0.5
 	mv include/SDL_config_android.h include/SDL_config.h
 	mkdir -p jni
 	cd ..
@@ -83,7 +83,7 @@ function install_lib_mpg123() {
 function install_lib_sdl {
 	# $1 => platform (armeabi armeabi-v7a x86 mips)
 
-	cd SDL2-2.0.4
+	cd SDL2-2.0.5
 	echo "APP_STL := gnustl_static" > "jni/Application.mk"
 	echo "APP_ABI := $1" >> "jni/Application.mk"
 	ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk APP_PLATFORM=android-9
@@ -132,19 +132,21 @@ cd $WORKSPACE
 echo "preparing x86 toolchain"
 
 export PLATFORM_PREFIX=$WORKSPACE/x86-toolchain
-$NDK_ROOT/build/tools/make-standalone-toolchain.sh --platform=android-9 --ndk-dir=$NDK_ROOT \
-	--toolchain=x86-4.9 --install-dir=$PLATFORM_PREFIX --stl=gnustl
+$NDK_ROOT/build/tools/make_standalone_toolchain.py --api=9 \
+	--install-dir=$PLATFORM_PREFIX --stl=libc++ --arch=x86
 
 export PATH=$PLATFORM_PREFIX/bin:$PATH
 
-export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/support/include"
+export CPPFLAGS="-I$PLATFORM_PREFIX/include"
 export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export TARGET_HOST="i686-linux-android"
+export CC="$TARGET_HOST-clang"
+export CXX="$TARGET_HOST-clang++"
 if [ "$ENABLE_CCACHE" ]; then
-	export CC="ccache $TARGET_HOST-gcc"
-	export CXX="ccache $TARGET_HOST-g++"
+	export CC="ccache $TARGET_HOST-clang"
+	export CXX="ccache $TARGET_HOST-clang++"
 fi
 
 install_lib libpng-1.6.24
@@ -182,18 +184,21 @@ echo "preparing ARMeabi toolchain"
 
 export PATH=$OLD_PATH
 export PLATFORM_PREFIX=$WORKSPACE/armeabi-toolchain
-$NDK_ROOT/build/tools/make-standalone-toolchain.sh --platform=android-9 --ndk-dir=$NDK_ROOT \
-	--toolchain=arm-linux-androideabi-4.9 --install-dir=$PLATFORM_PREFIX --stl=gnustl
+$NDK_ROOT/build/tools/make_standalone_toolchain.py --api=9 \
+	--install-dir=$PLATFORM_PREFIX --stl=libc++ --arch=arm
+
 export PATH=$PLATFORM_PREFIX/bin:$PATH
 
-export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/support/include -I$NDK_ROOT/sources/android/cpufeatures"
+export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/cpufeatures"
 export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export TARGET_HOST="arm-linux-androideabi"
+export CC="$TARGET_HOST-clang"
+export CXX="$TARGET_HOST-clang++"
 if [ "$ENABLE_CCACHE" ]; then
-	export CC="ccache $TARGET_HOST-gcc"
-	export CXX="ccache $TARGET_HOST-g++"
+	export CC="ccache $TARGET_HOST-clang"
+	export CXX="ccache $TARGET_HOST-clang++"
 fi
 
 install_lib libpng-1.6.24
@@ -233,14 +238,16 @@ echo "preparing ARMeabi-v7a toolchain"
 export PLATFORM_PREFIX_ARM=$WORKSPACE/armeabi-toolchain
 export PLATFORM_PREFIX=$WORKSPACE/armeabi-v7a-toolchain
 
-export CPPFLAGS="-I$PLATFORM_PREFIX_ARM/include -I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/support/include -I$NDK_ROOT/sources/android/cpufeatures -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3"
+export CPPFLAGS="-I$PLATFORM_PREFIX_ARM/include -I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/cpufeatures -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3"
 export LDFLAGS="-L$PLATFORM_PREFIX_ARM/lib -L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export TARGET_HOST="arm-linux-androideabi"
+export CC="$TARGET_HOST-clang"
+export CXX="$TARGET_HOST-clang++"
 if [ "$ENABLE_CCACHE" ]; then
-	export CC="ccache $TARGET_HOST-gcc"
-	export CXX="ccache $TARGET_HOST-g++"
+	export CC="ccache $TARGET_HOST-clang"
+	export CXX="ccache $TARGET_HOST-clang++"
 fi
 
 install_lib libpng-1.6.24
@@ -277,18 +284,20 @@ echo "preparing MIPS toolchain"
 
 export PATH=$OLD_PATH
 export PLATFORM_PREFIX=$WORKSPACE/mips-toolchain
-$NDK_ROOT/build/tools/make-standalone-toolchain.sh --platform=android-9 --ndk-dir=$NDK_ROOT \
-	--toolchain=mipsel-linux-android-4.9 --install-dir=$PLATFORM_PREFIX --stl=gnustl
+$NDK_ROOT/build/tools/make_standalone_toolchain.py --api=9 \
+	--install-dir=$PLATFORM_PREFIX --stl=libc++ --arch=mips
 export PATH=$PLATFORM_PREFIX/bin:$PATH
 
-export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/support/include -I$NDK_ROOT/sources/android/cpufeatures"
+export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/cpufeatures"
 export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export TARGET_HOST="mipsel-linux-android"
+export CC="$TARGET_HOST-clang"
+export CXX="$TARGET_HOST-clang++"
 if [ "$ENABLE_CCACHE" ]; then
-	export CC="ccache $TARGET_HOST-gcc"
-	export CXX="ccache $TARGET_HOST-g++"
+	export CC="ccache $TARGET_HOST-clang"
+	export CXX="ccache $TARGET_HOST-clang++"
 fi
 
 install_lib libpng-1.6.24
@@ -322,5 +331,5 @@ make install
 
 cd $WORKSPACE
 rm -rf freetype-*/ harfbuzz-*/ icu/ icu-native/ libogg-*/ libpng-*/ libvorbis-*/ pixman-*/ \
-	mpg123-*/ libsndfile-*/ speexdsp-*/ SDL2-2.0.4/ SDL2_mixer-2.0.1/ expat-*/ libxmp-lite-*/
+	mpg123-*/ libsndfile-*/ speexdsp-*/ SDL2-2.0.5/ SDL2_mixer-2.0.1/ expat-*/ libxmp-lite-*/
 rm -f *.bz2 *.gz *.xz *.tgz *.bin icudt* .patches-applied
