@@ -16,7 +16,7 @@ diff -Naur android-ndk-r15c/sources/android/cpufeatures-old/cpu-features.c andro
      dlclose(libc_handle);
 -    return ret;
 +    return ret;*/
-+    return 0;
++    (void)hwcap_type;return 0;
  }
  #endif
  

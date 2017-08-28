@@ -25,6 +25,9 @@ fi
 if [ ! -f .patches-applied ]; then
 	echo "patching libraries"
 
+	# Accept api9 for make_standalone_toolchain
+	perl -pi -e 's/min_api = 14/min_api = 9/' ./android-ndk-r15c/build/tools/make_standalone_toolchain.py
+
 	# Patch cpufeatures, hangs in Android 4.0.3
 	patch -Np0 < cpufeatures.patch
 
@@ -34,9 +37,20 @@ if [ ! -f .patches-applied ]; then
 	autoreconf -fi
 	cd ..
 
+	# disable unsupported compiler flags by clang in libvorbis
+	cd libvorbis-1.3.5
+	perl -pi -e 's/-mno-ieee-fp//' configure
+	cd ..
+
 	# update autoconf stuff and preprocessor macro to recognize android
 	cd libxmp-lite-4.4.0
 	patch -Np1 < ../xmplite-android.patch
+	cd ..
+
+	# disable libsndfile examples and tests
+	cd libsndfile-1.0.27
+	perl -pi -e 's/ examples regtest tests programs//' Makefile.am
+	autoreconf -fi
 	cd ..
 
 	# use android config
