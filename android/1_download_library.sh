@@ -160,10 +160,6 @@ download_and_extract http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.ta
 rm -rf SDL2-2.0.5/
 download_and_extract http://libsdl.org/release/SDL2-2.0.5.tar.gz
 
-# SDL_mixer
-rm -rf SDL2_mixer-2.0.1/
-download_and_extract http://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.1.tar.gz
-
 # ICU
 rm -rf icu
 download_and_extract http://download.icu-project.org/files/icu4c/56.1/icu4c-56_1-src.tgz

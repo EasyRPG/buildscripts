@@ -59,13 +59,6 @@ if [ ! -f .patches-applied ]; then
 	mkdir -p jni
 	cd ..
 
-	# enable jni config loading
-	cd SDL2_mixer-2.0.1
-	patch -Np1 -d timidity < ../timidity-android.patch
-	patch -Np0 < ../sdl-mixer-config.patch
-	sh autogen.sh
-	cd ..
-
 	touch .patches-applied
 fi
 
@@ -105,18 +98,6 @@ function install_lib_sdl {
 	mkdir -p $PLATFORM_PREFIX/include/SDL2
 	cp libs/$1/* $PLATFORM_PREFIX/lib/
 	cp include/* $PLATFORM_PREFIX/include/SDL2/
-	cd ..
-}
-
-# Install SDL2_mixer
-function install_lib_mixer() {
-	cd SDL2_mixer-2.0.1
-	SDL_CFLAGS="-I $PLATFORM_PREFIX/include/SDL2" SDL_LIBS="-lSDL2" \
-		./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static \
-		--disable-sdltest --disable-music-mp3 --disable-music-mod
-	make clean
-	make -j$NBPROC
-	make install
 	cd ..
 }
 
@@ -161,7 +142,6 @@ function build() {
 	install_lib_mpg123
 	install_lib libxmp-lite-4.4.0
 	install_lib_sdl "$2"
-	install_lib_mixer
 
 	# Cross compile ICU
 	cd icu/source
@@ -222,5 +202,5 @@ build "MIPS" "mips" "mips" "mipsel-linux-android" ""
 
 cd $WORKSPACE
 rm -rf freetype-*/ harfbuzz-*/ icu/ icu-native/ libogg-*/ libpng-*/ libvorbis-*/ pixman-*/ \
-	mpg123-*/ libsndfile-*/ speexdsp-*/ SDL2-2.0.5/ SDL2_mixer-2.0.1/ expat-*/ libxmp-lite-*/
+	mpg123-*/ libsndfile-*/ speexdsp-*/ SDL2-2.0.5/ expat-*/ libxmp-lite-*/
 rm -f *.bz2 *.gz *.xz *.tgz *.bin icudt* .patches-applied
