@@ -43,14 +43,19 @@ if [ ! -f .patches-applied ]; then
 	cd ..
 
 	# update autoconf stuff and preprocessor macro to recognize android
-	cd libxmp-lite-4.4.0
-	patch -Np1 < ../xmplite-android.patch
+	cd libxmp-lite-4.4.1
+	patch -Np1 < ../libxmp-a0288352.patch
 	cd ..
 
 	# disable libsndfile examples and tests
-	cd libsndfile-1.0.27
+	cd libsndfile-1.0.28
 	perl -pi -e 's/ examples regtest tests programs//' Makefile.am
 	autoreconf -fi
+	cd ..
+
+	# Wildmidi: Disable libm
+	cd wildmidi-wildmidi-0.4.1
+	perl -pi -e 's/FIND_LIBRARY\(M_LIBRARY m REQUIRED\)//' CMakeLists.txt
 	cd ..
 
 	# use android config
@@ -73,17 +78,26 @@ function install_lib {
 	cd ..
 }
 
-# Install mpg123
-function install_lib_mpg123() {
-	cd mpg123-1.23.6
-	CPPFLAGS="$CPPFLAGS -DHAVE_MMAP" ./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX \
-		--disable-shared --enable-static \
-		--enable-fifo=no --enable-ipv6=no --enable-network=no --enable-int-quality=no \
-		--with-cpu=generic --with-default-audio=dummy
+# generic cmake library installer
+function install_lib_cmake {
+	cd $1
+	shift
+	rm -rf CMakeCache.txt CMakeFiles/
+	cmake . -DCMAKE_SYSTEM_NAME=Linux -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+		-DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=$PLATFORM_PREFIX $@
 	make clean
 	make -j$NBPROC
 	make install
 	cd ..
+}
+
+# Install mpg123
+function install_lib_mpg123 {
+	export CPPFLAGSOLD=$CPPFLAGS
+	export CPPFLAGS="$CPPFLAGS -DHAVE_MMAP"
+	install_lib mpg123-1.25.6 --enable-fifo=no --enable-ipv6=no --enable-network=no \
+		--enable-int-quality=no --with-cpu=generic --with-default-audio=dummy
+	export CPPFLAGS=$CPPFLAGSOLD
 }
 
 # Install SDL2
@@ -131,23 +145,24 @@ function build() {
 		export CXX="ccache $TARGET_HOST-clang++"
 	fi
 
-	install_lib libpng-1.6.24
-	install_lib freetype-2.6.5 --with-harfbuzz=no --without-bzip2
+	install_lib libpng-1.6.32
+	install_lib freetype-2.8 --with-harfbuzz=no --without-bzip2
 	install_lib pixman-0.34.0
-	install_lib expat-2.2.0
+	install_lib_cmake expat-2.2.4 -DBUILD_tools=OFF -DBUILD_examples=OFF \
+		-DBUILD_tests=OFF -DBUILD_doc=OFF -DBUILD_shared=OFF
 	install_lib libogg-1.3.2
 	install_lib libvorbis-1.3.5
-	install_lib libsndfile-1.0.27
+	install_lib libsndfile-1.0.28
 	install_lib speexdsp-1.2rc3 --disable-sse --disable-neon
 	install_lib_mpg123
-	install_lib libxmp-lite-4.4.0
+	install_lib libxmp-lite-4.4.1
+	install_lib opus-1.2.1
+	install_lib opusfile-0.9
+	install_lib_cmake wildmidi-wildmidi-0.4.1 -DWANT_PLAYER=OFF -DWANT_STATIC=ON
 	install_lib_sdl "$2"
 
 	# Cross compile ICU
 	cd icu/source
-
-	export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/cxx-stl/stlport/stlport -O3 -fno-short-wchar -DU_USING_ICU_NAMESPACE=0 -DU_GNUC_UTF16_STRING=0 -fno-short-enums -nostdlib $5"
-	export LDFLAGS="-lc -Wl,-rpath-link=$PLATFORM_PREFIX/lib -L$PLATFORM_PREFIX/lib/"
 
 	./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no --enable-static --enable-shared=no \
 		--enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no \
@@ -155,7 +170,6 @@ function build() {
 	make clean
 	make -j$NBPROC
 	make install
-
 }
 
 export OLD_PATH=$PATH
@@ -167,8 +181,8 @@ echo "preparing ICU host build"
 
 chmod u+x icu/source/configure
 cp -r icu icu-native
-cp icudt56l.dat icu/source/data/in/
-cp icudt56l.dat icu-native/source/data/in/
+cp icudt59l.dat icu/source/data/in/
+cp icudt59l.dat icu-native/source/data/in/
 cd icu-native/source
 perl -pi -e 's/SMALL_BUFFER_MAX_SIZE 512/SMALL_BUFFER_MAX_SIZE 2048/' tools/toolutil/pkg_genc.h
 ./configure --enable-static --enable-shared=no --enable-tests=no --enable-samples=no \

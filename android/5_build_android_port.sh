@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# abort on errors
+set -e
+
 #	<!> Fill thoses variables :
 KEYSTORE_PATH=
 KEYSTORE_PASSWORD=

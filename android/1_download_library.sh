@@ -113,24 +113,24 @@ fi
 msg " [4] Preparing libraries"
 
 # libpng
-rm -rf libpng-1.6.24/
-download_and_extract http://prdownloads.sourceforge.net/libpng/libpng-1.6.24.tar.xz
+rm -rf libpng-1.6.32/
+download_and_extract http://prdownloads.sourceforge.net/libpng/libpng-1.6.32.tar.xz
 
 # freetype
-rm -rf freetype-2.6.5/
-download_and_extract http://download.savannah.gnu.org/releases/freetype/freetype-2.6.5.tar.bz2
+rm -rf freetype-2.8/
+download_and_extract http://download.savannah.gnu.org/releases/freetype/freetype-2.8.tar.bz2
 
 # harfbuzz
-rm -rf harfbuzz-1.2.3/
-download_and_extract http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.2.3.tar.bz2
+rm -rf harfbuzz-1.5.1/
+download_and_extract http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.5.1.tar.bz2
 
 # pixman
 rm -rf pixman-0.34.0/
 download_and_extract http://cairographics.org/releases/pixman-0.34.0.tar.gz
 
 # expat
-rm -rf expat-2.2.0/
-download_and_extract http://sourceforge.net/projects/expat/files/expat/2.2.0/expat-2.2.0.tar.bz2
+rm -rf expat-2.2.4/
+download_and_extract http://sourceforge.net/projects/expat/files/expat/2.2.4/expat-2.2.4.tar.bz2
 
 # libogg
 rm -rf libogg-1.3.2/
@@ -141,20 +141,32 @@ rm -rf libvorbis-1.3.5/
 download_and_extract http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.5.tar.xz
 
 # mpg123
-rm -rf mpg123-1.23.6
-download_and_extract http://www.mpg123.de/download/mpg123-1.23.6.tar.bz2
+rm -rf mpg123-1.25.6
+download_and_extract http://www.mpg123.de/download/mpg123-1.25.6.tar.bz2
 
 # libsndfile
-rm -rf libsndfile-1.0.27
-download_and_extract http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.27.tar.gz
+rm -rf libsndfile-1.0.28
+download_and_extract http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.28.tar.gz
 
 # libxmp-lite
-rm -rf libxmp-lite-4.4.0/
-download_and_extract http://sourceforge.net/projects/xmp/files/libxmp/4.4.0/libxmp-lite-4.4.0.tar.gz
+rm -rf libxmp-lite-4.4.1
+download_and_extract http://sourceforge.net/projects/xmp/files/libxmp/4.4.1/libxmp-lite-4.4.1.tar.gz
 
 # speexdsp
 rm -rf speexdsp-1.2rc3
 download_and_extract http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz
+
+# wildmidi
+rm -rf wildmidi-wildmidi-0.4.1
+download_and_extract https://github.com/Mindwerks/wildmidi/archive/wildmidi-0.4.1.tar.gz
+
+# opus
+rm -rf opus-1.2.1
+download_and_extract https://archive.mozilla.org/pub/opus/opus-1.2.1.tar.gz
+
+# opusfile
+rm -rf opusfile-0.9
+download_and_extract https://archive.mozilla.org/pub/opus/opusfile-0.9.tar.gz
 
 # SDL2
 rm -rf SDL2-2.0.5/
@@ -162,8 +174,8 @@ download_and_extract http://libsdl.org/release/SDL2-2.0.5.tar.gz
 
 # ICU
 rm -rf icu
-download_and_extract http://download.icu-project.org/files/icu4c/56.1/icu4c-56_1-src.tgz
+download_and_extract http://download.icu-project.org/files/icu4c/59.1/icu4c-59_1-src.tgz
 
 # icudata
 rm -f icudt*.dat
-download_and_extract https://easyrpg.org/downloads/tmp/icudata56.tar.gz
+download_and_extract https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata.tar.gz
