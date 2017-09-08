@@ -196,11 +196,3 @@ build "ARMeabi-v7a" "armeabi-v7a" "arm" "arm-linux-androideabi" "-march=armv7-a 
 # Install standalone toolchain MIPS
 
 build "MIPS" "mips" "mips" "mipsel-linux-android" ""
-
-################################################################
-# Cleanup library build folders and other stuff
-
-cd $WORKSPACE
-rm -rf freetype-*/ harfbuzz-*/ icu/ icu-native/ libogg-*/ libpng-*/ libvorbis-*/ pixman-*/ \
-	mpg123-*/ libsndfile-*/ speexdsp-*/ SDL2-2.0.5/ expat-*/ libxmp-lite-*/
-rm -f *.bz2 *.gz *.xz *.tgz *.bin icudt* .patches-applied
