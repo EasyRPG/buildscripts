@@ -169,8 +169,8 @@ rm -rf opusfile-0.9
 download_and_extract https://archive.mozilla.org/pub/opus/opusfile-0.9.tar.gz
 
 # SDL2
-rm -rf SDL2-2.0.5/
-download_and_extract http://libsdl.org/release/SDL2-2.0.5.tar.gz
+rm -rf SDL2-2.0.6/
+download_and_extract http://libsdl.org/release/SDL2-2.0.6.tar.gz
 
 # ICU
 rm -rf icu
