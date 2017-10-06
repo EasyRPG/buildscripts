@@ -4,7 +4,6 @@
 set -e
 
 export WORKSPACE=$PWD
-export NDK_ROOT=$WORKSPACE/android-ndk-r10e
 
 # helper
 function msg {

@@ -105,7 +105,6 @@ function install_lib_sdl {
 	# $1 => platform (armeabi armeabi-v7a x86 mips)
 
 	cd SDL2-2.0.6
-	echo "APP_STL := gnustl_static" > "jni/Application.mk"
 	echo "APP_ABI := $1" >> "jni/Application.mk"
 	ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk APP_PLATFORM=android-9
 	mkdir -p $PLATFORM_PREFIX/lib
