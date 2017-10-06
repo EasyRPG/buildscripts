@@ -1,0 +1,17 @@
+# All folders in the buildscript directories
+/*/*/
+
+# Except some Windows folders
+!/windows/msys/*
+!/windows/patches/*
+!/windows/templates/*
+!/windows/winrt/*
+
+.patches-applied
+*.dat
+*.gz
+*.bz2
+*.tgz
+*.zip
+*.xz
+*.pl

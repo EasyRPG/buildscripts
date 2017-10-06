@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# abort on errors
+set -e
+
 #	<!> Fill thoses variables :
 KEYSTORE_PATH=
 KEYSTORE_PASSWORD=
@@ -12,13 +15,13 @@ export EASYDEV_ANDROID=$(pwd)
 NBPROC=$(getconf _NPROCESSORS_ONLN)
 
 # Export NDK path
-export NDK_ROOT=$WORKSPACE/android-ndk-r10e
+export NDK_ROOT=$WORKSPACE/android-ndk-r15c
 export PATH=$PATH:$NDK_ROOT
 
 # Export SDK path
 export SDK_ROOT=$WORKSPACE/android-sdk
-export ANDROID_HOME=$WORKSPACE/android-sdk
-export PATH=$PATH:$SDK_ROOT/tools:$SDK_ROOT/build-tools/23.0.2/
+export ANDROID_HOME=$SDK_ROOT
+export PATH=$PATH:$SDK_ROOT:$SDK_ROOT/build-tools/26.0.1/
 
 # EasyRPG Player
 if [ -d Player/.git ]; then
@@ -37,10 +40,6 @@ if [ -d assets/timidity/.git ]; then
 else
 	git clone https://github.com/Ghabry/timidity_gus.git assets/timidity
 fi
-
-# The target 1 should be API 23 if the user followed the script number 1 :
-TARGET=$(android list | grep 'android-23' | awk '{print $2}')
-android update project --path "." --target $TARGET
 
 # Build
 ndk-build -j$NBPROC NDK_LIBS_OUT=./jniLibs
