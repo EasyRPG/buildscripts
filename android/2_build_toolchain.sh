@@ -184,6 +184,8 @@ cp icudt59l.dat icu/source/data/in/
 cp icudt59l.dat icu-native/source/data/in/
 cd icu-native/source
 perl -pi -e 's/SMALL_BUFFER_MAX_SIZE 512/SMALL_BUFFER_MAX_SIZE 2048/' tools/toolutil/pkg_genc.h
+# glibc 2.26 removed xlocale.h: https://ssl.icu-project.org/trac/ticket/13329
+perl -pi -e 's/xlocale/locale/' i18n/digitlst.cpp
 ./configure --enable-static --enable-shared=no --enable-tests=no --enable-samples=no \
 	--enable-dyload=no --enable-tools --enable-extras=no --enable-icuio=no \
 	--with-data-packaging=static
