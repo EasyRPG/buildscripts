@@ -1,0 +1,51 @@
+diff --color -Naur libsndfile-1.0.28.orig/configure.ac libsndfile-1.0.28/configure.ac
+--- libsndfile-1.0.28.orig/configure.ac	2017-04-02 10:52:02.000000000 +0200
++++ libsndfile-1.0.28/configure.ac	2017-12-22 20:10:26.028817051 +0100
+@@ -220,6 +220,10 @@
+ 		;;
+ 	esac
+ 
++TYPEOF_SF_COUNT_T="long"
++SIZEOF_SF_COUNT_T=8
++SF_COUNT_MAX="0x7FFFFFFFFFFFFFFFLL"
++
+ if test $SIZEOF_SF_COUNT_T = 4 ; then
+ 	SF_COUNT_MAX="0x7FFFFFFF"
+ 	fi
+diff --color -Naur libsndfile-1.0.28.orig/Makefile.am libsndfile-1.0.28/Makefile.am
+--- libsndfile-1.0.28.orig/Makefile.am	2017-04-01 09:18:02.000000000 +0200
++++ libsndfile-1.0.28/Makefile.am	2017-12-22 20:04:59.432924489 +0100
+@@ -8,13 +8,13 @@
+ octave_dir = Octave
+ endif
+ 
+-SUBDIRS = M4 Win32 src examples tests
++SUBDIRS = M4 Win32 src
+ 
+ if FULL_SUITE
+ SUBDIRS += man doc $(octave_dir) regtest programs
+ endif
+ 
+-DIST_SUBDIRS = M4 man doc Win32 src Octave examples regtest tests programs
++DIST_SUBDIRS = M4 man doc Win32 src Octave
+ 
+ EXTRA_DIST = libsndfile.spec.in sndfile.pc.in Scripts/android-configure.sh \
+ 	Scripts/linux-to-win-cross-configure.sh Scripts/build-test-tarball.mk.in \
+diff --color -Naur libsndfile-1.0.28.orig/src/GSM610/gsm610_priv.h libsndfile-1.0.28/src/GSM610/gsm610_priv.h
+--- libsndfile-1.0.28.orig/src/GSM610/gsm610_priv.h	2016-04-01 23:08:52.000000000 +0200
++++ libsndfile-1.0.28/src/GSM610/gsm610_priv.h	2017-12-22 20:15:12.269115624 +0100
+@@ -17,13 +17,7 @@
+ #endif
+ /* Added by Erik de Castro Lopo */
+ 
+-
+-
+-typedef short				int16_t ;		/* 16 bit signed int	*/
+-typedef int					int32_t ;	/* 32 bit signed int	*/
+-
+-typedef unsigned short		uint16_t ;		/* unsigned int16_t	*/
+-typedef unsigned int		uint32_t ;	/* unsigned int32_t	*/
++#include <stdint.h>
+ 
+ struct gsm_state
+ {	int16_t			dp0 [280] ;
