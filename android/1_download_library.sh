@@ -169,12 +169,12 @@ rm -rf opusfile-0.10
 download_and_extract https://archive.mozilla.org/pub/opus/opusfile-0.10.tar.gz
 
 # SDL2
-rm -rf SDL2-2.0.7/
-download_and_extract http://libsdl.org/release/SDL2-2.0.7.tar.gz
+rm -rf SDL2-2.0.6/
+download_and_extract http://libsdl.org/release/SDL2-2.0.6.tar.gz
 
 # ICU
 rm -rf icu
-download_and_extract http://download.icu-project.org/files/icu4c/60.2/icu4c-60_2-src.tgz
+download_and_extract http://download.icu-project.org/files/icu4c/59.1/icu4c-59_1-src.tgz
 
 # icudata
 rm -f icudt*.dat

@@ -59,7 +59,7 @@ if [ ! -f .patches-applied ]; then
 	cd ..
 
 	# use android config
-	cd SDL2-2.0.7
+	cd SDL2-2.0.6
 	mv include/SDL_config_android.h include/SDL_config.h
 	mkdir -p jni
 	cd ..
@@ -104,7 +104,7 @@ function install_lib_mpg123 {
 function install_lib_sdl {
 	# $1 => platform (armeabi armeabi-v7a x86 mips)
 
-	cd SDL2-2.0.7
+	cd SDL2-2.0.6
 	echo "APP_ABI := $1" >> "jni/Application.mk"
 	ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk APP_PLATFORM=android-9
 	mkdir -p $PLATFORM_PREFIX/lib
