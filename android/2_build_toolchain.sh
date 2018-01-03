@@ -54,7 +54,7 @@ if [ ! -f .patches-applied ]; then
 	cd ..
 
 	# Wildmidi: Disable libm
-	cd wildmidi-wildmidi-0.4.1
+	cd wildmidi-wildmidi-0.4.2
 	perl -pi -e 's/FIND_LIBRARY\(M_LIBRARY m REQUIRED\)//' CMakeLists.txt
 	cd ..
 
@@ -95,7 +95,7 @@ function install_lib_cmake {
 function install_lib_mpg123 {
 	export CPPFLAGSOLD=$CPPFLAGS
 	export CPPFLAGS="$CPPFLAGS -DHAVE_MMAP"
-	install_lib mpg123-1.25.6 --enable-fifo=no --enable-ipv6=no --enable-network=no \
+	install_lib mpg123-1.25.8 --enable-fifo=no --enable-ipv6=no --enable-network=no \
 		--enable-int-quality=no --with-cpu=generic --with-default-audio=dummy
 	export CPPFLAGS=$CPPFLAGSOLD
 }
@@ -144,20 +144,20 @@ function build() {
 		export CXX="ccache $TARGET_HOST-clang++"
 	fi
 
-	install_lib libpng-1.6.32
-	install_lib freetype-2.8 --with-harfbuzz=no --without-bzip2
+	install_lib libpng-1.6.34
+	install_lib freetype-2.8.1 --with-harfbuzz=no --without-bzip2
 	install_lib pixman-0.34.0
-	install_lib_cmake expat-2.2.4 -DBUILD_tools=OFF -DBUILD_examples=OFF \
+	install_lib_cmake expat-2.2.5 -DBUILD_tools=OFF -DBUILD_examples=OFF \
 		-DBUILD_tests=OFF -DBUILD_doc=OFF -DBUILD_shared=OFF
-	install_lib libogg-1.3.2
+	install_lib libogg-1.3.3
 	install_lib libvorbis-1.3.5
 	install_lib libsndfile-1.0.28
 	install_lib speexdsp-1.2rc3 --disable-sse --disable-neon
 	install_lib_mpg123
 	install_lib libxmp-lite-4.4.1
 	install_lib opus-1.2.1
-	install_lib opusfile-0.9
-	install_lib_cmake wildmidi-wildmidi-0.4.1 -DWANT_PLAYER=OFF -DWANT_STATIC=ON
+	install_lib opusfile-0.10
+	install_lib_cmake wildmidi-wildmidi-0.4.2 -DWANT_PLAYER=OFF -DWANT_STATIC=ON
 	install_lib_sdl "$2"
 
 	# Cross compile ICU
