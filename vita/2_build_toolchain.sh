@@ -36,10 +36,15 @@ if [ ! -f .patches-applied ]; then
 	# Fix libsndfile compilation
 	patch -Np0 < libsndfile.patch
 
+	# Fix wildmidi linking
+	patch -Np0 < wildmidi.patch
+
 	touch .patches-applied
 fi
 
 function set_build_flags {
+	export CC="$TARGET_HOST-gcc"
+	export CXX="$TARGET_HOST-g++"
 	export CFLAGS="-I$WORKSPACE/include -g0 -O2"
 	export CPPFLAGS="$CFLAGS"
 	export LDFLAGS="-L$WORKSPACE/lib"
@@ -65,6 +70,16 @@ function install_lib_zlib() {
 	cd ..
 }
 
+function install_lib_wildmidi() {
+	cd wildmidi-wildmidi-0.4.1
+	cmake . -DCMAKE_SYSTEM_NAME=Generic -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWANT_PLAYER=OFF
+	make clean
+	make
+	cp -up include/wildmidi_lib.h $WORKSPACE/include
+	cp -up libWildMidi.a $WORKSPACE/lib
+	cd ..
+}
+
 # Install patched libvita2d
 function install_lib_vita2d() {
 	cd vita2dlib
@@ -87,9 +102,11 @@ function install_shaders() {
 # Install ICU
 function install_lib_icu() {
 	# Compile native version
-        unset CFLAGS
-        unset CPPFLAGS
-        unset LDFLAGS
+	unset CC
+	unset CXX
+	unset CFLAGS
+	unset CPPFLAGS
+	unset LDFLAGS
 
 	cp icudt58l.dat icu/source/data/in/
 	cp icudt58l.dat icu-native/source/data/in/
@@ -142,6 +159,7 @@ install_lib_icu
 install_lib "mpg123-1.23.3" "--enable-fifo=no --enable-ipv6=no --enable-network=no --enable-int-quality=no --with-cpu=generic --with-default-audio=dummy"
 install_lib "libsndfile-1.0.27"
 install_lib "speexdsp-1.2rc3"
+install_lib_wildmidi
 
 # Precompiled shaders
 install_shaders
