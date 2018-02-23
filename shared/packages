@@ -42,6 +42,10 @@ ver=1.3.5
 LIBVORBIS_URL="http://downloads.xiph.org/releases/vorbis/$lib-$ver.tar.xz"
 LIBVORBIS_DIR="$lib-$ver"
 
+lib=tremor
+TREMOR_URL=http://downloads.sourceforge.net/sourceforge/devkitpro/tremor-lowmem-src.tar.bz2
+TREMOR_DIR="tremor-lowmem"
+
 lib=mpg123
 ver=1.25.8
 MPG123_URL=http://www.mpg123.de/download/$lib-$ver.tar.bz2

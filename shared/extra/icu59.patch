@@ -1,0 +1,184 @@
+diff -Naur icu-native/source/common/putilimp.h icu/source/common/putilimp.h
+--- icu-native/source/common/putilimp.h	2018-02-23 22:19:38.412160114 +0100
++++ icu/source/common/putilimp.h	2018-02-23 22:19:56.145521831 +0100
+@@ -103,6 +103,7 @@
+ #   define U_NL_LANGINFO_CODESET CODESET
+ #endif
+ 
++#if 0
+ #ifdef U_TZSET
+     /* Use the predefined value. */
+ #elif U_PLATFORM_USES_ONLY_WIN32_API
+@@ -153,6 +154,7 @@
+ #else
+ #   define U_TZNAME tzname
+ #endif
++#endif
+ 
+ #ifdef U_HAVE_MMAP
+     /* Use the predefined value. */
+diff -Naur icu-native/source/common/umutex.cpp icu/source/common/umutex.cpp
+--- icu-native/source/common/umutex.cpp	2018-02-23 22:19:38.412160114 +0100
++++ icu/source/common/umutex.cpp	2018-02-23 22:19:56.145521831 +0100
+@@ -183,7 +183,7 @@
+ //
+ //-------------------------------------------------------------------------------------------
+ 
+-# include <pthread.h>
++//# include <pthread.h>
+ 
+ // Each UMutex consists of a pthread_mutex_t.
+ // All are statically initialized and ready for use.
+@@ -194,7 +194,7 @@
+     if (mutex == NULL) {
+         mutex = &globalMutex;
+     }
+-    int sysErr = pthread_mutex_lock(&mutex->fMutex);
++    int sysErr = 0;//pthread_mutex_lock(&mutex->fMutex);
+     (void)sysErr;   // Suppress unused variable warnings.
+     U_ASSERT(sysErr == 0);
+ }
+@@ -206,7 +206,7 @@
+     if (mutex == NULL) {
+         mutex = &globalMutex;
+     }
+-    int sysErr = pthread_mutex_unlock(&mutex->fMutex);
++    int sysErr = 0;//pthread_mutex_unlock(&mutex->fMutex);
+     (void)sysErr;   // Suppress unused variable warnings.
+     U_ASSERT(sysErr == 0);
+ }
+@@ -217,21 +217,21 @@
+     if (mutex == NULL) {
+         mutex = &globalMutex;
+     }
+-    int sysErr = pthread_cond_wait(&cond->fCondition, &mutex->fMutex);
++    int sysErr = 0;//pthread_cond_wait(&cond->fCondition, &mutex->fMutex);
+     (void)sysErr;
+     U_ASSERT(sysErr == 0);
+ }
+ 
+ U_CAPI void U_EXPORT2
+ umtx_condBroadcast(UConditionVar *cond) {
+-    int sysErr = pthread_cond_broadcast(&cond->fCondition);
++    int sysErr = 0;//pthread_cond_broadcast(&cond->fCondition);
+     (void)sysErr;
+     U_ASSERT(sysErr == 0);
+ }
+ 
+ U_CAPI void U_EXPORT2
+ umtx_condSignal(UConditionVar *cond) {
+-    int sysErr = pthread_cond_signal(&cond->fCondition);
++    int sysErr = 0;//pthread_cond_signal(&cond->fCondition);
+     (void)sysErr;
+     U_ASSERT(sysErr == 0);
+ }
+@@ -240,8 +240,8 @@
+ 
+ U_NAMESPACE_BEGIN
+ 
+-static pthread_mutex_t initMutex = PTHREAD_MUTEX_INITIALIZER;
+-static pthread_cond_t initCondition = PTHREAD_COND_INITIALIZER;
++//static pthread_mutex_t initMutex = PTHREAD_MUTEX_INITIALIZER;
++//static pthread_cond_t initCondition = PTHREAD_COND_INITIALIZER;
+ 
+ 
+ // This function is called when a test of a UInitOnce::fState reveals that
+@@ -254,19 +254,19 @@
+ //
+ U_COMMON_API UBool U_EXPORT2
+ umtx_initImplPreInit(UInitOnce &uio) {
+-    pthread_mutex_lock(&initMutex);
++    //pthread_mutex_lock(&initMutex);
+     int32_t state = uio.fState;
+     if (state == 0) {
+         umtx_storeRelease(uio.fState, 1);
+-        pthread_mutex_unlock(&initMutex);
++        //pthread_mutex_unlock(&initMutex);
+         return TRUE;   // Caller will next call the init function.
+     } else {
+         while (uio.fState == 1) {
+             // Another thread is currently running the initialization.
+             // Wait until it completes.
+-            pthread_cond_wait(&initCondition, &initMutex);
++            //pthread_cond_wait(&initCondition, &initMutex);
+         }
+-        pthread_mutex_unlock(&initMutex);
++        //pthread_mutex_unlock(&initMutex);
+         U_ASSERT(uio.fState == 2);
+         return FALSE;
+     }
+@@ -282,10 +282,10 @@
+ 
+ U_COMMON_API void U_EXPORT2
+ umtx_initImplPostInit(UInitOnce &uio) {
+-    pthread_mutex_lock(&initMutex);
++    //pthread_mutex_lock(&initMutex);
+     umtx_storeRelease(uio.fState, 2);
+-    pthread_cond_broadcast(&initCondition);
+-    pthread_mutex_unlock(&initMutex);
++    //pthread_cond_broadcast(&initCondition);
++    //pthread_mutex_unlock(&initMutex);
+ }
+ 
+ U_NAMESPACE_END
+diff -Naur icu-native/source/common/umutex.h icu/source/common/umutex.h
+--- icu-native/source/common/umutex.h	2018-02-23 22:19:38.408826774 +0100
++++ icu/source/common/umutex.h	2018-02-23 22:19:56.145521831 +0100
+@@ -373,16 +373,21 @@
+  *  POSIX platform
+  */
+ 
+-#include <pthread.h>
++//#include <pthread.h>
++
++#define PTHREAD_MUTEX_INITIALIZER 0
++#define PTHREAD_COND_INITIALIZER 0
++//typedef int pthread_mutex_t;
++//typedef int pthread_cond_t;
+ 
+ struct UMutex {
+-    pthread_mutex_t  fMutex;
++    uint32_t  fMutex;
+ };
+ typedef struct UMutex UMutex;
+ #define U_MUTEX_INITIALIZER  {PTHREAD_MUTEX_INITIALIZER}
+ 
+ struct UConditionVar {
+-    pthread_cond_t   fCondition;
++    uint32_t  fCondition;
+ };
+ #define U_CONDITION_INITIALIZER {PTHREAD_COND_INITIALIZER}
+ 
+diff -Naur icu-native/source/i18n/compactdecimalformat.cpp icu/source/i18n/compactdecimalformat.cpp
+--- icu-native/source/i18n/compactdecimalformat.cpp	2018-02-23 22:19:38.405493436 +0100
++++ icu/source/i18n/compactdecimalformat.cpp	2018-02-23 22:20:04.965535774 +0100
+@@ -774,7 +774,7 @@
+ 
+   // ICU 59 HACK: Ignore negative part of format string, mimicking ICU 58 behavior.
+   // TODO(sffc): Make sure this is fixed during the overhaul port in ICU 60.
+-  int32_t semiPos = formatStr.indexOf(';', 0);
++  int32_t semiPos = formatStr.indexOf((UChar32)';', (int32_t)0);
+   if (semiPos == -1) {
+     semiPos = formatStr.length();
+   }
+diff -Naur icu-native/source/i18n/digitlst.cpp icu/source/i18n/digitlst.cpp
+--- icu-native/source/i18n/digitlst.cpp	2018-02-23 22:19:38.402160097 +0100
++++ icu/source/i18n/digitlst.cpp	2018-02-23 22:19:56.145521831 +0100
+@@ -50,6 +50,7 @@
+ #include <stdio.h>
+ #include <limits>
+ 
++#if 0
+ #if !defined(U_USE_STRTOD_L)
+ # if U_PLATFORM_USES_ONLY_WIN32_API
+ #   define U_USE_STRTOD_L 1
+@@ -59,6 +60,9 @@
+ #   define U_USE_STRTOD_L 0
+ # endif
+ #endif
++#endif
++
++#define U_USE_STRTOD_L 0
+ 
+ #if U_USE_STRTOD_L
+ # if U_PLATFORM_USES_ONLY_WIN32_API || U_PLATFORM == U_PF_CYGWIN

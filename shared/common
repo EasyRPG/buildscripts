@@ -26,6 +26,14 @@ function download_and_extract {
 	extract $file
 }
 
+function git_clone {
+	url=$1
+	file=${url##*/}
+	msg "Cloning $file..."
+
+	git clone $url
+}
+
 function msg {
 	echo ""
 	echo $1
@@ -50,7 +58,7 @@ function install_lib {
 	shift
 	./configure --prefix=$WORKSPACE --disable-shared --enable-static \
 		--disable-dependency-tracking --enable-silent-rules \
-		--cache-file="$WORKSPACE/config.cache" $@
+		--host=$TARGET_HOST --cache-file="$WORKSPACE/config.cache" $@
 	make clean
 	make
 	make install
@@ -84,13 +92,51 @@ function install_lib_zlib {
 	echo ""
 
 	pushd $ZLIB_DIR
-	./configure --static --prefix=$WORKSPACE
+	CHOST=$TARGET_HOST ./configure --static --prefix=$WORKSPACE
 	make clean
 	make
 	make install
 	popd
 
 	echo " -> done"
+}
+
+function install_lib_icu_native {
+	# Compile native version
+	unset CC
+	unset CXX
+	unset CFLAGS
+	unset CPPFLAGS
+	unset CXXFLAGS
+	unset LDFLAGS
+
+	pushd icu-native/source
+	chmod u+x configure
+	./configure --enable-static --enable-shared=no $ICU_ARGS
+	make
+
+	export ICU_CROSS_BUILD=$PWD
+
+	popd
+}
+
+function install_lib_icu_cross {
+	# Cross compile
+	export ICU_CROSS_BUILD=$PWD/icu-native/source
+
+	set_build_flags
+
+	pushd icu/source
+
+	cp config/mh-linux config/mh-unknown
+
+	chmod u+x configure
+	./configure --enable-static --enable-shared=no --prefix=$WORKSPACE \
+		 --host=$TARGET_HOST --with-cross-build=$ICU_CROSS_BUILD $ICU_ARGS
+	make clean
+	make
+	make install
+	popd
 }
 
 function patches_common {
@@ -137,4 +183,13 @@ function patches_common {
 	# glibc 2.26 removed xlocale.h: https://ssl.icu-project.org/trac/ticket/13329
 	perl -pi -e 's/xlocale/locale/' i18n/digitlst.cpp
 	cd ../..
+}
+
+function cleanup {
+	rm -rf zlib-*/ libpng-*/ freetype-*/ harfbuzz-*/ pixman-*/ expat-*/ libogg-*/ \
+	libvorbis-*/ tremor-lowmem/ mpg123-*/ libsndfile-*/ libxmp-lite-*/ speexdsp-*/ \
+	libsamplerate-*/ wildmidi-*/ opus-*/ opusfile-*/ icu/ icu-native/ \
+	SDL2-*/ SDL2_mixer-*/ SDL2_image-*/
+	rm -f *.zip *.bz2 *.gz *.xz *.tgz icudt* *.pl .patches-applied config.cache
+	rm -rf bin/ sbin/ share/
 }
