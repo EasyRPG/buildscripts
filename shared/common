@@ -140,7 +140,7 @@ function install_lib_icu_cross {
 }
 
 function patches_common {
-	SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+	_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 	# disable png utils
 	cd $LIBPNG_DIR
@@ -157,7 +157,7 @@ function patches_common {
 
 	# disable harfbuzz tests
 	cd $HARFBUZZ_DIR
-	patch -Np1 < $SCRIPT_DIR/harfbuzz.patch
+	patch -Np1 < $_SCRIPT_DIR/harfbuzz.patch
 	autoreconf -fi
 	cd ..
 
@@ -173,7 +173,7 @@ function patches_common {
 
 	# Fix libxmp-lite compilation
 	cd $LIBXMP_LITE_DIR
-	patch -Np1 < $SCRIPT_DIR/libxmp-a0288352.patch
+	patch -Np1 < $_SCRIPT_DIR/libxmp-a0288352.patch
 	cd ..
 
 	cp icudt*.dat $ICU_DIR/source/data/in

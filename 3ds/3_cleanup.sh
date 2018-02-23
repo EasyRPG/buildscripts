@@ -1,8 +1,13 @@
 #!/bin/bash
 
-################################################################
-# Cleanup library build folders and other stuff
+echo
+echo "Cleaning up library build folders and other stuff..."
 
-rm -rf zlib-*/ freetype-*/ harfbuzz-*/ icu/ icu-native/ libmad-*/ libmodplug-*/ libogg-*/ libpng-*/ libvorbis-*/ pixman-*/ mpg123-*/ libsndfile-*/ speexdsp-*/ tremor-lowmem/ wildmidi-*/ .patches-applied
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $SCRIPT_DIR/../shared/import
+
+cleanup
+
 rm -rf sf2dlib/
-rm -f *.bz2 *.gz *.xz *.tgz *.pl icudt*
+
+echo " -> done"
