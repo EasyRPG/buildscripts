@@ -38,7 +38,7 @@ if [ ! -f .patches-applied ]; then
 
 	# Disable pthread and other newlib issues
 	cp -rup icu icu-native
-	patch -Np0 < $SCRIPT_DIR/../shared/extra/icu59.patch
+	patch -Np0 < $SCRIPT_DIR/icu59-3ds.patch
 
 	touch .patches-applied
 fi
