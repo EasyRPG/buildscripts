@@ -3,21 +3,10 @@
 # abort on errors
 set -e
 
-# helper
-function msg {
-  echo ""
-  echo $1
-}
+export WORKSPACE=$PWD
 
-function download_and_extract {
-	url=$1
-	file=${url##*/}
-
-	msg "Downloading and extracting $file..."
-
-	wget -nv -N $url
-	tar xf $file
-}
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $SCRIPT_DIR/../shared/import
 
 function download_and_extract_shaders {
 	mkdir vitashaders
@@ -26,76 +15,95 @@ function download_and_extract_shaders {
 	cd ..
 }
 
-function git_clone {
-	url=$1
-	file=${url##*/}
-	msg "Cloning $file..."
+msg " [1] Installing Vita SDK"
 
-	git clone $url
-}
+export VITASDK=$PWD/vitasdk
+export URL=`curl "https://api.github.com/repos/vitasdk/autobuilds/releases" | grep "browser_download_url" | grep "linux" | head -n 1 | cut -d '"' -f 4`
+
+mkdir -p vitasdk
+wget -O "vitasdk-nightly-tar.bz2" "$URL"
+tar xf "vitasdk-nightly-tar.bz2" -C $VITASDK --strip-components=1
 
 msg " [2] Downloading generic libraries"
 
 # zlib
-rm -rf zlib-1.2.11
-download_and_extract http://zlib.net/zlib-1.2.11.tar.gz
+rm -rf $ZLIB_DIR
+download_and_extract $ZLIB_URL
 
 # libpng
-rm -rf libpng-1.6.23/
-download_and_extract http://prdownloads.sourceforge.net/libpng/libpng-1.6.23.tar.xz
+rm -rf $LIBPNG_DIR
+download_and_extract $LIBPNG_URL
 
 # freetype
-rm -rf freetype-2.6.3/
-download_and_extract http://download.savannah.gnu.org/releases/freetype/freetype-2.6.3.tar.bz2
+rm -rf $FREETYPE_DIR
+download_and_extract $FREETYPE_URL
 
 # harfbuzz
-rm -rf harfbuzz-1.2.3/
-download_and_extract http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.2.3.tar.bz2
+rm -rf $HARFBUZZ_DIR
+download_and_extract $HARFBUZZ_URL
 
 # pixman
-rm -rf pixman-0.34.0/
-download_and_extract http://cairographics.org/releases/pixman-0.34.0.tar.gz
+rm -rf $PIXMAN_DIR
+download_and_extract $PIXMAN_URL
+
+# expat
+rm -rf $EXPAT_DIR
+download_and_extract $EXPAT_URL
 
 # libogg
-rm -rf libogg-1.3.2/
-download_and_extract http://downloads.xiph.org/releases/ogg/libogg-1.3.2.tar.xz
+rm -rf $LIBOGG_DIR
+download_and_extract $LIBOGG_URL
 
 # libvorbis
-rm -rf libvorbis-1.3.5/
-download_and_extract http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.5.tar.xz
-
-# ICU
-rm -rf icu
-download_and_extract http://download.icu-project.org/files/icu4c/58.1/icu4c-58_1-src.tgz
-
-# icudata
-rm -f icudt*.dat
-download_and_extract https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata.tar.gz
+rm -rf $LIBVORBIS_DIR
+download_and_extract $LIBVORBIS_URL
 
 # mpg123
-rm -rf mpg123-1.23.3
-download_and_extract http://www.mpg123.de/download/mpg123-1.23.3.tar.bz2
+rm -rf $MPG123_DIR
+download_and_extract $MPG123_URL
 
 # libsndfile
-rm -rf libsndfile-1.0.27
-download_and_extract http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.27.tar.gz
+rm -rf $LIBSNDFILE_DIR
+download_and_extract $LIBSNDFILE_URL
+
+# libxmp-lite
+rm -rf $LIBXMP_LITE_DIR
+download_and_extract $LIBXMP_LITE_URL
 
 # speexdsp
-rm -rf speexdsp-1.2rc3
-download_and_extract http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz
+rm -rf $SPEEXDSP_DIR
+download_and_extract $SPEEXDSP_URL
 
 # wildmidi
-rm -rf wildmidi-wildmidi-0.4.1
-download_and_extract https://github.com/Mindwerks/wildmidi/archive/wildmidi-0.4.1.tar.gz
+rm -rf $WILDMIDI_DIR
+download_and_extract $WILDMIDI_URL
+
+# opus
+rm -rf $OPUS_DIR
+download_and_extract $OPUS_URL
+
+# opusfile
+rm -rf $OPUSFILE_DIR
+download_and_extract $OPUSFILE_URL
+
+# ICU
+rm -rf $ICU_DIR
+download_and_extract $ICU_URL
+
+# icudata
+rm -f $ICUDATA_FILES
+download_and_extract $ICUDATA_URL
+
+msg " [3] Downloading platform libraries"
 
 # libvitashaders
 rm -rf vitashaders
 download_and_extract_shaders
-
-msg " [3] Downloading platform libraries"
 
 git_clone https://github.com/vitasdk/vdpm
 
 git_clone https://github.com/vitasdk/vita-headers
 
 git_clone https://github.com/frangarcj/vita2dlib
+
+

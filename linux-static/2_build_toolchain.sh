@@ -20,7 +20,7 @@ if [ ! -f .patches-applied ]; then
 	patches_common
 
 	# Wildmidi: Disable libm
-	perl -pi -e 's/FIND_LIBRARY\(M_LIBRARY m REQUIRED\)//' wildmidi-wildmidi-0.4.1/CMakeLists.txt
+	perl -pi -e 's/FIND_LIBRARY\(M_LIBRARY m REQUIRED\)//' $WILDMIDI_DIR/CMakeLists.txt
 
 	touch .patches-applied
 fi

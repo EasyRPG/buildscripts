@@ -56,9 +56,9 @@ function install_lib {
 
 	pushd $1
 	shift
-	./configure --prefix=$WORKSPACE --disable-shared --enable-static \
+	./configure --prefix=$PLATFORM_PREFIX --disable-shared --enable-static \
 		--disable-dependency-tracking --enable-silent-rules \
-		--host=$TARGET_HOST --cache-file="$WORKSPACE/config.cache" $@
+		--host=$TARGET_HOST --cache-file="$PLATFORM_PREFIX/config.cache" $@
 	make clean
 	make
 	make install
@@ -77,7 +77,7 @@ function install_lib_cmake {
 	shift
 	rm -rf CMakeCache.txt CMakeFiles/
 	cmake . -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=OFF \
-		-DCMAKE_INSTALL_PREFIX=$WORKSPACE $@
+		-DCMAKE_INSTALL_PREFIX=$PLATFORM_PREFIX $@
 	make clean
 	make
 	make install
@@ -92,7 +92,7 @@ function install_lib_zlib {
 	echo ""
 
 	pushd $ZLIB_DIR
-	CHOST=$TARGET_HOST ./configure --static --prefix=$WORKSPACE
+	CHOST=$TARGET_HOST ./configure --static --prefix=$PLATFORM_PREFIX
 	make clean
 	make
 	make install
@@ -124,15 +124,14 @@ function install_lib_icu_cross {
 	# Cross compile
 	export ICU_CROSS_BUILD=$PWD/icu-native/source
 
-	set_build_flags
-
 	pushd icu/source
 
 	cp config/mh-linux config/mh-unknown
 
 	chmod u+x configure
-	./configure --enable-static --enable-shared=no --prefix=$WORKSPACE \
-		 --host=$TARGET_HOST --with-cross-build=$ICU_CROSS_BUILD $ICU_ARGS
+	./configure --enable-static --enable-shared=no --prefix=$PLATFORM_PREFIX \
+		--host=$TARGET_HOST --with-cross-build=$ICU_CROSS_BUILD \
+		--enable-tools=no $ICU_ARGS
 	make clean
 	make
 	make install

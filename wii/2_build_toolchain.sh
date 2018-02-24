@@ -62,9 +62,11 @@ export DEVKITPRO=${WORKSPACE}/devkitPro
 export DEVKITPPC=${DEVKITPRO}/devkitPPC
 export PATH=$DEVKITPPC/bin:$PATH
 
+export PLATFORM_PREFIX=$WORKSPACE
 export TARGET_HOST=powerpc-eabi
-export PKG_CONFIG_PATH=$WORKSPACE/lib/pkgconfig
+export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
+export MAKEFLAGS="-j${nproc:-2}"
 
 function set_build_flags {
 	if [ "$ENABLE_CCACHE" ]; then
@@ -74,11 +76,10 @@ function set_build_flags {
 		export CC="$TARGET_HOST-gcc"
 		export CXX="$TARGET_HOST-g++"
 	fi
-	export CFLAGS="-I$WORKSPACE/include -g -O2 -DGEKKO"
+	export CFLAGS="-I$PLATFORM_PREFIX/include -g -O2 -DGEKKO"
 	export CPPFLAGS="$CFLAGS"
 	export CXXFLAGS=$CFLAGS
-	export MAKEFLAGS="-j${nproc:-2}"
-	export LDFLAGS="-L$WORKSPACE/lib"
+	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 }
 
 # Install ICU
@@ -93,7 +94,8 @@ function install_lib_icu_native_big() {
 
 	pushd icu-native/source
 	chmod u+x configure
-	CPPFLAGS="-DBUILD_DATA_WITHOUT_ASSEMBLY -DU_DISABLE_OBJ_CODE" ./configure --enable-static --enable-shared=no $ICU_ARGS
+	CPPFLAGS="-DBUILD_DATA_WITHOUT_ASSEMBLY -DU_DISABLE_OBJ_CODE" ./configure \
+		--enable-static --enable-shared=no --enable-tools=no $ICU_ARGS
 	make
 
 	export ICU_CROSS_BUILD=$PWD
@@ -127,6 +129,10 @@ function install_lib_sdlmixer() {
 	echo " -> done"
 }
 
+# build native ICU
+# custom native compile because of big endian
+install_lib_icu_native_big
+
 # Install libraries
 set_build_flags
 
@@ -147,8 +153,6 @@ install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
 install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS -DCMAKE_SYSTEM_NAME=Generic
 install_lib $OPUS_DIR $OPUS_ARGS
 install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
-# custom native compile because of big endian
-install_lib_icu_native_big
 install_lib_icu_cross
 
 # Platform libs

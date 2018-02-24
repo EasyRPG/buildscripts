@@ -1,8 +1,13 @@
 #!/bin/bash
 
-################################################################
-# Cleanup library build folders and other stuff
+echo
+echo "Cleaning up library build folders and other stuff..."
 
-rm -rf zlib-*/ freetype-*/ harfbuzz-*/ icu/ icu-native/ libogg-*/ libpng-*/ libvorbis-*/ pixman-*/ mpg123-*/ libsndfile-*/ speexdsp-*/ wildmidi-*/
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $SCRIPT_DIR/../shared/import
+
+cleanup
+
 rm -rf vdpm/ vita2dlib/ vitashaders/ vita-headers/
-rm -f *.bz2 *.gz *.xz *.tgz *.pl icudt* .patches-applied
+
+echo " -> done"

@@ -1,0 +1,52 @@
+diff -Naur icu-native/source/common/putilimp.h icu/source/common/putilimp.h
+--- icu-native/source/common/putilimp.h	2018-02-23 22:19:38.412160114 +0100
++++ icu/source/common/putilimp.h	2018-02-23 22:19:56.145521831 +0100
+@@ -103,6 +103,7 @@
+ #   define U_NL_LANGINFO_CODESET CODESET
+ #endif
+ 
++#if 0
+ #ifdef U_TZSET
+     /* Use the predefined value. */
+ #elif U_PLATFORM_USES_ONLY_WIN32_API
+@@ -153,6 +154,7 @@
+ #else
+ #   define U_TZNAME tzname
+ #endif
++#endif
+ 
+ #ifdef U_HAVE_MMAP
+     /* Use the predefined value. */
+diff -Naur icu-native/source/i18n/compactdecimalformat.cpp icu/source/i18n/compactdecimalformat.cpp
+--- icu-native/source/i18n/compactdecimalformat.cpp	2018-02-23 22:19:38.405493436 +0100
++++ icu/source/i18n/compactdecimalformat.cpp	2018-02-23 22:20:04.965535774 +0100
+@@ -774,7 +774,7 @@
+ 
+   // ICU 59 HACK: Ignore negative part of format string, mimicking ICU 58 behavior.
+   // TODO(sffc): Make sure this is fixed during the overhaul port in ICU 60.
+-  int32_t semiPos = formatStr.indexOf(';', 0);
++  int32_t semiPos = formatStr.indexOf((UChar32)';', (int32_t)0);
+   if (semiPos == -1) {
+     semiPos = formatStr.length();
+   }
+diff -Naur icu-native/source/i18n/digitlst.cpp icu/source/i18n/digitlst.cpp
+--- icu-native/source/i18n/digitlst.cpp	2018-02-23 22:19:38.402160097 +0100
++++ icu/source/i18n/digitlst.cpp	2018-02-23 22:19:56.145521831 +0100
+@@ -50,6 +50,7 @@
+ #include <stdio.h>
+ #include <limits>
+ 
++#if 0
+ #if !defined(U_USE_STRTOD_L)
+ # if U_PLATFORM_USES_ONLY_WIN32_API
+ #   define U_USE_STRTOD_L 1
+@@ -59,6 +60,9 @@
+ #   define U_USE_STRTOD_L 0
+ # endif
+ #endif
++#endif
++
++#define U_USE_STRTOD_L 0
+ 
+ #if U_USE_STRTOD_L
+ # if U_PLATFORM_USES_ONLY_WIN32_API || U_PLATFORM == U_PF_CYGWIN

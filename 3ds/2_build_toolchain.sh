@@ -52,9 +52,11 @@ export DEVKITARM=${DEVKITPRO}/devkitARM
 export PATH=$DEVKITARM/bin:$PATH
 export CTRULIB=${DEVKITPRO}/libctru
 
+export PLATFORM_PREFIX=$WORKSPACE
 export TARGET_HOST=arm-none-eabi
-export PKG_CONFIG_PATH=$WORKSPACE/lib/pkgconfig
+export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
+export MAKEFLAGS="-j${nproc:-2}"
 
 function set_build_flags {
 	if [ "$ENABLE_CCACHE" ]; then
@@ -64,11 +66,10 @@ function set_build_flags {
 		export CC="$TARGET_HOST-gcc"
 		export CXX="$TARGET_HOST-g++"
 	fi
-	export CFLAGS="-I$WORKSPACE/include -g0 -O2 -mword-relocations -fomit-frame-pointer -ffast-math -march=armv6k -mtune=mpcore -mfloat-abi=hard -D_3DS"
+	export CFLAGS="-I$PLATFORM_PREFIX/include -g0 -O2 -mword-relocations -fomit-frame-pointer -ffast-math -march=armv6k -mtune=mpcore -mfloat-abi=hard -D_3DS"
 	export CPPFLAGS=$CFLAGS
 	export CXXFLAGS=$CFLAGS
-	export MAKEFLAGS="-j${nproc:-2}"
-	export LDFLAGS="-L$WORKSPACE/lib"
+	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 }
 
 function install_lib_sf2d() {
@@ -79,6 +80,9 @@ function install_lib_sf2d() {
 	cp -r lib/* ../../lib/
 	cd ../..
 }
+
+# Build native ICU
+install_lib_icu_native
 
 # Install libraries
 set_build_flags
@@ -98,7 +102,6 @@ install_lib $LIBSNDFILE_DIR $LIBSNDFILE_ARGS
 install_lib $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
 install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
 install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS -DCMAKE_SYSTEM_NAME=Generic
-install_lib_icu_native
 install_lib_icu_cross
 
 # Platform libs

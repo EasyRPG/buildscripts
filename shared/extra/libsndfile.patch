@@ -1,12 +1,13 @@
 diff -Naur libsndfile-1.0.27-orig/configure.ac libsndfile-1.0.27/configure.ac
 --- libsndfile-1.0.27-orig/configure.ac	2016-06-21 19:15:29.548606789 +0200
 +++ libsndfile-1.0.27/configure.ac	2016-06-21 19:32:54.258549707 +0200
-@@ -227,6 +227,9 @@
+@@ -227,6 +227,10 @@
  		;;
  	esac
 
-+TYPEOF_SF_COUNT_T="long long int"
++TYPEOF_SF_COUNT_T="int64_t"
 +SIZEOF_SF_COUNT_T=8
++SF_COUNT_MAX="0x7FFFFFFFFFFFFFFFLL"
 +
  if test $SIZEOF_SF_COUNT_T = 4 ; then
  	SF_COUNT_MAX="0x7FFFFFFF"
