@@ -32,6 +32,8 @@ cd $WORKSPACE
 
 echo "Preparing toolchain"
 
+export PLATFORM_PREFIX=$WORKSPACE
+
 export CFLAGS="-Os -g0 -ffunction-sections -fdata-sections"
 export CXXFLAGS=$CFLAGS
 export MAKEFLAGS="-j${nproc:-2}"
