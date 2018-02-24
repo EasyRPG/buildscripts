@@ -60,7 +60,7 @@ function install_lib_sdl {
 
 	pushd $SDL2_DIR
 	echo "APP_ABI := $1" >> "jni/Application.mk"
-	ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk APP_PLATFORM=android-9
+	ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk APP_PLATFORM=android-$TARGET_API
 	mkdir -p $PLATFORM_PREFIX/lib
 	mkdir -p $PLATFORM_PREFIX/include/SDL2
 	cp libs/$1/* $PLATFORM_PREFIX/lib/
@@ -79,9 +79,15 @@ function build() {
 
 	echo "preparing $1 toolchain"
 
+	export TARGET_API=9
+	if [ "$3"="arm64" ]; then
+		# Minimum API 21 on ARM64
+		export TARGET_API=21
+	fi
+
 	export PATH=$OLD_PATH
 	export PLATFORM_PREFIX=$WORKSPACE/$2-toolchain
-	$NDK_ROOT/build/tools/make_standalone_toolchain.py --api=9 \
+	$NDK_ROOT/build/tools/make_standalone_toolchain.py --api=$TARGET_API \
 		--install-dir=$PLATFORM_PREFIX --stl=libc++ --arch=$3
 
 	export PATH=$PLATFORM_PREFIX/bin:$PATH
@@ -147,4 +153,6 @@ build "ARMeabi" "armeabi" "arm" "arm-linux-androideabi" ""
 build "ARMeabi-v7a" "armeabi-v7a" "arm" "arm-linux-androideabi" "-march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3"
 
 ################################################################
-# TODO: Install standalone toolchain aarch64
+# Install standalone toolchain arm64-v8a
+
+build "AArch64" "arm64-v8a" "arm64" "aarch64-linux-android" ""
