@@ -3,6 +3,11 @@
 # abort on errors
 set -e
 
+export WORKSPACE=$PWD
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $SCRIPT_DIR/../shared/import
+
 # Supported os : "darwin" or "linux"
 os=`uname`
 darwin="Darwin"
@@ -18,40 +23,6 @@ if [ $os = $darwin ] ; then
 fi
 
 export WORKSPACE=$PWD
-
-# helper
-function msg {
-	echo ""
-	echo $1
-}
-
-function extract {
-	file=$1
-	shift
-
-	[ $# -ne 0 ] && msg "Extracting $file..."
-
-	tar xf $file $@
-}
-
-function download {
-	url=$1
-	shift
-
-	[ $# -ne 0 ] && msg "Downloading $url..."
-
-	wget -nv -N $url $@
-}
-
-function download_and_extract {
-	url=$1
-	file=${url##*/}
-
-	msg "Downloading and extracting $file..."
-
-	download $url
-	extract $file
-}
 
 # Prepare toolchain
 
@@ -113,69 +84,69 @@ fi
 msg " [4] Preparing libraries"
 
 # libpng
-rm -rf libpng-1.6.34/
-download_and_extract http://prdownloads.sourceforge.net/libpng/libpng-1.6.34.tar.xz
+rm -rf $LIBPNG_DIR
+download_and_extract $LIBPNG_URL
 
 # freetype
-rm -rf freetype-2.8.1/
-download_and_extract http://download.savannah.gnu.org/releases/freetype/freetype-2.8.1.tar.bz2
+rm -rf $FREETYPE_DIR
+download_and_extract $FREETYPE_URL
 
 # harfbuzz
-rm -rf harfbuzz-1.7.4/
-download_and_extract http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.7.4.tar.bz2
+rm -rf $HARFBUZZ_DIR
+download_and_extract $HARFBUZZ_URL
 
 # pixman
-rm -rf pixman-0.34.0/
-download_and_extract http://cairographics.org/releases/pixman-0.34.0.tar.gz
+rm -rf $PIXMAN_DIR
+download_and_extract $PIXMAN_URL
 
 # expat
-rm -rf expat-2.2.5/
-download_and_extract http://sourceforge.net/projects/expat/files/expat/2.2.5/expat-2.2.5.tar.bz2
+rm -rf $EXPAT_DIR
+download_and_extract $EXPAT_URL
 
 # libogg
-rm -rf libogg-1.3.3/
-download_and_extract http://downloads.xiph.org/releases/ogg/libogg-1.3.3.tar.xz
+rm -rf $LIBOGG_DIR
+download_and_extract $LIBOGG_URL
 
 # libvorbis
-rm -rf libvorbis-1.3.5/
-download_and_extract http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.5.tar.xz
+rm -rf $LIBVORBIS_DIR
+download_and_extract $LIBVORBIS_URL
 
 # mpg123
-rm -rf mpg123-1.25.8
-download_and_extract http://www.mpg123.de/download/mpg123-1.25.8.tar.bz2
+rm -rf $MPG123_DIR
+download_and_extract $MPG123_URL
 
 # libsndfile
-rm -rf libsndfile-1.0.28
-download_and_extract http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.28.tar.gz
+rm -rf $LIBSNDFILE_DIR
+download_and_extract $LIBSNDFILE_URL
 
 # libxmp-lite
-rm -rf libxmp-lite-4.4.1
-download_and_extract http://sourceforge.net/projects/xmp/files/libxmp/4.4.1/libxmp-lite-4.4.1.tar.gz
+rm -rf $LIBXMP_LITE_DIR
+download_and_extract $LIBXMP_LITE_URL
 
 # speexdsp
-rm -rf speexdsp-1.2rc3
-download_and_extract http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz
+rm -rf $SPEEXDSP_DIR
+download_and_extract $SPEEXDSP_URL
 
 # wildmidi
-rm -rf wildmidi-wildmidi-0.4.2
-download_and_extract https://github.com/Mindwerks/wildmidi/archive/wildmidi-0.4.2.tar.gz
+rm -rf $WILDMIDI_DIR
+download_and_extract $WILDMIDI_URL
 
 # opus
-rm -rf opus-1.2.1
-download_and_extract https://archive.mozilla.org/pub/opus/opus-1.2.1.tar.gz
+rm -rf $OPUS_DIR
+download_and_extract $OPUS_URL
 
 # opusfile
-rm -rf opusfile-0.10
-download_and_extract https://archive.mozilla.org/pub/opus/opusfile-0.10.tar.gz
-
-# SDL2
-rm -rf SDL2-2.0.6/
-download_and_extract http://libsdl.org/release/SDL2-2.0.6.tar.gz
+rm -rf $OPUSFILE_DIR
+download_and_extract $OPUSFILE_URL
 
 # ICU
-rm -rf icu
-download_and_extract http://download.icu-project.org/files/icu4c/59.1/icu4c-59_1-src.tgz
+rm -rf $ICU_DIR
+download_and_extract $ICU_URL
 
 # icudata
-rm -f icudt*.dat
-download_and_extract https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata.tar.gz
+rm -f $ICUDATA_FILES
+download_and_extract $ICUDATA_URL
+
+# SDL2
+rm -rf $SDL2_DIR
+download_and_extract $SDL2_URL
