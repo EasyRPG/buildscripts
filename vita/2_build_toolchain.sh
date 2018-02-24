@@ -121,6 +121,8 @@ install_lib $LIBSNDFILE_DIR $LIBSNDFILE_ARGS
 install_lib $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
 install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
 install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS -DCMAKE_SYSTEM_NAME=Generic
+install_lib $OPUS_DIR $OPUS_ARGS
+install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 install_lib_icu_cross
 
 # Precompiled shaders
