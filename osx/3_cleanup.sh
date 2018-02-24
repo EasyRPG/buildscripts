@@ -1,12 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 
 echo
 echo "Cleaning up library build folders and other stuff..."
 
-rm -rf zlib-*/ freetype-*/ harfbuzz-*/ icu/ icu-native/ libpng-*/ expat-*/ pixman-*/ mpg123-*/ \
-	libsndfile-*/ libxmp-lite-*/ speexdsp-*/ wildmidi-*/ libogg-*/ libvorbis-*/ \
-	SDL2_mixer-*/ SDL2-*/
-rm -f *.bz2 *.gz *.xz *.tgz icudt* .patches-applied
-rm -rf bin/ share/ sbin/
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $SCRIPT_DIR/../shared/import
+
+cleanup
 
 echo " -> done"

@@ -199,7 +199,10 @@ function patches_common {
 	chmod u+x configure
 	perl -pi -e 's/SMALL_BUFFER_MAX_SIZE 512/SMALL_BUFFER_MAX_SIZE 2048/' tools/toolutil/pkg_genc.h
 	# glibc 2.26 removed xlocale.h: https://ssl.icu-project.org/trac/ticket/13329
-	perl -pi -e 's/xlocale/locale/' i18n/digitlst.cpp
+	# Patch is incompatible with MacOSX/iOS
+	if [ "$(uname)" != "Darwin" ]; then
+		perl -pi -e 's/xlocale/locale/' i18n/digitlst.cpp
+	fi
 	cd ../..
 }
 
