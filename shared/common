@@ -193,10 +193,14 @@ function patches_common {
 		cd ..
 	fi
 
-	# Fix libxmp-lite compilation
+	# libxmp-lite
 	if [ -d "$LIBXMP_LITE_DIR" ]; then
+		# compile fix
 		cd $LIBXMP_LITE_DIR
 		patch -Np1 < $_SCRIPT_DIR/libxmp-a0288352.patch
+
+		# Use custom CMakeLists.txt
+		cp $_SCRIPT_DIR/CMakeLists_xmplite.txt ./CMakeLists.txt
 		cd ..
 	fi
 

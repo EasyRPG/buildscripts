@@ -80,7 +80,7 @@ install_lib $LIBOGG_DIR $LIBOGG_ARGS
 install_lib $LIBVORBIS_DIR $LIBVORBIS_ARGS
 install_lib $MPG123_DIR $MPG123_ARGS
 install_lib $LIBSNDFILE_DIR $LIBSNDFILE_ARGS
-install_lib $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
+install_lib_cmake $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
 install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
 install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS
 install_lib $OPUS_DIR $OPUS_ARGS
@@ -88,6 +88,3 @@ install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 install_lib $ICU_DIR/source $ICU_ARGS
 install_lib $SDL2_DIR $SDL2_ARGS
 install_lib $SDL2_MIXER_DIR $SDL2_MIXER_ARGS
-
-# allows minimal Player build with xmplite version, while using the full version otherwise
-mv $WORKSPACE/lib/pkgconfig/libxmp-lite.pc $WORKSPACE/lib/pkgconfig/libxmp.pc
