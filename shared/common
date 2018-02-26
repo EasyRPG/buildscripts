@@ -77,7 +77,7 @@ function install_lib_cmake {
 	shift
 	rm -rf CMakeCache.txt CMakeFiles/
 	$CMAKE_WRAPPER cmake . -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=OFF \
-		-DCMAKE_INSTALL_PREFIX=$PLATFORM_PREFIX $@
+		-DCMAKE_INSTALL_PREFIX=$PLATFORM_PREFIX -DCMAKE_SYSTEM_TYPE=Generic $@
 	make clean
 	make
 	make install
@@ -174,25 +174,42 @@ function patches_common {
 	cd ..
 
 	# disable harfbuzz tests
-	cd $HARFBUZZ_DIR
-	patch -Np1 < $_SCRIPT_DIR/harfbuzz.patch
-	autoreconf -fi
-	cd ..
+	if [ -d "$HARFBUZZ_DIR" ]; then
+		cd $HARFBUZZ_DIR
+		patch -Np1 < $_SCRIPT_DIR/harfbuzz.patch
+		autoreconf -fi
+		cd ..
+	fi
 
 	# disable unsupported compiler flags by clang in libvorbis
 	perl -pi -e 's/-mno-ieee-fp//' $LIBVORBIS_DIR/configure
 
 	# disable libsndfile examples and tests
-	cd $LIBSNDFILE_DIR
-	perl -pi -e 's/ examples tests//' Makefile.am
-	perl -pi -e 's/ examples regtest tests programs//' Makefile.am
-	autoreconf -fi
-	cd ..
+	if [ -d "$LIBSNDFILE_DIR" ]; then
+		cd $LIBSNDFILE_DIR
+		perl -pi -e 's/ examples tests//' Makefile.am
+		perl -pi -e 's/ examples regtest tests programs//' Makefile.am
+		autoreconf -fi
+		cd ..
+	fi
 
 	# Fix libxmp-lite compilation
-	cd $LIBXMP_LITE_DIR
-	patch -Np1 < $_SCRIPT_DIR/libxmp-a0288352.patch
-	cd ..
+	if [ -d "$LIBXMP_LITE_DIR" ]; then
+		cd $LIBXMP_LITE_DIR
+		patch -Np1 < $_SCRIPT_DIR/libxmp-a0288352.patch
+		cd ..
+	fi
+
+	# Wildmidi
+	if [ -d "$WILDMIDI_DIR" ]; then
+		# Support install for CMAKE_SYSTEM_NAME Generic
+		cd $WILDMIDI_DIR
+		patch -Np1 < $SCRIPT_DIR/../shared/wildmidi-generic-install.patch
+
+		# Disable libm
+		perl -pi -e 's/FIND_LIBRARY\(M_LIBRARY m REQUIRED\)//' CMakeLists.txt
+		cd ..
+	fi
 
 	cp icudt*.dat $ICU_DIR/source/data/in
 	cd $ICU_DIR/source

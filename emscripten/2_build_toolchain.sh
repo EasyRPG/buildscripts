@@ -26,23 +26,12 @@ if [ ! -f .patches-applied ]; then
 	autoreconf -fi
 	popd
 
-	# disable unsupported compiler flags by clang in libvorbis
-	perl -pi -e 's/-mno-ieee-fp//' $LIBVORBIS_DIR/configure
-
-	# disable unsupported compiler flags by clang in libogg
+	# disable unsupported compiler flags by emcc clang in libogg
 	perl -pi -e 's/-O20/-g0 -O2/g' $LIBOGG_DIR/configure
 
 	# hack to not use hidden funtion
 	# (see https://groups.google.com/forum/#!topic/emscripten-discuss/YM3jC_qQoPk)
 	perl -pi -e 's/HAVE_ARC4RANDOM\)/NO_ARC4RANDOM\)/' $EXPAT_DIR/ConfigureChecks.cmake
-
-	# Wildmidi: Support install for CMAKE_SYSTEM_NAME Generic
-	#pushd $WILDMIDI_DIR
-	#patch -Np1 < $SCRIPT_DIR/../shared/extra/wildmidi-generic-install.patch
-	#popd
-
-        # Wildmidi: Disable libm
-	#perl -pi -e 's/FIND_LIBRARY\(M_LIBRARY m REQUIRED\)//' $WILDMIDI_DIR/CMakeLists.txt
 
 	cp -rup icu icu-native
 
@@ -124,14 +113,14 @@ install_lib $LIBPNG_DIR $LIBPNG_ARGS
 #install_lib $HARFBUZZ_DIR $HARFBUZZ_ARGS
 #install_lib $FREETYPE_DIR $FREETYPE_ARGS --with-harfbuzz
 install_lib $PIXMAN_DIR $PIXMAN_ARGS
-install_lib_cmake $EXPAT_DIR $EXPAT_ARGS -DCMAKE_SYSTEM_NAME=Generic
+install_lib_cmake $EXPAT_DIR $EXPAT_ARGS
 install_lib $LIBOGG_DIR $LIBOGG_ARGS
 install_lib $LIBVORBIS_DIR $LIBVORBIS_ARGS
 install_lib $MPG123_DIR $MPG123_ARGS
 install_lib $LIBSNDFILE_DIR $LIBSNDFILE_ARGS
 install_lib $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
 install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
-#install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS -DCMAKE_SYSTEM_NAME=Generic
+#install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS
 install_lib $OPUS_DIR $OPUS_ARGS
 install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 

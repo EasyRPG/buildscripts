@@ -24,11 +24,6 @@ if [ ! -f .patches-applied ]; then
 
 	patches_common
 
-	# Support install for CMAKE_SYSTEM_NAME Apple
-	pushd $WILDMIDI_DIR
-	patch -Np1 < $SCRIPT_DIR/../shared/extra/wildmidi-generic-install.patch
-	popd
-
 	# Disable SDL2 mixer examples
 	pushd $SDL2_MIXER_DIR
 	patch -Np1 < $SCRIPT_DIR/../shared/extra/sdl2_mixer_disable_examples.patch

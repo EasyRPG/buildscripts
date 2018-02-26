@@ -26,11 +26,6 @@ if [ ! -f .patches-applied ]; then
 
 	patches_common
 
-	# Support install for CMAKE_SYSTEM_NAME Apple
-	pushd $WILDMIDI_DIR
-	patch -Np1 < $SCRIPT_DIR/../shared/extra/wildmidi-generic-install.patch
-	popd
-
 	cp -r icu icu-native
 
 	touch .patches-applied
@@ -96,14 +91,14 @@ install_lib $FREETYPE_DIR $FREETYPE_ARGS --without-harfbuzz
 install_lib $HARFBUZZ_DIR $HARFBUZZ_ARGS
 install_lib $FREETYPE_DIR $FREETYPE_ARGS --with-harfbuzz
 install_lib $PIXMAN_DIR $PIXMAN_ARGS
-install_lib_cmake $EXPAT_DIR $EXPAT_ARGS -DCMAKE_SYSTEM_NAME=Generic
+install_lib_cmake $EXPAT_DIR $EXPAT_ARGS
 install_lib $LIBOGG_DIR $LIBOGG_ARGS
 install_lib $LIBVORBIS_DIR $LIBVORBIS_ARGS
 install_lib $MPG123_DIR $MPG123_ARGS
 install_lib $LIBSNDFILE_DIR $LIBSNDFILE_ARGS
 install_lib $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
 install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
-install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS -DCMAKE_SYSTEM_NAME=Generic
+install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS
 install_lib $OPUS_DIR $OPUS_ARGS
 install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 install_lib_icu_cross

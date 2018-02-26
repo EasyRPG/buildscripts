@@ -19,12 +19,6 @@ if [ ! -f .patches-applied ]; then
 
 	patches_common
 
-	# disable unsupported compiler flags by clang in libvorbis
-	perl -pi -e 's/-mno-ieee-fp//' $LIBVORBIS_DIR/configure
-
-	# Wildmidi: Disable libm
-	perl -pi -e 's/FIND_LIBRARY\(M_LIBRARY m REQUIRED\)//' $WILDMIDI_DIR/CMakeLists.txt
-
 	touch .patches-applied
 fi
 
