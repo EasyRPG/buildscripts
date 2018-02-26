@@ -72,9 +72,9 @@ function set_build_flags {
 		export CC="$TARGET_HOST-gcc"
 		export CXX="$TARGET_HOST-g++"
 	fi
-	export CFLAGS="-I$WORKSPACE/include -I$DEVKITPRO/libnx/include -g0 -O2 -march=armv8-a -mtune=cortex-a57 -mtp=soft -fPIC -ftls-model=local-exec -DSWITCH"
-	export CPPFLAGS="$CFLAGS"
+	export CFLAGS="-g0 -O2 -march=armv8-a -mtune=cortex-a57 -mtp=soft -fPIC -ftls-model=local-exec"
 	export CXXFLAGS=$CFLAGS
+	export CPPFLAGS="-I$WORKSPACE/include -I$DEVKITPRO/libnx/include -DSWITCH"
 	export LDFLAGS="-L$WORKSPACE/lib"
 }
 

@@ -71,9 +71,9 @@ function set_build_flags {
 		export CC="$TARGET_HOST-gcc"
 		export CXX="$TARGET_HOST-g++"
 	fi
-	export CFLAGS="-I$PLATFORM_PREFIX/include -g -O2 -DGEKKO"
-	export CPPFLAGS="$CFLAGS"
+	export CFLAGS="-g -O2"
 	export CXXFLAGS=$CFLAGS
+	export CPPFLAGS="-I$PLATFORM_PREFIX/include -DGEKKO"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 }
 

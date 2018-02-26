@@ -48,9 +48,9 @@ function set_build_flags {
 	export CPP="$CLANG -arch armv7 -E"
 	export CXXCPP="$CLANGXX -arch armv7 -E"
 
-	export CFLAGS="-I$PLATFORM_PREFIX/include -g -O2 -miphoneos-version-min=7.0 -isysroot $SDKPATH -fobjc-arc"
-	export CPPFLAGS=$CFLAGS
+	export CFLAGS="-g -O2 -miphoneos-version-min=7.0 -isysroot $SDKPATH -fobjc-arc"
 	export CXXFLAGS=$CFLAGS
+	export CPPFLAGS="-I$PLATFORM_PREFIX/include"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib $ARCH -miphoneos-version-min=7.0 -isysroot $SDKPATH"
 }
 

@@ -50,9 +50,10 @@ function set_build_flags {
 	export CPP="$CLANG -arch i386 -E"
 	export CXXCPP="$CLANGXX -arch i386 -E"
 
-	export CFLAGS="-I$PLATFORM_PREFIX/include -g -O2 -mmacosx-version-min=10.9 -isysroot $SDKPATH"
-	export CPPFLAGS="$CFLAGS"
-	export CXXFLAGS="$CFLAGS"
+	export CFLAGS="-g -O2 -mmacosx-version-min=10.9 -isysroot $SDKPATH"
+	export CXXFLAGS=$CFLAGS
+	export CPPFLAGS="-I$PLATFORM_PREFIX/include"
+
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib $ARCH -mmacosx-version-min=10.9 -isysroot $SDKPATH"
 }
 

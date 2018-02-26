@@ -45,9 +45,9 @@ export MAKEFLAGS="-j${nproc:-2}"
 
 function set_build_flags {
 	export CFLAGS="-O2 -g0"
+	export CXXFLAGS=$CFLAGS
 	export CPPFLAGS="-I$PLATFORM_PREFIX/include"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
-	export CXXFLAGS=$CFLAGS
 	export EM_CFLAGS="-Wno-warn-absolute-paths"
 	export EMMAKEN_CFLAGS="$EM_CFLAGS"
 	export EM_PKG_CONFIG_PATH="$PLATFORM_PREFIX/lib/pkgconfig"

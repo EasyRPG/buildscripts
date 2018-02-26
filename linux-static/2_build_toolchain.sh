@@ -30,6 +30,7 @@ export PLATFORM_PREFIX=$WORKSPACE
 
 export CFLAGS="-Os -g0 -ffunction-sections -fdata-sections"
 export CXXFLAGS=$CFLAGS
+export CPPFLAGS="-I$PLATFORM_PREFIX/include"
 export MAKEFLAGS="-j${nproc:-2}"
 export PKG_CONFIG_PATH=$WORKSPACE/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH

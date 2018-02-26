@@ -61,9 +61,9 @@ function set_build_flags {
 		export CC="$TARGET_HOST-gcc"
 		export CXX="$TARGET_HOST-g++"
 	fi
-	export CFLAGS="-I$PLATFORM_PREFIX/include -g0 -O2 -mword-relocations -fomit-frame-pointer -ffast-math -march=armv6k -mtune=mpcore -mfloat-abi=hard -D_3DS"
-	export CPPFLAGS=$CFLAGS
+	export CFLAGS="-g0 -O2 -mword-relocations -fomit-frame-pointer -ffast-math -march=armv6k -mtune=mpcore -mfloat-abi=hard"
 	export CXXFLAGS=$CFLAGS
+	export CPPFLAGS="-I$PLATFORM_PREFIX/include -D_3DS"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 }
 
