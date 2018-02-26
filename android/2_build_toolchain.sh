@@ -21,9 +21,6 @@ if [ ! -f .patches-applied ]; then
 
 	cp -rup icu icu-native
 
-	# Accept api9 for make_standalone_toolchain
-	perl -pi -e 's/min_api = 14/min_api = 9/' ./android-ndk-r15c/build/tools/make_standalone_toolchain.py
-
 	# Patch cpufeatures, hangs in Android 4.0.3
 	patch -Np0 < cpufeatures.patch
 
@@ -43,16 +40,6 @@ if [ ! -f .patches-applied ]; then
 
 	touch .patches-applied
 fi
-
-# Install mpg123
-function install_lib_mpg123 {
-	export CPPFLAGSOLD=$CPPFLAGS
-	export CPPFLAGS="$CPPFLAGS -DHAVE_MMAP"
-	rm $PLATFORM_PREFIX/config.cache
-	install_lib $MPG123_DIR $MPG123_ARGS
-	rm $PLATFORM_PREFIX/config.cache
-	export CPPFLAGS=$CPPFLAGSOLD
-}
 
 # Install SDL2
 function install_lib_sdl {
@@ -79,8 +66,8 @@ function build() {
 
 	echo "preparing $1 toolchain"
 
-	export TARGET_API=9
-	if [ "$3"="arm64" ]; then
+	export TARGET_API=14
+	if [ "$3" = "arm64" ]; then
 		# Minimum API 21 on ARM64
 		export TARGET_API=21
 	fi
@@ -112,7 +99,7 @@ function build() {
 	install_lib_cmake $EXPAT_DIR $EXPAT_ARGS -DCMAKE_SYSTEM_NAME=Generic
 	install_lib $LIBOGG_DIR $LIBOGG_ARGS
 	install_lib $LIBVORBIS_DIR $LIBVORBIS_ARGS
-	install_lib_mpg123
+	install_lib $MPG123_DIR $MPG123_ARGS
 	install_lib $LIBSNDFILE_DIR $LIBSNDFILE_ARGS
 	install_lib $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
 	install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
@@ -138,6 +125,9 @@ cd $WORKSPACE
 
 echo "preparing ICU host build"
 install_lib_icu_native
+
+# Correctly detected mmap support in mpg123
+export ac_cv_func_mmap_fixed_mapped=yes
 
 ####################################################
 # Install standalone toolchain x86

@@ -32,12 +32,6 @@ function build() {
 
 	echo "preparing $1 toolchain"
 
-	export TARGET_API=9
-	if [ "$3"="arm64" ]; then
-		# Minimum API 21 on ARM64
-		export TARGET_API=21
-	fi
-
 	export PATH=$OLD_PATH
 	export PLATFORM_PREFIX=$WORKSPACE/$2-toolchain
 	export PATH=$PLATFORM_PREFIX/bin:$PATH
