@@ -5,7 +5,7 @@ ZLIB_DIR="$lib-$ver"
 
 lib=libpng
 ver=1.6.34
-LIBPNG_URL="http://prdownloads.sourceforge.net/libpng/$lib-$ver.tar.xz    "
+LIBPNG_URL="http://ftp-osl.osuosl.org/pub/libpng/src/archive/xz/libpng16/$lib-$ver.tar.xz"
 LIBPNG_DIR="$lib-$ver"
 
 lib=freetype
@@ -28,7 +28,7 @@ PIXMAN_ARGS="--disable-libpng"
 
 lib=expat
 ver=2.2.5
-EXPAT_URL="http://sourceforge.net/projects/expat/files/expat/2.2.5/$lib-$ver.tar.bz2"
+EXPAT_URL="https://github.com/libexpat/libexpat/releases/download/R_${ver//./_}/$lib-$ver.tar.bz2"
 EXPAT_DIR="$lib-$ver"
 EXPAT_ARGS="-DBUILD_tools=OFF -DBUILD_examples=OFF -DBUILD_tests=OFF -DBUILD_doc=OFF -DBUILD_shared=OFF"
 
@@ -94,7 +94,7 @@ OPUSFILE_ARGS="--disable-http"
 
 lib=ICU
 ver=59.1
-ICU_URL=http://download.icu-project.org/files/icu4c/$ver/icu4c-${ver/./_}-src.tgz
+ICU_URL=http://download.icu-project.org/files/icu4c/$ver/icu4c-${ver//./_}-src.tgz
 ICU_DIR="icu"
 ICU_ARGS="--enable-strict=no --disable-tests --disable-samples \
 	--disable-dyload --disable-extras --disable-icuio \
