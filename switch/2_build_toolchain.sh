@@ -34,14 +34,15 @@ if [ ! -f .patches-applied ]; then
 	popd
 
 	# Wildmidi: Switch compatibility
+	pushd $WILDMIDI_DIR
 	patch -Np1 < $SCRIPT_DIR/wildmidi-switch.patch
 	popd
 
 	# disable libsamplerate examples and tests
-	cd libsamplerate-0.1.9
+	pushd $LIBSAMPLERATE_DIR
 	perl -pi -e 's/examples tests//' Makefile.am
 	autoreconf -fi
-	cd ..
+	popd
 
 	# Fix icu build
 	cp -rup icu icu-native

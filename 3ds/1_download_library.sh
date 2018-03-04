@@ -11,7 +11,7 @@ source $SCRIPT_DIR/../shared/import
 msg " [1] Installing devkitARM"
 
 rm -rf $PWD/devkitPro
-wget -nv https://sourceforge.net/projects/devkitpro/files/Automated%20Installer/devkitARMupdate.pl
+download https://raw.githubusercontent.com/devkitPro/installer/master/perl/devkitARMupdate.pl
 perl devkitARMupdate.pl $PWD/devkitPro
 
 msg " [2] Downloading generic libraries"
@@ -50,7 +50,8 @@ download_and_extract $LIBVORBIS_URL
 
 # tremor
 rm -rf $TREMOR_DIR
-download_and_extract $TREMOR_URL
+download $TREMOR_URL -O $TREMOR_FILE
+extract $TREMOR_FILE
 
 # mpg123
 rm -rf $MPG123_DIR

@@ -32,6 +32,7 @@ if [ ! -f .patches-applied ]; then
 	popd
 
 	# Wildmidi: Vita compatibility
+	pushd $WILDMIDI_DIR
 	patch -Np1 < $SCRIPT_DIR/wildmidi-vita.patch
 	popd
 
@@ -114,9 +115,9 @@ install_lib $PIXMAN_DIR $PIXMAN_ARGS
 install_lib_cmake $EXPAT_DIR $EXPAT_ARGS
 install_lib $LIBOGG_DIR $LIBOGG_ARGS
 install_lib $LIBVORBIS_DIR $LIBVORBIS_ARGS
-install_lib_cmake $MPG123_DIR $MPG123_ARGS
+install_lib $MPG123_DIR $MPG123_ARGS
 install_lib $LIBSNDFILE_DIR $LIBSNDFILE_ARGS
-install_lib $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
+install_lib_cmake $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
 install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
 install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS
 install_lib $OPUS_DIR $OPUS_ARGS

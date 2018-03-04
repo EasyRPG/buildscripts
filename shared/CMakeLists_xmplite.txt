@@ -43,7 +43,7 @@ set(prefix "${CMAKE_INSTALL_PREFIX}")
 set(exec_prefix "\${prefix}")
 set(libdir "\${exec_prefix}/lib")
 set(includedir "\${prefix}/include")
-configure_file(lib${PROJECT_NAME}.pc.in lib${PROJECT_NAME}.pc @ONLY)
+configure_file(lib${PROJECT_NAME}.pc.in libxmp.pc @ONLY)
 
 # install
 install(
@@ -53,11 +53,10 @@ install(
 	RUNTIME DESTINATION bin)
 
 install(
-	DIRECTORY include/libxmp-lite
+	FILES include/libxmp-lite/xmp.h
 	DESTINATION include/libxmp-lite)
 
 install(
-	FILES ${CMAKE_CURRENT_BINARY_DIR}/lib${PROJECT_NAME}.pc
+	FILES ${CMAKE_CURRENT_BINARY_DIR}/libxmp.pc
 	DESTINATION lib/pkgconfig
 )
-

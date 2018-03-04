@@ -24,7 +24,7 @@ lib=pixman
 ver=0.34.0
 PIXMAN_URL="http://cairographics.org/releases/$lib-$ver.tar.gz"
 PIXMAN_DIR="$lib-$ver"
-PIXMAN_ARGS="--disable-libpng"
+PIXMAN_ARGS="--disable-libpng --enable-dependency-tracking"
 
 lib=expat
 ver=2.2.5
@@ -43,8 +43,9 @@ LIBVORBIS_URL="http://downloads.xiph.org/releases/vorbis/$lib-$ver.tar.xz"
 LIBVORBIS_DIR="$lib-$ver"
 
 lib=tremor
-TREMOR_URL=http://downloads.sourceforge.net/sourceforge/devkitpro/tremor-lowmem-src.tar.bz2
-TREMOR_DIR="tremor-lowmem"
+TREMOR_URL="https://git.xiph.org/?p=tremor.git;a=snapshot;h=b56ffce0c0773ec5ca04c466bc00b1bbcaf65aef;sf=tgz"
+TREMOR_DIR="tremor-b56ffce"
+TREMOR_FILE="$TREMOR_DIR.tar.gz"
 
 lib=mpg123
 ver=1.25.8
@@ -60,7 +61,7 @@ LIBSNDFILE_DIR="$lib-$ver"
 
 lib=libxmp-lite
 ver=4.4.1
-LIBXMP_LITE_URL="http://sourceforge.net/projects/xmp/files/libxmp/4.4.1/$lib-$ver.tar.gz"
+LIBXMP_LITE_URL="https://easyrpg.org/downloads/sources/$lib-$ver.tar.gz"
 LIBXMP_LITE_DIR="$lib-$ver"
 
 lib=speexdsp

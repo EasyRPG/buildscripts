@@ -14,7 +14,7 @@ source $SCRIPT_DIR/packages
 msg " [1] Installing devkitPPC"
 
 rm -rf devkitPro/
-wget -nv https://sourceforge.net/projects/devkitpro/files/Automated%20Installer/devkitPPCupdate.pl
+download https://raw.githubusercontent.com/devkitPro/installer/master/perl/devkitPPCupdate.pl
 perl devkitPPCupdate.pl $PWD/devkitPro
 
 msg " [2] Downloading generic libraries"
@@ -53,7 +53,8 @@ download_and_extract $LIBVORBIS_URL
 
 # tremor
 rm -rf $TREMOR_DIR
-download_and_extract $TREMOR_URL
+download $TREMOR_URL -O $TREMOR_FILE
+extract $TREMOR_FILE
 
 # mpg123
 rm -rf $MPG123_DIR
