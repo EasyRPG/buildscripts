@@ -85,5 +85,10 @@ download_and_extract $ICU_URL
 rm -f $ICUDATA_FILES
 download_and_extract $ICUDATA_URL
 
-# None
-#msg " [3] Downloading platform libraries"
+msg " [3] Downloading platform libraries"
+
+# Remove this later when libnx becomes more stable
+# (also shipped by devkitA64)
+
+rm -rf libnx
+git_clone https://github.com/switchbrew/libnx

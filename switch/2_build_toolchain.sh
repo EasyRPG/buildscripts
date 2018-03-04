@@ -78,11 +78,21 @@ function set_build_flags {
 	export LDFLAGS="-L$WORKSPACE/lib"
 }
 
+function install_lib_nx {
+	cd libnx
+	make clean
+	make install
+	cd ..
+}
+
 # Build native icu59
 install_lib_icu_native
 
 # Install libraries
 set_build_flags
+
+install_lib_nx
+
 install_lib_zlib
 install_lib $LIBPNG_DIR $LIBPNG_ARGS
 install_lib $FREETYPE_DIR $FREETYPE_ARGS --without-harfbuzz
