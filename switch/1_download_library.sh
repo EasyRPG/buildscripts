@@ -48,6 +48,11 @@ download_and_extract $LIBOGG_URL
 rm -rf $LIBVORBIS_DIR
 download_and_extract $LIBVORBIS_URL
 
+# tremor
+rm -rf $TREMOR_DIR
+download $TREMOR_URL -O $TREMOR_FILE
+extract $TREMOR_FILE
+
 # mpg123
 rm -rf $MPG123_DIR
 download_and_extract $MPG123_URL
