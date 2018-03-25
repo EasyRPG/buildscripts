@@ -12,7 +12,8 @@ msg " [1] Installing devkitARM"
 
 rm -rf $PWD/devkitPro
 download https://raw.githubusercontent.com/devkitPro/installer/master/perl/devkitARMupdate.pl
-perl devkitARMupdate.pl $PWD/devkitPro
+perl -pi -e "s|/opt/devkitpro|$PWD/devkitPro|" devkitARMupdate.pl
+perl devkitARMupdate.pl
 
 msg " [2] Downloading generic libraries"
 

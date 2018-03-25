@@ -12,7 +12,8 @@ msg " [1] Installing devkitA64"
 
 rm -rf devkitPro/
 wget -nv https://raw.githubusercontent.com/devkitPro/installer/master/perl/devkitA64update.pl
-perl devkitA64update.pl $PWD/devkitPro
+perl -pi -e "s|/opt/devkitpro|$PWD/devkitPro|" devkitA64update.pl
+perl devkitA64update.pl
 
 msg " [2] Downloading generic libraries"
 

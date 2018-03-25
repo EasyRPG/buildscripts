@@ -15,7 +15,8 @@ msg " [1] Installing devkitPPC"
 
 rm -rf devkitPro/
 download https://raw.githubusercontent.com/devkitPro/installer/master/perl/devkitPPCupdate.pl
-perl devkitPPCupdate.pl $PWD/devkitPro
+perl -pi -e "s|/opt/devkitpro|$PWD/devkitPro|" devkitPPCupdate.pl
+perl devkitPPCupdate.pl
 
 msg " [2] Downloading generic libraries"
 
