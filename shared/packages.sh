@@ -2,29 +2,29 @@
 
 lib=zlib
 ver=1.2.11
-ZLIB_URL="http://zlib.net/$lib-$ver.tar.gz"
+ZLIB_URL="https://zlib.net/$lib-$ver.tar.gz"
 ZLIB_DIR="$lib-$ver"
 
 lib=libpng
 ver=1.6.34
-LIBPNG_URL="http://ftp-osl.osuosl.org/pub/libpng/src/archive/xz/libpng16/$lib-$ver.tar.xz"
+LIBPNG_URL="https://ftp-osl.osuosl.org/pub/libpng/src/archive/xz/libpng16/$lib-$ver.tar.xz"
 LIBPNG_DIR="$lib-$ver"
 
 lib=freetype
 ver=2.9
-FREETYPE_URL="http://download.savannah.gnu.org/releases/freetype/$lib-$ver.tar.bz2"
+FREETYPE_URL="https://download.savannah.gnu.org/releases/freetype/$lib-$ver.tar.bz2"
 FREETYPE_DIR="$lib-$ver"
 FREETYPE_ARGS="--without-bzip2 --without-png --without-zlib"
 
 lib=harfbuzz
 ver=1.7.5
-HARFBUZZ_URL="http://www.freedesktop.org/software/harfbuzz/release/$lib-$ver.tar.bz2"
+HARFBUZZ_URL="https://www.freedesktop.org/software/harfbuzz/release/$lib-$ver.tar.bz2"
 HARFBUZZ_DIR="$lib-$ver"
 HARFBUZZ_ARGS="--without-glib --without-gobject --without-cairo --without-fontconfig --without-icu"
 
 lib=pixman
 ver=0.34.0
-PIXMAN_URL="http://cairographics.org/releases/$lib-$ver.tar.gz"
+PIXMAN_URL="https://cairographics.org/releases/$lib-$ver.tar.gz"
 PIXMAN_DIR="$lib-$ver"
 PIXMAN_ARGS="--disable-libpng --enable-dependency-tracking"
 
@@ -36,12 +36,12 @@ EXPAT_ARGS="-DBUILD_tools=OFF -DBUILD_examples=OFF -DBUILD_tests=OFF -DBUILD_doc
 
 lib=libogg
 ver=1.3.3
-LIBOGG_URL="http://downloads.xiph.org/releases/ogg/$lib-$ver.tar.xz"
+LIBOGG_URL="https://downloads.xiph.org/releases/ogg/$lib-$ver.tar.xz"
 LIBOGG_DIR="$lib-$ver"
 
 lib=libvorbis
 ver=1.3.6
-LIBVORBIS_URL="http://downloads.xiph.org/releases/vorbis/$lib-$ver.tar.xz"
+LIBVORBIS_URL="https://downloads.xiph.org/releases/vorbis/$lib-$ver.tar.xz"
 LIBVORBIS_DIR="$lib-$ver"
 
 lib=tremor
@@ -51,7 +51,7 @@ TREMOR_FILE="$TREMOR_DIR.tar.gz"
 
 lib=mpg123
 ver=1.25.10
-MPG123_URL=http://www.mpg123.de/download/$lib-$ver.tar.bz2
+MPG123_URL=https://www.mpg123.de/download/$lib-$ver.tar.bz2
 MPG123_DIR="$lib-$ver"
 MPG123_ARGS="--with-cpu=generic --enable-fifo=no --enable-ipv6=no --enable-network=no \
 	--enable-int-quality=no --with-default-audio=dummy --with-optimization=2"
@@ -68,7 +68,7 @@ LIBXMP_LITE_DIR="$lib-$ver"
 
 lib=speexdsp
 ver=1.2rc3
-SPEEXDSP_URL="http://downloads.xiph.org/releases/speex/$lib-$ver.tar.gz"
+SPEEXDSP_URL="https://downloads.xiph.org/releases/speex/$lib-$ver.tar.gz"
 SPEEXDSP_DIR="$lib-$ver"
 SPEEXDSP_ARGS="--disable-sse --disable-neon"
 
