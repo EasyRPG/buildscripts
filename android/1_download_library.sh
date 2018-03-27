@@ -6,7 +6,7 @@ set -e
 export WORKSPACE=$PWD
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source $SCRIPT_DIR/../shared/import
+source $SCRIPT_DIR/../shared/import.sh
 
 # Supported os : "darwin" or "linux"
 os=`uname`

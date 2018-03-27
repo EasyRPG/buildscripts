@@ -6,10 +6,10 @@ set -e
 export WORKSPACE=$PWD
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source $SCRIPT_DIR/../shared/import
+source $SCRIPT_DIR/../shared/import.sh
 
 # Override ICU version to 58.1
-source $SCRIPT_DIR/packages
+source $SCRIPT_DIR/packages.sh
 
 msg " [1] Installing devkitPPC"
 

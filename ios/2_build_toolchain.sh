@@ -11,9 +11,9 @@ set -e
 export WORKSPACE=$PWD
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source $SCRIPT_DIR/../shared/import
+source $SCRIPT_DIR/../shared/import.sh
 # SDL 2.0.7 doesn't compile for iOS
-source $SCRIPT_DIR/packages
+source $SCRIPT_DIR/packages.sh
 
 # Number of CPU
 nproc=$(getconf _NPROCESSORS_ONLN)

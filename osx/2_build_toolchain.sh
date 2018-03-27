@@ -11,7 +11,7 @@ set -e
 export WORKSPACE=$PWD
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source $SCRIPT_DIR/../shared/import
+source $SCRIPT_DIR/../shared/import.sh
 
 # Number of CPU
 nproc=$(getconf _NPROCESSORS_ONLN)

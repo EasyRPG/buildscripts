@@ -6,7 +6,7 @@ set -e
 export WORKSPACE=$PWD
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source $SCRIPT_DIR/../shared/import
+source $SCRIPT_DIR/../shared/import.sh
 
 function download_and_extract_shaders {
 	mkdir vitashaders

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 function extract {
 	file=$1
 	shift

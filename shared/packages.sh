@@ -1,3 +1,5 @@
+#!/bin/bash
+
 lib=zlib
 ver=1.2.11
 ZLIB_URL="http://zlib.net/$lib-$ver.tar.gz"
