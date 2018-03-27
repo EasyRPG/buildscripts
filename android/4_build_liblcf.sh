@@ -24,30 +24,29 @@ test_ccache
 function build() {
 	# $1: Toolchain Name
 	# $2: Toolchain architecture
-	# $3: Android arch
-	# $4: host for configure
-	# $5: additional CPP flags
+	# $3: host for configure
+	# $4: additional C flags
 
 	cd $WORKSPACE
 
-	echo "preparing $1 toolchain"
+	msg "Building liblcf for $1..."
 
 	export PATH=$OLD_PATH
 	export PLATFORM_PREFIX=$WORKSPACE/$2-toolchain
 	export PATH=$PLATFORM_PREFIX/bin:$PATH
 
-	export CFLAGS="$5"
+	export CFLAGS="$4"
 	export CXXFLAGS=$CFLAGS
 	export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/cpufeatures"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
-	export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
-	export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
-	export TARGET_HOST="$4"
+	unset PKG_CONFIG_PATH
+	export PKG_CONFIG_LIBDIR=$PLATFORM_PREFIX/lib/pkgconfig
+	export TARGET_HOST="$3"
 	export CC="$TARGET_HOST-clang"
 	export CXX="$TARGET_HOST-clang++"
 	if [ "$ENABLE_CCACHE" ]; then
-		export CC="ccache $TARGET_HOST-clang"
-		export CXX="ccache $TARGET_HOST-clang++"
+		export CC="ccache $CC"
+		export CXX="ccache $CXX"
 	fi
 
 	install_lib liblcf
@@ -73,22 +72,7 @@ msg " -> done"
 cd ..
 
 # Compile liblcf
-####################################################
-# Install standalone toolchain x86
-
-build "x86" "x86" "x86" "i686-linux-android" ""
-
-################################################################
-# Install standalone toolchain ARMeabi
-
-build "ARMeabi" "armeabi" "arm" "arm-linux-androideabi" ""
-
-################################################################
-# Install standalone toolchain ARMeabi-v7a
-
-build "ARMeabi-v7a" "armeabi-v7a" "arm" "arm-linux-androideabi" "-march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3"
-
-################################################################
-# Install standalone toolchain arm64-v8a
-
-build "AArch64" "arm64-v8a" "arm64" "aarch64-linux-android" ""
+build "x86" "x86" "i686-linux-android" ""
+build "ARMeabi" "armeabi" "arm-linux-androideabi" ""
+build "ARMeabi-v7a" "armeabi-v7a" "arm-linux-androideabi" "-march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3"
+build "AArch64" "arm64-v8a" "aarch64-linux-android" ""

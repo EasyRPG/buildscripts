@@ -64,12 +64,11 @@ export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export MAKEFLAGS="-j${nproc:-2}"
 
 function set_build_flags {
+	export CC="$TARGET_HOST-gcc"
+	export CXX="$TARGET_HOST-g++"
 	if [ "$ENABLE_CCACHE" ]; then
-		export CC="ccache $TARGET_HOST-gcc"
-		export CXX="ccache $TARGET_HOST-g++"
-	else
-		export CC="$TARGET_HOST-gcc"
-		export CXX="$TARGET_HOST-g++"
+		export CC="ccache $CC"
+		export CXX="ccache $CXX"
 	fi
 	export CFLAGS="-g -O2"
 	export CXXFLAGS=$CFLAGS

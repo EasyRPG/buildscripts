@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$(uname)" != "Darwin" ]; then
-	echo "This buildscript requires MacOSX"
+	echo "This buildscript requires macOS!"
 	exit 1
 fi
 
@@ -39,14 +39,12 @@ function set_build_flags {
 	ARCH="-arch i386 -arch x86_64"
 	SDKPATH=`xcrun -sdk macosx10.12 --show-sdk-path`
 
+	export CC="$CLANG $ARCH"
+	export CXX="$CLANGXX $ARCH"
 	if [ "$ENABLE_CCACHE" ]; then
-		export CC="ccache $CLANG $ARCH"
-		export CXX="ccache $CLANGXX $ARCH"
-	else
-		export CC="$CLANG $ARCH"
-		export CXX="$CLANGXX $ARCH"
+		export CC="ccache $CC"
+		export CXX="ccache $CXX"
 	fi
-
 	export CPP="$CLANG -arch i386 -E"
 	export CXXCPP="$CLANGXX -arch i386 -E"
 

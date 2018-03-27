@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# abort on error
+# abort on errors
 set -e
 
 export WORKSPACE=$PWD
@@ -56,8 +56,7 @@ cd $WORKSPACE
 echo "Preparing toolchain"
 
 export DEVKITPRO=${WORKSPACE}/devkitPro
-export DEVKITA64=${DEVKITPRO}/devkitA64
-export PATH=$DEVKITA64/bin:$PATH
+export PATH=${DEVKITPRO}/devkitA64/bin:$PATH
 
 export PLATFORM_PREFIX=$WORKSPACE
 export TARGET_HOST=aarch64-none-elf
@@ -66,12 +65,11 @@ export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export MAKEFLAGS="-j${nproc:-2}"
 
 function set_build_flags {
+	export CC="$TARGET_HOST-gcc"
+	export CXX="$TARGET_HOST-g++"
 	if [ "$ENABLE_CCACHE" ]; then
-		export CC="ccache $TARGET_HOST-gcc"
-		export CXX="ccache $TARGET_HOST-g++"
-	else
-		export CC="$TARGET_HOST-gcc"
-		export CXX="$TARGET_HOST-g++"
+		export CC="ccache $CC"
+		export CXX="ccache $CXX"
 	fi
 	export CFLAGS="-g0 -O2 -march=armv8-a -mtune=cortex-a57 -mtp=soft -fPIC -ftls-model=local-exec"
 	export CXXFLAGS=$CFLAGS

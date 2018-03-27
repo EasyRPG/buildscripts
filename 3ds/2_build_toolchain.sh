@@ -42,24 +42,22 @@ cd $WORKSPACE
 
 echo "Preparing toolchain"
 
-export DEVKITPRO=${WORKSPACE}/devkitPro
-export DEVKITARM=${DEVKITPRO}/devkitARM
+export DEVKITPRO=$WORKSPACE/devkitPro
+export DEVKITARM=$DEVKITPRO/devkitARM
 export PATH=$DEVKITARM/bin:$PATH
-export CTRULIB=${DEVKITPRO}/libctru
 
 export PLATFORM_PREFIX=$WORKSPACE
 export TARGET_HOST=arm-none-eabi
-export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
-export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
+unset PKG_CONFIG_PATH
+export PKG_CONFIG_LIBDIR=$PLATFORM_PREFIX/lib/pkgconfig
 export MAKEFLAGS="-j${nproc:-2}"
 
 function set_build_flags {
+	export CC="$TARGET_HOST-gcc"
+	export CXX="$TARGET_HOST-g++"
 	if [ "$ENABLE_CCACHE" ]; then
-		export CC="ccache $TARGET_HOST-gcc"
-		export CXX="ccache $TARGET_HOST-g++"
-	else
-		export CC="$TARGET_HOST-gcc"
-		export CXX="$TARGET_HOST-g++"
+		export CC="ccache $CC"
+		export CXX="ccache $CXX"
 	fi
 	export CFLAGS="-g0 -O2 -mword-relocations -fomit-frame-pointer -ffast-math -march=armv6k -mtune=mpcore -mfloat-abi=hard"
 	export CXXFLAGS=$CFLAGS

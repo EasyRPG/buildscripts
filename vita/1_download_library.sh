@@ -105,5 +105,3 @@ git_clone https://github.com/vitasdk/vdpm
 git_clone https://github.com/vitasdk/vita-headers
 
 git_clone https://github.com/frangarcj/vita2dlib
-
-

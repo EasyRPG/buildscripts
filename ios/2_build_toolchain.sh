@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$(uname)" != "Darwin" ]; then
-	echo "This buildscript requires MacOSX"
+	echo "This buildscript requires macOS!"
 	exit 1
 fi
 
@@ -37,14 +37,12 @@ function set_build_flags {
 	SDKPATH=`xcrun -sdk iphoneos10.2 --show-sdk-path`
 	ARCH="-arch armv7 -arch armv7s -arch arm64"
 
+	export CC="$CLANG $ARCH"
+	export CXX="$CLANGXX $ARCH"
 	if [ "$ENABLE_CCACHE" ]; then
-		export CC="ccache $CLANG $ARCH"
-		export CXX="ccache $CLANGXX $ARCH"
-	else
-		export CC="$CLANG $ARCH"
-		export CXX="$CLANGXX $ARCH"
+		export CC="ccache $CC"
+		export CXX="ccache $CXX"
 	fi
-
 	export CPP="$CLANG -arch armv7 -E"
 	export CXXCPP="$CLANGXX -arch armv7 -E"
 

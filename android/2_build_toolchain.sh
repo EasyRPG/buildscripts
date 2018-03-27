@@ -35,7 +35,7 @@ fi
 
 # Install SDL2
 function install_lib_sdl {
-	# $1 => platform (armeabi armeabi-v7a x86 aarch64)
+	# $1: platform (armeabi armeabi-v7a x86 aarch64)
 
 	pushd $SDL2_DIR
 	echo "APP_ABI := $1" >> "jni/Application.mk"
@@ -75,14 +75,14 @@ function build() {
 	export CXXFLAGS=$CFLAGS
 	export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/cpufeatures"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
-	export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
-	export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
+	unset PKG_CONFIG_PATH
+	export PKG_CONFIG_LIBDIR=$PLATFORM_PREFIX/lib/pkgconfig
 	export TARGET_HOST="$4"
 	export CC="$TARGET_HOST-clang"
 	export CXX="$TARGET_HOST-clang++"
 	if [ "$ENABLE_CCACHE" ]; then
-		export CC="ccache $TARGET_HOST-clang"
-		export CXX="ccache $TARGET_HOST-clang++"
+		export CC="ccache $CC"
+		export CXX="ccache $CXX"
 	fi
 
 	install_lib $LIBPNG_DIR $LIBPNG_ARGS
@@ -123,22 +123,14 @@ install_lib_icu_native
 # Correctly detected mmap support in mpg123
 export ac_cv_func_mmap_fixed_mapped=yes
 
-####################################################
 # Install standalone toolchain x86
-
 build "x86" "x86" "x86" "i686-linux-android" ""
 
-################################################################
 # Install standalone toolchain ARMeabi
-
 build "ARMeabi" "armeabi" "arm" "arm-linux-androideabi" ""
 
-################################################################
 # Install standalone toolchain ARMeabi-v7a
-
 build "ARMeabi-v7a" "armeabi-v7a" "arm" "arm-linux-androideabi" "-march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3"
 
-################################################################
 # Install standalone toolchain arm64-v8a
-
 build "AArch64" "arm64-v8a" "arm64" "aarch64-linux-android" ""

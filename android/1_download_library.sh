@@ -10,13 +10,10 @@ source $SCRIPT_DIR/../shared/import.sh
 
 # Supported os : "darwin" or "linux"
 os=`uname`
-darwin="Darwin"
-linux="Linux"
-
-if [ $os = $darwin ] ; then
+if [ $os = "Darwin" ] ; then
 	echo "#############################################################"
 	echo "#"
-	echo "# Mac OSX / Darwin detected. Please make sure the needed"
+	echo "# macOS / Darwin detected. Please make sure the needed"
 	echo "# tools are installed. See the README.md file for reference."
 	echo "#"
 	echo "#############################################################"
@@ -31,13 +28,13 @@ msg " [1] Installing Android SDK"
 rm -rf android-sdk/
 
 # Linux
-if [ $os = $linux ]; then
+if [ $os = "Linux" ]; then
 	SDK_PLATFORM=linux
 # MacOS
-elif [ $os = $darwin ]; then
+elif [ $os = "Darwin" ]; then
 	SDK_PLATFORM=darwin
 else
-	msg "Only Linux and MacOS are supported for the moment :(."
+	msg "Only Linux and macOS are supported currently. Sorry! :("
 	exit 1
 fi
 
@@ -71,11 +68,11 @@ cd ..
 msg " [3] Installing Android NDK"
 rm -rf android-ndk-r15c/
 # Linux
-if [ $os = $linux ] ; then
+if [ $os = "Linux" ] ; then
 	wget -nv -N https://dl.google.com/android/repository/android-ndk-r15c-linux-x86_64.zip
 	unzip android-ndk-r15c-linux-x86_64.zip
 # Mac
-elif [ $os = $darwin ] ; then
+elif [ $os = "Darwin" ] ; then
 	wget -nv -N http://dl.google.com/android/repository/android-ndk-r15c-darwin-x86_64.bin
 	chmod u+x android-ndk-r15c-darwin-x86_64.bin
 	./android-ndk-r15c-darwin-x86_64.bin
