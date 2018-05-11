@@ -2,11 +2,6 @@
 
 ## Wii Toolchain and libraries
 
-Specific building requirements for Linux:
-
- - autotools
- - git
-
 Local build process:
 
 Run `0_build_everything.sh` in a terminal

@@ -1,0 +1,29 @@
+diff -Naur harfbuzz-1.7.5-orig/Makefile.am harfbuzz-1.7.5/Makefile.am
+--- harfbuzz-1.7.5-orig/Makefile.am	2018-02-23 20:46:15.165032807 +0100
++++ harfbuzz-1.7.5/Makefile.am	2018-02-23 20:46:28.358375609 +0100
+@@ -4,7 +4,7 @@
+ 
+ ACLOCAL_AMFLAGS = -I m4
+ 
+-SUBDIRS = src util test docs
++SUBDIRS = src util docs
+ 
+ EXTRA_DIST = \
+ 	autogen.sh \
+diff -Naur harfbuzz-1.7.5-orig/src/Makefile.am harfbuzz-1.7.5/src/Makefile.am
+--- harfbuzz-1.7.5-orig/src/Makefile.am	2018-02-23 20:46:15.168366142 +0100
++++ harfbuzz-1.7.5/src/Makefile.am	2018-02-23 20:46:46.161721729 +0100
+@@ -266,13 +266,6 @@
+ 	$(AM_V_GEN)(cd $(srcdir) && $(RAGEL) -e -F1 -o "$*.hh" "$*.rl") \
+ 	|| ($(RM) "$@"; false)
+ 
+-noinst_PROGRAMS = \
+-	main \
+-	test \
+-	test-buffer-serialize \
+-	test-size-params \
+-	test-would-substitute \
+-	$(NULL)
+ bin_PROGRAMS =
+ 
+ main_SOURCES = main.cc

@@ -7,10 +7,15 @@ export WORKSPACE=$PWD
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
-# SDL 2.0.7 doesn't compile for iOS
-source $SCRIPT_DIR/packages.sh
 
-msg " [1] Preparing libraries"
+msg " [1] Installing devkitA64"
+
+rm -rf devkitPro/
+wget -nv https://raw.githubusercontent.com/devkitPro/installer/master/perl/devkitA64update.pl
+perl -pi -e "s|/opt/devkitpro|$PWD/devkitPro|" devkitA64update.pl
+perl devkitA64update.pl
+
+msg " [2] Downloading generic libraries"
 
 # zlib
 rm -rf $ZLIB_DIR
@@ -44,6 +49,11 @@ download_and_extract $LIBOGG_URL
 rm -rf $LIBVORBIS_DIR
 download_and_extract $LIBVORBIS_URL
 
+# tremor
+rm -rf $TREMOR_DIR
+download $TREMOR_URL -O $TREMOR_FILE
+extract $TREMOR_FILE
+
 # mpg123
 rm -rf $MPG123_DIR
 download_and_extract $MPG123_URL
@@ -56,9 +66,10 @@ download_and_extract $LIBSNDFILE_URL
 rm -rf $LIBXMP_LITE_DIR
 download_and_extract $LIBXMP_LITE_URL
 
-# speexdsp
-rm -rf $SPEEXDSP_DIR
-download_and_extract $SPEEXDSP_URL
+# libsamplerate
+# speexdsp is not supported!
+rm -rf $LIBSAMPLERATE_DIR
+download_and_extract $LIBSAMPLERATE_URL
 
 # wildmidi
 rm -rf $WILDMIDI_DIR
@@ -80,8 +91,10 @@ download_and_extract $ICU_URL
 rm -f $ICUDATA_FILES
 download_and_extract $ICUDATA_URL
 
-msg " [2] Downloading platform libraries"
+msg " [3] Downloading platform libraries"
 
-# SDL2
-rm -rf $SDL2_DIR
-download_and_extract $SDL2_URL
+# Remove this later when libnx becomes more stable
+# (also shipped by devkitA64)
+
+rm -rf libnx
+git_clone https://github.com/switchbrew/libnx

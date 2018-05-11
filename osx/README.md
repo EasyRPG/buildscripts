@@ -2,16 +2,11 @@
 
 ## MacOSX Toolchain and libraries
 
-Requires MacOSX 10.12 or newer.
+Requires macOS 10.12 or newer.
 
-Building requirements for MacOSX:
+Additional building requirements for macOS:
 
  - XCode
- - autotools
- - pkg-config
- - git
- - cmake
- - wget
 
 Local build process:
 

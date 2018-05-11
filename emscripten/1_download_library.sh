@@ -5,41 +5,16 @@ set -e
 
 export WORKSPACE=$PWD
 
-# helper
-function msg {
-	echo ""
-	echo $1
-}
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $SCRIPT_DIR/../shared/import.sh
+# Override ICU version to 60.2
+source $SCRIPT_DIR/packages.sh
 
-function extract {
-	file=$1
-	shift
+msg " [1] Preparing Emscripten SDK"
 
-	[ $# -ne 0 ] && msg "Extracting $file..."
-
-	tar xf $file $@
-}
-
-function download {
-	url=$1
-	shift
-
-	[ $# -ne 0 ] && msg "Downloading $url..."
-
-	wget -nv -N $url $@
-}
-
-function download_and_extract {
-	url=$1
-	file=${url##*/}
-
-	msg "Downloading and extracting $file..."
-
-	download $url
-	extract $file
-}
-
-msg " [0] Preparing Emscripten SDK"
+# Number of CPU
+nproc=$(nproc)
+export MAKEFLAGS="-j${nproc:-2}"
 
 download_and_extract https://s3.amazonaws.com/mozilla-games/emscripten/releases/emsdk-portable.tar.gz
 cd emsdk-portable
@@ -59,87 +34,82 @@ cd emsdk-portable
 
 cd "$WORKSPACE"
 
-msg " [1] Preparing libraries"
+msg " [2] Preparing libraries"
 
 # zlib
-ver=1.2.11
-rm -rf zlib-$ver/
-download_and_extract https://prdownloads.sourceforge.net/libpng/zlib-$ver.tar.xz
+rm -rf $ZLIB_DIR
+download_and_extract $ZLIB_URL
 
 # libpng
-ver=1.6.34
-rm -rf libpng-$ver/
-download_and_extract https://prdownloads.sourceforge.net/libpng/libpng-$ver.tar.xz
+rm -rf $LIBPNG_DIR
+download_and_extract $LIBPNG_URL
 
 # freetype
-#ver=2.8.1
-#rm -rf freetype-$ver/
-#download_and_extract https://download.savannah.gnu.org/releases/freetype/freetype-$ver.tar.bz2
+#rm -rf $FREETYPE_DIR
+#download_and_extract $FREETYPE_URL
 
 # harfbuzz
-#ver=1.5.1
-#rm -rf harfbuzz-$ver/
-#download_and_extract https://freedesktop.org/software/harfbuzz/release/harfbuzz-$ver.tar.bz2
+#rm -rf $HARFBUZZ_DIR
+#download_and_extract $HARFBUZZ_URL
 
 # pixman
-ver=0.34.0
-rm -rf pixman-$ver/
-download_and_extract https://cairographics.org/releases/pixman-$ver.tar.gz
+rm -rf $PIXMAN_DIR
+download_and_extract $PIXMAN_URL
 
 # expat
-ver=2.2.5
-rm -rf expat-$ver/
-download_and_extract https://prdownloads.sourceforge.net/expat/expat-$ver.tar.bz2
+rm -rf $EXPAT_DIR
+download_and_extract $EXPAT_URL
 
 # libogg
-ver=1.3.2
-rm -rf libogg-$ver/
-download_and_extract https://downloads.xiph.org/releases/ogg/libogg-$ver.tar.xz
+rm -rf $LIBOGG_DIR
+download_and_extract $LIBOGG_URL
 
 # libvorbis
-ver=1.3.5
-rm -rf libvorbis-$ver/
-download_and_extract https://downloads.xiph.org/releases/vorbis/libvorbis-$ver.tar.xz
+rm -rf $LIBVORBIS_DIR
+download_and_extract $LIBVORBIS_URL
 
 # mpg123
-ver=1.25.8
-rm -rf mpg123-$ver/
-download_and_extract https://mpg123.de/download/mpg123-$ver.tar.bz2
+rm -rf $MPG123_DIR
+download_and_extract $MPG123_URL
 
 # libsndfile
-ver=1.0.28
-rm -rf libsndfile-$ver/
-download_and_extract http://mega-nerd.com/libsndfile/files/libsndfile-$ver.tar.gz
+rm -rf $LIBSNDFILE_DIR
+download_and_extract $LIBSNDFILE_URL
 
 # libxmp-lite
-ver=4.4.1
-rm -rf libxmp-lite-$ver/
-download_and_extract https://prdownloads.sourceforge.net/xmp/libxmp-lite-$ver.tar.gz
+rm -rf $LIBXMP_LITE_DIR
+download_and_extract $LIBXMP_LITE_URL
 
 # speexdsp
-ver=1.2rc3
-rm -rf speexdsp-$ver/
-download_and_extract https://downloads.xiph.org/releases/speex/speexdsp-$ver.tar.gz
+rm -rf $SPEEXDSP_DIR
+download_and_extract $SPEEXDSP_URL
+
+# wildmidi
+#rm -rf $WILDMIDI_DIR
+#download_and_extract $WILDMIDI_URL
 
 # opus
-ver=1.2.1
-rm -rf opus-$ver/
-download_and_extract https://archive.mozilla.org/pub/opus/opus-$ver.tar.gz
+rm -rf $OPUS_DIR
+download_and_extract $OPUS_URL
 
 # opusfile
-ver=0.9
-rm -rf opusfile-$ver/
-download_and_extract https://archive.mozilla.org/pub/opus/opusfile-$ver.tar.gz
-
-# SDL2
-rm -rf SDL2/
-git clone --depth=1 https://github.com/emscripten-ports/SDL2.git
+rm -rf $OPUSFILE_DIR
+download_and_extract $OPUSFILE_URL
 
 # ICU
-ver=60.2
-rm -rf icu/
-download_and_extract http://download.icu-project.org/files/icu4c/$ver/icu4c-${ver/./_}-src.tgz
+rm -rf $ICU_DIR
+download_and_extract $ICU_URL
+
+# icudata
+rm -f $ICUDATA_FILES
+download_and_extract $ICUDATA_URL
 
 # icudata
 rm -f icudt*.dat
 download_and_extract https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata.tar.gz
+
+msg " [2] Preparing platform libraries"
+
+# SDL2
+rm -rf SDL2/
+git clone --depth=1 https://github.com/emscripten-ports/SDL2.git

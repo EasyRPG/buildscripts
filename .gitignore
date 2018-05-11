@@ -7,6 +7,9 @@
 !/windows/templates/*
 !/windows/winrt/*
 
+# Except everything in shared
+!/shared/*
+
 .patches-applied
 *.dat
 *.gz
@@ -15,3 +18,4 @@
 *.zip
 *.xz
 *.pl
+*.cache

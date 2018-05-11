@@ -1,0 +1,37 @@
+diff -Naur wildmidi-wildmidi-0.4.2-orig/src/file_io.c wildmidi-wildmidi-0.4.2/src/file_io.c
+--- wildmidi-wildmidi-0.4.2-orig/src/file_io.c	2017-09-18 05:24:01.000000000 +0000
++++ wildmidi-wildmidi-0.4.2/src/file_io.c	2018-02-23 18:28:24.821401000 +0000
+@@ -127,7 +127,7 @@
+ #elif defined(WILDMIDI_AMIGA)
+     BPTR buffer_fd;
+     long filsize;
+-#elif defined(_3DS) || defined(GEKKO)
++#elif defined(_3DS) || defined(GEKKO) || defined(__vita__) || defined(SWITCH)
+     int buffer_fd;
+     struct stat buffer_stat;
+ #else /* unix builds */
+diff -Naur wildmidi-wildmidi-0.4.2-orig/src/lock.c wildmidi-wildmidi-0.4.2/src/lock.c
+--- wildmidi-wildmidi-0.4.2-orig/src/lock.c	2017-09-18 05:24:01.000000000 +0000
++++ wildmidi-wildmidi-0.4.2/src/lock.c	2018-02-23 18:28:10.506401000 +0000
+@@ -33,6 +33,10 @@
+ #include <os2.h>
+ #elif defined(WILDMIDI_AMIGA)
+ #include <proto/dos.h>
++#elif defined(__vita__)
++#include <psp2/kernel/processmgr.h>
++#elif defined(SWITCH)
++#include <switch.h>
+ #else /* unixish ... */
+ #define _GNU_SOURCE
+ #include <unistd.h> /* usleep() */
+@@ -70,6 +74,10 @@
+     DosSleep(10);
+ #elif defined(WILDMIDI_AMIGA)
+     Delay(1);
++#elif defined(__vita__)
++    sceKernelDelayThread(500);
++#elif defined(SWITCH)
++    svcSleepThread(500 * 1000);
+ #else
+     usleep(500);
+ #endif

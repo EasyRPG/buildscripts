@@ -3,7 +3,7 @@
 # abort on errors
 set -e
 
-#	<!> Fill thoses variables :
+# Fill these variables:
 KEYSTORE_PATH=
 KEYSTORE_PASSWORD=
 ##############################

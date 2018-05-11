@@ -5,147 +5,64 @@ set -e
 
 export WORKSPACE=$PWD
 
-export DEVKITPRO=${WORKSPACE}/devkitPro
-export DEVKITARM=${DEVKITPRO}/devkitARM
-export PATH=$DEVKITARM/bin:$PATH
-export CTRULIB=${DEVKITPRO}/libctru
-
-export PLATFORM_PREFIX=$WORKSPACE
-export TARGET_HOST=arm-none-eabi
-export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
-export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $SCRIPT_DIR/../shared/import.sh
 
 # Number of CPU
-NBPROC=$(getconf _NPROCESSORS_ONLN)
+nproc=$(nproc)
 
 # Use ccache?
-if [ -z ${NO_CCACHE+x} ]; then
-	if hash ccache >/dev/null 2>&1; then
-		ENABLE_CCACHE=1
-		echo "CCACHE enabled"
-	fi
-fi
+test_ccache
 
 if [ ! -f .patches-applied ]; then
 	echo "patching libraries"
 
-	# Fix compilation problems on 3DS
-	cp -r icu icu-native
-	patch -Np0 < icu.patch
+	patches_common
 
-	# disable pixman examples and tests
-	cd pixman-0.34.0
-	perl -pi -e 's/SUBDIRS = pixman demos test/SUBDIRS = pixman/' Makefile.am
+	# Fix mpg123
+	pushd $MPG123_DIR
+	patch -Np1 < $SCRIPT_DIR/../shared/extra/mpg123.patch
 	autoreconf -fi
-	cd ..
+	popd
 
-	# Fix broken load_abc.cpp
-	patch -Np0 < libmodplug.patch
-
-	# Fix mpg123 compilation
-	patch -Np0 < mpg123.patch
-
-	# Fix libsndfile compilation
-	patch -Np0 < libsndfile.patch
-	cd libsndfile-1.0.27
+	# Fix libsndfile
+	pushd $LIBSNDFILE_DIR
+	patch -Np1 < $SCRIPT_DIR/../shared/extra/libsndfile.patch
 	autoreconf -fi
-	cd ..
+	popd
 
-	# Fix wildmidi linking
-	patch -Np0 < wildmidi.patch
+	# Disable pthread and other newlib issues
+	cp -rup icu icu-native
+	patch -Np0 < $SCRIPT_DIR/icu59-3ds.patch
 
 	touch .patches-applied
 fi
 
+cd $WORKSPACE
+
+echo "Preparing toolchain"
+
+export DEVKITPRO=$WORKSPACE/devkitPro
+export DEVKITARM=$DEVKITPRO/devkitARM
+export PATH=$DEVKITARM/bin:$PATH
+
+export PLATFORM_PREFIX=$WORKSPACE
+export TARGET_HOST=arm-none-eabi
+unset PKG_CONFIG_PATH
+export PKG_CONFIG_LIBDIR=$PLATFORM_PREFIX/lib/pkgconfig
+export MAKEFLAGS="-j${nproc:-2}"
+
 function set_build_flags {
+	export CC="$TARGET_HOST-gcc"
+	export CXX="$TARGET_HOST-g++"
 	if [ "$ENABLE_CCACHE" ]; then
-		export CC="ccache $TARGET_HOST-gcc"
-		export CXX="ccache $TARGET_HOST-g++"
-	else
-		export CC="$TARGET_HOST-gcc"
-		export CXX="$TARGET_HOST-g++"
+		export CC="ccache $CC"
+		export CXX="ccache $CXX"
 	fi
-	export CFLAGS="-I$WORKSPACE/include -g0 -O2 -mword-relocations -fomit-frame-pointer -ffast-math -march=armv6k -mtune=mpcore -mfloat-abi=hard -D_3DS"
-	export CPPFLAGS="$CFLAGS"
-	export LDFLAGS="-L$WORKSPACE/lib"
-}
-
-# Default lib installer
-function install_lib {
-	cd $1
-	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static $2
-	make clean
-	make -j$NBPRO
-	make install
-	cd ..
-}
-
-# Install zlib
-function install_lib_zlib {
-	cd zlib-1.2.11
-	CHOST=$TARGET_HOST ./configure --static --prefix=$PLATFORM_PREFIX
-	make clean
-	make -j$NBPROC
-	make install
-	cd ..
-}
-
-# Install pixman
-function install_lib_pixman {
-	cd pixman-0.34.0
-	export CFLAGS="$CFLAGS -DPIXMAN_NO_TLS"
-	export CPPFLAGS="$CFLAGS"
-	./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX --disable-shared --enable-static --disable-arm-neon --disable-arm-simd
-	make clean
-	make -j$NBPROC
-	make install
-	set_build_flags
-	cd ..
-}
-
-# Install ICU
-function install_lib_icu {
-	# Compile native version
-	unset CC
-	unset CXX
-	unset CFLAGS
-	unset CPPFLAGS
-	unset LDFLAGS
-
-	cp icudt58l.dat icu/source/data/in/
-	cp icudt58l.dat icu-native/source/data/in/
-	cd icu-native/source
-	perl -pi -e 's/SMALL_BUFFER_MAX_SIZE 512/SMALL_BUFFER_MAX_SIZE 2048/' tools/toolutil/pkg_genc.h
-	# glibc 2.26 removed xlocale.h: https://ssl.icu-project.org/trac/ticket/13329
-	perl -pi -e 's/xlocale/locale/' i18n/digitlst.cpp
-	chmod u+x configure
-	./configure --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools --enable-extras=no --enable-icuio=no --with-data-packaging=static
-	make -j$NBPROC
-	export ICU_CROSS_BUILD=$PWD
-
-	# Cross compile
-	set_build_flags
-
-	cd ../../icu/source
-
-	cp config/mh-linux config/mh-unknown
-
-	chmod u+x configure
-	./configure --with-cross-build=$ICU_CROSS_BUILD --enable-strict=no --enable-static --enable-shared=no --enable-tests=no --enable-samples=no --enable-dyload=no --enable-tools=no --enable-extras=no --enable-icuio=no --host=$TARGET_HOST --with-data-packaging=static --prefix=$PLATFORM_PREFIX
-	make clean
-	make -j$NBPROC
-	make install
-	cd ../..
-}
-
-function install_lib_wildmidi() {
-	cd wildmidi-wildmidi-0.4.0
-	cmake . -DCMAKE_SYSTEM_NAME=Generic -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWANT_PLAYER=OFF
-	make clean
-	make
-	cp -up include/wildmidi_lib.h $WORKSPACE/include
-	cp -up libWildMidi.a $WORKSPACE/lib
-	cd ..
+	export CFLAGS="-g0 -O2 -mword-relocations -fomit-frame-pointer -ffast-math -march=armv6k -mtune=mpcore -mfloat-abi=hard"
+	export CXXFLAGS=$CFLAGS
+	export CPPFLAGS="-I$PLATFORM_PREFIX/include -D_3DS"
+	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 }
 
 function install_lib_sf2d() {
@@ -157,19 +74,28 @@ function install_lib_sf2d() {
 	cd ../..
 }
 
-set_build_flags
+# Build native ICU
+install_lib_icu_native
+
 # Install libraries
+set_build_flags
 
 install_lib_zlib
-install_lib "libpng-1.6.23"
-install_lib "freetype-2.6.3" "--with-harfbuzz=no --without-bzip2"
-install_lib_pixman
-install_lib "tremor-lowmem"
-install_lib "libogg-1.3.2"
-install_lib "libmodplug-0.8.8.5"
-install_lib_icu
-install_lib "mpg123-1.23.3" "--enable-fifo=no --enable-ipv6=no --enable-network=no --enable-int-quality=no --with-cpu=generic --with-default-audio=dummy"
-install_lib "libsndfile-1.0.27"
-install_lib "speexdsp-1.2rc3"
-install_lib_wildmidi
+install_lib $LIBPNG_DIR $LIBPNG_ARGS
+install_lib $FREETYPE_DIR $FREETYPE_ARGS --without-harfbuzz
+install_lib $HARFBUZZ_DIR $HARFBUZZ_ARGS
+install_lib $FREETYPE_DIR $FREETYPE_ARGS --with-harfbuzz
+install_lib $PIXMAN_DIR $PIXMAN_ARGS
+install_lib_cmake $EXPAT_DIR $EXPAT_ARGS
+install_lib $LIBOGG_DIR $LIBOGG_ARGS
+install_lib $LIBVORBIS_DIR $LIBVORBIS_ARGS
+install_lib $TREMOR_DIR $TREMOR_ARGS
+install_lib $MPG123_DIR $MPG123_ARGS
+install_lib $LIBSNDFILE_DIR $LIBSNDFILE_ARGS
+install_lib_cmake $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
+install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
+install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS
+install_lib_icu_cross
+
+# Platform libs
 install_lib_sf2d
