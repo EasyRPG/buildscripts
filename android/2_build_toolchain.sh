@@ -39,7 +39,7 @@ function install_lib_sdl {
 
 	pushd $SDL2_DIR
 	echo "APP_ABI := $1" >> "jni/Application.mk"
-	ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk APP_PLATFORM=android-$TARGET_API
+	ndk-build NDK_PROJECT_PATH=. NDK_DEBUG=0 APP_BUILD_SCRIPT=./Android.mk APP_PLATFORM=android-$TARGET_API
 	mkdir -p $PLATFORM_PREFIX/lib
 	mkdir -p $PLATFORM_PREFIX/include/SDL2
 	cp libs/$1/* $PLATFORM_PREFIX/lib/
