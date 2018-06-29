@@ -71,7 +71,7 @@ function build() {
 
 	export PATH=$PLATFORM_PREFIX/bin:$PATH
 
-	export CFLAGS="$5"
+	export CFLAGS="-g0 -O2 $5"
 	export CXXFLAGS=$CFLAGS
 	export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/cpufeatures"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
