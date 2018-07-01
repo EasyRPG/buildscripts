@@ -42,7 +42,7 @@ else
 fi
 
 # Build
-ndk-build -j$NBPROC NDK_LIBS_OUT=./jniLibs
+ndk-build -j$NBPROC NDK_DEBUG=0 NDK_LIBS_OUT=./jniLibs
 cd $ANDROID_FOLDER
 ./gradlew clean
 ./gradlew assembleRelease

@@ -39,7 +39,7 @@ function install_lib_sdl {
 
 	pushd $SDL2_DIR
 	echo "APP_ABI := $1" >> "jni/Application.mk"
-	ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk APP_PLATFORM=android-$TARGET_API
+	ndk-build NDK_PROJECT_PATH=. NDK_DEBUG=0 APP_BUILD_SCRIPT=./Android.mk APP_PLATFORM=android-$TARGET_API
 	mkdir -p $PLATFORM_PREFIX/lib
 	mkdir -p $PLATFORM_PREFIX/include/SDL2
 	cp libs/$1/* $PLATFORM_PREFIX/lib/
@@ -71,7 +71,7 @@ function build() {
 
 	export PATH=$PLATFORM_PREFIX/bin:$PATH
 
-	export CFLAGS="$5"
+	export CFLAGS="-g0 -O2 $5"
 	export CXXFLAGS=$CFLAGS
 	export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/cpufeatures"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib"

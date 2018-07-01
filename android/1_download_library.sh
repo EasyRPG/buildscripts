@@ -51,13 +51,13 @@ msg " [2] Installing SDK and Platform-tools"
 cd android-sdk
 
 # Android SDK Build-tools, revision 26.0.1
-echo "y" | bin/sdkmanager --verbose "build-tools;26.0.1" --sdk_root=$PWD
+echo "y" | bin/sdkmanager --verbose "build-tools;28.0.0" --sdk_root=$PWD
 # Android SDK Platform-tools
 echo "y" | bin/sdkmanager --verbose "platform-tools" --sdk_root=$PWD
 # SDK Platform Android 3.1, API 12
 echo "y" | bin/sdkmanager --verbose "platforms;android-12" --sdk_root=$PWD
-# SDK Platform Android 6.0, API 23
-echo "y" | bin/sdkmanager --verbose "platforms;android-23" --sdk_root=$PWD
+# SDK Platform Android 8.0, API 28
+echo "y" | bin/sdkmanager --verbose "platforms;android-28" --sdk_root=$PWD
 # Android Support Library Repository
 echo "y" | bin/sdkmanager --verbose "extras;android;m2repository" --sdk_root=$PWD
 # Google Repository
