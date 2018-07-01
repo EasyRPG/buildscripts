@@ -21,7 +21,7 @@ export PATH=$PATH:$NDK_ROOT
 # Export SDK path
 export SDK_ROOT=$WORKSPACE/android-sdk
 export ANDROID_HOME=$SDK_ROOT
-export PATH=$PATH:$SDK_ROOT:$SDK_ROOT/build-tools/26.0.1/
+export PATH=$PATH:$SDK_ROOT:$SDK_ROOT/build-tools/28.0.0/
 
 # EasyRPG Player
 if [ -d Player/.git ]; then
