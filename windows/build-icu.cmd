@@ -13,7 +13,7 @@ IF "%PLATFORM%"=="" SET PLATFORM=X86
 
 set PATH=%CD%/msys/bin;%PATH%
 
-wget --no-check-certificate https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata.tar.gz -O icudata.tar.gz
+curl -L https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata.tar.gz -o icudata.tar.gz
 tar xf icudata.tar.gz
 copy /Y icu*.dat projects\icu\source\data\in
 
