@@ -36,8 +36,8 @@ fi
 function set_build_flags {
 	CLANG=`xcodebuild -find clang`
 	CLANGXX=`xcodebuild -find clang++`
-	ARCH="-arch i386 -arch x86_64"
-	SDKPATH=`xcrun -sdk macosx10.12 --show-sdk-path`
+	ARCH="-arch x86_64"
+	SDKPATH=`xcrun -sdk macosx --show-sdk-path`
 
 	export CC="$CLANG $ARCH"
 	export CXX="$CLANGXX $ARCH"
@@ -45,8 +45,6 @@ function set_build_flags {
 		export CC="ccache $CC"
 		export CXX="ccache $CXX"
 	fi
-	export CPP="$CLANG -arch i386 -E"
-	export CXXCPP="$CLANGXX -arch i386 -E"
 
 	export CFLAGS="-g -O2 -mmacosx-version-min=10.9 -isysroot $SDKPATH"
 	export CXXFLAGS=$CFLAGS

@@ -68,9 +68,9 @@ $env:PATH = "$(Get-ScriptDirectory)/msys/bin;$($env:PATH)"
 # Prevent "patch.exe" triggering UAC because of the filename
 $env:__COMPAT_LAYER = "RunAsInvoker"
 
-# Powershell aliases wget and diff
-while (Test-Path Alias:wget) {
-    Remove-Item Alias:wget -Force
+# Powershell aliases curl and diff
+while (Test-Path Alias:curl) {
+    Remove-Item Alias:curl -Force
 }
 while (Test-Path Alias:diff) {
     Remove-Item Alias:diff -Force
@@ -98,7 +98,7 @@ foreach ($name in $deps.psobject.properties.name) {
     if ($item.Source) {
         echo "Downloading $name"
         $fname = $item.Source.Split("/")[-1]
-        wget $item.Source --no-check-certificate -O "$project_dir/$fname" 2>&1 | Out-Null
+        curl -L $item.Source -o "$project_dir/$fname" 2>&1 | Out-Null
         if ($?) {
             Write-Error "Downloading $name failed"
             exit

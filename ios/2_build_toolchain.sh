@@ -34,8 +34,8 @@ fi
 function set_build_flags {
 	CLANG=`xcodebuild -find clang`
 	CLANGXX=`xcodebuild -find clang++`
-	SDKPATH=`xcrun -sdk iphoneos10.2 --show-sdk-path`
-	ARCH="-arch armv7 -arch armv7s -arch arm64"
+	SDKPATH=`xcrun -sdk iphoneos --show-sdk-path`
+	ARCH="-arch armv7 -arch arm64"
 
 	export CC="$CLANG $ARCH"
 	export CXX="$CLANGXX $ARCH"
@@ -43,8 +43,8 @@ function set_build_flags {
 		export CC="ccache $CC"
 		export CXX="ccache $CXX"
 	fi
-	export CPP="$CLANG -arch armv7 -E"
-	export CXXCPP="$CLANGXX -arch armv7 -E"
+	export CPP="$CLANG -arch armv7 -E -isysroot $SDKPATH"
+	export CXXCPP="$CLANGXX -arch armv7 -E -isysroot $SDKPATH"
 
 	export CFLAGS="-g -O2 -miphoneos-version-min=7.0 -isysroot $SDKPATH -fobjc-arc"
 	export CXXFLAGS=$CFLAGS
