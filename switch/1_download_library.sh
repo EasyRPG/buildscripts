@@ -8,12 +8,12 @@ export WORKSPACE=$PWD
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
 
-msg " [1] Installing devkitA64"
+msg " [1] Checking devkitA64"
 
-rm -rf devkitPro/
-wget -nv https://raw.githubusercontent.com/devkitPro/installer/master/perl/devkitA64update.pl
-perl -pi -e "s|/opt/devkitpro|$PWD/devkitPro|" devkitA64update.pl
-perl devkitA64update.pl
+if [[ -z $DEVKITPRO || ! -d "$DEVKITPRO/devkitA64" ]]; then
+	echo "Setup devkitA64 properly. \$DEVKITPRO needs to be set."
+	exit 1
+fi
 
 msg " [2] Downloading generic libraries"
 
@@ -44,10 +44,6 @@ download_and_extract $EXPAT_URL
 # libogg
 rm -rf $LIBOGG_DIR
 download_and_extract $LIBOGG_URL
-
-# libvorbis
-rm -rf $LIBVORBIS_DIR
-download_and_extract $LIBVORBIS_URL
 
 # tremor
 rm -rf $TREMOR_DIR
@@ -91,10 +87,3 @@ download_and_extract $ICU_URL
 rm -f $ICUDATA_FILES
 download_and_extract $ICUDATA_URL
 
-msg " [3] Downloading platform libraries"
-
-# Remove this later when libnx becomes more stable
-# (also shipped by devkitA64)
-
-rm -rf libnx
-git_clone https://github.com/switchbrew/libnx

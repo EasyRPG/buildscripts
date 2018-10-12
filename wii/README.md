@@ -2,11 +2,12 @@
 
 ## Wii Toolchain and libraries
 
-Local build process:
+### Prequisites:
 
-Run `0_build_everything.sh` in a terminal
+- Install devkitPPC. This includes libogc, libfat and gamecube-tools.
+  (Environment variables `DEVKITPRO` and `DEVKITPPC` need to be set)
 
-Usage:
+### Local build process:
 
-Set environment variable `DEVKITPRO` to `$PWD/devkitPro`
-and `DEVKITPPC` to `$DEVKITPRO/devkitPPC`
+- Run `0_build_everything.sh` in a terminal
+

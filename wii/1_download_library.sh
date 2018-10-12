@@ -11,12 +11,12 @@ source $SCRIPT_DIR/../shared/import.sh
 # Override ICU version to 58.1
 source $SCRIPT_DIR/packages.sh
 
-msg " [1] Installing devkitPPC"
+msg " [1] Checking devkitPPC"
 
-rm -rf devkitPro/
-download https://raw.githubusercontent.com/devkitPro/installer/master/perl/devkitPPCupdate.pl
-perl -pi -e "s|/opt/devkitpro|$PWD/devkitPro|" devkitPPCupdate.pl
-perl devkitPPCupdate.pl
+if [[ -z $DEVKITPRO || -z $DEVKITPPC ]]; then
+	echo "Setup devkitPPC properly. \$DEVKITPRO and \$DEVKITPPC need to be set."
+	exit 1
+fi
 
 msg " [2] Downloading generic libraries"
 
@@ -47,10 +47,6 @@ download_and_extract $EXPAT_URL
 # libogg
 rm -rf $LIBOGG_DIR
 download_and_extract $LIBOGG_URL
-
-# libvorbis
-rm -rf $LIBVORBIS_DIR
-download_and_extract $LIBVORBIS_URL
 
 # tremor
 rm -rf $TREMOR_DIR
