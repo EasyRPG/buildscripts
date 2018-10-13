@@ -8,7 +8,7 @@ export WORKSPACE=$PWD
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
 
-# Override ICU version to 58.1
+# Override ICU version to 58.1, custom SDL
 source $SCRIPT_DIR/packages.sh
 
 # Number of CPU
@@ -37,6 +37,8 @@ if [ ! -f .patches-applied ]; then
 	# Fix libsndfile
 	(cd $LIBSNDFILE_DIR
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/libsndfile.patch
+		# do not fortify source
+		perl -pi -e 's/AX_ADD_FORTIFY_SOURCE//' configure.ac
 		autoreconf -fi
 	)
 
@@ -47,10 +49,7 @@ if [ ! -f .patches-applied ]; then
 	patch -Np0 < icu-pkg_genc.patch
 
 	# Patch SDL+SDL_mixer
-	cd sdl-wii
-	git reset --hard
-	cd ..
-	patch --binary -Np0 < $SCRIPT_DIR/sdl-wii.patch
+	patch -d $SDL_DIR --binary -Np1 < $SCRIPT_DIR/sdl-wii.patch
 
 	touch .patches-applied
 fi
@@ -85,7 +84,7 @@ function install_lib_sdl() {
 	echo "**** Building SDL ****"
 	echo ""
 
-	cd sdl-wii/SDL
+	cd $SDL_DIR/SDL
 	make clean
 	make install INSTALL_HEADER_DIR="$WORKSPACE/include" INSTALL_LIB_DIR="$WORKSPACE/lib"
 	cd ../..
@@ -98,7 +97,7 @@ function install_lib_sdlmixer() {
 	echo "**** Building SDL_mixer ****"
 	echo ""
 
-	cd sdl-wii/SDL_mixer
+	cd $SDL_DIR/SDL_mixer
 	make clean
 	make install INSTALL_HEADER_DIR="$WORKSPACE/include" INSTALL_LIB_DIR="$WORKSPACE/lib"
 	cd ../..

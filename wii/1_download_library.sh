@@ -8,7 +8,7 @@ export WORKSPACE=$PWD
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
 
-# Override ICU version to 58.1
+# Override ICU version to 58.1, custom SDL
 source $SCRIPT_DIR/packages.sh
 
 msg " [1] Checking devkitPPC"
@@ -92,5 +92,5 @@ download_and_extract $ICUDATA_URL
 msg " [3] Downloading platform libraries"
 
 # SDL+SDL_mixer
-rm -rf sdl-wii/
-git_clone https://github.com/dborth/sdl-wii.git
+rm -rf $SDL_DIR
+download_and_extract $SDL_URL

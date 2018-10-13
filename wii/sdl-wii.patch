@@ -1,6 +1,6 @@
-diff -Naur sdl-wii-orig/SDL/Makefile sdl-wii/SDL/Makefile
---- sdl-wii-orig/SDL/Makefile	2016-08-20 12:20:23.723226343 +0200
-+++ sdl-wii/SDL/Makefile	2016-08-20 10:54:29.209385683 +0200
+diff --color -Naur sdl-wii.orig/SDL/Makefile sdl-wii-2018-08-31/SDL/Makefile
+--- sdl-wii.orig/SDL/Makefile	2018-08-31 18:49:59.000000000 +0200
++++ sdl-wii-2018-08-31/SDL/Makefile	2018-10-13 13:33:56.768210370 +0200
 @@ -87,7 +87,7 @@
  	@echo ----
  
@@ -10,9 +10,9 @@ diff -Naur sdl-wii-orig/SDL/Makefile sdl-wii/SDL/Makefile
  INCLUDES		:= -Iinclude -I$(LIBOGC_INC)
  DEFINES			:= -DGEKKO
  CFLAGS			:= $(COMMON_FLAGS) $(INCLUDES) $(DEFINES)
-diff -Naur sdl-wii-orig/SDL/src/video/wii/SDL_wiivideo.c sdl-wii/SDL/src/video/wii/SDL_wiivideo.c
---- sdl-wii-orig/SDL/src/video/wii/SDL_wiivideo.c	2016-08-20 12:20:23.829894660 +0200
-+++ sdl-wii/SDL/src/video/wii/SDL_wiivideo.c	2016-08-20 10:54:29.209385683 +0200
+diff --color -Naur sdl-wii.orig/SDL/src/video/wii/SDL_wiivideo.c sdl-wii-2018-08-31/SDL/src/video/wii/SDL_wiivideo.c
+--- sdl-wii.orig/SDL/src/video/wii/SDL_wiivideo.c	2018-08-31 18:49:59.000000000 +0200
++++ sdl-wii-2018-08-31/SDL/src/video/wii/SDL_wiivideo.c	2018-10-13 13:33:56.768210370 +0200
 @@ -282,7 +282,7 @@
  	mode_320.h = mode_640.h / 2;
  
@@ -22,9 +22,9 @@ diff -Naur sdl-wii-orig/SDL/src/video/wii/SDL_wiivideo.c sdl-wii/SDL/src/video/w
  	vformat->BytesPerPixel	= 2;
  
  	this->hidden->buffer = NULL;
-diff -Naur sdl-wii-orig/SDL_mixer/Makefile sdl-wii/SDL_mixer/Makefile
---- sdl-wii-orig/SDL_mixer/Makefile	2016-08-20 12:20:23.889895589 +0200
-+++ sdl-wii/SDL_mixer/Makefile	2016-08-20 11:28:52.160536313 +0200
+diff --color -Naur sdl-wii.orig/SDL_mixer/Makefile sdl-wii-2018-08-31/SDL_mixer/Makefile
+--- sdl-wii.orig/SDL_mixer/Makefile	2018-08-31 18:49:59.000000000 +0200
++++ sdl-wii-2018-08-31/SDL_mixer/Makefile	2018-10-13 13:36:49.461845562 +0200
 @@ -24,7 +24,7 @@
  PIPE_TO_SED := 2>&1 | sed "s/:\([0-9]*\):/\(\1\) :/"
  
@@ -39,9 +39,9 @@ diff -Naur sdl-wii-orig/SDL_mixer/Makefile sdl-wii/SDL_mixer/Makefile
  
  # Compilation flags.
 -COMMON_FLAGS	:= -g -O3 -mrvl -Wall $(MACHDEP)
--INCLUDES		:= -Iinclude -I$(LIBOGC_INC) -I$(LIBOGC_INC)/SDL -I$(LIBOGC_INC)/mpeg -I$(DEVKITPRO)/libsmpeg/include -Isrc/mikmod -Isrc/timidity
+-INCLUDES		:= -Iinclude -I$(LIBOGC_INC) -I$(LIBOGC_INC)/SDL -I$(LIBOGC_INC)/mpeg -I../smpeg/include -Isrc/mikmod -Isrc/timidity -I../SDL/include
 +COMMON_FLAGS	:= -g -O2 -mrvl -Wall $(MACHDEP)
-+INCLUDES		:= -Iinclude -I$(LIBOGC_INC) -I$(WORKSPACE)/include -I$(WORKSPACE)/include/SDL
++INCLUDES		:= -Iinclude -I$(LIBOGC_INC) -I../SDL/include
  # -include sys/wait.h 
  # -include sys/syslimits.h
  # -Isrc/native_midi

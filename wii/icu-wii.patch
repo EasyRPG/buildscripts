@@ -133,8 +133,8 @@ diff -Naur icu-native/source/common/umutex.h icu/source/common/umutex.h
 +
 +#define PTHREAD_MUTEX_INITIALIZER 0
 +#define PTHREAD_COND_INITIALIZER 0
-+typedef int pthread_mutex_t;
-+typedef int pthread_cond_t;
++typedef uint32_t pthread_mutex_t;
++typedef uint32_t pthread_cond_t;
  
  struct UMutex {
      pthread_mutex_t  fMutex;
