@@ -8,15 +8,15 @@ export WORKSPACE=$PWD
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
 
-# Override ICU version to 58.1
+# Override ICU version to 58.1, custom SDL
 source $SCRIPT_DIR/packages.sh
 
-msg " [1] Installing devkitPPC"
+msg " [1] Checking devkitPPC"
 
-rm -rf devkitPro/
-download https://raw.githubusercontent.com/devkitPro/installer/master/perl/devkitPPCupdate.pl
-perl -pi -e "s|/opt/devkitpro|$PWD/devkitPro|" devkitPPCupdate.pl
-perl devkitPPCupdate.pl
+if [[ -z $DEVKITPRO || -z $DEVKITPPC ]]; then
+	echo "Setup devkitPPC properly. \$DEVKITPRO and \$DEVKITPPC need to be set."
+	exit 1
+fi
 
 msg " [2] Downloading generic libraries"
 
@@ -47,10 +47,6 @@ download_and_extract $EXPAT_URL
 # libogg
 rm -rf $LIBOGG_DIR
 download_and_extract $LIBOGG_URL
-
-# libvorbis
-rm -rf $LIBVORBIS_DIR
-download_and_extract $LIBVORBIS_URL
 
 # tremor
 rm -rf $TREMOR_DIR
@@ -96,5 +92,5 @@ download_and_extract $ICUDATA_URL
 msg " [3] Downloading platform libraries"
 
 # SDL+SDL_mixer
-rm -rf sdl-wii/
-git_clone https://github.com/dborth/sdl-wii.git
+rm -rf $SDL_DIR
+download_and_extract $SDL_URL

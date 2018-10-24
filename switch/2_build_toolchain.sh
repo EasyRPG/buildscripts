@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# abort on errors
+# abort on error
 set -e
 
 export WORKSPACE=$PWD
@@ -14,38 +14,42 @@ nproc=$(nproc)
 # Use ccache?
 test_ccache
 
+# Toolchain available?
+if [[ -z $DEVKITPRO || ! -d "$DEVKITPRO/devkitA64" ]]; then
+	echo "Setup devkitA64 properly. \$DEVKITPRO needs to be set."
+	exit 1
+fi
+
 if [ ! -f .patches-applied ]; then
 	echo "Patching libraries"
 
 	patches_common
 
-	cp -rup icu icu-native
-
 	# Fix mpg123
-	pushd $MPG123_DIR
-	patch -Np1 < $SCRIPT_DIR/../shared/extra/mpg123.patch
-	autoreconf -fi
-	popd
+	(cd $MPG123_DIR
+		patch -Np1 < $SCRIPT_DIR/../shared/extra/mpg123.patch
+		autoreconf -fi
+	)
 
 	# Fix libsndfile
-	pushd $LIBSNDFILE_DIR
-	patch -Np1 < $SCRIPT_DIR/../shared/extra/libsndfile.patch
-	autoreconf -fi
-	popd
+	(cd $LIBSNDFILE_DIR
+		patch -Np1 < $SCRIPT_DIR/../shared/extra/libsndfile.patch
+		autoreconf -fi
+	)
 
 	# Wildmidi: Switch compatibility
-	pushd $WILDMIDI_DIR
-	patch -Np1 < $SCRIPT_DIR/wildmidi-switch.patch
-	popd
+	(cd $WILDMIDI_DIR
+		patch -Np1 < $SCRIPT_DIR/wildmidi-switch.patch
+	)
 
 	# disable libsamplerate examples and tests
-	pushd $LIBSAMPLERATE_DIR
-	perl -pi -e 's/examples tests//' Makefile.am
-	autoreconf -fi
-	popd
+	(cd $LIBSAMPLERATE_DIR
+		perl -pi -e 's/examples tests//' Makefile.am
+		autoreconf -fi
+	)
 
-	# Fix icu build
 	cp -rup icu icu-native
+	# Fix icu build
 	patch -Np0 < $SCRIPT_DIR/icu59-switch.patch
 
 	touch .patches-applied
@@ -55,13 +59,12 @@ cd $WORKSPACE
 
 echo "Preparing toolchain"
 
-export DEVKITPRO=${WORKSPACE}/devkitPro
-export PATH=${DEVKITPRO}/devkitA64/bin:$PATH
+export PATH=$DEVKITPRO/devkitA64/bin:$PATH
 
 export PLATFORM_PREFIX=$WORKSPACE
 export TARGET_HOST=aarch64-none-elf
-export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
-export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
+unset PKG_CONFIG_PATH
+export PKG_CONFIG_LIBDIR=$PLATFORM_PREFIX/lib/pkgconfig
 export MAKEFLAGS="-j${nproc:-2}"
 
 function set_build_flags {
@@ -71,17 +74,10 @@ function set_build_flags {
 		export CC="ccache $CC"
 		export CXX="ccache $CXX"
 	fi
-	export CFLAGS="-g0 -O2 -march=armv8-a -mtune=cortex-a57 -mtp=soft -fPIC -ftls-model=local-exec"
+	export CFLAGS="-g0 -O2 -march=armv8-a -mtune=cortex-a57 -mtp=soft -fPIC -ftls-model=local-exec -ffunction-sections"
 	export CXXFLAGS=$CFLAGS
-	export CPPFLAGS="-I$WORKSPACE/include -I$DEVKITPRO/libnx/include -DSWITCH"
-	export LDFLAGS="-L$WORKSPACE/lib"
-}
-
-function install_lib_nx {
-	cd libnx
-	make clean
-	make install
-	cd ..
+	export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$DEVKITPRO/libnx/include -DSWITCH"
+	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 }
 
 # Build native icu59
@@ -89,8 +85,6 @@ install_lib_icu_native
 
 # Install libraries
 set_build_flags
-
-install_lib_nx
 
 install_lib_zlib
 install_lib $LIBPNG_DIR $LIBPNG_ARGS
@@ -100,7 +94,6 @@ install_lib $FREETYPE_DIR $FREETYPE_ARGS --with-harfbuzz
 install_lib $PIXMAN_DIR $PIXMAN_ARGS
 install_lib_cmake $EXPAT_DIR $EXPAT_ARGS
 install_lib $LIBOGG_DIR $LIBOGG_ARGS
-install_lib $LIBVORBIS_DIR $LIBVORBIS_ARGS
 install_lib $TREMOR_DIR $TREMOR_ARGS
 install_lib $MPG123_DIR $MPG123_ARGS
 install_lib $LIBSNDFILE_DIR $LIBSNDFILE_ARGS

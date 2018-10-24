@@ -2,10 +2,12 @@
 
 ## Switch Toolchain and libraries
 
-Local build process:
+### Prequisites:
 
-Run `0_build_everything.sh` in a terminal
+- Install devkitA64. This includes libnx and switch-tools.
+  (Environment variables `DEVKITPRO` needs to be set)
 
-Usage:
+### Local build process:
 
-Set environment variable `DEVKITPRO` to `$PWD/devkitPro`.
+- Run `0_build_everything.sh` in a terminal
+

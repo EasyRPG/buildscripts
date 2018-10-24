@@ -8,12 +8,12 @@ export WORKSPACE=$PWD
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
 
-msg " [1] Installing devkitARM"
+msg " [1] Checking devkitARM"
 
-rm -rf $PWD/devkitPro
-download https://raw.githubusercontent.com/devkitPro/installer/master/perl/devkitARMupdate.pl
-perl -pi -e "s|/opt/devkitpro|$PWD/devkitPro|" devkitARMupdate.pl
-perl devkitARMupdate.pl
+if [[ -z $DEVKITPRO || -z $DEVKITARM ]]; then
+	echo "Setup devkitARM properly. \$DEVKITPRO and \$DEVKITARM need to be set."
+	exit 1
+fi
 
 msg " [2] Downloading generic libraries"
 
@@ -45,10 +45,6 @@ download_and_extract $EXPAT_URL
 rm -rf $LIBOGG_DIR
 download_and_extract $LIBOGG_URL
 
-# libvorbis
-rm -rf $LIBVORBIS_DIR
-download_and_extract $LIBVORBIS_URL
-
 # tremor
 rm -rf $TREMOR_DIR
 download $TREMOR_URL -O $TREMOR_FILE
@@ -74,7 +70,13 @@ download_and_extract $SPEEXDSP_URL
 rm -rf $WILDMIDI_DIR
 download_and_extract $WILDMIDI_URL
 
-# opus not supported, because of -ffast-math
+# opus
+rm -rf $OPUS_DIR
+download_and_extract $OPUS_URL
+
+# opusfile
+rm -rf $OPUSFILE_DIR
+download_and_extract $OPUSFILE_URL
 
 # ICU
 rm -rf $ICU_DIR
@@ -84,7 +86,3 @@ download_and_extract $ICU_URL
 rm -f $ICUDATA_FILES
 download_and_extract $ICUDATA_URL
 
-msg " [3] Downloading platform libraries"
-
-rm -rf sf2dlib
-git_clone https://github.com/xerpi/sf2dlib.git

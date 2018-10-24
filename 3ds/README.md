@@ -2,11 +2,11 @@
 
 ## Nintendo 3DS Toolchain and libraries
 
-Local build process:
+### Prequisites:
 
-Run `0_build_everything.sh` in a terminal
+- Install devkitARM. This includes libctru, citro2d, citro3d and 3dstools.
+  (Environment variables `DEVKITPRO` and `DEVKITARM` need to be set)
 
-Usage:
+### Local build process:
 
-Set environment variable `DEVKITPRO` to `$PWD/devkitPro`
-and `DEVKITARM` to `$DEVKITPRO/devkitARM`
+- Run `0_build_everything.sh` in a terminal

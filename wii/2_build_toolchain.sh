@@ -8,7 +8,7 @@ export WORKSPACE=$PWD
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
 
-# Override ICU version to 58.1
+# Override ICU version to 58.1, custom SDL
 source $SCRIPT_DIR/packages.sh
 
 # Number of CPU
@@ -17,22 +17,30 @@ nproc=$(nproc)
 # Use ccache?
 test_ccache
 
+# Toolchain available?
+if [[ -z $DEVKITPRO || -z $DEVKITPPC ]]; then
+	echo "Setup devkitPPC properly. \$DEVKITPRO and \$DEVKITPPC need to be set."
+	exit 1
+fi
+
 if [ ! -f .patches-applied ]; then
-	echo "patching libraries"
+	echo "Patching libraries"
 
 	patches_common
 
 	# Fix mpg123
-	pushd $MPG123_DIR
-	patch -Np1 < $SCRIPT_DIR/../shared/extra/mpg123.patch
-	autoreconf -fi
-	popd
+	(cd $MPG123_DIR
+		patch -Np1 < $SCRIPT_DIR/../shared/extra/mpg123.patch
+		autoreconf -fi
+	)
 
 	# Fix libsndfile
-	pushd $LIBSNDFILE_DIR
-	patch -Np1 < $SCRIPT_DIR/../shared/extra/libsndfile.patch
-	autoreconf -fi
-	popd
+	(cd $LIBSNDFILE_DIR
+		patch -Np1 < $SCRIPT_DIR/../shared/extra/libsndfile.patch
+		# do not fortify source
+		perl -pi -e 's/AX_ADD_FORTIFY_SOURCE//' configure.ac
+		autoreconf -fi
+	)
 
 	cp -rup icu icu-native
 	# Fix ICU compilation problems on Wii
@@ -41,10 +49,7 @@ if [ ! -f .patches-applied ]; then
 	patch -Np0 < icu-pkg_genc.patch
 
 	# Patch SDL+SDL_mixer
-	cd sdl-wii
-	git reset --hard
-	cd ..
-	patch --binary -Np0 < $SCRIPT_DIR/sdl-wii.patch
+	patch -d $SDL_DIR --binary -Np1 < $SCRIPT_DIR/sdl-wii.patch
 
 	touch .patches-applied
 fi
@@ -53,14 +58,12 @@ cd $WORKSPACE
 
 echo "Preparing toolchain"
 
-export DEVKITPRO=${WORKSPACE}/devkitPro
-export DEVKITPPC=${DEVKITPRO}/devkitPPC
 export PATH=$DEVKITPPC/bin:$PATH
 
 export PLATFORM_PREFIX=$WORKSPACE
 export TARGET_HOST=powerpc-eabi
-export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
-export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
+unset PKG_CONFIG_PATH
+export PKG_CONFIG_LIBDIR=$PLATFORM_PREFIX/lib/pkgconfig
 export MAKEFLAGS="-j${nproc:-2}"
 
 function set_build_flags {
@@ -70,7 +73,7 @@ function set_build_flags {
 		export CC="ccache $CC"
 		export CXX="ccache $CXX"
 	fi
-	export CFLAGS="-g -O2"
+	export CFLAGS="-g0 -O2 -mcpu=750 -meabi -mhard-float -ffunction-sections -fdata-sections"
 	export CXXFLAGS=$CFLAGS
 	export CPPFLAGS="-I$PLATFORM_PREFIX/include -DGEKKO"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
@@ -81,7 +84,7 @@ function install_lib_sdl() {
 	echo "**** Building SDL ****"
 	echo ""
 
-	cd sdl-wii/SDL
+	cd $SDL_DIR/SDL
 	make clean
 	make install INSTALL_HEADER_DIR="$WORKSPACE/include" INSTALL_LIB_DIR="$WORKSPACE/lib"
 	cd ../..
@@ -94,7 +97,7 @@ function install_lib_sdlmixer() {
 	echo "**** Building SDL_mixer ****"
 	echo ""
 
-	cd sdl-wii/SDL_mixer
+	cd $SDL_DIR/SDL_mixer
 	make clean
 	make install INSTALL_HEADER_DIR="$WORKSPACE/include" INSTALL_LIB_DIR="$WORKSPACE/lib"
 	cd ../..
@@ -116,7 +119,6 @@ install_lib $FREETYPE_DIR $FREETYPE_ARGS --with-harfbuzz
 install_lib $PIXMAN_DIR $PIXMAN_ARGS --disable-vmx
 install_lib_cmake $EXPAT_DIR $EXPAT_ARGS
 install_lib $LIBOGG_DIR $LIBOGG_ARGS
-install_lib $LIBVORBIS_DIR $LIBVORBIS_ARGS
 install_lib $TREMOR_DIR $TREMOR_ARGS
 install_lib $MPG123_DIR $MPG123_ARGS
 install_lib $LIBSNDFILE_DIR $LIBSNDFILE_ARGS

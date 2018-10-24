@@ -8,6 +8,6 @@ source $SCRIPT_DIR/../shared/import.sh
 
 cleanup
 
-rm -rf sdl-wii/
+rm -rf sdl-wii-*/
 
 echo " -> done"

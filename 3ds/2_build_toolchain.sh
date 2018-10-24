@@ -14,25 +14,31 @@ nproc=$(nproc)
 # Use ccache?
 test_ccache
 
+# Toolchain available?
+if [[ -z $DEVKITPRO || -z $DEVKITARM ]]; then
+	echo "Setup devkitARM properly. \$DEVKITPRO and \$DEVKITARM need to be set."
+	exit 1
+fi
+
 if [ ! -f .patches-applied ]; then
-	echo "patching libraries"
+	echo "Patching libraries"
 
 	patches_common
 
 	# Fix mpg123
-	pushd $MPG123_DIR
-	patch -Np1 < $SCRIPT_DIR/../shared/extra/mpg123.patch
-	autoreconf -fi
-	popd
+	(cd $MPG123_DIR
+		patch -Np1 < $SCRIPT_DIR/../shared/extra/mpg123.patch
+		autoreconf -fi
+	)
 
 	# Fix libsndfile
-	pushd $LIBSNDFILE_DIR
-	patch -Np1 < $SCRIPT_DIR/../shared/extra/libsndfile.patch
-	autoreconf -fi
-	popd
+	(cd $LIBSNDFILE_DIR
+		patch -Np1 < $SCRIPT_DIR/../shared/extra/libsndfile.patch
+		autoreconf -fi
+	)
 
-	# Disable pthread and other newlib issues
 	cp -rup icu icu-native
+	# Disable pthread and other newlib issues
 	patch -Np0 < $SCRIPT_DIR/icu59-3ds.patch
 
 	touch .patches-applied
@@ -42,8 +48,6 @@ cd $WORKSPACE
 
 echo "Preparing toolchain"
 
-export DEVKITPRO=$WORKSPACE/devkitPro
-export DEVKITARM=$DEVKITPRO/devkitARM
 export PATH=$DEVKITARM/bin:$PATH
 
 export PLATFORM_PREFIX=$WORKSPACE
@@ -59,19 +63,10 @@ function set_build_flags {
 		export CC="ccache $CC"
 		export CXX="ccache $CXX"
 	fi
-	export CFLAGS="-g0 -O2 -mword-relocations -fomit-frame-pointer -ffast-math -march=armv6k -mtune=mpcore -mfloat-abi=hard"
-	export CXXFLAGS=$CFLAGS
+	export CFLAGS="-g0 -O2 -mword-relocations -fomit-frame-pointer -ffunction-sections -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft"
+	export CXXFLAGS="$CFLAGS -fno-exceptions"
 	export CPPFLAGS="-I$PLATFORM_PREFIX/include -D_3DS"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
-}
-
-function install_lib_sf2d() {
-	cd sf2dlib/libsf2d/
-	make clean
-	make
-	cp -r include/* ../../include/
-	cp -r lib/* ../../lib/
-	cd ../..
 }
 
 # Build native ICU
@@ -88,14 +83,12 @@ install_lib $FREETYPE_DIR $FREETYPE_ARGS --with-harfbuzz
 install_lib $PIXMAN_DIR $PIXMAN_ARGS
 install_lib_cmake $EXPAT_DIR $EXPAT_ARGS
 install_lib $LIBOGG_DIR $LIBOGG_ARGS
-install_lib $LIBVORBIS_DIR $LIBVORBIS_ARGS
 install_lib $TREMOR_DIR $TREMOR_ARGS
 install_lib $MPG123_DIR $MPG123_ARGS
 install_lib $LIBSNDFILE_DIR $LIBSNDFILE_ARGS
 install_lib_cmake $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
 install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
 install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS
+install_lib $OPUS_DIR $OPUS_ARGS
+install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 install_lib_icu_cross
-
-# Platform libs
-install_lib_sf2d
