@@ -4,7 +4,6 @@ library.
 In short:
 expat: MIT
 freetype: FreeType License or GPLv2 or later (see docs/LICENSE.TXT)
-glew: MIT
 harfbuzz: MIT
 icu4c: ICU license
 libmodplug: Public Domain
