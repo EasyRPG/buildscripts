@@ -60,6 +60,7 @@ lib=libsndfile
 ver=1.0.28
 LIBSNDFILE_URL=http://www.mega-nerd.com/libsndfile/files/$lib-$ver.tar.gz
 LIBSNDFILE_DIR="$lib-$ver"
+LIBSNDFILE_ARGS="--disable-alsa --disable-sqlite --disable-full-suite" 
 
 lib=libxmp-lite
 ver=4.4.1
