@@ -1,26 +1,29 @@
-@echo off
-echo EasyRPG Library Build System
-msbuild.exe /? >NUL 2>&1 || (
-  echo ERROR: This must be run from a Visual Studio Command Prompt.
-  pause
-  goto :EOF
+:: Update/Fetch vcpkg repository
+IF EXIST vcpkg (
+	cd vcpkg
+	git reset --hard
+	git pull origin
+) ELSE (
+	git clone https://github.com/Microsoft/vcpkg.git
+	cd vcpkg
 )
 
-if [%1]==[] (
-    echo ERROR: Please provide a platform toolset ^(see README^)
-    goto :EOF
-)
+:: Build vcpkg
+call bootstrap-vcpkg.bat
 
-set TARGETTOOLSET=%1
+:: Copy custom portfiles (ICU static data file)
+xcopy /Y /I /E ..\icu-easyrpg ports\icu-easyrpg
 
-IF "%EASYDEV_MSVC%"=="" SET EASYDEV_MSVC=%CD%\build
+:: Build 32-bit libraries
+:: Using [core] everywhere to prevent surprises when new default-features are
+:: added to libraries.
+vcpkg install --triplet x86-windows-static^
+ libpng[core] expat[core] pixman[core] harfbuzz[core,ucdn] libvorbis[core]^
+ libsndfile[core] wildmidi[core] libxmp-lite[core] speexdsp[core]^
+ opusfile[core] sdl2-image[core] sdl2-mixer[core] icu-easyrpg[core]
 
-IF "%PLATFORM%"=="" SET PLATFORM=X86
-
-echo Compiling using toolset %TARGETTOOLSET%
-echo.
-@echo on
-msbuild easyrpg-win32-libs.sln /t:Clean;Build /p:configuration=Debug /p:PlatformToolset=%TARGETTOOLSET% /m || goto :EOF
-msbuild easyrpg-win32-libs.sln /t:Clean;Build /p:configuration=Release /p:PlatformToolset=%TARGETTOOLSET% /m || goto :EOF
-
-call build-icu.cmd
+:: Build 64-bit libraries
+vcpkg install --triplet x64-windows-static^
+ libpng[core] expat[core] pixman[core] harfbuzz[core,ucdn] libvorbis[core]^
+ libsndfile[core] wildmidi[core] libxmp-lite[core] speexdsp[core]^
+ opusfile[core] sdl2-image[core] sdl2-mixer[core] icu-easyrpg[core]
