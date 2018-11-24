@@ -60,7 +60,7 @@ lib=libsndfile
 ver=1.0.28
 LIBSNDFILE_URL=http://www.mega-nerd.com/libsndfile/files/$lib-$ver.tar.gz
 LIBSNDFILE_DIR="$lib-$ver"
-LIBSNDFILE_ARGS="--disable-alsa --disable-sqlite --disable-full-suite" 
+LIBSNDFILE_ARGS="--disable-alsa --disable-sqlite --disable-full-suite"
 
 lib=libxmp-lite
 ver=4.4.1
@@ -109,17 +109,18 @@ ICUDATA_URL=https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icud
 ICUDATA_FILES=icudt*.dat
 
 lib=SDL2
-ver=2.0.7
+ver=2.0.9
 SDL2_URL="https://libsdl.org/release/$lib-$ver.tar.gz"
 SDL2_DIR="$lib-$ver"
 
 lib=SDL2_mixer
-ver=2.0.1
+ver=2.0.4
 SDL2_MIXER_URL="https://www.libsdl.org/projects/SDL_mixer/release/$lib-$ver.tar.gz"
 SDL2_MIXER_DIR="$lib-$ver"
 SDL2_MIXER_ARGS="--with-sdl-prefix=$WORKSPACE --disable-music-ogg \
 	--disable-music-midi-fluidsynth --disable-music-midi-fluidsynth-shared \
-	--disable-music-mod --disable-music-mp3 --disable-music-flac --disable-sdltest"
+	--disable-music-mod --disable-music-mp3 --disable-music-flac --disable-sdltest \
+	--disable-music-opus --disable-music-mp3-mpg123"
 
 # only needed for lmu2png tool
 lib=SDL2_image

@@ -27,6 +27,7 @@ if [ ! -f .patches-applied ]; then
 	# Disable SDL2 mixer examples
 	pushd $SDL2_MIXER_DIR
 	patch -Np1 < $SCRIPT_DIR/../shared/extra/sdl2_mixer_disable_examples.patch
+	rm aclocal.m4
 	autoreconf -fi
 	popd
 
@@ -61,8 +62,6 @@ export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export MAKEFLAGS="-j${nproc:-2}"
 
 set_build_flags
-
-install_lib $ICU_DIR/source $ICU_ARGS
 
 # Install libraries
 install_lib_zlib
