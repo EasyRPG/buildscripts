@@ -37,11 +37,6 @@ if [ ! -f .patches-applied ]; then
 		autoreconf -fi
 	)
 
-	# Wildmidi: Switch compatibility
-	(cd $WILDMIDI_DIR
-		patch -Np1 < $SCRIPT_DIR/wildmidi-switch.patch
-	)
-
 	# disable libsamplerate examples and tests
 	(cd $LIBSAMPLERATE_DIR
 		perl -pi -e 's/examples tests//' Makefile.am
