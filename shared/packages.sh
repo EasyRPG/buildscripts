@@ -6,13 +6,13 @@ ZLIB_URL="https://zlib.net/$lib-$ver.tar.gz"
 ZLIB_DIR="$lib-$ver"
 
 lib=libpng
-ver=1.6.34
-LIBPNG_URL="https://ftp-osl.osuosl.org/pub/libpng/src/archive/xz/libpng16/$lib-$ver.tar.xz"
+ver=1.6.35
+LIBPNG_URL="https://download.sourceforge.net/libpng/$lib-$ver.tar.xz"
 LIBPNG_DIR="$lib-$ver"
 
 lib=freetype
 ver=2.9
-FREETYPE_URL="https://download.savannah.gnu.org/releases/freetype/$lib-$ver.tar.bz2"
+FREETYPE_URL="https://sourceforge.net/projects/freetype/files/freetype2/$ver/$lib-$ver.tar.bz2"
 FREETYPE_DIR="$lib-$ver"
 FREETYPE_ARGS="--without-bzip2 --without-png --without-zlib"
 
@@ -29,7 +29,7 @@ PIXMAN_DIR="$lib-$ver"
 PIXMAN_ARGS="--disable-libpng --enable-dependency-tracking"
 
 lib=expat
-ver=2.2.5
+ver=2.2.6
 EXPAT_URL="https://github.com/libexpat/libexpat/releases/download/R_${ver//./_}/$lib-$ver.tar.bz2"
 EXPAT_DIR="$lib-$ver"
 EXPAT_ARGS="-DBUILD_tools=OFF -DBUILD_examples=OFF -DBUILD_tests=OFF -DBUILD_doc=OFF -DBUILD_shared=OFF"
@@ -78,19 +78,19 @@ LIBSAMPLERATE_URL="http://www.mega-nerd.com/SRC/$lib-$ver.tar.gz"
 LIBSAMPLERATE_DIR="$lib-$ver"
 
 lib=wildmidi
-ver=0.4.2
+ver=0.4.3
 WILDMIDI_URL="https://github.com/Mindwerks/wildmidi/archive/$lib-$ver.tar.gz"
 WILDMIDI_DIR="$lib-$lib-$ver"
 WILDMIDI_ARGS="-DWANT_PLAYER=OFF -DWANT_STATIC=ON"
 
 lib=opus
-ver=1.2.1
+ver=1.3
 OPUS_URL="https://archive.mozilla.org/pub/opus/$lib-$ver.tar.gz"
 OPUS_DIR="$lib-$ver"
 OPUS_ARGS="--disable-intrinsics"
 
 lib=opusfile
-ver=0.10
+ver=0.11
 OPUSFILE_URL="https://archive.mozilla.org/pub/opus/$lib-$ver.tar.gz"
 OPUSFILE_DIR="$lib-$ver"
 OPUSFILE_ARGS="--disable-http"
