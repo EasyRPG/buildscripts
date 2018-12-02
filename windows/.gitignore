@@ -1,5 +1,2 @@
-/easyrpg-win32-libs*
-/projects
-/build
-/.vs
-/icu*
+/vcpkg
+!/icu-easyrpg
