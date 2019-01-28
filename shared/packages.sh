@@ -6,13 +6,13 @@ ZLIB_URL="https://zlib.net/$lib-$ver.tar.gz"
 ZLIB_DIR="$lib-$ver"
 
 lib=libpng
-ver=1.6.35
+ver=1.6.36
 LIBPNG_URL="https://download.sourceforge.net/libpng/$lib-$ver.tar.xz"
 LIBPNG_DIR="$lib-$ver"
 
 lib=freetype
-ver=2.9
-FREETYPE_URL="https://sourceforge.net/projects/freetype/files/freetype2/$ver/$lib-$ver.tar.bz2"
+ver=2.9.1
+FREETYPE_URL="https://download.savannah.nongnu.org/releases/$lib/$lib-$ver.tar.bz2"
 FREETYPE_DIR="$lib-$ver"
 FREETYPE_ARGS="--without-bzip2 --without-png --without-zlib"
 
@@ -23,7 +23,7 @@ HARFBUZZ_DIR="$lib-$ver"
 HARFBUZZ_ARGS="--without-glib --without-gobject --without-cairo --without-fontconfig --without-icu"
 
 lib=pixman
-ver=0.34.0
+ver=0.36.0
 PIXMAN_URL="https://cairographics.org/releases/$lib-$ver.tar.gz"
 PIXMAN_DIR="$lib-$ver"
 PIXMAN_ARGS="--disable-libpng --enable-dependency-tracking"
