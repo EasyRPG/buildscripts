@@ -42,6 +42,13 @@ if [ ! -f .patches-applied ]; then
 		autoreconf -fi
 	)
 
+	# Fix opus
+	(cd $OPUS_DIR
+		# do not fortify source
+		perl -pi -e 's/AX_ADD_FORTIFY_SOURCE//' configure.ac
+		autoreconf -fi
+	)
+
 	cp -rup icu icu-native
 	# Fix ICU compilation problems on Wii
 	patch -Np0 < icu-wii.patch
@@ -50,6 +57,8 @@ if [ ! -f .patches-applied ]; then
 
 	# Patch SDL+SDL_mixer
 	patch -d $SDL_DIR --binary -Np1 < $SCRIPT_DIR/sdl-wii.patch
+	# newlib fix until resolved upstream
+	patch -d $SDL_DIR --binary -Np1 < $SCRIPT_DIR/sdl-wii-fix-build.patch
 
 	touch .patches-applied
 fi

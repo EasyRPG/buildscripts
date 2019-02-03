@@ -23,8 +23,8 @@ cd emsdk-portable
 ./emsdk update
 
 # Download and install the latest SDK tools and set up the compiler configuration to point to it.
-./emsdk install sdk-master-64bit
-./emsdk activate sdk-master-64bit
+./emsdk install sdk-incoming-64bit
+./emsdk activate sdk-incoming-64bit
 
 # Set the current Emscripten path
 # The following line fails to run in jenkins jobs. Running inner called scripts instead works.

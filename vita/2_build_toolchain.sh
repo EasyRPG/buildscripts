@@ -31,11 +31,6 @@ if [ ! -f .patches-applied ]; then
 	autoreconf -fi
 	popd
 
-	# Wildmidi: Vita compatibility
-	pushd $WILDMIDI_DIR
-	patch -Np1 < $SCRIPT_DIR/wildmidi-vita.patch
-	popd
-
 	# Fix icu build
 	# Custom patch because vita newlib provides pthread
 	cp -rup icu icu-native

@@ -6,13 +6,13 @@ ZLIB_URL="https://zlib.net/$lib-$ver.tar.gz"
 ZLIB_DIR="$lib-$ver"
 
 lib=libpng
-ver=1.6.34
-LIBPNG_URL="https://ftp-osl.osuosl.org/pub/libpng/src/archive/xz/libpng16/$lib-$ver.tar.xz"
+ver=1.6.36
+LIBPNG_URL="https://download.sourceforge.net/libpng/$lib-$ver.tar.xz"
 LIBPNG_DIR="$lib-$ver"
 
 lib=freetype
-ver=2.9
-FREETYPE_URL="https://download.savannah.gnu.org/releases/freetype/$lib-$ver.tar.bz2"
+ver=2.9.1
+FREETYPE_URL="https://download.savannah.nongnu.org/releases/$lib/$lib-$ver.tar.bz2"
 FREETYPE_DIR="$lib-$ver"
 FREETYPE_ARGS="--without-bzip2 --without-png --without-zlib"
 
@@ -23,13 +23,13 @@ HARFBUZZ_DIR="$lib-$ver"
 HARFBUZZ_ARGS="--without-glib --without-gobject --without-cairo --without-fontconfig --without-icu"
 
 lib=pixman
-ver=0.34.0
+ver=0.36.0
 PIXMAN_URL="https://cairographics.org/releases/$lib-$ver.tar.gz"
 PIXMAN_DIR="$lib-$ver"
 PIXMAN_ARGS="--disable-libpng --enable-dependency-tracking"
 
 lib=expat
-ver=2.2.5
+ver=2.2.6
 EXPAT_URL="https://github.com/libexpat/libexpat/releases/download/R_${ver//./_}/$lib-$ver.tar.bz2"
 EXPAT_DIR="$lib-$ver"
 EXPAT_ARGS="-DBUILD_tools=OFF -DBUILD_examples=OFF -DBUILD_tests=OFF -DBUILD_doc=OFF -DBUILD_shared=OFF"
@@ -60,6 +60,7 @@ lib=libsndfile
 ver=1.0.28
 LIBSNDFILE_URL=http://www.mega-nerd.com/libsndfile/files/$lib-$ver.tar.gz
 LIBSNDFILE_DIR="$lib-$ver"
+LIBSNDFILE_ARGS="--disable-alsa --disable-sqlite --disable-full-suite"
 
 lib=libxmp-lite
 ver=4.4.1
@@ -78,19 +79,19 @@ LIBSAMPLERATE_URL="http://www.mega-nerd.com/SRC/$lib-$ver.tar.gz"
 LIBSAMPLERATE_DIR="$lib-$ver"
 
 lib=wildmidi
-ver=0.4.2
+ver=0.4.3
 WILDMIDI_URL="https://github.com/Mindwerks/wildmidi/archive/$lib-$ver.tar.gz"
 WILDMIDI_DIR="$lib-$lib-$ver"
 WILDMIDI_ARGS="-DWANT_PLAYER=OFF -DWANT_STATIC=ON"
 
 lib=opus
-ver=1.2.1
+ver=1.3
 OPUS_URL="https://archive.mozilla.org/pub/opus/$lib-$ver.tar.gz"
 OPUS_DIR="$lib-$ver"
 OPUS_ARGS="--disable-intrinsics"
 
 lib=opusfile
-ver=0.10
+ver=0.11
 OPUSFILE_URL="https://archive.mozilla.org/pub/opus/$lib-$ver.tar.gz"
 OPUSFILE_DIR="$lib-$ver"
 OPUSFILE_ARGS="--disable-http"
@@ -108,17 +109,18 @@ ICUDATA_URL=https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icud
 ICUDATA_FILES=icudt*.dat
 
 lib=SDL2
-ver=2.0.7
+ver=2.0.9
 SDL2_URL="https://libsdl.org/release/$lib-$ver.tar.gz"
 SDL2_DIR="$lib-$ver"
 
 lib=SDL2_mixer
-ver=2.0.1
+ver=2.0.4
 SDL2_MIXER_URL="https://www.libsdl.org/projects/SDL_mixer/release/$lib-$ver.tar.gz"
 SDL2_MIXER_DIR="$lib-$ver"
 SDL2_MIXER_ARGS="--with-sdl-prefix=$WORKSPACE --disable-music-ogg \
 	--disable-music-midi-fluidsynth --disable-music-midi-fluidsynth-shared \
-	--disable-music-mod --disable-music-mp3 --disable-music-flac --disable-sdltest"
+	--disable-music-mod --disable-music-mp3 --disable-music-flac --disable-sdltest \
+	--disable-music-opus --disable-music-mp3-mpg123"
 
 # only needed for lmu2png tool
 lib=SDL2_image
