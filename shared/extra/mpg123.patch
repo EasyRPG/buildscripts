@@ -140,7 +140,7 @@ diff -Naur mpg123-1.25.8-old/src/control_generic.c mpg123-1.25.8/src/control_gen
 - 		
 -#ifndef WIN32
 +
-+#if defined(GEKKO) || defined(_3DS) || defined(SWITCH)
++#if defined(GEKKO) || defined(_3DS) || defined(__SWITCH__)
 +	fprintf(outstream, "The control interface is not supported on this platform\n");
 +	return 0;
 +#elif !defined(WIN32)

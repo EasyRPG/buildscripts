@@ -71,7 +71,7 @@ function set_build_flags {
 	fi
 	export CFLAGS="-g0 -O2 -march=armv8-a -mtune=cortex-a57 -mtp=soft -fPIC -ftls-model=local-exec -ffunction-sections"
 	export CXXFLAGS=$CFLAGS
-	export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$DEVKITPRO/libnx/include -DSWITCH"
+	export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$DEVKITPRO/libnx/include -D__SWITCH__"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 }
 
