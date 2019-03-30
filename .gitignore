@@ -2,10 +2,7 @@
 /*/*/
 
 # Except some Windows folders
-!/windows/msys/*
-!/windows/patches/*
-!/windows/templates/*
-!/windows/winrt/*
+!/windows/icu-easyrpg/*
 
 # Except everything in shared
 !/shared/*
