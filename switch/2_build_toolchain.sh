@@ -69,16 +69,16 @@ function set_build_flags {
 		export CC="ccache $CC"
 		export CXX="ccache $CXX"
 	fi
-	export CFLAGS="-g0 -O2 -march=armv8-a -mtune=cortex-a57 -mtp=soft -fPIC -ftls-model=local-exec -ffunction-sections"
-	export CXXFLAGS=$CFLAGS
-	export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$DEVKITPRO/libnx/include -D__SWITCH__"
-	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
+	ARCH_FLAGS="-march=armv8-a -mtune=cortex-a57 -mtp=soft -fPIC -ftls-model=local-exec"
+	export CFLAGS="-g0 -O2 $ARCH_FLAGS -ffunction-sections"
+	export CXXFLAGS="$CFLAGS"
+	export CPPFLAGS="-D__SWITCH__ -I$PLATFORM_PREFIX/include -I$DEVKITPRO/libnx/include"
+	export LDFLAGS="$ARCH_FLAGS -L$PLATFORM_PREFIX/lib -L$DEVKITPRO/libnx/lib"
+	export LIBS="-lnx"
 }
 
-# Build native icu59
 install_lib_icu_native
 
-# Install libraries
 set_build_flags
 
 install_lib_zlib
