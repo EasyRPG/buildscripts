@@ -63,16 +63,16 @@ function set_build_flags {
 		export CC="ccache $CC"
 		export CXX="ccache $CXX"
 	fi
-	export CFLAGS="-g0 -O2 -mword-relocations -fomit-frame-pointer -ffunction-sections -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft"
-	export CXXFLAGS="$CFLAGS -fno-exceptions"
-	export CPPFLAGS="-I$PLATFORM_PREFIX/include -D_3DS"
-	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
+	ARCH_FLAGS="-march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -mword-relocations"
+	export CFLAGS="-g0 -O2 $ARCH_FLAGS -ffunction-sections -fdata-sections"
+	export CXXFLAGS="$CFLAGS"
+	export CPPFLAGS="-D_3DS -I$PLATFORM_PREFIX/include -I$DEVKITPRO/libctru/include"
+	export LDFLAGS="$ARCH_FLAGS -L$PLATFORM_PREFIX/lib -L$DEVKITPRO/libctru/lib"
+	export LIBS="-lctru"
 }
 
-# Build native ICU
 install_lib_icu_native
 
-# Install libraries
 set_build_flags
 
 install_lib_zlib
