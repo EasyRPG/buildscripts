@@ -59,42 +59,16 @@ function set_build_flags {
 }
 
 function install_lib_sdl2 {
-	echo ""
-	echo "**** Building SDL2 ****"
-	echo ""
+	msg "Building SDL2"
 
-	cd SDL2
-	emconfigure ./configure --prefix=$WORKSPACE --host=asmjs-unknown-emscripten \
-		--disable-shared --enable-static --disable-assembly --disable-threads --disable-cpuinfo
-	make clean
-	make install
-	cd ..
-
-	echo " -> done"
+	(cd SDL2
+		emconfigure ./configure --prefix=$WORKSPACE --host=asmjs-unknown-emscripten \
+			--disable-shared --enable-static --disable-assembly --disable-threads --disable-cpuinfo
+		make clean
+		make install
+	)
 }
 
-# Install ICU
-function install_lib_icu_native_big() {
-	# Compile native version
-	unset CC
-	unset CXX
-	unset CFLAGS
-	unset CPPFLAGS
-	unset CXXFLAGS
-	unset LDFLAGS
-
-	pushd icu-native/source
-	chmod u+x configure
-	CPPFLAGS="-DBUILD_DATA_WITHOUT_ASSEMBLY -DU_DISABLE_OBJ_CODE" ./configure \
-		--enable-static --enable-shared=no $ICU_ARGS
-	make
-
-	export ICU_CROSS_BUILD=$PWD
-
-	popd
-}
-
-# Build native ICU
 install_lib_icu_native_without_assembly
 
 echo "Preparing toolchain"
