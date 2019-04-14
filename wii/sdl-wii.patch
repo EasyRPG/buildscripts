@@ -1,6 +1,6 @@
 diff --color -Naur sdl-wii.orig/SDL/Makefile sdl-wii-2018-08-31/SDL/Makefile
 --- sdl-wii.orig/SDL/Makefile	2018-08-31 18:49:59.000000000 +0200
-+++ sdl-wii-2018-08-31/SDL/Makefile	2018-10-13 13:33:56.768210370 +0200
++++ sdl-wii-2018-08-31/SDL/Makefile	2019-04-14 15:11:50.150709101 +0200
 @@ -87,7 +87,7 @@
  	@echo ----
  
@@ -12,8 +12,17 @@ diff --color -Naur sdl-wii.orig/SDL/Makefile sdl-wii-2018-08-31/SDL/Makefile
  CFLAGS			:= $(COMMON_FLAGS) $(INCLUDES) $(DEFINES)
 diff --color -Naur sdl-wii.orig/SDL/src/video/wii/SDL_wiivideo.c sdl-wii-2018-08-31/SDL/src/video/wii/SDL_wiivideo.c
 --- sdl-wii.orig/SDL/src/video/wii/SDL_wiivideo.c	2018-08-31 18:49:59.000000000 +0200
-+++ sdl-wii-2018-08-31/SDL/src/video/wii/SDL_wiivideo.c	2018-10-13 13:33:56.768210370 +0200
-@@ -282,7 +282,7 @@
++++ sdl-wii-2018-08-31/SDL/src/video/wii/SDL_wiivideo.c	2019-04-14 15:24:38.856185736 +0200
+@@ -145,6 +145,8 @@
+ 	else
+ 		GX_InitTexObj (&texobj, texturemem, currentwidth, currentheight, GX_TF_RGBA8, GX_CLAMP, GX_CLAMP, GX_FALSE);
+ 
++	GX_InitTexObjFilterMode(&texobj, GX_NEAR, GX_NEAR);	// disable default linear/bilinear filtering
++
+ 	GX_LoadTexObj (&texobj, GX_TEXMAP0);	// load texture object so its ready to use
+ }
+ 
+@@ -282,7 +284,7 @@
  	mode_320.h = mode_640.h / 2;
  
  	// Set the current format.
@@ -24,7 +33,7 @@ diff --color -Naur sdl-wii.orig/SDL/src/video/wii/SDL_wiivideo.c sdl-wii-2018-08
  	this->hidden->buffer = NULL;
 diff --color -Naur sdl-wii.orig/SDL_mixer/Makefile sdl-wii-2018-08-31/SDL_mixer/Makefile
 --- sdl-wii.orig/SDL_mixer/Makefile	2018-08-31 18:49:59.000000000 +0200
-+++ sdl-wii-2018-08-31/SDL_mixer/Makefile	2018-10-13 13:36:49.461845562 +0200
++++ sdl-wii-2018-08-31/SDL_mixer/Makefile	2019-04-14 15:22:34.700154138 +0200
 @@ -24,7 +24,7 @@
  PIPE_TO_SED := 2>&1 | sed "s/:\([0-9]*\):/\(\1\) :/"
  
@@ -34,7 +43,7 @@ diff --color -Naur sdl-wii.orig/SDL_mixer/Makefile sdl-wii-2018-08-31/SDL_mixer/
  # $(wildcard $(SRC_DIR)/native_midi/*.c)
  
  # Library object files.
-@@ -80,12 +80,12 @@
+@@ -80,17 +80,18 @@
  	@cp $(SRC_DIR)/SDL_mixer.h $(INCLUDE_DIR)
  
  # Compilation flags.
@@ -50,3 +59,10 @@ diff --color -Naur sdl-wii.orig/SDL_mixer/Makefile sdl-wii-2018-08-31/SDL_mixer/
  # -DUSE_NATIVE_MIDI
  # -DOGG_MUSIC 
  # 
+ #   -DCMD_MUSIC
+-CFLAGS			:= -L$(PORTLIBS)/lib -I$(PORTLIBS)/include $(COMMON_FLAGS) $(INCLUDES) $(DEFINES)
++
++CFLAGS			:= $(foreach dir,$(PORTLIBS),-L$(dir)/lib) $(foreach dir,$(PORTLIBS),-I$(dir)/include) $(COMMON_FLAGS) $(INCLUDES) $(DEFINES)
+ 
+ # Test link flags.
+ LDFLAGS			:= $(COMMON_FLAGS) -L$(LIB_DIR) -L$(LIBOGC_LIB) -L$(DEVKITPRO)/libsmpeg/lib -lSDL_mixer -lsmpeg -lSDL -lfat -lwiiuse -lbte -logc -lm -lvorbisidec
