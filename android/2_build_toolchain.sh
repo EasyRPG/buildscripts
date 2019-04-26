@@ -15,7 +15,7 @@ nproc=$(nproc)
 test_ccache
 
 if [ ! -f .patches-applied ]; then
-	echo "patching libraries"
+	echo "Patching libraries"
 
 	patches_common
 
@@ -56,7 +56,7 @@ function build() {
 
 	cd $WORKSPACE
 
-	echo "preparing $1 toolchain"
+	echo "Preparing $1 toolchain"
 
 	export TARGET_API=14
 	if [ "$3" = "arm64" ]; then
@@ -117,7 +117,6 @@ export OLD_PATH=$PATH
 # Install host ICU
 cd $WORKSPACE
 
-echo "preparing ICU host build"
 install_lib_icu_native
 
 # Correctly detected mmap support in mpg123

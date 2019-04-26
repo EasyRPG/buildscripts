@@ -16,7 +16,6 @@ source $SCRIPT_DIR/../shared/import.sh
 # Number of CPU
 nproc=$(getconf _NPROCESSORS_ONLN)
 
-# Use ccache?
 test_ccache
 
 if [ ! -f .patches-applied ]; then
@@ -25,11 +24,11 @@ if [ ! -f .patches-applied ]; then
 	patches_common
 
 	# Disable SDL2 mixer examples
-	pushd $SDL2_MIXER_DIR
-	patch -Np1 < $SCRIPT_DIR/../shared/extra/sdl2_mixer_disable_examples.patch
-	rm aclocal.m4
-	autoreconf -fi
-	popd
+	(cd $SDL2_MIXER_DIR
+		patch -Np1 < $SCRIPT_DIR/../shared/extra/sdl2_mixer_disable_examples.patch
+		rm aclocal.m4
+		autoreconf -fi
+	)
 
 	touch .patches-applied
 fi
@@ -46,11 +45,9 @@ function set_build_flags {
 		export CC="ccache $CC"
 		export CXX="ccache $CXX"
 	fi
-
 	export CFLAGS="-g -O2 -mmacosx-version-min=10.9 -isysroot $SDKPATH"
 	export CXXFLAGS=$CFLAGS
 	export CPPFLAGS="-I$PLATFORM_PREFIX/include"
-
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib $ARCH -mmacosx-version-min=10.9 -isysroot $SDKPATH"
 }
 
@@ -63,7 +60,6 @@ export MAKEFLAGS="-j${nproc:-2}"
 
 set_build_flags
 
-# Install libraries
 install_lib_zlib
 install_lib $LIBPNG_DIR $LIBPNG_ARGS
 install_lib $FREETYPE_DIR $FREETYPE_ARGS --without-harfbuzz

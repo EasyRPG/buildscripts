@@ -15,21 +15,21 @@ nproc=$(nproc)
 test_ccache
 
 if [ ! -f .patches-applied ]; then
-	echo "patching libraries"
+	echo "Patching libraries"
 
 	patches_common
 
 	# Fix mpg123
-	pushd $MPG123_DIR
-	patch -Np1 < $SCRIPT_DIR/../shared/extra/mpg123.patch
-	autoreconf -fi
-	popd
+	(cd $MPG123_DIR
+		patch -Np1 < $SCRIPT_DIR/../shared/extra/mpg123.patch
+		autoreconf -fi
+	)
 
 	# Fix libsndfile
-	pushd $LIBSNDFILE_DIR
-	patch -Np1 < $SCRIPT_DIR/../shared/extra/libsndfile.patch
-	autoreconf -fi
-	popd
+	(cd $LIBSNDFILE_DIR
+		patch -Np1 < $SCRIPT_DIR/../shared/extra/libsndfile.patch
+		autoreconf -fi
+	)
 
 	# Fix icu build
 	# Custom patch because vita newlib provides pthread
@@ -62,12 +62,12 @@ function set_build_flags {
 	export CFLAGS="-g0 -O2"
 	export CXXFLAGS=$CFLAGS
 	export CPPFLAGS="-I$PLATFORM_PREFIX/include -DPSP2"
-
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 }
 
-# Install patched libvita2d
 function install_lib_vita2d() {
+	msg "Building patched libvita2d"
+
 	cd vita2dlib
 	git checkout fbo
 	cd libvita2d
@@ -77,28 +77,27 @@ function install_lib_vita2d() {
 	cd ../..
 }
 
-# Install precompiled shaders
 function install_shaders() {
-	cd vitashaders
-	cp -a ./lib/. $VITASDK/$TARGET_HOST/lib/
-	cp -a ./includes/. $VITASDK/$TARGET_HOST/include/
-	cd ..
+	msg "Copying precompiled shaders"
+
+	(cd vitashaders
+		cp -a ./lib/. $VITASDK/$TARGET_HOST/lib/
+		cp -a ./includes/. $VITASDK/$TARGET_HOST/include/
+	)
 }
 
 function install_vdpm() {
-	pushd vdpm
-	./install-all.sh
-	popd
+	msg "Installing VDPM"
+	(cd vdpm
+		./install-all.sh
+	)
 }
 
-# Build native icu59
 install_lib_icu_native
 
-# Platform libs
 install_vdpm
 install_lib_vita2d
 
-# Install libraries
 set_build_flags
 install_lib_zlib
 install_lib $LIBPNG_DIR $LIBPNG_ARGS
@@ -118,5 +117,4 @@ install_lib $OPUS_DIR $OPUS_ARGS
 install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 install_lib_icu_cross
 
-# Precompiled shaders
 install_shaders

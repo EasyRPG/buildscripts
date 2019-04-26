@@ -89,35 +89,25 @@ function set_build_flags {
 }
 
 function install_lib_sdl() {
-	echo ""
-	echo "**** Building SDL ****"
-	echo ""
+	msg "Building SDL"
 
-	cd $SDL_DIR/SDL
-	make clean
-	make install INSTALL_HEADER_DIR="$WORKSPACE/include" INSTALL_LIB_DIR="$WORKSPACE/lib"
-	cd ../..
-
-	echo " -> done"
+	(cd $SDL_DIR/SDL
+		make clean
+		make install INSTALL_HEADER_DIR="$WORKSPACE/include" INSTALL_LIB_DIR="$WORKSPACE/lib"
+	)
 }
 
 function install_lib_sdlmixer() {
-	echo ""
-	echo "**** Building SDL_mixer ****"
-	echo ""
+	msg "Building SDL_mixer"
 
-	cd $SDL_DIR/SDL_mixer
-	make clean
-	make install INSTALL_HEADER_DIR="$WORKSPACE/include" INSTALL_LIB_DIR="$WORKSPACE/lib"
-	cd ../..
-
-	echo " -> done"
+	(cd $SDL_DIR/SDL_mixer
+		make clean
+		make install INSTALL_HEADER_DIR="$WORKSPACE/include" INSTALL_LIB_DIR="$WORKSPACE/lib"
+	)
 }
 
-# build native ICU
 install_lib_icu_native_without_assembly
 
-# Install libraries
 set_build_flags
 
 install_lib_zlib
@@ -138,6 +128,5 @@ install_lib $OPUS_DIR $OPUS_ARGS
 install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 install_lib_icu_cross
 
-# Platform libs
 install_lib_sdl
 install_lib_sdlmixer

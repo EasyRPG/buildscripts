@@ -20,7 +20,7 @@ nproc=$(getconf _NPROCESSORS_ONLN)
 test_ccache
 
 if [ ! -f .patches-applied ]; then
-	echo "patching libraries"
+	echo "Patching libraries"
 
 	patches_common
 
@@ -59,26 +59,20 @@ export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export MAKEFLAGS="-j${nproc:-2}"
 
 function install_lib_sdl2() {
-	echo ""
-	echo "**** Building SDL2 ****"
-	echo ""
+	msg "Building SDL2"
 
-	pushd $SDL2_DIR
-	./configure --host=$TARGET_HOST --prefix=$WORKSPACE \
-		--disable-shared --enable-static
-	cp include/SDL_config_iphoneos.h include/SDL_config.h
-	make clean
-	make
-	make install
-	popd
-
-	echo " -> done"
+	(cd $SDL2_DIR
+		./configure --host=$TARGET_HOST --prefix=$WORKSPACE \
+			--disable-shared --enable-static
+		cp include/SDL_config_iphoneos.h include/SDL_config.h
+		make clean
+		make
+		make install
+	)
 }
 
-# Build native ICU
 install_lib_icu_native
 
-# Install libraries
 set_build_flags
 
 install_lib_zlib
@@ -99,5 +93,4 @@ install_lib $OPUS_DIR $OPUS_ARGS
 install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 install_lib_icu_cross
 
-# Platform libs
 install_lib_sdl2
