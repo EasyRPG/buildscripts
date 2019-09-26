@@ -45,6 +45,7 @@ export CMAKE_WRAPPER=emconfigure
 export MAKEFLAGS="-j${nproc:-2}"
 
 function set_build_flags {
+	export PATH="$PATH:$PLATFORM_PREFIX/bin" # for icu-config
 	export CFLAGS="-O2 -g0"
 	export CXXFLAGS=$CFLAGS
 	export CPPFLAGS="-I$PLATFORM_PREFIX/include"
@@ -69,7 +70,7 @@ function install_lib_sdl2 {
 	)
 }
 
-install_lib_icu_native_without_assembly
+install_lib_icu_native
 
 echo "Preparing toolchain"
 
@@ -100,7 +101,9 @@ install_lib $OPUS_DIR $OPUS_ARGS
 install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 
 install_lib_sdl2
+
 install_lib_icu_cross
+icu_force_data_install
 
 #### additional stuff
 
