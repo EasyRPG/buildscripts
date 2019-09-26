@@ -31,10 +31,11 @@ function download_and_extract {
 
 function git_clone {
 	url=$1
+	path=$2
 	file=${url##*/}
 	msg "Cloning $file..."
 
-	git clone $url
+	git clone $url $path
 }
 
 function msg {
