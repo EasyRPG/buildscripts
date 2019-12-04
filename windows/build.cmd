@@ -20,10 +20,12 @@ xcopy /Y /I /E ..\icu-easyrpg ports\icu-easyrpg
 vcpkg install --triplet x86-windows-static^
  libpng[core] expat[core] pixman[core] harfbuzz[core,ucdn] libvorbis[core]^
  libsndfile[core] wildmidi[core] libxmp-lite[core] speexdsp[core]^
- opusfile[core] sdl2-image[core] sdl2-mixer[core] icu-easyrpg[core]
+ mpg123[core] opusfile[core] sdl2-image[core] sdl2-mixer[core]^
+ icu-easyrpg[core]
 
 :: Build 64-bit libraries
 vcpkg install --triplet x64-windows-static^
  libpng[core] expat[core] pixman[core] harfbuzz[core,ucdn] libvorbis[core]^
  libsndfile[core] wildmidi[core] libxmp-lite[core] speexdsp[core]^
- opusfile[core] sdl2-image[core] sdl2-mixer[core] icu-easyrpg[core]
+ mpg123[core] opusfile[core] sdl2-image[core] sdl2-mixer[core]^
+ icu-easyrpg[core]
