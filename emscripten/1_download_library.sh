@@ -32,9 +32,7 @@ touch .emscripten
 ./emsdk activate 1.39.5
 
 # Set the current Emscripten path
-# The following line fails to run in jenkins jobs. Running inner called scripts instead works.
-./emsdk construct_env
-. ./emsdk_set_env.sh
+source ./emsdk_env.sh
 
 cd "$WORKSPACE"
 
