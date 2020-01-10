@@ -16,21 +16,23 @@ msg " [1] Preparing Emscripten SDK"
 nproc=$(nproc)
 export MAKEFLAGS="-j${nproc:-2}"
 
-download_and_extract https://s3.amazonaws.com/mozilla-games/emscripten/releases/emsdk-portable.tar.gz
+rm -rf emsdk-portable
+git_clone https://github.com/emscripten-core/emsdk.git emsdk-portable
 cd emsdk-portable
 
+# This empty config file is populated by "emsdk activate".
+# Prevents usage of the global config file in the home directory.
+touch .emscripten
+
 # Fetch the latest registry of available tools.
-./emsdk update
+./emsdk update-tags
 
 # Download and install the latest SDK tools and set up the compiler configuration to point to it.
-./emsdk install sdk-incoming-64bit
-./emsdk activate sdk-incoming-64bit
+./emsdk install 1.39.5
+./emsdk activate 1.39.5
 
 # Set the current Emscripten path
-# The following line fails to run in jenkins jobs. Running inner called scripts instead works.
-#. ./emsdk_env.sh
-./emsdk construct_env
-. ./emsdk_set_env.sh
+source ./emsdk_env.sh
 
 cd "$WORKSPACE"
 

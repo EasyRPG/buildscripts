@@ -31,10 +31,11 @@ function download_and_extract {
 
 function git_clone {
 	url=$1
+	path=$2
 	file=${url##*/}
 	msg "Cloning $file..."
 
-	git clone $url
+	git clone $url $path
 }
 
 function msg {
@@ -113,6 +114,8 @@ function install_lib_icu_native {
 	)
 }
 
+# Only needed for a mixed endian compile, on other platforms use
+# install_lib_icu_native
 function install_lib_icu_native_without_assembly {
 	msg "**** Building ICU (native without ASM) ****"
 
@@ -145,6 +148,22 @@ function install_lib_icu_cross {
 		make clean
 		make
 		make install
+	)
+}
+
+# Use this when crosscompiling but configure assumes we are building native
+# (required by emscripten)
+function icu_force_data_install {
+	msg "**** Force install ICU data file ****"
+
+	# Disable assembly
+	export PKGDATA_OPTS="-w -v -O $PWD/icu/source/config/pkgdata.inc"
+
+	(cd icu/source/data
+		make clean
+		make
+
+		cp ../lib/libicudata.a "$WORKSPACE/lib/"
 	)
 }
 
