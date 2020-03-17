@@ -2,7 +2,8 @@
 /*/*/
 
 # Except some Windows folders
-!/windows/icu-easyrpg/*
+!/windows/icu-easyrpg/
+!/windows/opus/
 
 # Except everything in shared
 !/shared/*

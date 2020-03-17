@@ -11,8 +11,9 @@ IF EXIST vcpkg (
 :: Build vcpkg
 call bootstrap-vcpkg.bat
 
-:: Copy custom portfiles (ICU static data file)
+:: Copy custom portfiles (ICU static data file, opus without AVX)
 xcopy /Y /I /E ..\icu-easyrpg ports\icu-easyrpg
+xcopy /Y /I /E ..\opus ports\opus
 
 :: Build 32-bit libraries
 :: Using [core] everywhere to prevent surprises when new default-features are
