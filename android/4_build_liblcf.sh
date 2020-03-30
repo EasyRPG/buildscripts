@@ -72,7 +72,8 @@ msg " -> done"
 cd ..
 
 # Compile liblcf
-build "x86" "x86" "i686-linux-android" ""
-build "ARMeabi" "armeabi" "arm-linux-androideabi" ""
 build "ARMeabi-v7a" "armeabi-v7a" "arm-linux-androideabi" "-march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3"
 build "AArch64" "arm64-v8a" "aarch64-linux-android" ""
+build "x86" "x86" "i686-linux-android" ""
+build "x86_64" "x86_64" "x86_64-linux-android" ""
+
