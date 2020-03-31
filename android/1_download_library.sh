@@ -32,15 +32,16 @@ if [ $os = "Linux" ]; then
 	SDK_PLATFORM=linux
 # MacOS
 elif [ $os = "Darwin" ]; then
-	SDK_PLATFORM=darwin
+	SDK_PLATFORM=mac
 else
 	msg "Only Linux and macOS are supported currently. Sorry! :("
 	exit 1
 fi
 
-SDK_URL="https://dl.google.com/android/repository/sdk-tools-${SDK_PLATFORM}-3859397.zip"
+SDK_VERSION="6200805_latest"
+SDK_URL="https://dl.google.com/android/repository/commandlinetools-${SDK_PLATFORM}-${SDK_VERSION}.zip"
 download $SDK_URL
-unzip sdk-tools-${SDK_PLATFORM}-3859397.zip
+unzip commandlinetools-${SDK_PLATFORM}-${SDK_VERSION}.zip
 mv tools android-sdk
 
 PATH=$PATH:$WORKSPACE/android-sdk

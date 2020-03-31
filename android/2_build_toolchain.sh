@@ -35,7 +35,7 @@ fi
 
 # Install SDL2
 function install_lib_sdl {
-	# $1: platform (armeabi armeabi-v7a x86 aarch64)
+	# $1: platform (armeabi-v7a aarch64 x86 x86_x64)
 
 	pushd $SDL2_DIR
 	echo "APP_ABI := $1" >> "jni/Application.mk"
@@ -61,6 +61,10 @@ function build() {
 	export TARGET_API=14
 	if [ "$3" = "arm64" ]; then
 		# Minimum API 21 on ARM64
+		export TARGET_API=21
+	fi
+	if [ "$3" = "x86_64" ]; then
+		# Minimum API 21 on x86_64
 		export TARGET_API=21
 	fi
 
@@ -122,14 +126,14 @@ install_lib_icu_native
 # Correctly detected mmap support in mpg123
 export ac_cv_func_mmap_fixed_mapped=yes
 
-# Install standalone toolchain x86
-build "x86" "x86" "x86" "i686-linux-android" ""
-
-# Install standalone toolchain ARMeabi
-build "ARMeabi" "armeabi" "arm" "arm-linux-androideabi" ""
-
 # Install standalone toolchain ARMeabi-v7a
 build "ARMeabi-v7a" "armeabi-v7a" "arm" "arm-linux-androideabi" "-march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3"
 
 # Install standalone toolchain arm64-v8a
 build "AArch64" "arm64-v8a" "arm64" "aarch64-linux-android" ""
+
+# Install standalone toolchain x86
+build "x86" "x86" "x86" "i686-linux-android" ""
+
+# Install standalone toolchain x86_64
+build "x86_64" "x86_64" "x86_64" "x86_64-linux-android" ""

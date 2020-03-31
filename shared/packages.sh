@@ -109,7 +109,7 @@ ICUDATA_URL=https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icud
 ICUDATA_FILES=icudt*.dat
 
 lib=SDL2
-ver=2.0.9
+ver=2.0.12
 SDL2_URL="https://libsdl.org/release/$lib-$ver.tar.gz"
 SDL2_DIR="$lib-$ver"
 
@@ -124,7 +124,7 @@ SDL2_MIXER_ARGS="--with-sdl-prefix=$WORKSPACE --disable-music-ogg \
 
 # only needed for lmu2png tool
 lib=SDL2_image
-ver=2.0.1
+ver=2.0.5
 SDL2_IMAGE_URL="https://www.libsdl.org/projects/SDL_image/release/$lib-$ver.tar.gz"
 SDL2_IMAGE_DIR="$lib-$ver"
 SDL2_IMAGE_ARGS="--disable-jpg --disable-png-shared --disable-tif --disable-webp"
