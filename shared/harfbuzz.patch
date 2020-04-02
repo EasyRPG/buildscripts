@@ -1,6 +1,6 @@
-diff -Naur harfbuzz-1.7.5-orig/Makefile.am harfbuzz-1.7.5/Makefile.am
---- harfbuzz-1.7.5-orig/Makefile.am	2018-02-23 20:46:15.165032807 +0100
-+++ harfbuzz-1.7.5/Makefile.am	2018-02-23 20:46:28.358375609 +0100
+diff -Naur harfbuzz-2.6.4-orig/Makefile.am harfbuzz-2.6.4/Makefile.am
+--- harfbuzz-2.6.4-orig/Makefile.am	2020-04-02 16:04:19.009542336 +0200
++++ harfbuzz-2.6.4/Makefile.am	2020-04-02 16:04:25.579542315 +0200
 @@ -4,7 +4,7 @@
  
  ACLOCAL_AMFLAGS = -I m4
@@ -10,19 +10,21 @@ diff -Naur harfbuzz-1.7.5-orig/Makefile.am harfbuzz-1.7.5/Makefile.am
  
  EXTRA_DIST = \
  	autogen.sh \
-diff -Naur harfbuzz-1.7.5-orig/src/Makefile.am harfbuzz-1.7.5/src/Makefile.am
---- harfbuzz-1.7.5-orig/src/Makefile.am	2018-02-23 20:46:15.168366142 +0100
-+++ harfbuzz-1.7.5/src/Makefile.am	2018-02-23 20:46:46.161721729 +0100
-@@ -266,13 +266,6 @@
- 	$(AM_V_GEN)(cd $(srcdir) && $(RAGEL) -e -F1 -o "$*.hh" "$*.rl") \
- 	|| ($(RM) "$@"; false)
+diff -Naur harfbuzz-2.6.4-orig/src/Makefile.am harfbuzz-2.6.4/src/Makefile.am
+--- harfbuzz-2.6.4-orig/src/Makefile.am	2020-04-02 16:04:18.999542337 +0200
++++ harfbuzz-2.6.4/src/Makefile.am	2020-04-02 16:04:44.979542252 +0200
+@@ -328,15 +328,6 @@
+ 	|| ($(RM) $(srcdir)/harfbuzz.cc; false)
+ BUILT_SOURCES += harfbuzz.cc
  
 -noinst_PROGRAMS = \
 -	main \
 -	test \
 -	test-buffer-serialize \
--	test-size-params \
--	test-would-substitute \
+-	test-ot-meta \
+-	test-ot-name \
+-	test-gpos-size-params \
+-	test-gsub-would-substitute \
 -	$(NULL)
  bin_PROGRAMS =
  
