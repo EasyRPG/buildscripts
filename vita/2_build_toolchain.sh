@@ -31,6 +31,11 @@ if [ ! -f .patches-applied ]; then
 		autoreconf -fi
 	)
 
+	# Fix harfbuzz
+	(cd $HARFBUZZ_DIR
+		patch -Np1 < $SCRIPT_DIR/../shared/extra/harfbuzz-climits.patch
+	)
+
 	# Fix icu build
 	# Custom patch because vita newlib provides pthread
 	cp -rup icu icu-native

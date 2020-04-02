@@ -187,6 +187,8 @@ function patches_common {
 	if [ -d "$HARFBUZZ_DIR" ]; then
 		(cd $HARFBUZZ_DIR
 			patch -Np1 < $_SCRIPT_DIR/harfbuzz.patch
+			# Remove this when harfbuzz releases a new version
+			patch -Np1 < $_SCRIPT_DIR/harfbuzz-pkgconfig.patch
 			autoreconf -fi
 		)
 	fi

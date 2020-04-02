@@ -1,0 +1,30 @@
+From 3a8ca2b40f699b08d57b4a203e1a35d8171e0bf8 Mon Sep 17 00:00:00 2001
+From: Khaled Hosny <khaledhosny@eglug.org>
+Date: Tue, 10 Mar 2020 21:57:31 +0200
+Subject: [PATCH] Remove workaround for old pkg-config
+
+Add FreeType dependency to .pc, Ubuntu 14.4 is long dead.
+
+Fixes https://github.com/harfbuzz/harfbuzz/issues/1565
+---
+ src/Makefile.am | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
+
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 9d9767a38..d7c7cb2b5 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -50,12 +50,7 @@ endif
+ if HAVE_FREETYPE
+ HBCFLAGS += $(FREETYPE_CFLAGS)
+ HBLIBS   += $(FREETYPE_LIBS)
+-# XXX
+-# The following creates a recursive dependency on FreeType if FreeType is
+-# built with HarfBuzz support enabled.  Newer pkg-config handles that just
+-# fine but pkg-config 0.26 as shipped in Ubuntu 14.04 crashes.  Remove
+-# in a year or two, or otherwise work around it...
+-#HBDEPS   += $(FREETYPE_DEPS)
++HBDEPS   += $(FREETYPE_DEPS)
+ HBSOURCES += $(HB_FT_sources)
+ HBHEADERS += $(HB_FT_headers)
+ endif
