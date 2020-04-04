@@ -24,6 +24,12 @@ if [ ! -f .patches-applied ]; then
 
 	patches_common
 
+	# Fix ogg build
+	# Remove this when the next version is out
+	(cd $LIBOGG_DIR
+		patch -Np1 < libogg-fix-typedefs.patch
+	)
+
 	cp -r icu icu-native
 
 	touch .patches-applied

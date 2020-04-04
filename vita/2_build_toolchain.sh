@@ -31,6 +31,11 @@ if [ ! -f .patches-applied ]; then
 		autoreconf -fi
 	)
 
+	# Fix harfbuzz
+	(cd $HARFBUZZ_DIR
+		patch -Np1 < $SCRIPT_DIR/../shared/extra/harfbuzz-climits.patch
+	)
+
 	# Enable pixman SIMD
 	(cd $PIXMAN_DIR
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/pixman-simd.patch

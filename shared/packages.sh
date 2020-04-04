@@ -6,36 +6,36 @@ ZLIB_URL="https://zlib.net/$lib-$ver.tar.gz"
 ZLIB_DIR="$lib-$ver"
 
 lib=libpng
-ver=1.6.36
+ver=1.6.37
 LIBPNG_URL="https://download.sourceforge.net/libpng/$lib-$ver.tar.xz"
 LIBPNG_DIR="$lib-$ver"
 
 lib=freetype
-ver=2.9.1
-FREETYPE_URL="https://download.savannah.nongnu.org/releases/$lib/$lib-$ver.tar.bz2"
+ver=2.10.1
+FREETYPE_URL="https://download.savannah.gnu.org/releases/$lib/$lib-$ver.tar.xz"
 FREETYPE_DIR="$lib-$ver"
 FREETYPE_ARGS="--without-bzip2 --without-png --without-zlib"
 
 lib=harfbuzz
-ver=1.7.5
-HARFBUZZ_URL="https://www.freedesktop.org/software/harfbuzz/release/$lib-$ver.tar.bz2"
+ver=2.6.4
+HARFBUZZ_URL="https://www.freedesktop.org/software/harfbuzz/release/$lib-$ver.tar.xz"
 HARFBUZZ_DIR="$lib-$ver"
 HARFBUZZ_ARGS="--without-glib --without-gobject --without-cairo --without-fontconfig --without-icu"
 
 lib=pixman
-ver=0.36.0
+ver=0.38.4
 PIXMAN_URL="https://cairographics.org/releases/$lib-$ver.tar.gz"
 PIXMAN_DIR="$lib-$ver"
 PIXMAN_ARGS="--disable-libpng --enable-dependency-tracking"
 
 lib=expat
-ver=2.2.6
+ver=2.2.9
 EXPAT_URL="https://github.com/libexpat/libexpat/releases/download/R_${ver//./_}/$lib-$ver.tar.bz2"
 EXPAT_DIR="$lib-$ver"
 EXPAT_ARGS="-DBUILD_tools=OFF -DBUILD_examples=OFF -DBUILD_tests=OFF -DBUILD_doc=OFF -DBUILD_shared=OFF"
 
 lib=libogg
-ver=1.3.3
+ver=1.3.4
 LIBOGG_URL="https://downloads.xiph.org/releases/ogg/$lib-$ver.tar.xz"
 LIBOGG_DIR="$lib-$ver"
 
@@ -50,7 +50,7 @@ TREMOR_DIR="tremor-b56ffce"
 TREMOR_FILE="$TREMOR_DIR.tar.gz"
 
 lib=mpg123
-ver=1.25.10
+ver=1.25.13
 MPG123_URL=https://www.mpg123.de/download/$lib-$ver.tar.bz2
 MPG123_DIR="$lib-$ver"
 MPG123_ARGS="--with-cpu=generic --enable-fifo=no --enable-ipv6=no --enable-network=no \
@@ -68,7 +68,7 @@ LIBXMP_LITE_URL="https://easyrpg.org/downloads/sources/$lib-$ver.tar.gz"
 LIBXMP_LITE_DIR="$lib-$ver"
 
 lib=speexdsp
-ver=1.2rc3
+ver=1.2.0
 SPEEXDSP_URL="https://downloads.xiph.org/releases/speex/$lib-$ver.tar.gz"
 SPEEXDSP_DIR="$lib-$ver"
 SPEEXDSP_ARGS="--disable-sse --disable-neon"
@@ -85,7 +85,7 @@ WILDMIDI_DIR="$lib-$lib-$ver"
 WILDMIDI_ARGS="-DWANT_PLAYER=OFF -DWANT_STATIC=ON"
 
 lib=opus
-ver=1.3
+ver=1.3.1
 OPUS_URL="https://archive.mozilla.org/pub/opus/$lib-$ver.tar.gz"
 OPUS_DIR="$lib-$ver"
 OPUS_ARGS="--disable-intrinsics"

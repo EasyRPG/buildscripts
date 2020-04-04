@@ -1,0 +1,12 @@
+diff -Naur harfbuzz-2.6.4-orig/src/hb-meta.hh harfbuzz-2.6.4/src/hb-meta.hh
+--- harfbuzz-2.6.4-orig/src/hb-meta.hh	2020-04-02 16:39:42.019535462 +0200
++++ harfbuzz-2.6.4/src/hb-meta.hh	2020-04-02 16:40:02.279535397 +0200
+@@ -28,7 +28,7 @@
+ #define HB_META_HH
+ 
+ #include "hb.hh"
+-
++#include <climits>
+ 
+ /*
+  * C++ template meta-programming & fundamentals used with them.

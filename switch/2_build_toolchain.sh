@@ -48,6 +48,11 @@ if [ ! -f .patches-applied ]; then
 		autoreconf -fi
 	)
 
+	# Fix harfbuzz
+	(cd $HARFBUZZ_DIR
+		patch -Np1 < $SCRIPT_DIR/../shared/extra/harfbuzz-climits.patch
+	)
+
 	cp -rup icu icu-native
 	# Fix icu build
 	patch -Np0 < $SCRIPT_DIR/icu59-switch.patch
