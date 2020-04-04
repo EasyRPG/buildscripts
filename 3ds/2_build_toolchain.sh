@@ -37,6 +37,11 @@ if [ ! -f .patches-applied ]; then
 		autoreconf -fi
 	)
 
+	# Enable pixman SIMD
+	(cd $PIXMAN_DIR
+		patch -Np1 < $SCRIPT_DIR/../shared/extra/pixman-simd.patch
+	)
+
 	cp -rup icu icu-native
 	# Disable pthread and other newlib issues
 	patch -Np0 < $SCRIPT_DIR/icu59-3ds.patch
