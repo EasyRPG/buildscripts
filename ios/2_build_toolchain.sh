@@ -27,7 +27,7 @@ if [ ! -f .patches-applied ]; then
 	# Fix ogg build
 	# Remove this when the next version is out
 	(cd $LIBOGG_DIR
-		patch -Np1 < libogg-fix-typedefs.patch
+		patch -Np1 < $SCRIPT_DIR/libogg-fix-typedefs.patch
 	)
 
 	cp -r icu icu-native
