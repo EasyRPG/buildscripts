@@ -37,6 +37,11 @@ if [ ! -f .patches-applied ]; then
 		autoreconf -fi
 	)
 
+	# Enable pixman SIMD
+	(cd $PIXMAN_DIR
+		patch -Np1 < $SCRIPT_DIR/../shared/extra/pixman-simd.patch
+	)
+
 	# disable libsamplerate examples and tests
 	(cd $LIBSAMPLERATE_DIR
 		perl -pi -e 's/examples tests//' Makefile.am

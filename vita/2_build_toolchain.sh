@@ -36,6 +36,11 @@ if [ ! -f .patches-applied ]; then
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/harfbuzz-climits.patch
 	)
 
+	# Enable pixman SIMD
+	(cd $PIXMAN_DIR
+		patch -Np1 < $SCRIPT_DIR/../shared/extra/pixman-simd.patch
+	)
+
 	# Fix icu build
 	# Custom patch because vita newlib provides pthread
 	cp -rup icu icu-native

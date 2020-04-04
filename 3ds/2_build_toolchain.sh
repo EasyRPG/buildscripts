@@ -42,6 +42,11 @@ if [ ! -f .patches-applied ]; then
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/harfbuzz-climits.patch
 	)
 
+	# Enable pixman SIMD
+	(cd $PIXMAN_DIR
+		patch -Np1 < $SCRIPT_DIR/../shared/extra/pixman-simd.patch
+	)
+
 	cp -rup icu icu-native
 	# Disable pthread and other newlib issues
 	patch -Np0 < $SCRIPT_DIR/icu59-3ds.patch
