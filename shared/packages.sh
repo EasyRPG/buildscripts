@@ -97,8 +97,8 @@ OPUSFILE_DIR="$lib-$ver"
 OPUSFILE_ARGS="--disable-http"
 
 lib=ICU
-ver=59.1
-ICU_URL=http://download.icu-project.org/files/icu4c/$ver/icu4c-${ver//./_}-src.tgz
+ver=59.2
+ICU_URL=https://github.com/unicode-org/icu/releases/download/release-${ver//./-}/icu4c-${ver//./_}-src.tgz
 ICU_DIR="icu"
 ICU_ARGS="--enable-strict=no --disable-tests --disable-samples \
 	--disable-dyload --disable-extras --disable-icuio \
