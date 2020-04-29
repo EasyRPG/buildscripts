@@ -128,3 +128,8 @@ ver=2.0.5
 SDL2_IMAGE_URL="https://www.libsdl.org/projects/SDL_image/release/$lib-$ver.tar.gz"
 SDL2_IMAGE_DIR="$lib-$ver"
 SDL2_IMAGE_ARGS="--disable-jpg --disable-png-shared --disable-tif --disable-webp"
+
+lib=fmt
+ver=6.2.0
+FMT_URL="https://github.com/fmtlib/fmt/archive/$ver.tar.gz"
+FMT_DIR="$lib-$ver"
