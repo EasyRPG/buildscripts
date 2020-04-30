@@ -2,10 +2,10 @@
 /*/*/
 
 # Except some Windows folders
-!/windows/icu-easyrpg/*
+!/windows/icu-easyrpg/
 
 # Except everything in shared
-!/shared/*
+!/shared/
 
 .patches-applied
 *.dat
