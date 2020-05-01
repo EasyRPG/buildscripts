@@ -98,7 +98,7 @@ OPUSFILE_ARGS="--disable-http"
 
 lib=fmt
 ver=6.2.0
-FMT_URL="https://github.com/fmtlib/fmt/archive/$ver.tar.gz"
+FMT_URL="https://github.com/fmtlib/fmt/releases/download/$ver/$lib-$ver.zip"
 FMT_DIR="$lib-$ver"
 FMT_ARGS="-DFMT_DOC=OFF -DFMT_TEST=OFF"
 
