@@ -1,18 +1,16 @@
-if (VCPKG_CMAKE_SYSTEM_NAME STREQUAL WindowsStore)
-    message(FATAL_ERROR "Error: UWP builds are currently not supported.")
-endif()
+vcpkg_fail_port_install(ON_ARCH "arm" ON_TARGET "uwp")
 
-include(vcpkg_common_functions)
-
-set(VERSION 61.1)
-set(VERSION2 61_1)
-set(ICU_VERSION_MAJOR 61)
+set(ICU_VERSION_MAJOR 65)
+set(ICU_VERSION_MINOR 1)
+set(VERSION "${ICU_VERSION_MAJOR}.${ICU_VERSION_MINOR}")
+set(VERSION2 "${ICU_VERSION_MAJOR}_${ICU_VERSION_MINOR}")
+set(VERSION3 "${ICU_VERSION_MAJOR}-${ICU_VERSION_MINOR}")
 
 vcpkg_download_distfile(
     ARCHIVE
-    URLS "http://download.icu-project.org/files/icu4c/${VERSION}/icu4c-${VERSION2}-src.tgz"
+    URLS "https://github.com/unicode-org/icu/releases/download/release-${VERSION3}/icu4c-${VERSION2}-src.tgz"
     FILENAME "icu4c-${VERSION2}-src.tgz"
-    SHA512 4c37691246db802e4bae0c8c5f6ac1dac64c5753b607e539c5c1c36e361fcd9dd81bd1d3b5416c2960153b83700ccdb356412847d0506ab7782ae626ac0ffb94
+    SHA512 8f1ef33e1f4abc9a8ee870331c59f01b473d6da1251a19ce403f822f3e3871096f0791855d39c8f20c612fc49cda2c62c06864aa32ddab2dbd186d2b21ce9139
 )
 vcpkg_extract_source_archive_ex(
     OUT_SOURCE_PATH SOURCE_PATH
@@ -21,6 +19,7 @@ vcpkg_extract_source_archive_ex(
         ${CMAKE_CURRENT_LIST_DIR}/disable-escapestr-tool.patch
         ${CMAKE_CURRENT_LIST_DIR}/remove-MD-from-configure.patch
         ${CMAKE_CURRENT_LIST_DIR}/fix_parallel_build_on_windows.patch
+        ${CMAKE_CURRENT_LIST_DIR}/fix-extra.patch
 )
 
 # EASYRPG CUSTOM
@@ -28,9 +27,13 @@ vcpkg_download_distfile(
     ARCHIVE
     URLS "https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata.tar.gz"
     FILENAME "icudata.tar.gz"
-    SHA512 ac77771542c4b2bfd61278d5ab35a19147aef366a3fc44ccee0353b5de484e35691830f81ad2c490d87f0cb13d957657e423677fa7b04693df5b4f3ad7333e6c)
+    SHA512 cf29dbfcdf51cbb296d6b233ecab6cd57cd3d9963780521562696f013221e3b2875e49521758e83dc8c20b894fd9d8d3ce3de14e1aa67a4c15b879857172a760
+)
 vcpkg_extract_source_archive(${ARCHIVE} ${SOURCE_PATH}/source/data/in)
 # EASYRPG END
+
+vcpkg_find_acquire_program(PYTHON3)
+set(ENV{PYTHON} "${PYTHON3}")
 
 set(CONFIGURE_OPTIONS "--disable-samples --disable-tests")
 
@@ -44,10 +47,10 @@ else()
     set(CONFIGURE_OPTIONS "${CONFIGURE_OPTIONS} --enable-static --disable-shared")
 endif()
 
-set(CONFIGURE_OPTIONS_RELASE "--disable-debug --enable-release --prefix=${CURRENT_PACKAGES_DIR}")
+set(CONFIGURE_OPTIONS_RELEASE "--disable-debug --enable-release --prefix=${CURRENT_PACKAGES_DIR}")
 set(CONFIGURE_OPTIONS_DEBUG  "--enable-debug --disable-release --prefix=${CURRENT_PACKAGES_DIR}/debug")
 
-if(VCPKG_CMAKE_SYSTEM_NAME AND NOT VCPKG_CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
+if(NOT VCPKG_TARGET_IS_WINDOWS)
     set(BASH bash)
     set(VCPKG_C_FLAGS "${VCPKG_C_FLAGS} -fPIC")
     set(VCPKG_CXX_FLAGS "${VCPKG_CXX_FLAGS} -fPIC")
@@ -60,7 +63,7 @@ if(VCPKG_CMAKE_SYSTEM_NAME AND NOT VCPKG_CMAKE_SYSTEM_NAME STREQUAL "WindowsStor
         set(ENV{CXXFLAGS} "-O2 ${VCPKG_CXX_FLAGS} ${VCPKG_CXX_FLAGS_RELEASE}")
         vcpkg_execute_required_process(
             COMMAND ${BASH} --noprofile --norc -c
-                "${SOURCE_PATH}/source/runConfigureICU Linux ${CONFIGURE_OPTIONS} ${CONFIGURE_OPTIONS_RELASE}"
+                "${SOURCE_PATH}/source/runConfigureICU Linux ${CONFIGURE_OPTIONS} ${CONFIGURE_OPTIONS_RELEASE}"
             WORKING_DIRECTORY "${CURRENT_BUILDTREES_DIR}/${TARGET_TRIPLET}-rel"
             LOGNAME "configure-${TARGET_TRIPLET}-rel")
         message(STATUS "Configuring ${TARGET_TRIPLET}-rel done")
@@ -113,7 +116,7 @@ else()
         set(ENV{LDFLAGS} "-DEBUG -INCREMENTAL:NO -OPT:REF -OPT:ICF")
         vcpkg_execute_required_process(
             COMMAND ${BASH} --noprofile --norc -c
-                "${SOURCE_PATH}/source/runConfigureICU MSYS/MSVC ${CONFIGURE_OPTIONS} ${CONFIGURE_OPTIONS_RELASE}"
+                "${SOURCE_PATH}/source/runConfigureICU MSYS/MSVC ${CONFIGURE_OPTIONS} ${CONFIGURE_OPTIONS_RELEASE}"
             WORKING_DIRECTORY "${CURRENT_BUILDTREES_DIR}/${TARGET_TRIPLET}-rel"
             LOGNAME "configure-${TARGET_TRIPLET}-rel")
         message(STATUS "Configuring ${TARGET_TRIPLET}-rel done")
@@ -200,7 +203,7 @@ if(VCPKG_LIBRARY_LINKAGE STREQUAL "dynamic")
         file(COPY ${DEBUG_DLLS} DESTINATION ${CURRENT_PACKAGES_DIR}/debug/bin)
     endif()
 else()
-    if(NOT VCPKG_CMAKE_SYSTEM_NAME OR VCPKG_CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
+    if(VCPKG_TARGET_IS_WINDOWS)
         # rename static libraries to match import libs
         # see https://gitlab.kitware.com/cmake/cmake/issues/16617
         foreach(MODULE dt in io tu uc)
