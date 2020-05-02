@@ -96,6 +96,12 @@ OPUSFILE_URL="https://archive.mozilla.org/pub/opus/$lib-$ver.tar.gz"
 OPUSFILE_DIR="$lib-$ver"
 OPUSFILE_ARGS="--disable-http"
 
+lib=fmt
+ver=6.2.0
+FMT_URL="https://github.com/fmtlib/fmt/releases/download/$ver/$lib-$ver.zip"
+FMT_DIR="$lib-$ver"
+FMT_ARGS="-DFMT_DOC=OFF -DFMT_TEST=OFF"
+
 lib=ICU
 ver=59.2
 ICU_URL=https://github.com/unicode-org/icu/releases/download/release-${ver//./-}/icu4c-${ver//./_}-src.tgz
@@ -128,3 +134,4 @@ ver=2.0.5
 SDL2_IMAGE_URL="https://www.libsdl.org/projects/SDL_image/release/$lib-$ver.tar.gz"
 SDL2_IMAGE_DIR="$lib-$ver"
 SDL2_IMAGE_ARGS="--disable-jpg --disable-png-shared --disable-tif --disable-webp"
+

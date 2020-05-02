@@ -6,7 +6,11 @@ function extract {
 
 	[ $# -ne 0 ] && msg "Extracting $file..."
 
-	tar xf $file $@
+	if [ ${file: -4} == ".zip" ]; then
+		unzip -q $file $@
+	else
+		tar xf $file $@
+	fi
 }
 
 function download {
@@ -251,7 +255,7 @@ function cleanup {
 	rm -rf zlib-*/ libpng-*/ freetype-*/ harfbuzz-*/ pixman-*/ expat-*/ libogg-*/ \
 	libvorbis-*/ tremor-*/ mpg123-*/ libsndfile-*/ libxmp-lite-*/ speexdsp-*/ \
 	libsamplerate-*/ wildmidi-*/ opus-*/ opusfile-*/ icu/ icu-native/ \
-	SDL2-*/ SDL2_mixer-*/ SDL2_image-*/
+	SDL2-*/ SDL2_mixer-*/ SDL2_image-*/ fmt-*/
 	rm -f *.zip *.bz2 *.gz *.xz *.tgz icudt* *.pl .patches-applied config.cache
 	rm -rf bin/ sbin/ share/
 }

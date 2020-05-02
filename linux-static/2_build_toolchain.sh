@@ -55,6 +55,7 @@ install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
 install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS
 install_lib $OPUS_DIR $OPUS_ARGS
 install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
+install_lib_cmake $FMT_DIR $FMT_ARGS
 install_lib $ICU_DIR/source $ICU_ARGS
 install_lib $SDL2_DIR $SDL2_ARGS
 install_lib $SDL2_MIXER_DIR $SDL2_MIXER_ARGS
