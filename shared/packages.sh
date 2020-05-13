@@ -45,9 +45,9 @@ LIBVORBIS_URL="https://downloads.xiph.org/releases/vorbis/$lib-$ver.tar.xz"
 LIBVORBIS_DIR="$lib-$ver"
 
 lib=tremor
-TREMOR_URL="https://git.xiph.org/?p=tremor.git;a=snapshot;h=b56ffce0c0773ec5ca04c466bc00b1bbcaf65aef;sf=tgz"
-TREMOR_DIR="tremor-b56ffce"
-TREMOR_FILE="$TREMOR_DIR.tar.gz"
+ver=b56ffce0c0773ec5ca04c466bc00b1bbcaf65aef
+TREMOR_URL="https://gitlab.xiph.org/xiph/$lib/-/archive/$ver/$lib-$ver.tar.bz2"
+TREMOR_DIR="$lib-$ver"
 
 lib=mpg123
 ver=1.25.13
