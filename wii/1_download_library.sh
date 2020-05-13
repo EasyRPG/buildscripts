@@ -50,8 +50,7 @@ download_and_extract $LIBOGG_URL
 
 # tremor
 rm -rf $TREMOR_DIR
-download $TREMOR_URL -O $TREMOR_FILE
-extract $TREMOR_FILE
+download_and_extract $TREMOR_URL
 
 # mpg123
 rm -rf $MPG123_DIR
