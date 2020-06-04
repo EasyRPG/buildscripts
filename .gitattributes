@@ -1,0 +1,2 @@
+# do not convert line ending of patch files
+*.patch -text
