@@ -94,6 +94,12 @@ OPUSFILE_URL="https://archive.mozilla.org/pub/opus/$lib-$ver.tar.gz"
 OPUSFILE_DIR="$lib-$ver"
 OPUSFILE_ARGS="--disable-http --disable-examples"
 
+lib=FluidLite
+ver=813e5481816d049344f1f6ccdc1b22e546970ee6
+FLUIDLITE_URL="https://github.com/divideconcept/$lib/archive/$ver.zip"
+FLUIDLITE_DIR="$lib-$ver"
+FLUIDLITE_ARGS="-DFLUIDLITE_BUILD_STATIC=ON -DFLUIDLITE_BUILD_SHARED=OFF"
+
 lib=fmt
 ver=6.2.0
 FMT_URL="https://github.com/fmtlib/fmt/releases/download/$ver/$lib-$ver.zip"
@@ -132,4 +138,3 @@ ver=2.0.5
 SDL2_IMAGE_URL="https://www.libsdl.org/projects/SDL_image/release/$lib-$ver.tar.gz"
 SDL2_IMAGE_DIR="$lib-$ver"
 SDL2_IMAGE_ARGS="--disable-jpg --disable-png-shared --disable-tif --disable-webp"
-

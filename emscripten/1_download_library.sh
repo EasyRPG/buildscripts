@@ -105,6 +105,10 @@ download_and_extract $OPUS_URL
 rm -rf $OPUSFILE_DIR
 download_and_extract $OPUSFILE_URL
 
+# FluidLite
+rm -rf $FLUIDLITE_DIR
+download_and_extract $FLUIDLITE_URL
+
 # fmt
 rm -rf $FMT_DIR
 download_and_extract $FMT_URL
