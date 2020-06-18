@@ -40,8 +40,8 @@ if [ ! -f .patches-applied ]; then
 fi
 
 function set_build_flags {
-	CLANG=`xcodebuild -find clang`
-	CLANGXX=`xcodebuild -find clang++`
+	CLANG="xcrun --sdk macosx clang"
+	CLANGXX="xcrun --sdk macosx clang++"
 	ARCH="-arch x86_64"
 	SDKPATH=`xcrun -sdk macosx --show-sdk-path`
 
