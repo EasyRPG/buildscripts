@@ -3,10 +3,11 @@
 # abort on errors
 set -e
 
-export WORKSPACE=$PWD
-
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
+
+# Installation directory
+set_workspace
 
 msg " [1] Downloading generic libraries"
 

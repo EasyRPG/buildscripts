@@ -3,12 +3,13 @@
 # abort on errors
 set -e
 
-export WORKSPACE=$PWD
-
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
 # Override ICU version to 60.2
 source $SCRIPT_DIR/packages.sh
+
+# Installation directory
+set_workspace
 
 msg " [1] Preparing Emscripten SDK"
 

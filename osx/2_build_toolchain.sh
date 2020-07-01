@@ -8,10 +8,11 @@ fi
 # abort on error
 set -e
 
-export WORKSPACE=$PWD
-
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
+
+# Installation directory
+set_workspace
 
 # Number of CPU
 nproc=$(getconf _NPROCESSORS_ONLN)

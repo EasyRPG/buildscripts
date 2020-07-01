@@ -56,6 +56,13 @@ function test_ccache {
 	fi
 }
 
+# for installation outside of Jenkins
+function set_workspace {
+	if [[ -z $WORKSPACE ]]; then
+		export WORKSPACE=$PWD
+	fi
+}
+
 # generic autotools library installer
 function install_lib {
 	msg "**** Building ${1%-*} ****"
