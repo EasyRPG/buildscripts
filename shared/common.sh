@@ -102,6 +102,26 @@ function install_lib_zlib {
 	)
 }
 
+function install_lib_mpg123 {
+	msg "**** Building libmpg123 ****"
+
+	(cd $MPG123_DIR
+		$CONFIGURE_WRAPPER ./configure --prefix=$PLATFORM_PREFIX --disable-shared --enable-static \
+			--disable-dependency-tracking --enable-silent-rules \
+			--host=$TARGET_HOST --cache-file="$PLATFORM_PREFIX/config.cache" \
+			--with-cpu=generic --disable-fifo --disable-ipv6 --disable-network \
+			--disable-int-quality --with-default-audio=dummy --with-optimization=2 $@
+		make clean
+		# only build libmpg123
+		make src/libmpg123/libmpg123.la
+		# custom installation
+		mkdir -p $WORKSPACE/include $WORKSPACE/lib/pkgconfig
+		install -m644 src/libmpg123/{fmt,mpg}123.h $WORKSPACE/include
+		install -m644 libmpg123.pc $WORKSPACE/lib/pkgconfig
+		./libtool --mode=install install src/libmpg123/libmpg123.la $WORKSPACE/lib
+	)
+}
+
 function install_lib_icu_native {
 	msg "**** Building ICU (native) ****"
 

@@ -53,8 +53,6 @@ lib=mpg123
 ver=1.25.13
 MPG123_URL=https://www.mpg123.de/download/$lib-$ver.tar.bz2
 MPG123_DIR="$lib-$ver"
-MPG123_ARGS="--with-cpu=generic --enable-fifo=no --enable-ipv6=no --enable-network=no \
-	--enable-int-quality=no --with-default-audio=dummy --with-optimization=2"
 
 lib=libsndfile
 ver=1.0.28
