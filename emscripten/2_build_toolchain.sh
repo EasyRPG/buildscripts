@@ -41,7 +41,7 @@ fi
 
 export PLATFORM_PREFIX=$WORKSPACE
 export CONFIGURE_WRAPPER=emconfigure
-export CMAKE_WRAPPER=emconfigure
+export CMAKE_WRAPPER=emcmake
 export MAKEFLAGS="-j${nproc:-2}"
 
 function set_build_flags {
@@ -57,6 +57,9 @@ function set_build_flags {
 		export CC="ccache gcc"
 		export CXX="ccache g++"
 	fi
+
+	# force mmap support in mpg123 (actually unused, but needed for building)
+	export ac_cv_func_mmap_fixed_mapped=yes
 }
 
 function install_lib_sdl2 {
