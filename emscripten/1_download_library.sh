@@ -10,29 +10,36 @@ source $SCRIPT_DIR/../shared/import.sh
 # Override ICU version to 60.2
 source $SCRIPT_DIR/packages.sh
 
-msg " [1] Preparing Emscripten SDK"
+msg " [1] Checking Emscripten"
 
-# Number of CPU
-nproc=$(nproc)
-export MAKEFLAGS="-j${nproc:-2}"
+if hash emcc >/dev/null 2>&1; then
+	echo "Using pre-installed version"
+else
+	echo "Preparing portable SDK"
 
-rm -rf emsdk-portable
-git_clone https://github.com/emscripten-core/emsdk.git emsdk-portable
-cd emsdk-portable
+	# Number of CPU
+	nproc=$(nproc)
+	export MAKEFLAGS="-j${nproc:-2}"
 
-# This empty config file is populated by "emsdk activate".
-# Prevents usage of the global config file in the home directory.
-touch .emscripten
+	rm -rf emsdk-portable
+	git_clone https://github.com/emscripten-core/emsdk.git emsdk-portable
 
-# Fetch the latest registry of available tools.
-./emsdk update-tags
+	cd emsdk-portable
 
-# Download and install the latest SDK tools and set up the compiler configuration to point to it.
-./emsdk install 1.39.5
-./emsdk activate 1.39.5
+	# This empty config file is populated by "emsdk activate".
+	# Prevents usage of the global config file in the home directory.
+	touch .emscripten
 
-# Set the current Emscripten path
-source ./emsdk_env.sh
+	# Fetch the latest registry of available tools.
+	./emsdk update-tags
+
+	# Download and install the latest SDK tools and set up the compiler configuration to point to it.
+	./emsdk install 1.39.5
+	./emsdk activate 1.39.5
+
+	# Set the current Emscripten path
+	source ./emsdk_env.sh
+fi
 
 cd "$WORKSPACE"
 

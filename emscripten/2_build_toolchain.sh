@@ -74,9 +74,11 @@ install_lib_icu_native
 
 echo "Preparing toolchain"
 
-# Set the current Emscripten path
-cd emsdk-portable
-source ./emsdk_env.sh
+if ! hash emcc >/dev/null 2>&1; then
+	# Set the current Emscripten path
+	cd emsdk-portable
+	source ./emsdk_env.sh
+fi
 
 cd $WORKSPACE
 
