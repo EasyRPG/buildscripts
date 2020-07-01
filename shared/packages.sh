@@ -86,13 +86,13 @@ lib=opus
 ver=1.3.1
 OPUS_URL="https://archive.mozilla.org/pub/opus/$lib-$ver.tar.gz"
 OPUS_DIR="$lib-$ver"
-OPUS_ARGS="--disable-intrinsics"
+OPUS_ARGS="--disable-intrinsics --disable-extra-programs"
 
 lib=opusfile
 ver=0.11
 OPUSFILE_URL="https://archive.mozilla.org/pub/opus/$lib-$ver.tar.gz"
 OPUSFILE_DIR="$lib-$ver"
-OPUSFILE_ARGS="--disable-http"
+OPUSFILE_ARGS="--disable-http --disable-examples"
 
 lib=fmt
 ver=6.2.0
