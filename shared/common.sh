@@ -96,7 +96,8 @@ function install_lib_zlib {
 	(cd $ZLIB_DIR
 		CHOST=$TARGET_HOST $CONFIGURE_WRAPPER ./configure --static --prefix=$PLATFORM_PREFIX
 		make clean
-		make
+		# only build static library, no tests/examples
+		make libz.a
 		make install
 	)
 }
