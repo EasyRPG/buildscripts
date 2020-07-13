@@ -117,10 +117,6 @@ download_and_extract $ICU_URL
 rm -f $ICUDATA_FILES
 download_and_extract $ICUDATA_URL
 
-# icudata
-rm -f icudt*.dat
-download_and_extract https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata.tar.gz
-
 msg " [2] Preparing platform libraries"
 
 # SDL2
