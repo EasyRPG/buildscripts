@@ -235,6 +235,7 @@ function patches_common {
 		# compile fix
 		(cd $LIBXMP_LITE_DIR
 			patch -Np1 < $_SCRIPT_DIR/libxmp-a0288352.patch
+			patch -Np1 < $_SCRIPT_DIR/libxmp-no-symver.patch
 
 			# Use custom CMakeLists.txt
 			cp $_SCRIPT_DIR/CMakeLists_xmplite.txt ./CMakeLists.txt
