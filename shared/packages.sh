@@ -32,7 +32,7 @@ lib=expat
 ver=2.2.9
 EXPAT_URL="https://github.com/libexpat/libexpat/releases/download/R_${ver//./_}/$lib-$ver.tar.bz2"
 EXPAT_DIR="$lib-$ver"
-EXPAT_ARGS="-DBUILD_tools=OFF -DBUILD_examples=OFF -DBUILD_tests=OFF -DBUILD_doc=OFF -DBUILD_shared=OFF"
+EXPAT_ARGS="-DEXPAT_BUILD_TOOLS=OFF -DEXPAT_BUILD_EXAMPLES=OFF -DEXPAT_BUILD_TESTS=OFF -DEXPAT_BUILD_DOCS=OFF -DEXPAT_SHARED_LIBS=OFF"
 
 lib=libogg
 ver=1.3.4
@@ -53,8 +53,6 @@ lib=mpg123
 ver=1.25.13
 MPG123_URL=https://www.mpg123.de/download/$lib-$ver.tar.bz2
 MPG123_DIR="$lib-$ver"
-MPG123_ARGS="--with-cpu=generic --enable-fifo=no --enable-ipv6=no --enable-network=no \
-	--enable-int-quality=no --with-default-audio=dummy --with-optimization=2"
 
 lib=libsndfile
 ver=1.0.28
@@ -88,13 +86,13 @@ lib=opus
 ver=1.3.1
 OPUS_URL="https://archive.mozilla.org/pub/opus/$lib-$ver.tar.gz"
 OPUS_DIR="$lib-$ver"
-OPUS_ARGS="--disable-intrinsics"
+OPUS_ARGS="--disable-intrinsics --disable-extra-programs"
 
 lib=opusfile
 ver=0.11
 OPUSFILE_URL="https://archive.mozilla.org/pub/opus/$lib-$ver.tar.gz"
 OPUSFILE_DIR="$lib-$ver"
-OPUSFILE_ARGS="--disable-http"
+OPUSFILE_ARGS="--disable-http --disable-examples"
 
 lib=fmt
 ver=6.2.0
