@@ -11,7 +11,7 @@ Specific building requirements for all platforms:
  - autotools (autoconf, automake & libtool)
  - cmake
  - git
- - wget
+ - curl
  - core tools like make, perl, patch & pkg-config
 
 Recommended building requirements for Linux:

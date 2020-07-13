@@ -21,8 +21,8 @@ export VITASDK=$PWD/vitasdk
 export URL="https://github.com/vitasdk/autobuilds/releases/download/master-linux-v1100/vitasdk-x86_64-linux-gnu-2020-03-07_21-07-07.tar.bz2"
 
 mkdir -p vitasdk
-wget -O "vitasdk-nightly-tar.bz2" "$URL"
-tar xf "vitasdk-nightly-tar.bz2" -C $VITASDK --strip-components=1
+curl -sSLR -o vitasdk-nightly.tar.bz2 "$URL"
+tar xf "vitasdk-nightly.tar.bz2" -C $VITASDK --strip-components=1
 
 msg " [2] Downloading generic libraries"
 
