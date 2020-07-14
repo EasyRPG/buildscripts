@@ -70,11 +70,11 @@ msg " [3] Installing Android NDK"
 rm -rf android-ndk-r15c/
 # Linux
 if [ $os = "Linux" ] ; then
-	wget -nv -N https://dl.google.com/android/repository/android-ndk-r15c-linux-x86_64.zip
+	curl -sSLOR https://dl.google.com/android/repository/android-ndk-r15c-linux-x86_64.zip
 	unzip android-ndk-r15c-linux-x86_64.zip
 # Mac
 elif [ $os = "Darwin" ] ; then
-	wget -nv -N http://dl.google.com/android/repository/android-ndk-r15c-darwin-x86_64.bin
+	curl -sSLOR http://dl.google.com/android/repository/android-ndk-r15c-darwin-x86_64.bin
 	chmod u+x android-ndk-r15c-darwin-x86_64.bin
 	./android-ndk-r15c-darwin-x86_64.bin
 fi
