@@ -119,10 +119,10 @@ function install_lib_mpg123 {
 		# only build libmpg123
 		make src/libmpg123/libmpg123.la
 		# custom installation
-		mkdir -p $WORKSPACE/include $WORKSPACE/lib/pkgconfig
-		install -m644 src/libmpg123/{fmt,mpg}123.h $WORKSPACE/include
-		install -m644 libmpg123.pc $WORKSPACE/lib/pkgconfig
-		./libtool --mode=install install src/libmpg123/libmpg123.la $WORKSPACE/lib
+		mkdir -p $PLATFORM_PREFIX/include $PLATFORM_PREFIX/lib/pkgconfig
+		install -m644 src/libmpg123/{fmt,mpg}123.h $PLATFORM_PREFIX/include
+		install -m644 libmpg123.pc $PLATFORM_PREFIX/lib/pkgconfig
+		./libtool --mode=install install src/libmpg123/libmpg123.la $PLATFORM_PREFIX/lib
 	)
 }
 
