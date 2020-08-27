@@ -95,7 +95,7 @@ OPUSFILE_DIR="$lib-$ver"
 OPUSFILE_ARGS="--disable-http --disable-examples"
 
 lib=FluidLite
-ver=813e5481816d049344f1f6ccdc1b22e546970ee6
+ver=fdd05bad03cdb24d1f78b5fe3453842890c1b0e8
 FLUIDLITE_URL="https://github.com/divideconcept/$lib/archive/$ver.zip"
 FLUIDLITE_DIR="$lib-$ver"
 FLUIDLITE_ARGS="-DFLUIDLITE_BUILD_STATIC=ON -DFLUIDLITE_BUILD_SHARED=OFF"
