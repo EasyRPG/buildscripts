@@ -100,6 +100,12 @@ FLUIDLITE_URL="https://github.com/divideconcept/$lib/archive/$ver.zip"
 FLUIDLITE_DIR="$lib-$ver"
 FLUIDLITE_ARGS="-DFLUIDLITE_BUILD_STATIC=ON -DFLUIDLITE_BUILD_SHARED=OFF"
 
+lib=json
+ver=3.9.1
+NLOHMANNJSON_URL="https://github.com/nlohmann/$lib/archive/v$ver.tar.gz"
+NLOHMANNJSON_DIR=$lib-$ver
+NLOHMANNJSON_ARGS="-DJSON_BuildTests=OFF"
+
 lib=fmt
 ver=6.2.0
 FMT_URL="https://github.com/fmtlib/fmt/releases/download/$ver/$lib-$ver.zip"
