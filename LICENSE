@@ -3,20 +3,27 @@ library.
 
 In short:
 expat: MIT
+FluidLite: LGPLv2.1+
+fmt: MIT
 freetype: FreeType License or GPLv2 or later (see docs/LICENSE.TXT)
 harfbuzz: MIT
 icu4c: ICU license
-libmodplug: Public Domain
-libmpg123: LGPLv2.1
-libogg: BSD
-libpng: zlib
-libsndfile: LGPLv2.1
-libvorbis: BSD
-libwildmidi: LGPLv3
-libxmp-lite: MIT
+modplug: Public Domain
+mpg123: LGPLv2.1+
+nlohmann-json: MIT
+ogg: BSD
+opus: BSD    
+opusfile: BSD   
 pixman: MIT
-SDL2: zlib
+png: zlib
+samplerate: BSD
 SDL2 image: zlib
 SDL2 mixer: zlib
+SDL2: zlib
+sndfile: LGPLv2.1+
 speexdsp: BSD
+vorbis: BSD
+wildmidi: LGPLv3+
+xmp-lite: MIT
 zlib: zlib
+
