@@ -9,7 +9,10 @@ Any version of Visual Studio 2015 Update 3 or newer.
 
 ## How to compile
 
-Run build.cmd. This bootstraps vcpkg and builds all required libraries.
+ - For EasyRPG Player: Run build.cmd
+ - For EasyRPG Editor: Run build_qt5.cmd
+
+This bootstraps vcpkg and builds all required libraries.
 
 ## After compiling
 
@@ -34,6 +37,3 @@ Replace ``[VCPKG_PATH]`` with the path to vcpkg (you find in this folder) and
 ``[BUILD_TYPE]`` with Debug, Release or RelWithDebInfo. This is even needed
 when generating Visual Studio Projects, otherwise the wrong library versions
 are selected because not all have a debug suffix.
-
-In case you used x86-windows or x64-windows change the triplet accordingly and
-use ``SHARED_RUNTIME=ON``.
