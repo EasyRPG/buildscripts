@@ -2,6 +2,10 @@
 
 call helper\prepare.cmd
 
+:: Install yasm (required for 64 bit mpg123 build)
+vcpkg install --triplet x86-windows^
+ yasm-tool[core]
+
 :: Build 32-bit libraries
 :: Using [core] everywhere to prevent surprises when new default-features are
 :: added to libraries.
