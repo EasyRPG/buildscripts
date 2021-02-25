@@ -79,10 +79,10 @@ function set_build_flags {
 		export CC="ccache $CC"
 		export CXX="ccache $CXX"
 	fi
-	ARCH_FLAGS="-march=armv8-a -mtune=cortex-a57 -mtp=soft -fPIC -ftls-model=local-exec"
-	export CFLAGS="-g0 -O2 $ARCH_FLAGS -ffunction-sections"
+	ARCH_FLAGS="-march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -fPIC -ftls-model=local-exec"
+	export CFLAGS="-g0 -O2 $ARCH_FLAGS -ffunction-sections -fdata-sections"
 	export CXXFLAGS="$CFLAGS"
-	export CPPFLAGS="-D__SWITCH__ -I$PLATFORM_PREFIX/include -I$DEVKITPRO/libnx/include"
+	export CPPFLAGS="-D__SWITCH__ -I$PLATFORM_PREFIX/include -isystem $DEVKITPRO/libnx/include"
 	export LDFLAGS="$ARCH_FLAGS -L$PLATFORM_PREFIX/lib -L$DEVKITPRO/libnx/lib"
 	export LIBS="-lnx"
 }
