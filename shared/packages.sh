@@ -125,7 +125,7 @@ ICUDATA_URL=https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icud
 ICUDATA_FILES=icudt*.dat
 
 lib=SDL2
-ver=2.0.12
+ver=2.0.14
 SDL2_URL="https://libsdl.org/release/$lib-$ver.tar.gz"
 SDL2_DIR="$lib-$ver"
 
