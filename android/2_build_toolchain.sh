@@ -21,9 +21,6 @@ if [ ! -f .patches-applied ]; then
 
 	cp -rup icu icu-native
 
-	# Patch cpufeatures, hangs in Android 4.0.3
-	patch -Np0 < cpufeatures.patch
-
 	# use android config
 	pushd $SDL2_DIR
 	mv include/SDL_config_android.h include/SDL_config.h
@@ -58,7 +55,7 @@ function build() {
 
 	echo "Preparing $1 toolchain"
 
-	export TARGET_API=14
+	export TARGET_API=16
 	if [ "$3" = "arm64" ]; then
 		# Minimum API 21 on ARM64
 		export TARGET_API=21
@@ -70,25 +67,24 @@ function build() {
 
 	export PATH=$OLD_PATH
 	export PLATFORM_PREFIX=$WORKSPACE/$2-toolchain
-	$NDK_ROOT/build/tools/make_standalone_toolchain.py --api=$TARGET_API \
-		--install-dir=$PLATFORM_PREFIX --stl=libc++ --arch=$3
 
 	export PATH=$PLATFORM_PREFIX/bin:$PATH
 
-	export CFLAGS="-g0 -O2 $5"
+	export CFLAGS="-no-integrated-as -g0 -O2 -fPIC $5"
 	export CXXFLAGS="$CFLAGS -DHB_NO_MMAP"
 	export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/cpufeatures"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 	unset PKG_CONFIG_PATH
 	export PKG_CONFIG_LIBDIR=$PLATFORM_PREFIX/lib/pkgconfig
 	export TARGET_HOST="$4"
-	export CC="$TARGET_HOST-clang"
-	export CXX="$TARGET_HOST-clang++"
+	export CC="clang -target ${TARGET_HOST}${TARGET_API}"
+	export CXX="clang++ -target ${TARGET_HOST}${TARGET_API}"
 	if [ "$ENABLE_CCACHE" ]; then
 		export CC="ccache $CC"
 		export CXX="ccache $CXX"
 	fi
 
+	install_lib_zlib
 	install_lib $LIBPNG_DIR $LIBPNG_ARGS
 	install_lib $FREETYPE_DIR $FREETYPE_ARGS --without-harfbuzz
 	install_lib $HARFBUZZ_DIR $HARFBUZZ_ARGS
@@ -110,13 +106,13 @@ function build() {
 	install_lib_sdl "$2"
 }
 
-export NDK_ROOT=$WORKSPACE/android-ndk-r15c
 export SDK_ROOT=$WORKSPACE/android-sdk
+export NDK_ROOT=$SDK_ROOT/ndk/21.4.7075529
 
 export MAKEFLAGS="-j${nproc:-2}"
 
 # Setup PATH
-PATH=$PATH:$NDK_ROOT:$SDK_ROOT/tools
+PATH=$NDK_ROOT:$NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin:$SDK_ROOT/tools:$PATH
 
 export OLD_PATH=$PATH
 
@@ -128,14 +124,14 @@ install_lib_icu_native
 # Correctly detected mmap support in mpg123
 export ac_cv_func_mmap_fixed_mapped=yes
 
-# Install standalone toolchain ARMeabi-v7a
-build "ARMeabi-v7a" "armeabi-v7a" "arm" "arm-linux-androideabi" "-march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3"
+# ARMeabi-v7a
+build "ARMeabi-v7a" "armeabi-v7a" "arm" "armv7a-linux-androideabi" "-march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3"
 
-# Install standalone toolchain arm64-v8a
+# arm64-v8a
 build "AArch64" "arm64-v8a" "arm64" "aarch64-linux-android" ""
 
-# Install standalone toolchain x86
+# x86
 build "x86" "x86" "x86" "i686-linux-android" ""
 
-# Install standalone toolchain x86_64
+# x86_64
 build "x86_64" "x86_64" "x86_64" "x86_64-linux-android" ""
