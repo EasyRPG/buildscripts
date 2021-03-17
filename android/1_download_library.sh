@@ -38,11 +38,13 @@ else
 	exit 1
 fi
 
-SDK_VERSION="6200805_latest"
+SDK_VERSION="6858069_latest"
 SDK_URL="https://dl.google.com/android/repository/commandlinetools-${SDK_PLATFORM}-${SDK_VERSION}.zip"
 download $SDK_URL
 unzip commandlinetools-${SDK_PLATFORM}-${SDK_VERSION}.zip
-mv tools android-sdk
+
+mkdir -p android-sdk/cmdline-tools/
+mv cmdline-tools android-sdk/cmdline-tools/latest
 
 PATH=$PATH:$WORKSPACE/android-sdk
 
@@ -52,32 +54,27 @@ msg " [2] Installing SDK and Platform-tools"
 cd android-sdk
 
 # Android SDK Build-tools, revision 26.0.1
-echo "y" | bin/sdkmanager --verbose "build-tools;28.0.0" --sdk_root=$PWD
+echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "build-tools;28.0.0"
 # Android SDK Platform-tools
-echo "y" | bin/sdkmanager --verbose "platform-tools" --sdk_root=$PWD
+echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "platform-tools"
 # SDK Platform Android 10, API 29
-echo "y" | bin/sdkmanager --verbose "platforms;android-29" --sdk_root=$PWD
+echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "platforms;android-29"
 # Android Support Library Repository
-echo "y" | bin/sdkmanager --verbose "extras;android;m2repository" --sdk_root=$PWD
+echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "extras;android;m2repository"
 # Google Repository
-echo "y" | bin/sdkmanager --verbose "extras;google;m2repository" --sdk_root=$PWD
+echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "extras;google;m2repository"
+
+msg " [3] Installing Android NDK"
+
+echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "ndk;21.4.7075529"
 
 cd ..
 
-msg " [3] Installing Android NDK"
-rm -rf android-ndk-r15c/
-# Linux
-if [ $os = "Linux" ] ; then
-	curl -sSLOR https://dl.google.com/android/repository/android-ndk-r15c-linux-x86_64.zip
-	unzip android-ndk-r15c-linux-x86_64.zip
-# Mac
-elif [ $os = "Darwin" ] ; then
-	curl -sSLOR http://dl.google.com/android/repository/android-ndk-r15c-darwin-x86_64.bin
-	chmod u+x android-ndk-r15c-darwin-x86_64.bin
-	./android-ndk-r15c-darwin-x86_64.bin
-fi
-
 msg " [4] Preparing libraries"
+
+# zlib
+rm -rf $ZLIB_DIR
+download_and_extract $ZLIB_URL
 
 # libpng
 rm -rf $LIBPNG_DIR
