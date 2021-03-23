@@ -27,9 +27,9 @@ vcpkg_extract_source_archive_ex(
 # EASYRPG CUSTOM
 vcpkg_download_distfile(
     ARCHIVE
-    URLS "https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata.tar.gz"
+    URLS "https://easyrpg.org/downloads/icudata/icudata${ICU_VERSION_MAJOR}.tar.gz"
     FILENAME "icudata.tar.gz"
-    SHA512 cf29dbfcdf51cbb296d6b233ecab6cd57cd3d9963780521562696f013221e3b2875e49521758e83dc8c20b894fd9d8d3ce3de14e1aa67a4c15b879857172a760
+    SHA512 63f9bad4afe0c27caff52e51f5f01f9b8699eed19a1fe64073b7d13191ad09426b9aa09fb9d6faea247cc8169df4beb08bdea194c42d27a74bd25fd7e28b1654
 )
 vcpkg_extract_source_archive(${ARCHIVE} ${SOURCE_PATH}/source/data/in)
 # EASYRPG END
