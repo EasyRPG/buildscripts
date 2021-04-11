@@ -58,8 +58,9 @@ export PATH=$PWD/vitasdk/bin:$PATH
 
 export PLATFORM_PREFIX=$WORKSPACE
 export TARGET_HOST=arm-vita-eabi
-export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
-export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
+export PKG_CONFIG=/usr/bin/pkg-config
+unset PKG_CONFIG_PATH
+export PKG_CONFIG_LIBDIR=$PLATFORM_PREFIX/lib/pkgconfig
 export MAKEFLAGS="-j${nproc:-2}"
 
 function set_build_flags {
