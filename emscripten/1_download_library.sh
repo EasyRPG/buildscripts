@@ -34,8 +34,8 @@ else
 	./emsdk update-tags
 
 	# Download and install the latest SDK tools and set up the compiler configuration to point to it.
-	./emsdk install 2.0.1
-	./emsdk activate 2.0.1
+	./emsdk install 2.0.20
+	./emsdk activate 2.0.20
 
 	# Set the current Emscripten path
 	source ./emsdk_env.sh
