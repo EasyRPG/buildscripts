@@ -56,11 +56,8 @@ echo "Preparing toolchain"
 export VITASDK=$PWD/vitasdk
 export PATH=$PWD/vitasdk/bin:$PATH
 
-export PLATFORM_PREFIX=$WORKSPACE
 export TARGET_HOST=arm-vita-eabi
-export PKG_CONFIG=/usr/bin/pkg-config
-unset PKG_CONFIG_PATH
-export PKG_CONFIG_LIBDIR=$PLATFORM_PREFIX/lib/pkgconfig
+export PLATFORM_PREFIX=$VITASDK/$TARGET_HOST
 export MAKEFLAGS="-j${nproc:-2}"
 
 function set_build_flags {
@@ -72,8 +69,7 @@ function set_build_flags {
 	fi
 	export CFLAGS="-g0 -O2"
 	export CXXFLAGS=$CFLAGS
-	export CPPFLAGS="-I$PLATFORM_PREFIX/include -DPSP2"
-	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
+	export CPPFLAGS="-DPSP2"
 }
 
 function install_lib_vita2d() {
@@ -92,22 +88,19 @@ function install_shaders() {
 	msg "Copying precompiled shaders"
 
 	(cd vitashaders
-		cp -a ./lib/. $VITASDK/$TARGET_HOST/lib/
-		cp -a ./includes/. $VITASDK/$TARGET_HOST/include/
+		cp -a ./lib/. $PLATFORM_PREFIX/lib/
+		cp -a ./includes/. $PLATFORM_PREFIX/include/
 	)
 }
 
 function install_vdpm() {
-	msg "Installing VDPM"
-	(cd vdpm
-		./install-all.sh
-	)
+	msg "Installing VDPM packages"
+	vdpm libjpeg-turbo # for vita2d
 }
 
 install_lib_icu_native
 
 install_vdpm
-install_lib_vita2d
 
 set_build_flags
 install_lib_zlib
@@ -130,4 +123,5 @@ install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 install_lib_cmake $FMT_DIR $FMT_ARGS
 install_lib_icu_cross
 
+install_lib_vita2d
 install_shaders

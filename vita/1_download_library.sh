@@ -11,14 +11,14 @@ source $SCRIPT_DIR/../shared/import.sh
 function download_and_extract_shaders {
 	mkdir vitashaders
 	cd vitashaders
-	download_and_extract https://github.com/frangarcj/vita-shader-collection/releases/download/gtu-0.1-v74/vita-shader-collection.tar.gz
+	download_and_extract https://github.com/frangarcj/vita-shader-collection/releases/download/master-0.1-v86/vita-shader-collection.tar.gz
 	cd ..
 }
 
-msg " [1] Installing Vita SDK"
+msg " [1] Installing local Vita SDK"
 
 export VITASDK=$PWD/vitasdk
-export URL="https://github.com/vitasdk/autobuilds/releases/download/master-linux-v1455/vitasdk-x86_64-linux-gnu-2021-04-07_18-41-35.tar.bz2"
+export URL="https://github.com/vitasdk/autobuilds/releases/download/master-linux-v1476/vitasdk-x86_64-linux-gnu-2021-05-09_07-02-53.tar.bz2"
 
 mkdir -p vitasdk
 curl -sSLR -o vitasdk-nightly.tar.bz2 "$URL"
@@ -107,9 +107,5 @@ msg " [3] Downloading platform libraries"
 # libvitashaders
 rm -rf vitashaders
 download_and_extract_shaders
-
-git_clone https://github.com/vitasdk/vdpm
-
-git_clone https://github.com/vitasdk/vita-headers
 
 git_clone https://github.com/frangarcj/vita2dlib
