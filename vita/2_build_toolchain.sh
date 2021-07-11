@@ -36,11 +36,6 @@ if [ ! -f .patches-applied ]; then
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/harfbuzz-climits.patch
 	)
 
-	# Enable pixman SIMD
-	(cd $PIXMAN_DIR
-		patch -Np1 < $SCRIPT_DIR/../shared/extra/pixman-simd.patch
-	)
-
 	# Fix icu build
 	# Custom patch because vita newlib provides pthread
 	cp -rup icu icu-native
@@ -68,7 +63,7 @@ function set_build_flags {
 		export CXX="ccache $CXX"
 	fi
 	export CFLAGS="-g0 -O2"
-	export CXXFLAGS=$CFLAGS
+	export CXXFLAGS="$CFLAGS -DHB_TINY"
 	export CPPFLAGS="-DPSP2"
 }
 

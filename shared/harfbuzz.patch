@@ -1,19 +1,76 @@
-diff -Naur harfbuzz-2.6.4-orig/Makefile.am harfbuzz-2.6.4/Makefile.am
---- harfbuzz-2.6.4-orig/Makefile.am	2020-04-02 16:14:54.289540280 +0200
-+++ harfbuzz-2.6.4/Makefile.am	2020-04-02 16:15:01.989540255 +0200
+diff '--color=auto' -Naur harfbuzz-2.8.2-orig/autogen.sh harfbuzz-2.8.2/autogen.sh
+--- harfbuzz-2.8.2-orig/autogen.sh	2021-07-12 01:18:59.666655780 +0200
++++ harfbuzz-2.8.2/autogen.sh	2021-07-12 01:13:20.026651240 +0200
+@@ -24,13 +24,6 @@
+ 	echo "*** No libtoolize (libtool) found, please install it ***"
+ 	exit 1
+ }
+-printf "checking for gtkdocize... "
+-if which gtkdocize ; then
+-	gtkdocize --copy || exit 1
+-else
+-	echo "*** No gtkdocize (gtk-doc) found, skipping documentation ***"
+-	echo "EXTRA_DIST = " > gtk-doc.make
+-fi
+ 
+ printf "checking for autoreconf... "
+ which autoreconf || {
+diff '--color=auto' -Naur harfbuzz-2.8.2-orig/configure.ac harfbuzz-2.8.2/configure.ac
+--- harfbuzz-2.8.2-orig/configure.ac	2021-07-12 01:18:59.656655780 +0200
++++ harfbuzz-2.8.2/configure.ac	2021-07-12 01:13:20.036651241 +0200
+@@ -57,15 +57,7 @@
+ AM_CONDITIONAL(WITH_LIBSTDCXX, [test "x$with_libstdcxx" = "xyes"])
+ 
+ # Documentation
+-have_gtk_doc=false
+-m4_ifdef([GTK_DOC_CHECK], [
+-GTK_DOC_CHECK([1.15],[--flavour no-tmpl])
+-	if test "x$enable_gtk_doc" = xyes; then
+-		have_gtk_doc=true
+-	fi
+-], [
+-	AM_CONDITIONAL([ENABLE_GTK_DOC], false)
+-])
++AM_CONDITIONAL([ENABLE_GTK_DOC], false)
+ 
+ # Functions and headers
+ AC_CHECK_FUNCS(atexit mprotect sysconf getpagesize mmap isatty)
+@@ -433,7 +425,6 @@
+ test/subset/Makefile
+ test/subset/data/Makefile
+ test/subset/data/repack_tests/Makefile
+-docs/Makefile
+ docs/version.xml
+ ])
+ 
+diff '--color=auto' -Naur harfbuzz-2.8.2-orig/Makefile.am harfbuzz-2.8.2/Makefile.am
+--- harfbuzz-2.8.2-orig/Makefile.am	2021-07-12 01:18:59.656655780 +0200
++++ harfbuzz-2.8.2/Makefile.am	2021-07-12 01:13:20.036651241 +0200
 @@ -4,7 +4,7 @@
  
  ACLOCAL_AMFLAGS = -I m4
  
 -SUBDIRS = src util test docs
-+SUBDIRS = src util docs
++SUBDIRS = src util
  
  EXTRA_DIST = \
  	autogen.sh \
-diff -Naur harfbuzz-2.6.4-orig/src/Makefile.am harfbuzz-2.6.4/src/Makefile.am
---- harfbuzz-2.6.4-orig/src/Makefile.am	2020-04-02 16:14:54.279540280 +0200
-+++ harfbuzz-2.6.4/src/Makefile.am	2020-04-02 16:15:11.479540224 +0200
-@@ -328,15 +328,6 @@
+diff '--color=auto' -Naur harfbuzz-2.8.2-orig/src/hb.hh harfbuzz-2.8.2/src/hb.hh
+--- harfbuzz-2.8.2-orig/src/hb.hh	2021-07-12 01:18:59.676655780 +0200
++++ harfbuzz-2.8.2/src/hb.hh	2021-07-12 01:13:14.136651162 +0200
+@@ -29,7 +29,7 @@
+ #ifndef HB_HH
+ #define HB_HH
+ 
+-
++#define HB_NO_PRAGMA_GCC_DIAGNOSTIC
+ #ifndef HB_NO_PRAGMA_GCC_DIAGNOSTIC
+ #ifdef _MSC_VER
+ #pragma warning( disable: 4068 ) /* Unknown pragma */
+diff '--color=auto' -Naur harfbuzz-2.8.2-orig/src/Makefile.am harfbuzz-2.8.2/src/Makefile.am
+--- harfbuzz-2.8.2-orig/src/Makefile.am	2021-07-12 01:18:59.666655780 +0200
++++ harfbuzz-2.8.2/src/Makefile.am	2021-07-12 01:13:20.036651241 +0200
+@@ -298,16 +298,6 @@
  	|| ($(RM) $(srcdir)/harfbuzz.cc; false)
  BUILT_SOURCES += harfbuzz.cc
  
@@ -23,17 +80,26 @@ diff -Naur harfbuzz-2.6.4-orig/src/Makefile.am harfbuzz-2.6.4/src/Makefile.am
 -	test-buffer-serialize \
 -	test-ot-meta \
 -	test-ot-name \
+-	test-ot-glyphname \
 -	test-gpos-size-params \
 -	test-gsub-would-substitute \
 -	$(NULL)
  bin_PROGRAMS =
  
  main_SOURCES = main.cc
-@@ -369,7 +360,6 @@
+@@ -346,7 +336,6 @@
+ COMPILED_TESTS_CPPFLAGS = $(HBCFLAGS) -DMAIN -UNDEBUG
+ COMPILED_TESTS_LDADD = libharfbuzz.la $(HBLIBS)
+ check_PROGRAMS += $(COMPILED_TESTS)
+-TESTS += $(COMPILED_TESTS)
  
- if HAVE_FREETYPE
- if HAVE_CAIRO_FT
--noinst_PROGRAMS += test-ot-color
- test_ot_color_SOURCES = test-ot-color.cc
- test_ot_color_CPPFLAGS = $(HBCFLAGS) $(FREETYPE_CFLAGS) $(CAIRO_FT_CFLAGS)
- test_ot_color_LDADD = libharfbuzz.la $(HBLIBS) $(FREETYPE_LIBS) $(CAIRO_LIBS) $(CAIRO_FT_LIBS)
+ test_algs_SOURCES = test-algs.cc hb-static.cc
+ test_algs_CPPFLAGS = $(COMPILED_TESTS_CPPFLAGS)
+@@ -396,7 +385,6 @@
+ 	check-static-inits.py \
+ 	check-symbols.py \
+ 	$(NULL)
+-TESTS += $(dist_check_SCRIPTS)
+ 
+ if !WITH_LIBSTDCXX
+ dist_check_SCRIPTS += \

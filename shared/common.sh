@@ -216,14 +216,14 @@ function patches_common {
 	if [ -d "$HARFBUZZ_DIR" ]; then
 		(cd $HARFBUZZ_DIR
 			patch -Np1 < $_SCRIPT_DIR/harfbuzz.patch
-			# Remove this when harfbuzz releases a new version
-			patch -Np1 < $_SCRIPT_DIR/harfbuzz-pkgconfig.patch
 			autoreconf -fi
 		)
 	fi
 
 	# disable unsupported compiler flags by clang in libvorbis
-	perl -pi -e 's/-mno-ieee-fp//' $LIBVORBIS_DIR/configure
+	if [ -d "$LIBVORBIS_DIR" ]; then
+		perl -pi -e 's/-mno-ieee-fp//' $LIBVORBIS_DIR/configure
+	fi
 
 	# disable libsndfile examples and tests
 	if [ -d "$LIBSNDFILE_DIR" ]; then
@@ -238,22 +238,10 @@ function patches_common {
 	if [ -d "$LIBXMP_LITE_DIR" ]; then
 		# compile fix
 		(cd $LIBXMP_LITE_DIR
-			patch -Np1 < $_SCRIPT_DIR/libxmp-a0288352.patch
 			patch -Np1 < $_SCRIPT_DIR/libxmp-no-symver.patch
 
 			# Use custom CMakeLists.txt
 			cp $_SCRIPT_DIR/CMakeLists_xmplite.txt ./CMakeLists.txt
-		)
-	fi
-
-	# Wildmidi
-	if [ -d "$WILDMIDI_DIR" ]; then
-		# Support install for CMAKE_SYSTEM_NAME Generic
-		(cd $WILDMIDI_DIR
-			patch -Np1 < $SCRIPT_DIR/../shared/wildmidi-generic-install.patch
-
-			# Disable libm
-			perl -pi -e 's/FIND_LIBRARY\(M_LIBRARY m REQUIRED\)//' CMakeLists.txt
 		)
 	fi
 
@@ -262,6 +250,13 @@ function patches_common {
 		(cd $TREMOR_DIR
 			perl -pi -e 's/XIPH_PATH_OGG.*//' configure.in
 			autoreconf -fi
+		)
+	fi
+
+	# Expat: Disable high entropy randomness
+	if [ -d "$EXPAT_DIR" ]; then
+		(cd $EXPAT_DIR
+			perl -pi -e 's/#  error/#warning/' lib/xmlparse.c
 		)
 	fi
 
@@ -281,7 +276,7 @@ function cleanup {
 	rm -rf zlib-*/ libpng-*/ freetype-*/ harfbuzz-*/ pixman-*/ expat-*/ libogg-*/ \
 	libvorbis-*/ tremor-*/ mpg123-*/ libsndfile-*/ libxmp-lite-*/ speexdsp-*/ \
 	libsamplerate-*/ wildmidi-*/ opus-*/ opusfile-*/ icu/ icu-native/ \
-	SDL2-*/ SDL2_mixer-*/ SDL2_image-*/ fmt-*/ FluidLite-*/
+	SDL2-*/ SDL2_mixer-*/ SDL2_image-*/ fmt-*/ FluidLite-*/ json-*/
 	rm -f *.zip *.bz2 *.gz *.xz *.tgz icudt* *.pl .patches-applied config.cache
 	rm -rf bin/ sbin/ share/
 }

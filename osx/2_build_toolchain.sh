@@ -23,12 +23,6 @@ if [ ! -f .patches-applied ]; then
 
 	patches_common
 
-	# Fix ogg build
-	# Remove this when the next version is out
-	(cd $LIBOGG_DIR
-		patch -Np1 < $SCRIPT_DIR/libogg-fix-typedefs.patch
-	)
-
 	# Disable SDL2 mixer examples
 	(cd $SDL2_MIXER_DIR
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/sdl2_mixer_disable_examples.patch

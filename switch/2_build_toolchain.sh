@@ -37,11 +37,6 @@ if [ ! -f .patches-applied ]; then
 		autoreconf -fi
 	)
 
-	# Enable pixman SIMD
-	(cd $PIXMAN_DIR
-		patch -Np1 < $SCRIPT_DIR/../shared/extra/pixman-simd.patch
-	)
-
 	# disable libsamplerate examples and tests
 	(cd $LIBSAMPLERATE_DIR
 		perl -pi -e 's/examples tests//' Makefile.am
@@ -81,7 +76,7 @@ function set_build_flags {
 	fi
 	ARCH_FLAGS="-march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -fPIC -ftls-model=local-exec"
 	export CFLAGS="-g0 -O2 $ARCH_FLAGS -ffunction-sections -fdata-sections"
-	export CXXFLAGS="$CFLAGS"
+	export CXXFLAGS="$CFLAGS -DHB_TINY"
 	export CPPFLAGS="-D__SWITCH__ -I$PLATFORM_PREFIX/include -isystem $DEVKITPRO/libnx/include"
 	export LDFLAGS="$ARCH_FLAGS -L$PLATFORM_PREFIX/lib -L$DEVKITPRO/libnx/lib"
 	export LIBS="-lnx"

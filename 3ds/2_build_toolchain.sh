@@ -42,11 +42,6 @@ if [ ! -f .patches-applied ]; then
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/harfbuzz-climits.patch
 	)
 
-	# Enable pixman SIMD
-	(cd $PIXMAN_DIR
-		patch -Np1 < $SCRIPT_DIR/../shared/extra/pixman-simd.patch
-	)
-
 	cp -rup icu icu-native
 	# Disable pthread and other newlib issues
 	patch -Np0 < $SCRIPT_DIR/icu59-3ds.patch
@@ -75,7 +70,7 @@ function set_build_flags {
 	fi
 	ARCH_FLAGS="-march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -mword-relocations"
 	export CFLAGS="-g0 -O2 $ARCH_FLAGS -ffunction-sections -fdata-sections"
-	export CXXFLAGS="$CFLAGS"
+	export CXXFLAGS="$CFLAGS -DHB_TINY"
 	export CPPFLAGS="-D_3DS -I$PLATFORM_PREFIX/include -I$DEVKITPRO/libctru/include"
 	export LDFLAGS="$ARCH_FLAGS -L$PLATFORM_PREFIX/lib -L$DEVKITPRO/libctru/lib"
 	export LIBS="-lctru"

@@ -1,10 +1,10 @@
-diff -Naur libxmp-lite-4.4.1-orig/src/common.h libxmp-lite-4.4.1/src/common.h
---- libxmp-lite-4.4.1-orig/src/common.h	2020-07-13 20:08:30.532749896 +0200
-+++ libxmp-lite-4.4.1/src/common.h	2020-07-13 20:08:41.922845946 +0200
-@@ -11,7 +11,7 @@
+diff '--color=auto' -Naur libxmp-lite-4.5.0-orig/src/common.h libxmp-lite-4.5.0/src/common.h
+--- libxmp-lite-4.5.0-orig/src/common.h	2021-07-12 00:21:08.146609378 +0200
++++ libxmp-lite-4.5.0/src/common.h	2021-07-12 00:21:26.726609626 +0200
+@@ -23,7 +23,7 @@
  
- #if defined(__GNUC__) || defined(__clang__)
- #if !defined(WIN32) && !defined(__ANDROID__) && !defined(__APPLE__) && !defined(__AMIGA__) && !defined(B_BEOS_VERSION) && !defined(__ATHEOS__) && !defined(EMSCRIPTEN) && !defined(__MINT__) 
+ #if (defined(__GNUC__) || defined(__clang__)) && defined(XMP_SYM_VISIBILITY)
+ #if !defined(_WIN32) && !defined(__ANDROID__) && !defined(__APPLE__) && !defined(LIBXMP_AMIGA) && !defined(__MSDOS__) && !defined(B_BEOS_VERSION) && !defined(__ATHEOS__) && !defined(EMSCRIPTEN) && !defined(__MINT__)
 -#define USE_VERSIONED_SYMBOLS
 +//#define USE_VERSIONED_SYMBOLS
  #endif
