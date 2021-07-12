@@ -137,4 +137,3 @@ install_lib_icu_cross
 install_lib_liblcf
 
 install_lib_sdl
-install_lib_sdlmixer
