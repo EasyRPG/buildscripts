@@ -39,7 +39,7 @@ if [ ! -f .patches-applied ]; then
 	# Fix icu build
 	# Custom patch because vita newlib provides pthread
 	cp -rup icu icu-native
-	patch -Np0 < $SCRIPT_DIR/icu59-vita.patch
+	patch -Np0 < $SCRIPT_DIR/icu69-vita.patch
 
 	touch .patches-applied
 fi

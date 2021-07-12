@@ -113,7 +113,7 @@ FMT_DIR="$lib-$ver"
 FMT_ARGS="-DFMT_DOC=OFF -DFMT_TEST=OFF"
 
 lib=ICU
-ver=59.2
+ver=69.1
 ICU_URL=https://github.com/unicode-org/icu/releases/download/release-${ver//./-}/icu4c-${ver//./_}-src.tgz
 ICU_DIR="icu"
 ICU_ARGS="--enable-strict=no --disable-tests --disable-samples \

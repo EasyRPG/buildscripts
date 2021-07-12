@@ -49,8 +49,6 @@ if [ ! -f .patches-applied ]; then
 	)
 
 	cp -rup icu icu-native
-	# Fix icu build
-	patch -Np0 < $SCRIPT_DIR/icu59-switch.patch
 
 	touch .patches-applied
 fi

@@ -1,0 +1,19 @@
+diff '--color=auto' -Naur icu-native/source/common/putilimp.h icu/source/common/putilimp.h
+--- icu-native/source/common/putilimp.h	2021-07-12 03:43:51.336771958 +0200
++++ icu/source/common/putilimp.h	2021-07-12 03:43:57.536772041 +0200
+@@ -94,6 +94,7 @@
+ #   define U_NL_LANGINFO_CODESET CODESET
+ #endif
+ 
++#if 0
+ #if defined(U_TZSET) || defined(U_HAVE_TZSET)
+     /* Use the predefined value. */
+ #elif U_PLATFORM_USES_ONLY_WIN32_API
+@@ -144,6 +145,7 @@
+ #else
+ #   define U_TZNAME tzname
+ #endif
++#endif
+ 
+ #ifdef U_HAVE_MMAP
+     /* Use the predefined value. */

@@ -8,6 +8,9 @@ export WORKSPACE=$PWD
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
 
+# Override ICU version to 59.2
+source $SCRIPT_DIR/packages.sh
+
 msg " [1] Checking devkitARM"
 
 if [[ -z $DEVKITPRO || -z $DEVKITARM ]]; then
