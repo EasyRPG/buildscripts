@@ -45,8 +45,9 @@ if [ ! -f .patches-applied ]; then
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/harfbuzz-climits.patch
 	)
 
+	# Fix icu build
 	cp -rup icu icu-native
-	# Disable pthread and other newlib issues
+	perl -pi -e 's/xlocale/locale/' icu/source/i18n/digitlst.cpp
 	patch -Np0 < $SCRIPT_DIR/icu59-3ds.patch
 
 	touch .patches-applied

@@ -37,9 +37,9 @@ if [ ! -f .patches-applied ]; then
 	)
 
 	# Fix icu build
-	# Custom patch because vita newlib provides pthread
 	cp -rup icu icu-native
 	patch -Np0 < $SCRIPT_DIR/icu69-vita.patch
+	patch -Np0 < $SCRIPT_DIR/../shared/extra/icu69-no-mutex.patch
 
 	# Disable vita2dlib jpeg dependency
 	patch -Np0 < $SCRIPT_DIR/vita2dlib-no-jpeg.patch

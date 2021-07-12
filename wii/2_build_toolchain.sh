@@ -57,6 +57,7 @@ if [ ! -f .patches-applied ]; then
 	cp -rup icu icu-native
 	# Fix ICU compilation problems on Wii
 	patch -Np0 < icu-wii.patch
+	perl -pi -e 's/xlocale/locale/' icu/source/i18n/digitlst.cpp
 	# Emit correct bigendian icudata header
 	patch -Np0 < icu-pkg_genc.patch
 
