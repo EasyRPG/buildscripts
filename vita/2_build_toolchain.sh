@@ -41,6 +41,9 @@ if [ ! -f .patches-applied ]; then
 	cp -rup icu icu-native
 	patch -Np0 < $SCRIPT_DIR/icu69-vita.patch
 
+	# Disable vita2dlib jpeg dependency
+	patch -Np0 < $SCRIPT_DIR/vita2dlib-no-jpeg.patch
+
 	touch .patches-applied
 fi
 
@@ -88,14 +91,7 @@ function install_shaders() {
 	)
 }
 
-function install_vdpm() {
-	msg "Installing VDPM packages"
-	vdpm libjpeg-turbo # for vita2d
-}
-
 install_lib_icu_native
-
-install_vdpm
 
 set_build_flags
 install_lib_zlib
