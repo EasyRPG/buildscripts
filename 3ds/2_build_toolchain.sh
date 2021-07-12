@@ -102,3 +102,4 @@ install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 install_lib_cmake $FLUIDLITE_DIR $FLUIDLITE_ARGS
 install_lib_cmake $FMT_DIR $FMT_ARGS
 install_lib_icu_cross
+install_lib_liblcf

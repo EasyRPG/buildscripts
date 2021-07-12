@@ -46,6 +46,15 @@ function git_clone {
 	git clone $url $path
 }
 
+function download_liblcf {
+	if [ "$BUILD_LIBLCF" == "1" ]; then
+		git_clone "https://github.com/easyrpg/liblcf"
+		(cd liblcf
+			autoreconf -fi
+		)
+	fi
+}
+
 function msg {
 	echo ""
 	echo "$1"
@@ -124,6 +133,12 @@ function install_lib_mpg123 {
 		install -m644 libmpg123.pc $PLATFORM_PREFIX/lib/pkgconfig
 		./libtool --mode=install install src/libmpg123/libmpg123.la $PLATFORM_PREFIX/lib
 	)
+}
+
+function install_lib_liblcf {
+	if [ "$BUILD_LIBLCF" == "1" ]; then
+		install_lib liblcf --disable-update-mimedb --disable-tools
+	fi
 }
 
 function install_lib_icu_native {
@@ -277,7 +292,7 @@ function cleanup {
 	rm -rf zlib-*/ libpng-*/ freetype-*/ harfbuzz-*/ pixman-*/ expat-*/ libogg-*/ \
 	libvorbis-*/ tremor-*/ mpg123-*/ libsndfile-*/ libxmp-lite-*/ speexdsp-*/ \
 	libsamplerate-*/ wildmidi-*/ opus-*/ opusfile-*/ icu/ icu-native/ \
-	SDL2-*/ SDL2_mixer-*/ SDL2_image-*/ fmt-*/ FluidLite-*/ json-*/
+	SDL2-*/ SDL2_mixer-*/ SDL2_image-*/ fmt-*/ FluidLite-*/ json-*/ liblcf/
 	rm -f *.zip *.bz2 *.gz *.xz *.tgz icudt* *.pl .patches-applied config.cache
 	rm -rf bin/ sbin/ share/
 }

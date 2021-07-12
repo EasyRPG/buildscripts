@@ -128,3 +128,7 @@ msg " [2] Preparing platform libraries"
 # SDL2
 rm -rf SDL2/
 git clone --depth=1 https://github.com/emscripten-ports/SDL2.git
+
+# liblcf
+rm -rf liblcf
+download_liblcf

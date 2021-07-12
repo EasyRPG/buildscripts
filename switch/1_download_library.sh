@@ -93,3 +93,7 @@ download_and_extract $ICU_URL
 # icudata
 rm -f $ICUDATA_FILES
 download_and_extract $ICUDATA_URL
+
+# liblcf
+rm -rf liblcf
+download_liblcf

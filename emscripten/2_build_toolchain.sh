@@ -116,6 +116,8 @@ install_lib_sdl2
 install_lib_icu_cross
 icu_force_data_install
 
+install_lib_liblcf
+
 #### additional stuff
 
 # for freetype, build apinames apart with gcc:

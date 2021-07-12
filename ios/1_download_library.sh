@@ -91,3 +91,7 @@ msg " [2] Downloading platform libraries"
 # SDL2
 rm -rf $SDL2_DIR
 download_and_extract $SDL2_URL
+
+# liblcf
+rm -rf liblcf
+download_liblcf

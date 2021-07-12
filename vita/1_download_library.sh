@@ -109,3 +109,7 @@ rm -rf vitashaders
 download_and_extract_shaders
 
 git_clone https://github.com/frangarcj/vita2dlib
+
+# liblcf
+rm -rf liblcf
+download_liblcf
