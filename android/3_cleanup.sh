@@ -8,4 +8,6 @@ source $SCRIPT_DIR/../shared/import.sh
 
 cleanup
 
+rm -f *-toolchain/config.cache
+
 echo " -> done"

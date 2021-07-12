@@ -44,8 +44,10 @@ cd $ANDROID_FOLDER
 ./gradlew -PtoolchainDirs="${EASYRPG_TOOLCHAIN_DIR}" assembleRelease
 
 # Sign the .apk
-cd $ANDROID_FOLDER/app/build/outputs/apk
+cd $ANDROID_FOLDER/app/build/outputs/apk/release
 jarsigner -sigalg SHA1withRSA -digestalg SHA1 -keystore $KEYSTORE_PATH -storepass $KEYSTORE_PASSWORD app-release-unsigned.apk $KEYSTORE_NAME
 zipalign 4 app-release-unsigned.apk EasyRpgPlayerActivity.apk
 
 cd $WORKSPACE
+
+echo 'Done! The signed APK is in "Player/builds/android/app/build/outputs/apk/release/"'
