@@ -63,7 +63,7 @@ function set_build_flags {
 		export CXX="ccache $CXX"
 	fi
 	export CFLAGS="-g0 -O2"
-	export CXXFLAGS="$CFLAGS -DHB_TINY"
+	export CXXFLAGS="$CFLAGS"
 	export CPPFLAGS="-DPSP2"
 }
 

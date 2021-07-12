@@ -88,7 +88,7 @@ function set_build_flags {
 		export CXX="ccache $CXX"
 	fi
 	export CFLAGS="-g0 -O2 -mcpu=750 -meabi -mhard-float -ffunction-sections -fdata-sections"
-	export CXXFLAGS="$CFLAGS -DHB_TINY"
+	export CXXFLAGS="$CFLAGS"
 	export CPPFLAGS="-I$PLATFORM_PREFIX/include -DGEKKO"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 }

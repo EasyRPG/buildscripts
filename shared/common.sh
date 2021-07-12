@@ -212,10 +212,11 @@ function patches_common {
 		autoreconf -fi
 	)
 
-	# disable harfbuzz tests
+	# disable harfbuzz tests, docs and most features
 	if [ -d "$HARFBUZZ_DIR" ]; then
 		(cd $HARFBUZZ_DIR
-			patch -Np1 < $_SCRIPT_DIR/harfbuzz.patch
+			patch -Np1 < $_SCRIPT_DIR/harfbuzz-no-docs-tests.patch
+			patch -Np1 < $_SCRIPT_DIR/harfbuzz-no-features.patch
 			autoreconf -fi
 		)
 	fi

@@ -50,7 +50,7 @@ export MAKEFLAGS="-j${nproc:-2}"
 function set_build_flags {
 	export PATH="$PATH:$PLATFORM_PREFIX/bin" # for icu-config
 	export CFLAGS="-O2 -g0"
-	export CXXFLAGS="$CFLAGS -DHB_TINY"
+	export CXXFLAGS="$CFLAGS"
 	export CPPFLAGS="-I$PLATFORM_PREFIX/include"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 	export EM_CFLAGS="-Wno-warn-absolute-paths"
