@@ -18,7 +18,7 @@ function download_and_extract_shaders {
 msg " [1] Installing local Vita SDK"
 
 export VITASDK=$PWD/vitasdk
-export URL="https://github.com/vitasdk/autobuilds/releases/download/master-linux-v1476/vitasdk-x86_64-linux-gnu-2021-05-09_07-02-53.tar.bz2"
+export URL="https://github.com/vitasdk/autobuilds/releases/download/master-linux-v1498/vitasdk-x86_64-linux-gnu-2021-06-13_20-39-05.tar.bz2"
 
 mkdir -p vitasdk
 curl -sSLR -o vitasdk-nightly.tar.bz2 "$URL"
