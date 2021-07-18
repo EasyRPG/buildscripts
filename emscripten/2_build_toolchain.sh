@@ -37,6 +37,11 @@ if [ ! -f .patches-applied ]; then
 		patch -Np1 < ../xmp-emscripten.patch
 	)
 
+	# Fix fluidsynth
+	(cd $FLUIDSYNTH_DIR
+		patch -Np1 < ../fluidsynth-emscripten.patch
+	)
+
 	cp -rup icu icu-native
 
 	touch .patches-applied
