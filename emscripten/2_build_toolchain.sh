@@ -107,7 +107,7 @@ install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
 #install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS
 install_lib $OPUS_DIR $OPUS_ARGS --disable-stack-protector
 install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
-install_lib_cmake $FLUIDLITE_DIR $FLUIDLITE_ARGS -DENABLE_SF3=ON
+install_lib_cmake $FLUIDSYNTH_DIR $FLUIDSYNTH_ARGS
 install_lib_cmake $NLOHMANNJSON_DIR $NLOHMANNJSON_ARGS
 install_lib_cmake $FMT_DIR $FMT_ARGS
 

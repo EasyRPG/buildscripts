@@ -269,10 +269,17 @@ function patches_common {
 		)
 	fi
 
-	# Expat: Disable high entropy randomness
+	# Expat: Disable error when high entropy randomness is unavailable
 	if [ -d "$EXPAT_DIR" ]; then
 		(cd $EXPAT_DIR
 			perl -pi -e 's/#  error/#warning/' lib/xmlparse.c
+		)
+	fi
+
+	# FluidSynth: Shim glib and disable all optional features
+	if [ -d "$FLUIDSYNTH_DIR" ]; then
+		(cd $FLUIDSYNTH_DIR
+			patch -Np1 < $_SCRIPT_DIR/fluidsynth-no-glib.patch
 		)
 	fi
 
@@ -287,7 +294,8 @@ function cleanup {
 	rm -rf zlib-*/ libpng-*/ freetype-*/ harfbuzz-*/ pixman-*/ expat-*/ libogg-*/ \
 	libvorbis-*/ tremor-*/ mpg123-*/ libsndfile-*/ libxmp-lite-*/ speexdsp-*/ \
 	libsamplerate-*/ wildmidi-*/ opus-*/ opusfile-*/ icu/ icu-native/ \
-	SDL2-*/ SDL2_image-*/ fmt-*/ FluidLite-*/ json-*/ liblcf/
+	SDL2-*/ SDL2_image-*/ fmt-*/ FluidLite-*/ fluidsynth-*/ json-*/ \
+	liblcf/
 	rm -f *.zip *.bz2 *.gz *.xz *.tgz icudt* *.pl .patches-applied config.cache
 	rm -rf bin/ sbin/ share/
 }
