@@ -54,10 +54,11 @@ if [ ! -f .patches-applied ]; then
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/harfbuzz-climits.patch
 	)
 
+	# Fix icu build
+	perl -pi -e 's/xlocale/locale/' icu/source/i18n/digitlst.cpp
 	cp -rup icu icu-native
 	# Fix ICU compilation problems on Wii
 	patch -Np0 < icu-wii.patch
-	perl -pi -e 's/xlocale/locale/' icu/source/i18n/digitlst.cpp
 	# Emit correct bigendian icudata header
 	patch -Np0 < icu-pkg_genc.patch
 

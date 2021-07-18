@@ -46,8 +46,8 @@ if [ ! -f .patches-applied ]; then
 	)
 
 	# Fix icu build
-	cp -rup icu icu-native
 	perl -pi -e 's/xlocale/locale/' icu/source/i18n/digitlst.cpp
+	cp -rup icu icu-native
 	patch -Np0 < $SCRIPT_DIR/icu59-3ds.patch
 
 	touch .patches-applied
