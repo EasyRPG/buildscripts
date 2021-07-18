@@ -104,15 +104,6 @@ function install_lib_sdl() {
 	)
 }
 
-function install_lib_sdlmixer() {
-	msg "Building SDL_mixer"
-
-	(cd $SDL_DIR/SDL_mixer
-		make clean
-		make install INSTALL_HEADER_DIR="$WORKSPACE/include" INSTALL_LIB_DIR="$WORKSPACE/lib"
-	)
-}
-
 install_lib_icu_native_without_assembly
 
 set_build_flags

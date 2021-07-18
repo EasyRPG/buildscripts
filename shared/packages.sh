@@ -129,15 +129,6 @@ ver=2.0.14
 SDL2_URL="https://libsdl.org/release/$lib-$ver.tar.gz"
 SDL2_DIR="$lib-$ver"
 
-lib=SDL2_mixer
-ver=2.0.4
-SDL2_MIXER_URL="https://www.libsdl.org/projects/SDL_mixer/release/$lib-$ver.tar.gz"
-SDL2_MIXER_DIR="$lib-$ver"
-SDL2_MIXER_ARGS="--with-sdl-prefix=$WORKSPACE --disable-music-ogg \
-	--disable-music-midi-fluidsynth --disable-music-midi-fluidsynth-shared \
-	--disable-music-mod --disable-music-mp3 --disable-music-flac --disable-sdltest \
-	--disable-music-opus --disable-music-mp3-mpg123"
-
 # only needed for lmu2png tool
 lib=SDL2_image
 ver=2.0.5

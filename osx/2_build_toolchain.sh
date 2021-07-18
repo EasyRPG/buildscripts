@@ -23,13 +23,6 @@ if [ ! -f .patches-applied ]; then
 
 	patches_common
 
-	# Disable SDL2 mixer examples
-	(cd $SDL2_MIXER_DIR
-		patch -Np1 < $SCRIPT_DIR/../shared/extra/sdl2_mixer_disable_examples.patch
-		rm aclocal.m4
-		autoreconf -fi
-	)
-
 	touch .patches-applied
 fi
 
@@ -82,4 +75,3 @@ install_lib_cmake $FMT_DIR $FMT_ARGS
 install_lib $ICU_DIR/source $ICU_ARGS
 install_lib_liblcf
 install_lib $SDL2_DIR $SDL2_ARGS
-install_lib $SDL2_MIXER_DIR $SDL2_MIXER_ARGS

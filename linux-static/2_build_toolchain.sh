@@ -62,5 +62,4 @@ install_lib_cmake $FMT_DIR $FMT_ARGS
 install_lib $ICU_DIR/source $ICU_ARGS
 install_lib_liblcf
 install_lib $SDL2_DIR $SDL2_ARGS PULSEAUDIO_CFLAGS=-Ixxxdir PULSEAUDIO_LIBS=-lxxxlib
-install_lib $SDL2_MIXER_DIR $SDL2_MIXER_ARGS
 install_lib $SDL2_IMAGE_DIR $SDL2_IMAGE_ARGS
