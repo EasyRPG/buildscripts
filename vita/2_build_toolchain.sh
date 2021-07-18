@@ -36,15 +36,12 @@ if [ ! -f .patches-applied ]; then
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/harfbuzz-climits.patch
 	)
 
-	# Enable pixman SIMD
-	(cd $PIXMAN_DIR
-		patch -Np1 < $SCRIPT_DIR/../shared/extra/pixman-simd.patch
-	)
-
 	# Fix icu build
-	# Custom patch because vita newlib provides pthread
 	cp -rup icu icu-native
-	patch -Np0 < $SCRIPT_DIR/icu59-vita.patch
+	patch -Np0 < $SCRIPT_DIR/icu69-vita.patch
+
+	# Disable vita2dlib jpeg dependency
+	patch -Np0 < $SCRIPT_DIR/vita2dlib-no-jpeg.patch
 
 	touch .patches-applied
 fi
@@ -68,7 +65,7 @@ function set_build_flags {
 		export CXX="ccache $CXX"
 	fi
 	export CFLAGS="-g0 -O2"
-	export CXXFLAGS=$CFLAGS
+	export CXXFLAGS="$CFLAGS"
 	export CPPFLAGS="-DPSP2"
 }
 
@@ -93,14 +90,7 @@ function install_shaders() {
 	)
 }
 
-function install_vdpm() {
-	msg "Installing VDPM packages"
-	vdpm libjpeg-turbo # for vita2d
-}
-
 install_lib_icu_native
-
-install_vdpm
 
 set_build_flags
 install_lib_zlib
@@ -122,6 +112,7 @@ install_lib $OPUS_DIR $OPUS_ARGS
 install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 install_lib_cmake $FMT_DIR $FMT_ARGS
 install_lib_icu_cross
+install_lib_liblcf
 
 install_lib_vita2d
 install_shaders

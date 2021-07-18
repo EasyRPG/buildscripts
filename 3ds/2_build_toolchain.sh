@@ -8,6 +8,9 @@ export WORKSPACE=$PWD
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
 
+# Override ICU version to 59.2
+source $SCRIPT_DIR/packages.sh
+
 # Number of CPU
 nproc=$(nproc)
 
@@ -42,13 +45,9 @@ if [ ! -f .patches-applied ]; then
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/harfbuzz-climits.patch
 	)
 
-	# Enable pixman SIMD
-	(cd $PIXMAN_DIR
-		patch -Np1 < $SCRIPT_DIR/../shared/extra/pixman-simd.patch
-	)
-
+	# Fix icu build
 	cp -rup icu icu-native
-	# Disable pthread and other newlib issues
+	perl -pi -e 's/xlocale/locale/' icu/source/i18n/digitlst.cpp
 	patch -Np0 < $SCRIPT_DIR/icu59-3ds.patch
 
 	touch .patches-applied
@@ -104,3 +103,4 @@ install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 install_lib_cmake $FLUIDLITE_DIR $FLUIDLITE_ARGS
 install_lib_cmake $FMT_DIR $FMT_ARGS
 install_lib_icu_cross
+install_lib_liblcf

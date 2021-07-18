@@ -7,8 +7,6 @@ export WORKSPACE=$PWD
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
-# Override ICU version to 60.2
-source $SCRIPT_DIR/packages.sh
 
 # Number of CPU
 nproc=$(nproc)
@@ -34,6 +32,11 @@ if [ ! -f .patches-applied ]; then
 	# (see https://groups.google.com/forum/#!topic/emscripten-discuss/YM3jC_qQoPk)
 	perl -pi -e 's/HAVE_ARC4RANDOM\)/NO_ARC4RANDOM\)/' $EXPAT_DIR/ConfigureChecks.cmake
 
+	# Fix libxmp-lite
+	(cd $LIBXMP_LITE_DIR
+		patch -Np1 < ../xmp-emscripten.patch
+	)
+
 	cp -rup icu icu-native
 
 	touch .patches-applied
@@ -47,7 +50,7 @@ export MAKEFLAGS="-j${nproc:-2}"
 function set_build_flags {
 	export PATH="$PATH:$PLATFORM_PREFIX/bin" # for icu-config
 	export CFLAGS="-O2 -g0"
-	export CXXFLAGS=$CFLAGS
+	export CXXFLAGS="$CFLAGS"
 	export CPPFLAGS="-I$PLATFORM_PREFIX/include"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 	export EM_CFLAGS="-Wno-warn-absolute-paths"
@@ -102,7 +105,7 @@ install_lib $LIBSNDFILE_DIR $LIBSNDFILE_ARGS
 install_lib_cmake $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
 install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
 #install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS
-install_lib $OPUS_DIR $OPUS_ARGS
+install_lib $OPUS_DIR $OPUS_ARGS --disable-stack-protector
 install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 install_lib_cmake $FLUIDLITE_DIR $FLUIDLITE_ARGS -DENABLE_SF3=ON
 install_lib_cmake $NLOHMANNJSON_DIR $NLOHMANNJSON_ARGS
@@ -112,6 +115,8 @@ install_lib_sdl2
 
 install_lib_icu_cross
 icu_force_data_install
+
+install_lib_liblcf
 
 #### additional stuff
 

@@ -99,3 +99,7 @@ download_and_extract $SDL2_URL
 # SDL2_mixer
 rm -rf $SDL2_MIXER_DIR
 download_and_extract $SDL2_MIXER_URL
+
+# liblcf
+rm -rf liblcf
+download_liblcf

@@ -37,11 +37,6 @@ if [ ! -f .patches-applied ]; then
 		autoreconf -fi
 	)
 
-	# Enable pixman SIMD
-	(cd $PIXMAN_DIR
-		patch -Np1 < $SCRIPT_DIR/../shared/extra/pixman-simd.patch
-	)
-
 	# disable libsamplerate examples and tests
 	(cd $LIBSAMPLERATE_DIR
 		perl -pi -e 's/examples tests//' Makefile.am
@@ -54,8 +49,6 @@ if [ ! -f .patches-applied ]; then
 	)
 
 	cp -rup icu icu-native
-	# Fix icu build
-	patch -Np0 < $SCRIPT_DIR/icu59-switch.patch
 
 	touch .patches-applied
 fi
@@ -110,3 +103,4 @@ install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 install_lib_cmake $FLUIDLITE_DIR $FLUIDLITE_ARGS
 install_lib_cmake $FMT_DIR $FMT_ARGS
 install_lib_icu_cross
+install_lib_liblcf

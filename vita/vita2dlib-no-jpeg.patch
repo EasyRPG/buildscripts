@@ -1,0 +1,54 @@
+diff '--color=auto' -Naur vita2dlib-orig/libvita2d/source/vita2d_image_jpeg.c vita2dlib/libvita2d/source/vita2d_image_jpeg.c
+--- vita2dlib-orig/libvita2d/source/vita2d_image_jpeg.c	2021-07-12 15:32:51.677340577 +0200
++++ vita2dlib/libvita2d/source/vita2d_image_jpeg.c	2021-07-12 15:34:30.317341896 +0200
+@@ -3,11 +3,12 @@
+ #include <string.h>
+ #include <psp2/io/fcntl.h>
+ #include <psp2/gxm.h>
+-#include <jpeglib.h>
++//#include <jpeglib.h>
+ #include "vita2d.h"
+ 
+ static vita2d_texture *_vita2d_load_JPEG_generic(struct jpeg_decompress_struct *jinfo, struct jpeg_error_mgr *jerr)
+ {
++#if 0
+ 	float downScaleWidth = (float)jinfo->image_width / 4096;
+ 	float downScaleHeight = (float)jinfo->image_height / 4096;
+ 	float downScale = (downScaleWidth >= downScaleHeight) ? downScaleWidth : downScaleHeight;
+@@ -48,11 +49,14 @@
+ 	jpeg_finish_decompress(jinfo);
+ 
+ 	return texture;
++#endif
++	return NULL;
+ }
+ 
+ 
+ vita2d_texture *vita2d_load_JPEG_file(const char *filename)
+ {
++#if 0
+ 	FILE *fp;
+ 	if ((fp = fopen(filename, "rb")) < 0) {
+ 		return NULL;
+@@ -81,11 +85,14 @@
+ 
+ 	fclose(fp);
+ 	return texture;
++#endif
++	return NULL;
+ }
+ 
+ 
+ vita2d_texture *vita2d_load_JPEG_buffer(const void *buffer, unsigned long buffer_size)
+ {
++#if 0
+ 	unsigned int magic = *(unsigned int *)buffer;
+ 	if (magic != 0xE0FFD8FF && magic != 0xE1FFD8FF) {
+ 		return NULL;
+@@ -105,4 +112,6 @@
+ 	jpeg_destroy_decompress(&jinfo);
+ 
+ 	return texture;
++#endif
++	return NULL;
+ }

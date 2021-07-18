@@ -101,3 +101,7 @@ msg " [3] Downloading platform libraries"
 # SDL+SDL_mixer
 rm -rf $SDL_DIR
 download_and_extract $SDL_URL
+
+# liblcf
+rm -rf liblcf
+download_liblcf

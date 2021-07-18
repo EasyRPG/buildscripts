@@ -46,6 +46,15 @@ function git_clone {
 	git clone $url $path
 }
 
+function download_liblcf {
+	if [ "$BUILD_LIBLCF" == "1" ]; then
+		git_clone "https://github.com/easyrpg/liblcf"
+		(cd liblcf
+			autoreconf -fi
+		)
+	fi
+}
+
 function msg {
 	echo ""
 	echo "$1"
@@ -124,6 +133,12 @@ function install_lib_mpg123 {
 		install -m644 libmpg123.pc $PLATFORM_PREFIX/lib/pkgconfig
 		./libtool --mode=install install src/libmpg123/libmpg123.la $PLATFORM_PREFIX/lib
 	)
+}
+
+function install_lib_liblcf {
+	if [ "$BUILD_LIBLCF" == "1" ]; then
+		install_lib liblcf --disable-update-mimedb --disable-tools
+	fi
 }
 
 function install_lib_icu_native {
@@ -212,18 +227,19 @@ function patches_common {
 		autoreconf -fi
 	)
 
-	# disable harfbuzz tests
+	# disable harfbuzz tests, docs and most features
 	if [ -d "$HARFBUZZ_DIR" ]; then
 		(cd $HARFBUZZ_DIR
-			patch -Np1 < $_SCRIPT_DIR/harfbuzz.patch
-			# Remove this when harfbuzz releases a new version
-			patch -Np1 < $_SCRIPT_DIR/harfbuzz-pkgconfig.patch
+			patch -Np1 < $_SCRIPT_DIR/harfbuzz-no-docs-tests.patch
+			patch -Np1 < $_SCRIPT_DIR/harfbuzz-no-features.patch
 			autoreconf -fi
 		)
 	fi
 
 	# disable unsupported compiler flags by clang in libvorbis
-	perl -pi -e 's/-mno-ieee-fp//' $LIBVORBIS_DIR/configure
+	if [ -d "$LIBVORBIS_DIR" ]; then
+		perl -pi -e 's/-mno-ieee-fp//' $LIBVORBIS_DIR/configure
+	fi
 
 	# disable libsndfile examples and tests
 	if [ -d "$LIBSNDFILE_DIR" ]; then
@@ -238,22 +254,10 @@ function patches_common {
 	if [ -d "$LIBXMP_LITE_DIR" ]; then
 		# compile fix
 		(cd $LIBXMP_LITE_DIR
-			patch -Np1 < $_SCRIPT_DIR/libxmp-a0288352.patch
 			patch -Np1 < $_SCRIPT_DIR/libxmp-no-symver.patch
 
 			# Use custom CMakeLists.txt
 			cp $_SCRIPT_DIR/CMakeLists_xmplite.txt ./CMakeLists.txt
-		)
-	fi
-
-	# Wildmidi
-	if [ -d "$WILDMIDI_DIR" ]; then
-		# Support install for CMAKE_SYSTEM_NAME Generic
-		(cd $WILDMIDI_DIR
-			patch -Np1 < $SCRIPT_DIR/../shared/wildmidi-generic-install.patch
-
-			# Disable libm
-			perl -pi -e 's/FIND_LIBRARY\(M_LIBRARY m REQUIRED\)//' CMakeLists.txt
 		)
 	fi
 
@@ -265,15 +269,17 @@ function patches_common {
 		)
 	fi
 
+	# Expat: Disable high entropy randomness
+	if [ -d "$EXPAT_DIR" ]; then
+		(cd $EXPAT_DIR
+			perl -pi -e 's/#  error/#warning/' lib/xmlparse.c
+		)
+	fi
+
 	cp icudt*.dat $ICU_DIR/source/data/in
 	(cd $ICU_DIR/source
 		chmod u+x configure
 		perl -pi -e 's/SMALL_BUFFER_MAX_SIZE 512/SMALL_BUFFER_MAX_SIZE 2048/' tools/toolutil/pkg_genc.h
-		# glibc 2.26 removed xlocale.h: https://ssl.icu-project.org/trac/ticket/13329
-		# Patch is incompatible with MacOSX/iOS
-		if [ "$(uname)" != "Darwin" ]; then
-			perl -pi -e 's/xlocale/locale/' i18n/digitlst.cpp
-		fi
 	)
 }
 
@@ -281,7 +287,7 @@ function cleanup {
 	rm -rf zlib-*/ libpng-*/ freetype-*/ harfbuzz-*/ pixman-*/ expat-*/ libogg-*/ \
 	libvorbis-*/ tremor-*/ mpg123-*/ libsndfile-*/ libxmp-lite-*/ speexdsp-*/ \
 	libsamplerate-*/ wildmidi-*/ opus-*/ opusfile-*/ icu/ icu-native/ \
-	SDL2-*/ SDL2_mixer-*/ SDL2_image-*/ fmt-*/ FluidLite-*/
+	SDL2-*/ SDL2_mixer-*/ SDL2_image-*/ fmt-*/ FluidLite-*/ json-*/ liblcf/
 	rm -f *.zip *.bz2 *.gz *.xz *.tgz icudt* *.pl .patches-applied config.cache
 	rm -rf bin/ sbin/ share/
 }

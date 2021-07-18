@@ -23,12 +23,6 @@ if [ ! -f .patches-applied ]; then
 
 	patches_common
 
-	# Fix ogg build
-	# Remove this when the next version is out
-	(cd $LIBOGG_DIR
-		patch -Np1 < $SCRIPT_DIR/libogg-fix-typedefs.patch
-	)
-
 	# Disable SDL2 mixer examples
 	(cd $SDL2_MIXER_DIR
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/sdl2_mixer_disable_examples.patch
@@ -86,5 +80,6 @@ install_lib_cmake $FLUIDLITE_DIR $FLUIDLITE_ARGS -DENABLE_SF3=ON
 install_lib_cmake $NLOHMANNJSON_DIR $NLOHMANNJSON_ARGS
 install_lib_cmake $FMT_DIR $FMT_ARGS
 install_lib $ICU_DIR/source $ICU_ARGS
+install_lib_liblcf
 install_lib $SDL2_DIR $SDL2_ARGS
 install_lib $SDL2_MIXER_DIR $SDL2_MIXER_ARGS

@@ -57,6 +57,7 @@ if [ ! -f .patches-applied ]; then
 	cp -rup icu icu-native
 	# Fix ICU compilation problems on Wii
 	patch -Np0 < icu-wii.patch
+	perl -pi -e 's/xlocale/locale/' icu/source/i18n/digitlst.cpp
 	# Emit correct bigendian icudata header
 	patch -Np0 < icu-pkg_genc.patch
 
@@ -88,7 +89,7 @@ function set_build_flags {
 		export CXX="ccache $CXX"
 	fi
 	export CFLAGS="-g0 -O2 -mcpu=750 -meabi -mhard-float -ffunction-sections -fdata-sections"
-	export CXXFLAGS=$CFLAGS
+	export CXXFLAGS="$CFLAGS"
 	export CPPFLAGS="-I$PLATFORM_PREFIX/include -DGEKKO"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 }
@@ -134,6 +135,6 @@ install_lib $OPUS_DIR $OPUS_ARGS
 install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 install_lib_cmake $FMT_DIR $FMT_ARGS
 install_lib_icu_cross
+install_lib_liblcf
 
 install_lib_sdl
-install_lib_sdlmixer

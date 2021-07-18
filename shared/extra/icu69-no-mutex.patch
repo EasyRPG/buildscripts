@@ -1,0 +1,340 @@
+diff '--color=auto' -Naur icu-native/source/common/umutex.cpp icu/source/common/umutex.cpp
+--- icu-native/source/common/umutex.cpp	2021-07-13 00:45:56.917784151 +0200
++++ icu/source/common/umutex.cpp	2021-07-13 00:46:06.537784279 +0200
+@@ -43,16 +43,18 @@
+  *
+  *************************************************************************************************/
+ 
++#if 0
++
+ namespace {
+-std::mutex *initMutex;
+-std::condition_variable *initCondition;
++//std::mutex *initMutex;
++//std::condition_variable *initCondition;
+ 
+ // The ICU global mutex.
+ // Used when ICU implementation code passes nullptr for the mutex pointer.
+ UMutex globalMutex;
+ 
+-std::once_flag initFlag;
+-std::once_flag *pInitFlag = &initFlag;
++//std::once_flag initFlag;
++//std::once_flag *pInitFlag = &initFlag;
+ 
+ }  // Anonymous namespace
+ 
+@@ -106,24 +108,28 @@
+     }
+     gListHead = nullptr;
+ }
+-
++#endif
+ 
+ U_CAPI void  U_EXPORT2
+ umtx_lock(UMutex *mutex) {
++#if 0
+     if (mutex == nullptr) {
+         mutex = &globalMutex;
+     }
+     mutex->lock();
++#endif
+ }
+ 
+ 
+ U_CAPI void  U_EXPORT2
+ umtx_unlock(UMutex* mutex)
+ {
++#if 0
+     if (mutex == nullptr) {
+         mutex = &globalMutex;
+     }
+     mutex->unlock();
++#endif
+ }
+ 
+ 
+@@ -143,6 +149,7 @@
+ //
+ U_COMMON_API UBool U_EXPORT2
+ umtx_initImplPreInit(UInitOnce &uio) {
++#if 0
+     std::call_once(*pInitFlag, umtx_init);
+     std::unique_lock<std::mutex> lock(*initMutex);
+     if (umtx_loadAcquire(uio.fState) == 0) {
+@@ -157,6 +164,8 @@
+         U_ASSERT(uio.fState == 2);
+         return false;
+     }
++#endif
++	return true;
+ }
+ 
+ 
+@@ -168,11 +177,13 @@
+ 
+ U_COMMON_API void U_EXPORT2
+ umtx_initImplPostInit(UInitOnce &uio) {
++#if 0
+     {
+         std::unique_lock<std::mutex> lock(*initMutex);
+         umtx_storeRelease(uio.fState, 2);
+     }
+     initCondition->notify_all();
++#endif
+ }
+ 
+ U_NAMESPACE_END
+diff '--color=auto' -Naur icu-native/source/common/umutex.h icu/source/common/umutex.h
+--- icu-native/source/common/umutex.h	2021-07-13 00:45:56.917784151 +0200
++++ icu/source/common/umutex.h	2021-07-13 00:46:06.537784279 +0200
+@@ -20,9 +20,9 @@
+ #ifndef UMUTEX_H
+ #define UMUTEX_H
+ 
+-#include <atomic>
+-#include <condition_variable>
+-#include <mutex>
++//#include <atomic>
++//#include <condition_variable>
++//#include <mutex>
+ #include <type_traits>
+ 
+ #include "unicode/utypes.h"
+@@ -37,7 +37,7 @@
+ #error U_USER_ATOMICS and U_USER_MUTEX_H are not supported
+ #endif
+ 
+-// Export an explicit template instantiation of std::atomic<int32_t>. 
++// Export an explicit template instantiation of std::atomic<int32_t>.
+ // When building DLLs for Windows this is required as it is used as a data member of the exported SharedObject class.
+ // See digitlst.h, pluralaffix.h, datefmt.h, and others for similar examples.
+ //
+@@ -49,15 +49,15 @@
+     #pragma clang diagnostic push
+     #pragma clang diagnostic ignored "-Winstantiation-after-specialization"
+   #endif
+-template struct U_COMMON_API std::atomic<int32_t>;
+-template struct U_COMMON_API std::atomic<std::mutex *>;
++//template struct U_COMMON_API std::atomic<int32_t>;
++//template struct U_COMMON_API std::atomic<std::mutex *>;
+   #if defined(__clang__)
+     #pragma clang diagnostic pop
+   #endif
+ #elif defined(__GNUC__)
+ // For GCC this class is already exported/visible, so no need for U_COMMON_API.
+-template struct std::atomic<int32_t>;
+-template struct std::atomic<std::mutex *>;
++//template struct std::atomic<int32_t>;
++//template struct std::atomic<std::mutex *>;
+ #endif
+ #endif
+ 
+@@ -70,23 +70,25 @@
+  *
+  ****************************************************************************/
+ 
+-typedef std::atomic<int32_t> u_atomic_int32_t;
++typedef int32_t u_atomic_int32_t;
+ #define ATOMIC_INT32_T_INITIALIZER(val) ATOMIC_VAR_INIT(val)
+ 
+ inline int32_t umtx_loadAcquire(u_atomic_int32_t &var) {
+-    return var.load(std::memory_order_acquire);
++    return var;
+ }
+ 
+ inline void umtx_storeRelease(u_atomic_int32_t &var, int32_t val) {
+-    var.store(val, std::memory_order_release);
++    var = val;
+ }
+ 
+ inline int32_t umtx_atomic_inc(u_atomic_int32_t *var) {
+-    return var->fetch_add(1) + 1;
++	*var += 1;
++    return *var;
+ }
+ 
+ inline int32_t umtx_atomic_dec(u_atomic_int32_t *var) {
+-    return var->fetch_sub(1) - 1;
++	*var -= 1;
++    return *var;
+ }
+ 
+ 
+@@ -231,17 +233,17 @@
+ 
+     // requirements for C++ BasicLockable, allows UMutex to work with std::lock_guard
+     void lock() {
+-        std::mutex *m = fMutex.load(std::memory_order_acquire);
++        /*std::mutex *m = fMutex.load(std::memory_order_acquire);
+         if (m == nullptr) { m = getMutex(); }
+-        m->lock();
++        m->lock();*/
+     }
+-    void unlock() { fMutex.load(std::memory_order_relaxed)->unlock(); }
++    void unlock() { /*fMutex.load(std::memory_order_relaxed)->unlock();*/ }
+ 
+-    static void cleanup();
++    static void cleanup() {};
+ 
+ private:
+-    alignas(std::mutex) char fStorage[sizeof(std::mutex)] {};
+-    std::atomic<std::mutex *> fMutex { nullptr };
++    //alignas(std::mutex) char fStorage[sizeof(std::mutex)] {};
++    //std::atomic<std::mutex *> fMutex { nullptr };
+ 
+     /** All initialized UMutexes are kept in a linked list, so that they can be found,
+      * and the underlying std::mutex destructed, by u_cleanup().
+@@ -253,7 +255,7 @@
+      * Initial fast check is inline, in lock().  The returned value may never
+      * be nullptr.
+      */
+-    std::mutex *getMutex();
++    //std::mutex *getMutex();
+ };
+ 
+ 
+diff '--color=auto' -Naur icu-native/source/common/unifiedcache.cpp icu/source/common/unifiedcache.cpp
+--- icu-native/source/common/unifiedcache.cpp	2021-07-13 00:45:56.917784151 +0200
++++ icu/source/common/unifiedcache.cpp	2021-07-13 00:46:06.537784279 +0200
+@@ -13,15 +13,15 @@
+ #include "unifiedcache.h"
+ 
+ #include <algorithm>      // For std::max()
+-#include <mutex>
++//#include <mutex>
+ 
+ #include "uassert.h"
+ #include "uhash.h"
+ #include "ucln_cmn.h"
+ 
+ static icu::UnifiedCache *gCache = NULL;
+-static std::mutex *gCacheMutex = nullptr;
+-static std::condition_variable *gInProgressValueAddedCond;
++//static std::mutex *gCacheMutex = nullptr;
++//static std::condition_variable *gInProgressValueAddedCond;
+ static icu::UInitOnce gCacheInitOnce = U_INITONCE_INITIALIZER;
+ 
+ static const int32_t MAX_EVICT_ITERATIONS = 10;
+@@ -34,10 +34,10 @@
+     gCacheInitOnce.reset();
+     delete gCache;
+     gCache = nullptr;
+-    gCacheMutex->~mutex();
+-    gCacheMutex = nullptr;
+-    gInProgressValueAddedCond->~condition_variable();
+-    gInProgressValueAddedCond = nullptr;
++    //gCacheMutex->~mutex();
++    //gCacheMutex = nullptr;
++    //gInProgressValueAddedCond->~condition_variable();
++    //gInProgressValueAddedCond = nullptr;
+     return TRUE;
+ }
+ U_CDECL_END
+@@ -72,8 +72,8 @@
+     ucln_common_registerCleanup(
+             UCLN_COMMON_UNIFIED_CACHE, unifiedcache_cleanup);
+ 
+-    gCacheMutex = STATIC_NEW(std::mutex);
+-    gInProgressValueAddedCond = STATIC_NEW(std::condition_variable);
++    //gCacheMutex = STATIC_NEW(std::mutex);
++    //gInProgressValueAddedCond = STATIC_NEW(std::condition_variable);
+     gCache = new UnifiedCache(status);
+     if (gCache == NULL) {
+         status = U_MEMORY_ALLOCATION_ERROR;
+@@ -135,28 +135,28 @@
+         status = U_ILLEGAL_ARGUMENT_ERROR;
+         return;
+     }
+-    std::lock_guard<std::mutex> lock(*gCacheMutex);
++    //std::lock_guard<std::mutex> lock(*gCacheMutex);
+     fMaxUnused = count;
+     fMaxPercentageOfInUse = percentageOfInUseItems;
+ }
+ 
+ int32_t UnifiedCache::unusedCount() const {
+-    std::lock_guard<std::mutex> lock(*gCacheMutex);
++    //std::lock_guard<std::mutex> lock(*gCacheMutex);
+     return uhash_count(fHashtable) - fNumValuesInUse;
+ }
+ 
+ int64_t UnifiedCache::autoEvictedCount() const {
+-    std::lock_guard<std::mutex> lock(*gCacheMutex);
++    //std::lock_guard<std::mutex> lock(*gCacheMutex);
+     return fAutoEvictedCount;
+ }
+ 
+ int32_t UnifiedCache::keyCount() const {
+-    std::lock_guard<std::mutex> lock(*gCacheMutex);
++    //std::lock_guard<std::mutex> lock(*gCacheMutex);
+     return uhash_count(fHashtable);
+ }
+ 
+ void UnifiedCache::flush() const {
+-    std::lock_guard<std::mutex> lock(*gCacheMutex);
++    //std::lock_guard<std::mutex> lock(*gCacheMutex);
+ 
+     // Use a loop in case cache items that are flushed held hard references to
+     // other cache items making those additional cache items eligible for
+@@ -165,7 +165,7 @@
+ }
+ 
+ void UnifiedCache::handleUnreferencedObject() const {
+-    std::lock_guard<std::mutex> lock(*gCacheMutex);
++    //std::lock_guard<std::mutex> lock(*gCacheMutex);
+     --fNumValuesInUse;
+     _runEvictionSlice();
+ }
+@@ -184,7 +184,7 @@
+ }
+ 
+ void UnifiedCache::dumpContents() const {
+-    std::lock_guard<std::mutex> lock(*gCacheMutex);
++    //std::lock_guard<std::mutex> lock(*gCacheMutex);
+     _dumpContents();
+ }
+ 
+@@ -224,7 +224,7 @@
+         // Now all that should be left in the cache are entries that refer to
+         // each other and entries with hard references from outside the cache.
+         // Nothing we can do about these so proceed to wipe out the cache.
+-        std::lock_guard<std::mutex> lock(*gCacheMutex);
++        //std::lock_guard<std::mutex> lock(*gCacheMutex);
+         _flush(TRUE);
+     }
+     uhash_close(fHashtable);
+@@ -325,7 +325,7 @@
+         const CacheKeyBase &key,
+         const SharedObject *&value,
+         UErrorCode &status) const {
+-    std::lock_guard<std::mutex> lock(*gCacheMutex);
++    //std::lock_guard<std::mutex> lock(*gCacheMutex);
+     const UHashElement *element = uhash_find(fHashtable, &key);
+     if (element != NULL && !_inProgress(element)) {
+         _fetch(element, value, status);
+@@ -350,14 +350,14 @@
+         UErrorCode &status) const {
+     U_ASSERT(value == NULL);
+     U_ASSERT(status == U_ZERO_ERROR);
+-    std::unique_lock<std::mutex> lock(*gCacheMutex);
++    //std::unique_lock<std::mutex> lock(*gCacheMutex);
+     const UHashElement *element = uhash_find(fHashtable, &key);
+ 
+     // If the hash table contains an inProgress placeholder entry for this key,
+     // this means that another thread is currently constructing the value object.
+     // Loop, waiting for that construction to complete.
+      while (element != NULL && _inProgress(element)) {
+-         gInProgressValueAddedCond->wait(lock);
++         //gInProgressValueAddedCond->wait(lock);
+          element = uhash_find(fHashtable, &key);
+     }
+ 
+@@ -430,7 +430,7 @@
+ 
+     // Tell waiting threads that we replace in-progress status with
+     // an error.
+-    gInProgressValueAddedCond->notify_all();
++    //gInProgressValueAddedCond->notify_all();
+ }
+ 
+ void UnifiedCache::_fetch(
