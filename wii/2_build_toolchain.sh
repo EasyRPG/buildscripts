@@ -54,10 +54,11 @@ if [ ! -f .patches-applied ]; then
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/harfbuzz-climits.patch
 	)
 
+	# Fix icu build
+	perl -pi -e 's/xlocale/locale/' icu/source/i18n/digitlst.cpp
 	cp -rup icu icu-native
 	# Fix ICU compilation problems on Wii
 	patch -Np0 < icu-wii.patch
-	perl -pi -e 's/xlocale/locale/' icu/source/i18n/digitlst.cpp
 	# Emit correct bigendian icudata header
 	patch -Np0 < icu-pkg_genc.patch
 
@@ -98,15 +99,6 @@ function install_lib_sdl() {
 	msg "Building SDL"
 
 	(cd $SDL_DIR/SDL
-		make clean
-		make install INSTALL_HEADER_DIR="$WORKSPACE/include" INSTALL_LIB_DIR="$WORKSPACE/lib"
-	)
-}
-
-function install_lib_sdlmixer() {
-	msg "Building SDL_mixer"
-
-	(cd $SDL_DIR/SDL_mixer
 		make clean
 		make install INSTALL_HEADER_DIR="$WORKSPACE/include" INSTALL_LIB_DIR="$WORKSPACE/lib"
 	)

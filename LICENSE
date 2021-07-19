@@ -18,7 +18,6 @@ pixman: MIT
 png: zlib
 samplerate: BSD
 SDL2 image: zlib
-SDL2 mixer: zlib
 SDL2: zlib
 sndfile: LGPLv2.1+
 speexdsp: BSD
