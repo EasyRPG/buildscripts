@@ -43,6 +43,9 @@ if [ ! -f .patches-applied ]; then
 	# Disable vita2dlib jpeg dependency
 	patch -Np0 < $SCRIPT_DIR/vita2dlib-no-jpeg.patch
 
+	# Allow the cmake toolchain finding libfmt
+	patch -Np0 < $SCRIPT_DIR/vitasdk-cmake.patch
+
 	touch .patches-applied
 fi
 
