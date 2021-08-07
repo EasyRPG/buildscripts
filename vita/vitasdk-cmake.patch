@@ -1,0 +1,10 @@
+--- vitasdk/share/vita.toolchain.cmake.old	2021-08-02 22:01:20.150687989 +0200
++++ vitasdk/share/vita.toolchain.cmake	2021-08-02 21:34:41.281377970 +0200
+@@ -108,6 +108,7 @@
+ set( CMAKE_FIND_ROOT_PATH "${VITASDK}/bin" "${VITASDK}/arm-vita-eabi" "${CMAKE_INSTALL_PREFIX}" "${CMAKE_INSTALL_PREFIX}/share" )
+ set( CMAKE_INSTALL_PREFIX "${VITASDK}/arm-vita-eabi" CACHE PATH "default install path" )
+ set( PKG_CONFIG_EXECUTABLE "${VITASDK}/bin/arm-vita-eabi-pkg-config" )
++set( CMAKE_SYSTEM_PREFIX_PATH "${VITASDK}/arm-vita-eabi")
+ 
+ # only search for libraries and includes in vita toolchain
+ if( NOT CMAKE_FIND_ROOT_PATH_MODE_LIBRARY )
