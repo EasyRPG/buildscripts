@@ -78,6 +78,7 @@ function set_build_flags {
 	export CPPFLAGS="-D__SWITCH__ -I$PLATFORM_PREFIX/include -isystem $DEVKITPRO/libnx/include"
 	export LDFLAGS="$ARCH_FLAGS -L$PLATFORM_PREFIX/lib -L$DEVKITPRO/libnx/lib"
 	export LIBS="-lnx"
+	export CMAKE_SYSTEM_NAME="Generic"
 }
 
 install_lib_icu_native

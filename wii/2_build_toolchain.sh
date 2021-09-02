@@ -93,6 +93,7 @@ function set_build_flags {
 	export CXXFLAGS="$CFLAGS"
 	export CPPFLAGS="-I$PLATFORM_PREFIX/include -DGEKKO"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
+	export CMAKE_SYSTEM_NAME="Generic"
 }
 
 function install_lib_sdl() {
