@@ -58,7 +58,7 @@ lib=libsndfile
 ver=1.0.31
 LIBSNDFILE_URL=https://github.com/libsndfile/libsndfile/releases/download/$ver/$lib-$ver.tar.bz2
 LIBSNDFILE_DIR="$lib-$ver"
-LIBSNDFILE_ARGS="--disable-alsa --disable-sqlite --disable-full-suite"
+LIBSNDFILE_ARGS="--disable-alsa --disable-sqlite --disable-full-suite --disable-external-libs"
 
 lib=libxmp-lite
 ver=4.5.0
