@@ -78,6 +78,7 @@ function set_build_flags {
 	export CPPFLAGS="-D_3DS -I$PLATFORM_PREFIX/include -I$DEVKITPRO/libctru/include"
 	export LDFLAGS="$ARCH_FLAGS -L$PLATFORM_PREFIX/lib -L$DEVKITPRO/libctru/lib"
 	export LIBS="-lctru"
+	export CMAKE_SYSTEM_NAME="Generic"
 }
 
 install_lib_icu_native

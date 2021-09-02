@@ -70,6 +70,7 @@ function set_build_flags {
 	export CFLAGS="-g0 -O2"
 	export CXXFLAGS="$CFLAGS"
 	export CPPFLAGS="-DPSP2"
+	export CMAKE_SYSTEM_NAME="Generic"
 }
 
 function install_lib_vita2d() {
