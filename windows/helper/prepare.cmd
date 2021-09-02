@@ -11,6 +11,8 @@ IF EXIST vcpkg (
 :: Build vcpkg
 call bootstrap-vcpkg.bat
 
-:: Copy custom portfiles (ICU static data file)
+:: Copy custom portfiles
+:: ICU static data file
 xcopy /Y /I /E ..\icu-easyrpg ports\icu-easyrpg
-
+:: fluidsynth without glib dependency
+xcopy /Y /I /E ..\fluidsynth-easyrpg ports\fluidsynth-easyrpg

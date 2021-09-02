@@ -37,6 +37,11 @@ if [ ! -f .patches-applied ]; then
 		patch -Np1 < ../xmp-emscripten.patch
 	)
 
+	# Fix fluidsynth
+	(cd $FLUIDSYNTH_DIR
+		patch -Np1 < ../fluidsynth-emscripten.patch
+	)
+
 	cp -rup icu icu-native
 
 	touch .patches-applied
@@ -107,7 +112,7 @@ install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
 #install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS
 install_lib $OPUS_DIR $OPUS_ARGS --disable-stack-protector
 install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
-install_lib_cmake $FLUIDLITE_DIR $FLUIDLITE_ARGS -DENABLE_SF3=ON
+install_lib_cmake $FLUIDSYNTH_DIR $FLUIDSYNTH_ARGS
 install_lib_cmake $NLOHMANNJSON_DIR $NLOHMANNJSON_ARGS
 install_lib_cmake $FMT_DIR $FMT_ARGS
 

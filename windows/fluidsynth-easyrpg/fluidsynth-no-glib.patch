@@ -1,0 +1,544 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index d0293363b..22d930e44 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -68,47 +68,47 @@ option ( enable-trap-on-fpe "enable SIGFPE trap on Floating Point Exceptions" of
+ option ( enable-ubsan "compile and link against UBSan (for debugging fluidsynth internals)" off )
+ 
+ # Options enabled by default
+-option ( enable-aufile "compile support for sound file output" on )
++option ( enable-aufile "compile support for sound file output" off )
+ option ( BUILD_SHARED_LIBS "Build a shared object or DLL" on )
+-option ( enable-dbus "compile DBUS support (if it is available)" on )
+-option ( enable-ipv6  "enable ipv6 support" on )
+-option ( enable-jack "compile JACK support (if it is available)" on )
+-option ( enable-ladspa "enable LADSPA effect units" on )
+-option ( enable-libinstpatch "use libinstpatch (if available) to load DLS and GIG files" on )
+-option ( enable-libsndfile "compile libsndfile support (if it is available)" on )
+-option ( enable-midishare "compile MidiShare support (if it is available)" on )
++option ( enable-dbus "compile DBUS support (if it is available)" off )
++option ( enable-ipv6  "enable ipv6 support" off )
++option ( enable-jack "compile JACK support (if it is available)" off )
++option ( enable-ladspa "enable LADSPA effect units" off )
++option ( enable-libinstpatch "use libinstpatch (if available) to load DLS and GIG files" off )
++option ( enable-libsndfile "compile libsndfile support (if it is available)" off )
++option ( enable-midishare "compile MidiShare support (if it is available)" off )
+ option ( enable-opensles "compile OpenSLES support (if it is available)" off )
+ option ( enable-oboe "compile Oboe support (requires OpenSLES and/or AAudio)" off )
+-option ( enable-network "enable network support (requires BSD sockets)" on )
+-option ( enable-oss "compile OSS support (if it is available)" on )
+-option ( enable-dsound "compile DirectSound support (if it is available)" on )
+-option ( enable-wasapi "compile Windows WASAPI support (if it is available)" on )
+-option ( enable-waveout "compile Windows WaveOut support (if it is available)" on )
+-option ( enable-winmidi "compile Windows MIDI support (if it is available)" on )
+-option ( enable-sdl2 "compile SDL2 audio support (if it is available)" on )
+-option ( enable-pkgconfig "use pkg-config to locate fluidsynth's (mostly optional) dependencies" on )
+-option ( enable-pulseaudio "compile PulseAudio support (if it is available)" on )
+-option ( enable-readline "compile readline lib line editing (if it is available)" on )
+-option ( enable-threads "enable multi-threading support (such as parallel voice synthesis)" on )
++option ( enable-network "enable network support (requires BSD sockets)" off )
++option ( enable-oss "compile OSS support (if it is available)" off )
++option ( enable-dsound "compile DirectSound support (if it is available)" off )
++option ( enable-wasapi "compile Windows WASAPI support (if it is available)" off )
++option ( enable-waveout "compile Windows WaveOut support (if it is available)" off )
++option ( enable-winmidi "compile Windows MIDI support (if it is available)" off )
++option ( enable-sdl2 "compile SDL2 audio support (if it is available)" off )
++option ( enable-pkgconfig "use pkg-config to locate fluidsynth's (mostly optional) dependencies" off )
++option ( enable-pulseaudio "compile PulseAudio support (if it is available)" off )
++option ( enable-readline "compile readline lib line editing (if it is available)" off )
++option ( enable-threads "enable multi-threading support (such as parallel voice synthesis)" off )
+ 
+ # Platform specific options
+ if ( CMAKE_SYSTEM MATCHES "Linux|FreeBSD|DragonFly" )
+-    option ( enable-lash "compile LASH support (if it is available)" on )
+-    option ( enable-alsa "compile ALSA support (if it is available)" on )
++    option ( enable-lash "compile LASH support (if it is available)" off )
++    option ( enable-alsa "compile ALSA support (if it is available)" off )
+ endif ( CMAKE_SYSTEM MATCHES "Linux|FreeBSD|DragonFly" )
+ 
+ if ( CMAKE_SYSTEM MATCHES "Linux" )
+-    option ( enable-systemd "compile systemd support (if it is available)" on )
++    option ( enable-systemd "compile systemd support (if it is available)" off )
+ endif ( CMAKE_SYSTEM MATCHES "Linux" )
+ 
+ if ( CMAKE_SYSTEM MATCHES "Darwin" )
+-    option ( enable-coreaudio "compile CoreAudio support (if it is available)" on )
+-    option ( enable-coremidi "compile CoreMIDI support (if it is available)" on )
+-    option ( enable-framework "create a Mac OSX style FluidSynth.framework" on )
++    option ( enable-coreaudio "compile CoreAudio support (if it is available)" off )
++    option ( enable-coremidi "compile CoreMIDI support (if it is available)" off )
++    option ( enable-framework "create a Mac OSX style FluidSynth.framework" off )
+ endif ( CMAKE_SYSTEM MATCHES "Darwin" )
+ 
+ if ( CMAKE_SYSTEM MATCHES "OS2" )
+-    option ( enable-dart "compile DART support (if it is available)" on )
++    option ( enable-dart "compile DART support (if it is available)" off )
+     set ( enable-ipv6 off )
+ endif ( CMAKE_SYSTEM MATCHES "OS2" )
+ 
+@@ -781,7 +781,6 @@ configure_file ( ${CMAKE_SOURCE_DIR}/src/config.cmake
+ 
+ # Setup linker directories NOW, as the command will apply only to targets created after it has been called.
+ link_directories (
+-    ${GLIB_LIBRARY_DIRS}
+     ${LASH_LIBRARY_DIRS}
+     ${JACK_LIBRARY_DIRS}
+     ${ALSA_LIBRARY_DIRS}
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index e913cb212..44e4c7254 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -35,7 +35,6 @@ include_directories (
+ 
+ include_directories (
+     SYSTEM
+-    ${GLIB_INCLUDE_DIRS}
+     ${PTHREADS_INCLUDE_DIR}
+     ${SDL2_INCLUDE_DIR}
+     ${LIBINSTPATCH_INCLUDE_DIRS}
+@@ -149,6 +148,7 @@ endif ( OBOE_SUPPORT )
+ set ( config_SOURCES ${CMAKE_BINARY_DIR}/config.h )
+ 
+ set ( libfluidsynth_SOURCES
++    glib_shim.c
+     utils/fluid_conv.c
+     utils/fluid_conv.h
+     utils/fluid_hash.c
+@@ -349,8 +349,6 @@ else ( MACOSX_FRAMEWORK )
+ endif ( MACOSX_FRAMEWORK )
+ 
+ target_link_libraries ( libfluidsynth
+-    ${GLIB_LIBRARIES}
+-    ${GMODULE_LIBRARIES}
+     ${LASH_LIBRARIES}
+     ${JACK_LIBRARIES}
+     ${ALSA_LIBRARIES}
+diff --git a/src/bindings/fluid_cmd.c b/src/bindings/fluid_cmd.c
+index 1d4baaed0..25a54364d 100644
+--- a/src/bindings/fluid_cmd.c
++++ b/src/bindings/fluid_cmd.c
+@@ -433,6 +433,8 @@ static const fluid_cmd_t fluid_commands[] =
+ int
+ fluid_command(fluid_cmd_handler_t *handler, const char *cmd, fluid_ostream_t out)
+ {
++    return 0;
++#if 0
+     int result, num_tokens = 0;
+     char **tokens = NULL;
+ 
+@@ -451,6 +453,7 @@ fluid_command(fluid_cmd_handler_t *handler, const char *cmd, fluid_ostream_t out
+     g_strfreev(tokens);
+ 
+     return result;
++#endif
+ }
+ 
+ /**
+diff --git a/src/glib_shim.c b/src/glib_shim.c
+new file mode 100644
+index 000000000..40b8b5602
+--- /dev/null
++++ b/src/glib_shim.c
+@@ -0,0 +1,12 @@
++#include "glib_shim.h"
++
++int g_atomic_int_dec_and_test(int* _pi) {
++    *_pi -= 1;
++    return (_pi == 0);
++}
++
++int g_atomic_int_add(int* _pi, int _add) {
++    int tmp = *_pi;
++    *_pi += _add;
++    return tmp;
++}
+diff --git a/src/glib_shim.h b/src/glib_shim.h
+new file mode 100644
+index 000000000..f90f0eb42
+--- /dev/null
++++ b/src/glib_shim.h
+@@ -0,0 +1,90 @@
++#ifndef GLIB_SHIM_H
++#define GLIB_SHIM_H
++
++#define GLIB_MAJOR_VERSION 3
++#define GLIB_MINOR_VERSION 0
++#define GLIB_MICRO_VERISON 0
++
++#define GLIB_CHECK_VERSION(major,minor,micro)    \
++    (GLIB_MAJOR_VERSION > (major) || \
++     (GLIB_MAJOR_VERSION == (major) && GLIB_MINOR_VERSION > (minor)) || \
++     (GLIB_MAJOR_VERSION == (major) && GLIB_MINOR_VERSION == (minor) && \
++      GLIB_MICRO_VERSION >= (micro)))
++
++typedef int GMutex;
++typedef int GRecMutex;
++typedef int GThread;
++typedef int GCond;
++typedef int GStatBuf;
++typedef int GTimeVal;
++typedef void* gpointer;
++typedef int GError;
++
++#ifdef WORDS_BIGENDIAN
++#define G_BIG_ENDIAN WORDS_BIGENDIAN
++#define G_BYTE_ORDER WORDS_BIGENDIAN
++#else
++#define G_BYTE_ORDER 0
++#define G_BIG_ENDIAN 1
++#endif
++
++#define GINT32_FROM_LE(x) ((x))
++#define GINT16_FROM_LE(x) ((x))
++
++#define G_LIKELY
++#define G_UNLIKELY
++
++#ifndef TRUE
++#define TRUE 1
++#define FALSE 0
++#endif
++
++#define g_mutex_init(x)
++#define g_mutex_clear(x)
++#define g_mutex_lock(x)
++#define g_mutex_unlock(x)
++
++#define g_rec_mutex_init(x)
++#define g_rec_mutex_clear(x)
++#define g_rec_mutex_lock(x)
++#define g_rec_mutex_unlock(x)
++
++#define g_new(type, len) ( NULL )
++#define g_free(obj)
++
++#define g_atomic_int_inc(_pi) ( *_pi += 1 )
++#define g_atomic_int_get(_pi) ( *_pi )
++#define g_atomic_int_set(_pi, _val) ( *_pi = _val )
++int g_atomic_int_dec_and_test(int* _pi);
++#define g_atomic_int_compare_and_exchange(_pi, _old, _new) ( 1 )
++int g_atomic_int_add(int* _pi, int _add);
++#define g_atomic_pointer_get(_pp)           ( _pp )
++#define g_atomic_pointer_set(_pp, val)      ( _pp = val )
++#define g_atomic_pointer_compare_and_exchange(_pp, _expected, _desired) (1)
++
++#define g_cond_init(x)
++#define g_cond_signal(x)
++#define g_cond_broadcast(x)
++#define g_cond_clear(x)
++#define g_cond_wait(x, y)
++
++#define g_stat(a, b) ( 0 )
++
++#define g_assert(a)
++
++#define G_FILE_TEST_IS_REGULAR 0
++#define G_FILE_TEST_EXISTS 1
++#define g_file_test(a, b) ( FALSE )
++
++#define g_usleep(x)
++
++#define g_thread_try_new(a, b, c, d) ( NULL )
++#define g_clear_error(e) ( *err = 0 )
++#define g_thread_unref(t)
++#define g_thread_join(t)
++
++#define g_shim_alloca(size) _alloca((size))
++#define g_newa(struct_type, n_structs) \
++    ((struct_type *)g_shim_alloca(sizeof(struct_type) * (size_t)(n_structs)))
++
++#endif
+diff --git a/src/rvoice/fluid_rvoice_mixer.c b/src/rvoice/fluid_rvoice_mixer.c
+index 0b2d16066..450a01d05 100644
+--- a/src/rvoice/fluid_rvoice_mixer.c
++++ b/src/rvoice/fluid_rvoice_mixer.c
+@@ -463,7 +463,6 @@ fluid_rvoice_buffers_mix(fluid_rvoice_buffers_t *buffers,
+         else
+         {
+             // here goes the vectorizable loop
+-            #pragma omp simd aligned(dsp_buf,buf:FLUID_DEFAULT_ALIGNMENT)
+             for(dsp_i = 0; dsp_i < FLUID_BUFSIZE; dsp_i++)
+             {
+                 // We cannot simply increment current_amp by amp_incr during every iteration, as this would create a dependency and prevent vectorization.
+@@ -474,7 +473,6 @@ fluid_rvoice_buffers_mix(fluid_rvoice_buffers_t *buffers,
+             if(target_amp > 0)
+             {
+                 /* Note, that this loop could be unrolled by FLUID_BUFSIZE elements */
+-                #pragma omp simd aligned(dsp_buf,buf:FLUID_DEFAULT_ALIGNMENT)
+                 for(dsp_i = FLUID_BUFSIZE; dsp_i < sample_count; dsp_i++)
+                 {
+                     // Index by blocks (not by samples) to let the compiler know that we always start accessing
+@@ -1399,8 +1397,6 @@ fluid_mixer_buffers_mix(fluid_mixer_buffers_t *dst, fluid_mixer_buffers_t *src,
+ 
+     for(i = 0; i < minbuf; i++)
+     {
+-        #pragma omp simd aligned(base_dst,base_src:FLUID_DEFAULT_ALIGNMENT)
+-
+         for(j = 0; j < scount; j++)
+         {
+             int dsp_i = i * FLUID_MIXER_MAX_BUFFERS_DEFAULT * FLUID_BUFSIZE + j;
+@@ -1413,8 +1409,6 @@ fluid_mixer_buffers_mix(fluid_mixer_buffers_t *dst, fluid_mixer_buffers_t *src,
+ 
+     for(i = 0; i < minbuf; i++)
+     {
+-        #pragma omp simd aligned(base_dst,base_src:FLUID_DEFAULT_ALIGNMENT)
+-
+         for(j = 0; j < scount; j++)
+         {
+             int dsp_i = i * FLUID_MIXER_MAX_BUFFERS_DEFAULT * FLUID_BUFSIZE + j;
+@@ -1434,8 +1428,6 @@ fluid_mixer_buffers_mix(fluid_mixer_buffers_t *dst, fluid_mixer_buffers_t *src,
+ 
+     for(i = 0; i < minbuf; i++)
+     {
+-        #pragma omp simd aligned(base_dst,base_src:FLUID_DEFAULT_ALIGNMENT)
+-
+         for(j = 0; j < scount; j++)
+         {
+             int dsp_i = i * FLUID_MIXER_MAX_BUFFERS_DEFAULT * FLUID_BUFSIZE + j;
+@@ -1448,8 +1440,6 @@ fluid_mixer_buffers_mix(fluid_mixer_buffers_t *dst, fluid_mixer_buffers_t *src,
+ 
+     for(i = 0; i < minbuf; i++)
+     {
+-        #pragma omp simd aligned(base_dst,base_src:FLUID_DEFAULT_ALIGNMENT)
+-
+         for(j = 0; j < scount; j++)
+         {
+             int dsp_i = i * FLUID_MIXER_MAX_BUFFERS_DEFAULT * FLUID_BUFSIZE + j;
+diff --git a/src/sfloader/fluid_defsfont.c b/src/sfloader/fluid_defsfont.c
+index f1539808c..a76070732 100644
+--- a/src/sfloader/fluid_defsfont.c
++++ b/src/sfloader/fluid_defsfont.c
+@@ -394,8 +394,6 @@ int fluid_defsfont_load_all_sampledata(fluid_defsfont_t *defsfont, SFData *sfdat
+         }
+     }
+ 
+-    #pragma omp parallel
+-    #pragma omp single
+     for(list = defsfont->sample; list; list = fluid_list_next(list))
+     {
+         sample = fluid_list_get(list);
+@@ -404,11 +402,9 @@ int fluid_defsfont_load_all_sampledata(fluid_defsfont_t *defsfont, SFData *sfdat
+         {
+             /* SF3 samples get loaded individually, as most (or all) of them are in Ogg Vorbis format
+              * anyway */
+-            #pragma omp task firstprivate(sample,sfdata,defsfont) shared(sample_parsing_result) default(none)
+             {
+                 if(fluid_defsfont_load_sampledata(defsfont, sfdata, sample) == FLUID_FAILED)
+                 {
+-                    #pragma omp critical
+                     {
+                         FLUID_LOG(FLUID_ERR, "Failed to load sample '%s'", sample->name);
+                         sample_parsing_result = FLUID_FAILED;
+@@ -423,7 +419,6 @@ int fluid_defsfont_load_all_sampledata(fluid_defsfont_t *defsfont, SFData *sfdat
+         }
+         else
+         {
+-            #pragma omp task firstprivate(sample, defsfont) default(none)
+             {
+                 /* Data pointers of SF2 samples point to large sample data block loaded above */
+                 sample->data = defsfont->sampledata;
+diff --git a/src/sfloader/fluid_samplecache.c b/src/sfloader/fluid_samplecache.c
+index 64e9e9e70..4c504c0fc 100644
+--- a/src/sfloader/fluid_samplecache.c
++++ b/src/sfloader/fluid_samplecache.c
+@@ -282,6 +282,7 @@ static fluid_samplecache_entry_t *get_samplecache_entry(SFData *sf,
+ 
+ static int fluid_get_file_modification_time(char *filename, time_t *modification_time)
+ {
++#if 0
+     fluid_stat_buf_t buf;
+ 
+     if(fluid_stat(filename, &buf))
+@@ -290,6 +291,7 @@ static int fluid_get_file_modification_time(char *filename, time_t *modification
+     }
+ 
+     *modification_time = buf.st_mtime;
++#endif
+     return FLUID_OK;
+ }
+ 
+diff --git a/src/synth/fluid_synth.c b/src/synth/fluid_synth.c
+index fc0d35fcd..61ebf4c05 100644
+--- a/src/synth/fluid_synth.c
++++ b/src/synth/fluid_synth.c
+@@ -631,8 +631,9 @@ new_fluid_synth(fluid_settings_t *settings)
+     double sample_rate_min, sample_rate_max;
+ 
+     /* initialize all the conversion tables and other stuff */
+-    if(fluid_atomic_int_compare_and_exchange(&fluid_synth_initialized, 0, 1))
++    if(fluid_synth_initialized == 0)
+     {
++        fluid_synth_initialized = 1;
+         fluid_synth_init();
+     }
+ 
+@@ -808,7 +809,7 @@ new_fluid_synth(fluid_settings_t *settings)
+ 
+     fluid_atomic_int_set(&synth->ticks_since_start, 0);
+     synth->tuning = NULL;
+-    fluid_private_init(synth->tuning_iter);
++    synth->tuning_iter = 0;
+ 
+     /* Initialize multi-core variables if multiple cores enabled */
+     if(synth->cores > 1)
+@@ -1194,7 +1195,7 @@ delete_fluid_synth(fluid_synth_t *synth)
+         FLUID_FREE(synth->tuning);
+     }
+ 
+-    fluid_private_free(synth->tuning_iter);
++    synth->tuning_iter = 0;
+ 
+ #ifdef LADSPA
+     /* Release the LADSPA effects unit */
+@@ -7371,7 +7372,7 @@ fluid_synth_tuning_iteration_start(fluid_synth_t *synth)
+ {
+     fluid_return_if_fail(synth != NULL);
+     fluid_synth_api_enter(synth);
+-    fluid_private_set(synth->tuning_iter, FLUID_INT_TO_POINTER(0));
++    synth->tuning_iter = 0;
+     fluid_synth_api_exit(synth);
+ }
+ 
+@@ -7394,7 +7395,7 @@ fluid_synth_tuning_iteration_next(fluid_synth_t *synth, int *bank, int *prog)
+     fluid_synth_api_enter(synth);
+ 
+     /* Current tuning iteration stored as: bank << 8 | program */
+-    pval = fluid_private_get(synth->tuning_iter);
++    pval = &synth->tuning_iter;
+     p = FLUID_POINTER_TO_INT(pval);
+     b = (p >> 8) & 0xFF;
+     p &= 0xFF;
+@@ -7423,12 +7424,11 @@ fluid_synth_tuning_iteration_next(fluid_synth_t *synth, int *bank, int *prog)
+ 
+             if(p < 127)
+             {
+-                fluid_private_set(synth->tuning_iter,
+-                                  FLUID_INT_TO_POINTER(b << 8 | (p + 1)));
++                synth->tuning_iter = (b << 8 | (p + 1));
+             }
+             else
+             {
+-                fluid_private_set(synth->tuning_iter, FLUID_INT_TO_POINTER((b + 1) << 8));
++                synth->tuning_iter = ((b + 1) << 8);
+             }
+ 
+             FLUID_API_RETURN(1);
+diff --git a/src/synth/fluid_synth.h b/src/synth/fluid_synth.h
+index 132a98dda..7cd3a330f 100644
+--- a/src/synth/fluid_synth.h
++++ b/src/synth/fluid_synth.h
+@@ -152,7 +152,7 @@ struct _fluid_synth_t
+     fluid_atomic_float_t cpu_load;                    /**< CPU load in percent (CPU time required / audio synthesized time * 100) */
+ 
+     fluid_tuning_t ***tuning;          /**< 128 banks of 128 programs for the tunings */
+-    fluid_private_t tuning_iter;       /**< Tuning iterators per each thread */
++    int tuning_iter;       /**< Tuning iterators per each thread */
+ 
+     fluid_sample_timer_t *sample_timers; /**< List of timers triggered before a block is processed */
+     unsigned int min_note_length_ticks; /**< If note-offs are triggered just after a note-on, they will be delayed */
+diff --git a/src/utils/fluid_sys.c b/src/utils/fluid_sys.c
+index e3c0ea4d0..7e1235c57 100644
+--- a/src/utils/fluid_sys.c
++++ b/src/utils/fluid_sys.c
+@@ -33,7 +33,7 @@
+ #if HAVE_PTHREAD_H && !defined(WIN32)
+ // Do not include pthread on windows. It includes winsock.h, which collides with ws2tcpip.h from fluid_sys.h
+ // It isn't need on Windows anyway.
+-#include <pthread.h>
++//#include <pthread.h>
+ #endif
+ 
+ /* WIN32 HACK - Flag used to differentiate between a file descriptor and a socket.
+@@ -411,6 +411,8 @@ unsigned int fluid_curtime(void)
+ double
+ fluid_utime(void)
+ {
++    return 0.0;
++#if 0
+     double utime;
+ 
+ #if GLIB_MAJOR_VERSION == 2 && GLIB_MINOR_VERSION >= 28
+@@ -445,6 +447,7 @@ fluid_utime(void)
+ #endif
+ 
+     return utime;
++#endif
+ }
+ 
+ 
+@@ -477,6 +480,7 @@ fluid_thread_self_set_prio(int prio_level)
+ void
+ fluid_thread_self_set_prio(int prio_level)
+ {
++#if 0
+     struct sched_param priority;
+ 
+     if(prio_level > 0)
+@@ -501,6 +505,7 @@ fluid_thread_self_set_prio(int prio_level)
+ #endif
+         FLUID_LOG(FLUID_WARN, "Failed to set thread to high priority");
+     }
++#endif
+ }
+ 
+ #ifdef FPE_CHECK
+@@ -1041,7 +1046,7 @@ new_fluid_thread(const char *name, fluid_thread_func_t func, void *data, int pri
+     fluid_thread_info_t *info = NULL;
+     GError *err = NULL;
+ 
+-    g_return_val_if_fail(func != NULL, NULL);
++    fluid_return_val_if_fail(func != NULL, NULL);
+ 
+ #if OLD_GLIB_THREAD_API
+ 
+diff --git a/src/utils/fluid_sys.h b/src/utils/fluid_sys.h
+index 86a47f32d..0495262ba 100644
+--- a/src/utils/fluid_sys.h
++++ b/src/utils/fluid_sys.h
+@@ -157,7 +157,7 @@ typedef gintptr  intptr_t;
+ #include <gmodule.h>
+ #endif
+ 
+-#include <glib/gstdio.h>
++#include "glib_shim.h"
+ 
+ /**
+  * Macro used for safely accessing a message from a GError and using a default
+@@ -165,7 +165,7 @@ typedef gintptr  intptr_t;
+  * @param err Pointer to a GError to access the message field of.
+  * @return Message string
+  */
+-#define fluid_gerror_message(err)  ((err) ? err->message : "No error details")
++#define fluid_gerror_message(err)  ("No error details")
+ 
+ #ifdef WIN32
+ char* fluid_get_windows_error(void);
+@@ -309,13 +309,13 @@ delete_fluid_cond(fluid_cond_t *cond)
+ }
+ 
+ /* Thread private data */
+-
++#if 0
+ typedef GPrivate fluid_private_t;
+ #define fluid_private_init(_priv)                  memset (&_priv, 0, sizeof (_priv))
+ #define fluid_private_free(_priv)
+ #define fluid_private_get(_priv)                   g_private_get(&(_priv))
+ #define fluid_private_set(_priv, _data)            g_private_set(&(_priv), _data)
+-
++#endif
+ #else
+ 
+ /* glib prior to 2.32 */
+diff --git a/src/utils/fluidsynth_priv.h b/src/utils/fluidsynth_priv.h
+index f8f36381f..665bea2ec 100644
+--- a/src/utils/fluidsynth_priv.h
++++ b/src/utils/fluidsynth_priv.h
+@@ -29,7 +29,7 @@
+ #ifndef _FLUIDSYNTH_PRIV_H
+ #define _FLUIDSYNTH_PRIV_H
+ 
+-#include <glib.h>
++#include "glib_shim.h"
+ 
+ #include "config.h"
+ 

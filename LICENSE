@@ -4,6 +4,7 @@ library.
 In short:
 expat: MIT
 FluidLite: LGPLv2.1+
+FluidSynth: LGPLv2.1+
 fmt: MIT
 freetype: FreeType License or GPLv2 or later (see docs/LICENSE.TXT)
 harfbuzz: MIT

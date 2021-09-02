@@ -94,6 +94,11 @@ OPUSFILE_URL="https://github.com/xiph/opusfile/releases/download/v$ver/$lib-$ver
 OPUSFILE_DIR="$lib-$ver"
 OPUSFILE_ARGS="--disable-http --disable-examples"
 
+lib=fluidsynth
+ver=2.2.2
+FLUIDSYNTH_URL="https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v$ver.tar.gz"
+FLUIDSYNTH_DIR="$lib-$ver"
+
 lib=FluidLite
 ver=fdd05bad03cdb24d1f78b5fe3453842890c1b0e8
 FLUIDLITE_URL="https://github.com/divideconcept/$lib/archive/$ver.zip"
