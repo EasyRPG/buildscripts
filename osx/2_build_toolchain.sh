@@ -42,6 +42,8 @@ function set_build_flags {
 	export CXXFLAGS=$CFLAGS
 	export CPPFLAGS="-I$PLATFORM_PREFIX/include"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib $ARCH -mmacosx-version-min=10.9 -isysroot $SDKPATH"
+
+	export MACOSX_DEPLOYMENT_TARGET=10.9
 }
 
 cd $WORKSPACE
