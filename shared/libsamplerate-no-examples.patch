@@ -1,0 +1,26 @@
+diff --color -Naur libsamplerate-0.2.1.orig/Makefile.am libsamplerate-0.2.1/Makefile.am
+--- libsamplerate-0.2.1.orig/Makefile.am	2021-01-21 13:59:01.000000000 +0100
++++ libsamplerate-0.2.1/Makefile.am	2021-10-06 23:12:49.487204865 +0200
+@@ -58,22 +58,6 @@
+ 	docs/download.md docs/lists.md docs/quality.md docs/win32.md docs/faq.md docs/api.md \
+ 	docs/api_simple.md docs/api_callback.md docs/api_full.md docs/api_misc.md docs/bugs.md
+ 
+-#############
+-# examples/ #
+-#############
+-
+-if HAVE_LIBSNDFILE
+-noinst_PROGRAMS = examples/varispeed-play examples/timewarp-file
+-
+-examples_varispeed_play_SOURCES = examples/varispeed-play.c examples/audio_out.c examples/audio_out.h
+-examples_varispeed_play_CFLAGS = $(SNDFILE_CFLAGS) $(AUDIO_CFLAGS)
+-examples_varispeed_play_LDADD = src/libsamplerate.la $(SNDFILE_LIBS) $(AUDIO_LIBS)
+-
+-examples_timewarp_file_SOURCES = examples/timewarp-file.c
+-examples_timewarp_file_CFLAGS = $(SNDFILE_CFLAGS)
+-examples_timewarp_file_LDADD = src/libsamplerate.la $(SNDFILE_LIBS)
+-endif
+-
+ ##########
+ # tests/ #
+ ##########
