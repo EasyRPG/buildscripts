@@ -254,8 +254,6 @@ function patches_common {
 	if [ -d "$LIBXMP_LITE_DIR" ]; then
 		# compile fix
 		(cd $LIBXMP_LITE_DIR
-			patch -Np1 < $_SCRIPT_DIR/libxmp-no-symver.patch
-
 			# Use custom CMakeLists.txt
 			cp $_SCRIPT_DIR/CMakeLists_xmplite.txt ./CMakeLists.txt
 		)

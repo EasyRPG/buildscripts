@@ -11,13 +11,13 @@ LIBPNG_URL="https://download.sourceforge.net/libpng/$lib-$ver.tar.xz"
 LIBPNG_DIR="$lib-$ver"
 
 lib=freetype
-ver=2.10.4
+ver=2.11.0
 FREETYPE_URL="https://download.savannah.gnu.org/releases/$lib/$lib-$ver.tar.xz"
 FREETYPE_DIR="$lib-$ver"
 FREETYPE_ARGS="--without-bzip2 --without-png --without-zlib"
 
 lib=harfbuzz
-ver=2.8.2
+ver=3.0.0
 HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/$ver/$lib-$ver.tar.xz"
 HARFBUZZ_DIR="$lib-$ver"
 HARFBUZZ_ARGS="--without-glib --without-gobject --without-cairo --without-fontconfig --without-icu"
@@ -45,12 +45,12 @@ LIBVORBIS_URL="https://downloads.xiph.org/releases/vorbis/$lib-$ver.tar.xz"
 LIBVORBIS_DIR="$lib-$ver"
 
 lib=tremor
-ver=b56ffce0c0773ec5ca04c466bc00b1bbcaf65aef
+ver=7c30a66346199f3f09017a09567c6c8a3a0eedc8
 TREMOR_URL="https://gitlab.xiph.org/xiph/$lib/-/archive/$ver/$lib-$ver.tar.bz2"
 TREMOR_DIR="$lib-$ver"
 
 lib=mpg123
-ver=1.28.2
+ver=1.29.0
 MPG123_URL=https://www.mpg123.de/download/$lib-$ver.tar.bz2
 MPG123_DIR="$lib-$ver"
 
@@ -72,8 +72,8 @@ SPEEXDSP_DIR="$lib-$ver"
 SPEEXDSP_ARGS="--disable-sse --disable-neon"
 
 lib=libsamplerate
-ver=0.2.1
-LIBSAMPLERATE_URL="https://github.com/libsndfile/libsamplerate/releases/download/$ver/$lib-$ver.tar.bz2"
+ver=0.2.2
+LIBSAMPLERATE_URL="https://github.com/libsndfile/libsamplerate/releases/download/$ver/$lib-$ver.tar.xz"
 LIBSAMPLERATE_DIR="$lib-$ver"
 
 lib=wildmidi
@@ -95,19 +95,19 @@ OPUSFILE_DIR="$lib-$ver"
 OPUSFILE_ARGS="--disable-http --disable-examples"
 
 lib=fluidsynth
-ver=2.2.2
+ver=2.2.3
 FLUIDSYNTH_URL="https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v$ver.tar.gz"
 FLUIDSYNTH_DIR="$lib-$ver"
 FLUIDSYNTH_ARGS="-DLIB_SUFFIX=''"
 
 lib=FluidLite
-ver=fdd05bad03cdb24d1f78b5fe3453842890c1b0e8
+ver=57a0e74e708f699b13d7c85b28a4e1ff5b71887c
 FLUIDLITE_URL="https://github.com/divideconcept/$lib/archive/$ver.zip"
 FLUIDLITE_DIR="$lib-$ver"
 FLUIDLITE_ARGS="-DFLUIDLITE_BUILD_STATIC=ON -DFLUIDLITE_BUILD_SHARED=OFF"
 
 lib=json
-ver=3.9.1
+ver=3.10.4
 NLOHMANNJSON_URL="https://github.com/nlohmann/$lib/archive/v$ver.tar.gz"
 NLOHMANNJSON_DIR=$lib-$ver
 NLOHMANNJSON_ARGS="-DJSON_BuildTests=OFF"
@@ -131,7 +131,7 @@ ICUDATA_URL=https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icud
 ICUDATA_FILES=icudt*.dat
 
 lib=SDL2
-ver=2.0.14
+ver=2.0.16
 SDL2_URL="https://libsdl.org/release/$lib-$ver.tar.gz"
 SDL2_DIR="$lib-$ver"
 
