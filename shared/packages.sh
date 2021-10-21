@@ -50,7 +50,7 @@ TREMOR_URL="https://gitlab.xiph.org/xiph/$lib/-/archive/$ver/$lib-$ver.tar.bz2"
 TREMOR_DIR="$lib-$ver"
 
 lib=mpg123
-ver=1.29.0
+ver=1.29.2
 MPG123_URL=https://www.mpg123.de/download/$lib-$ver.tar.bz2
 MPG123_DIR="$lib-$ver"
 
