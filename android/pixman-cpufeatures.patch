@@ -1,0 +1,50 @@
+--- pixman-0.40.0-old/pixman/pixman-arm.c	2021-10-21 14:53:04.947520817 +0200
++++ pixman-0.40.0/pixman/pixman-arm.c	2021-10-21 14:53:28.687250277 +0200
+@@ -97,6 +97,7 @@
+ #elif defined(__ANDROID__) || defined(ANDROID) /* Android */
+ 
+ #include <cpu-features.h>
++#include <android/api-level.h>
+ 
+ static arm_cpu_features_t
+ detect_cpu_features (void)
+@@ -105,19 +106,28 @@
+     AndroidCpuFamily cpu_family;
+     uint64_t cpu_features;
+ 
+-    cpu_family = android_getCpuFamily();
+-    cpu_features = android_getCpuFeatures();
+-
+-    if (cpu_family == ANDROID_CPU_FAMILY_ARM)
++    if (android_get_device_api_level() > 18)
+     {
+-	if (cpu_features & ANDROID_CPU_ARM_FEATURE_ARMv7)
+-	    features |= ARM_V7;
+-
+-	if (cpu_features & ANDROID_CPU_ARM_FEATURE_VFPv3)
+-	    features |= ARM_VFP;
++        cpu_family = android_getCpuFamily();
++        cpu_features = android_getCpuFeatures();
+ 
+-	if (cpu_features & ANDROID_CPU_ARM_FEATURE_NEON)
+-	    features |= ARM_NEON;
++        if (cpu_family == ANDROID_CPU_FAMILY_ARM)
++        {
++	    if (cpu_features & ANDROID_CPU_ARM_FEATURE_ARMv7)
++	        features |= ARM_V7;
++
++	    if (cpu_features & ANDROID_CPU_ARM_FEATURE_VFPv3)
++	        features |= ARM_VFP;
++
++	    if (cpu_features & ANDROID_CPU_ARM_FEATURE_NEON)
++	        features |= ARM_NEON;
++        }
++    } else {
++#if defined(__arm__) || defined(__aarch64__)
++        features |= ARM_V7;
++        features |= ARM_VFP;
++        features |= ARM_NEON;
++#endif
+     }
+ 
+     return features;

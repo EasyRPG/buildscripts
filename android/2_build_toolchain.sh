@@ -21,11 +21,16 @@ if [ ! -f .patches-applied ]; then
 
 	cp -rup icu icu-native
 
+	# pixman: hardcode cpufeatures (crashes armeabi-v7a)
+	(cd $PIXMAN_DIR
+		patch -Np1 < ../pixman-cpufeatures.patch
+	)
+
 	# use android config
-	pushd $SDL2_DIR
-	mv include/SDL_config_android.h include/SDL_config.h
-	mkdir -p jni
-	popd
+	(cd $SDL2_DIR
+		mv include/SDL_config_android.h include/SDL_config.h
+		mkdir -p jni
+	)
 
 	touch .patches-applied
 fi
