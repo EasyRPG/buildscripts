@@ -32,10 +32,12 @@ vcpkg_download_distfile(
     SHA512 5fb039e29479f93f8e2f796798f7414378c813d230e3a7188fc3ca7a1e6f55243e517b4e846a505507e8e251e1bce1860f1ec8ae41d0c237d5bc4acaa7018a98
 )
 vcpkg_extract_source_archive(
-    ${SOURCE_PATH}/source/data/in
+    ARCHIVE_SOURCE
     ARCHIVE "${ARCHIVE}"
     NO_REMOVE_ONE_LEVEL
 )
+file(GLOB ARCHIVE_FILES ${ARCHIVE_SOURCE}/*.dat)
+file(COPY ${ARCHIVE_FILES} DESTINATION ${SOURCE_PATH}/source/data/in)
 # EASYRPG END
 
 vcpkg_find_acquire_program(PYTHON3)
