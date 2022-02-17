@@ -8,16 +8,22 @@ export WORKSPACE=$PWD
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
 
+os=`uname`
+if [ $os = "Darwin" ] ; then
+	echo "#############################################################"
+	echo "#"
+	echo "# macOS / Darwin detected. Please make sure the needed"
+	echo "# tools are installed. See the README.md file for reference."
+	echo "#"
+	echo "#############################################################"
+fi
+
 msg " [1] Checking Emscripten"
 
 if hash emcc >/dev/null 2>&1; then
 	echo "Using pre-installed version"
 else
 	echo "Preparing portable SDK"
-
-	# Number of CPU
-	nproc=$(nproc)
-	export MAKEFLAGS="-j${nproc:-2}"
 
 	rm -rf emsdk-portable
 	git_clone https://github.com/emscripten-core/emsdk.git emsdk-portable

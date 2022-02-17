@@ -9,7 +9,14 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
 
 # Number of CPU
-nproc=$(nproc)
+os=`uname`
+if [ $os = "Darwin" ] ; then
+	nproc=$(getconf _NPROCESSORS_ONLN)
+	CP_ARGS="-r"
+else
+	nproc=$(nproc)
+	CP_ARGS="-rup"
+fi
 
 # Use ccache?
 test_ccache
@@ -42,7 +49,7 @@ if [ ! -f .patches-applied ]; then
 		patch -Np1 < ../sdl2-fix-timer.patch
 	)
 
-	cp -rup icu icu-native
+	cp $CP_ARGS icu icu-native
 
 	touch .patches-applied
 fi
