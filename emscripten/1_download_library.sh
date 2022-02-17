@@ -28,12 +28,9 @@ else
 	# Prevents usage of the global config file in the home directory.
 	touch .emscripten
 
-	# Fetch the latest registry of available tools.
-	./emsdk update-tags
-
 	# Download and install the latest SDK tools and set up the compiler configuration to point to it.
-	./emsdk install 2.0.20
-	./emsdk activate 2.0.20
+	./emsdk install 3.1.7
+	./emsdk activate 3.1.7
 
 	# Set the current Emscripten path
 	source ./emsdk_env.sh
@@ -123,11 +120,9 @@ download_and_extract $ICU_URL
 rm -f $ICUDATA_FILES
 download_and_extract $ICUDATA_URL
 
-msg " [2] Preparing platform libraries"
-
 # SDL2
-rm -rf SDL2/
-git clone --depth=1 https://github.com/emscripten-ports/SDL2.git
+rm -rf $SDL2_DIR
+download_and_extract $SDL2_URL
 
 # liblcf
 rm -rf liblcf

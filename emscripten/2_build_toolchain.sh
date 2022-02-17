@@ -20,10 +20,10 @@ if [ ! -f .patches-applied ]; then
 	patches_common
 
 	# Fix libsndfile
-	pushd $LIBSNDFILE_DIR
-	patch -Np1 < $SCRIPT_DIR/../shared/extra/libsndfile.patch
-	autoreconf -fi
-	popd
+	(cd $LIBSNDFILE_DIR
+		patch -Np1 < $SCRIPT_DIR/../shared/extra/libsndfile.patch
+		autoreconf -fi
+	)
 
 	# disable unsupported compiler flags by emcc clang in libogg
 	perl -pi -e 's/-O20/-g0 -O2/g' $LIBOGG_DIR/configure
@@ -37,6 +37,11 @@ if [ ! -f .patches-applied ]; then
 		patch -Np1 < ../xmp-emscripten.patch
 	)
 
+	# Fix SDL2 compile error (remove when 2.0.22 is out)
+	(cd $SDL2_DIR
+		patch -Np1 < ../sdl2-fix-timer.patch
+	)
+
 	cp -rup icu icu-native
 
 	touch .patches-applied
@@ -46,6 +51,7 @@ export PLATFORM_PREFIX=$WORKSPACE
 export CONFIGURE_WRAPPER=emconfigure
 export CMAKE_WRAPPER=emcmake
 export MAKEFLAGS="-j${nproc:-2}"
+export TARGET_HOST="asmjs-unknown-emscripten"
 
 function set_build_flags {
 	export PATH="$PATH:$PLATFORM_PREFIX/bin" # for icu-config
@@ -54,7 +60,7 @@ function set_build_flags {
 	export CPPFLAGS="-I$PLATFORM_PREFIX/include"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 	export EM_CFLAGS="-Wno-warn-absolute-paths"
-	export EMMAKEN_CFLAGS="$EM_CFLAGS"
+	export EMCC_CFLAGS="$EM_CFLAGS"
 	export EM_PKG_CONFIG_PATH="$PLATFORM_PREFIX/lib/pkgconfig"
 	if [ "$ENABLE_CCACHE" ]; then
 		export CC="ccache gcc"
@@ -63,17 +69,6 @@ function set_build_flags {
 
 	# force mmap support in mpg123 (actually unused, but needed for building)
 	export ac_cv_func_mmap_fixed_mapped=yes
-}
-
-function install_lib_sdl2 {
-	msg "Building SDL2"
-
-	(cd SDL2
-		emconfigure ./configure --prefix=$WORKSPACE --host=asmjs-unknown-emscripten \
-			--disable-shared --enable-static --disable-assembly --disable-threads --disable-cpuinfo
-		make clean
-		make install
-	)
 }
 
 install_lib_icu_native
@@ -111,12 +106,16 @@ install_lib_cmake $FLUIDSYNTH_DIR $FLUIDSYNTH_ARGS
 install_lib_cmake $NLOHMANNJSON_DIR $NLOHMANNJSON_ARGS
 install_lib_cmake $FMT_DIR $FMT_ARGS
 
-install_lib_sdl2
+install_lib $SDL2_DIR $SDL2_ARGS --disable-assembly --disable-threads --disable-cpuinfo
+
+install_lib_liblcf
+
+# Workaround ICU not knowing about emscripten
+unset TARGET_HOST
+rm -f config.cache
 
 install_lib_icu_cross
 icu_force_data_install
-
-install_lib_liblcf
 
 #### additional stuff
 
