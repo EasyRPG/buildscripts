@@ -58,7 +58,6 @@ export PLATFORM_PREFIX=$WORKSPACE
 export CONFIGURE_WRAPPER=emconfigure
 export CMAKE_WRAPPER=emcmake
 export MAKEFLAGS="-j${nproc:-2}"
-export TARGET_HOST="asmjs-unknown-emscripten"
 
 function set_build_flags {
 	export PATH="$PATH:$PLATFORM_PREFIX/bin" # for icu-config
@@ -113,13 +112,14 @@ install_lib_cmake $FLUIDSYNTH_DIR $FLUIDSYNTH_ARGS
 install_lib_cmake $NLOHMANNJSON_DIR $NLOHMANNJSON_ARGS
 install_lib_cmake $FMT_DIR $FMT_ARGS
 
+# emscripten TARGET_HOST does not work for all libraries but SDL2 requires it
+export TARGET_HOST="asmjs-unknown-emscripten"
+rm -f config.cache
 install_lib $SDL2_DIR $SDL2_ARGS --disable-assembly --disable-threads --disable-cpuinfo
+rm -f config.cache
+unset TARGET_HOST
 
 install_lib_liblcf
-
-# Workaround ICU not knowing about emscripten
-unset TARGET_HOST
-rm -f config.cache
 
 install_lib_icu_cross
 icu_force_data_install
