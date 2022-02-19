@@ -29,7 +29,11 @@ fi
 function set_build_flags {
 	CLANG="xcrun --sdk macosx clang"
 	CLANGXX="xcrun --sdk macosx clang++"
-	ARCH="-arch x86_64"
+	if [ "$(uname -m)" = "arm64" ]; then
+		ARCH="-arch arm64"
+	else
+		ARCH="-arch x86_64"
+	fi
 	SDKPATH=`xcrun -sdk macosx --show-sdk-path`
 
 	export CC="$CLANG $ARCH"
