@@ -25,6 +25,14 @@ if hash emcc >/dev/null 2>&1; then
 else
 	echo "Preparing portable SDK"
 
+	if [ $os = "Darwin" ] ; then
+		if [ "$(uname -m)" = "arm64" ] ; then
+			echo "macOS arm64 requires a preinstalled emscripten."
+			echo "Run 'brew install emscripten' to install it."
+			exit 1
+		fi
+	fi
+
 	rm -rf emsdk-portable
 	git_clone https://github.com/emscripten-core/emsdk.git emsdk-portable
 

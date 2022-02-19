@@ -92,6 +92,12 @@ cd $WORKSPACE
 # Install libraries
 set_build_flags
 
+if [ $os = "Darwin" ] ; then
+	# Workaround wrong libtool being detected
+	# Do not use this on Linux, fails with autoconf 2.69
+	export TARGET_HOST="asmjs-unknown-emscripten"
+fi
+
 install_lib_zlib
 install_lib $LIBPNG_DIR $LIBPNG_ARGS
 #install_lib $FREETYPE_DIR $FREETYPE_ARGS --without-harfbuzz
