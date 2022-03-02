@@ -62,11 +62,6 @@ if [ ! -f .patches-applied ]; then
 	# Emit correct bigendian icudata header
 	patch -Np0 < icu-pkg_genc.patch
 
-	# Patch SDL+SDL_mixer
-	patch -d $SDL_DIR --binary -Np1 < $SCRIPT_DIR/sdl-wii.patch
-	# newlib fix until resolved upstream
-	patch -d $SDL_DIR --binary -Np1 < $SCRIPT_DIR/sdl-wii-fix-build.patch
-
 	touch .patches-applied
 fi
 
@@ -96,15 +91,6 @@ function set_build_flags {
 	export CMAKE_SYSTEM_NAME="Generic"
 }
 
-function install_lib_sdl() {
-	msg "Building SDL"
-
-	(cd $SDL_DIR/SDL
-		make clean
-		make install INSTALL_HEADER_DIR="$WORKSPACE/include" INSTALL_LIB_DIR="$WORKSPACE/lib"
-	)
-}
-
 install_lib_icu_native_without_assembly
 
 set_build_flags
@@ -129,5 +115,3 @@ install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 install_lib_cmake $FMT_DIR $FMT_ARGS
 install_lib_icu_cross
 install_lib_liblcf
-
-install_lib_sdl
