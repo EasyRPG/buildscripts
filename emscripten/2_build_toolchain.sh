@@ -9,7 +9,14 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
 
 # Number of CPU
-nproc=$(nproc)
+os=`uname`
+if [ $os = "Darwin" ] ; then
+	nproc=$(getconf _NPROCESSORS_ONLN)
+	CP_ARGS="-r"
+else
+	nproc=$(nproc)
+	CP_ARGS="-rup"
+fi
 
 # Use ccache?
 test_ccache
@@ -20,10 +27,10 @@ if [ ! -f .patches-applied ]; then
 	patches_common
 
 	# Fix libsndfile
-	pushd $LIBSNDFILE_DIR
-	patch -Np1 < $SCRIPT_DIR/../shared/extra/libsndfile.patch
-	autoreconf -fi
-	popd
+	(cd $LIBSNDFILE_DIR
+		patch -Np1 < $SCRIPT_DIR/../shared/extra/libsndfile.patch
+		autoreconf -fi
+	)
 
 	# disable unsupported compiler flags by emcc clang in libogg
 	perl -pi -e 's/-O20/-g0 -O2/g' $LIBOGG_DIR/configure
@@ -37,7 +44,12 @@ if [ ! -f .patches-applied ]; then
 		patch -Np1 < ../xmp-emscripten.patch
 	)
 
-	cp -rup icu icu-native
+	# Fix SDL2 compile error (remove when 2.0.22 is out)
+	(cd $SDL2_DIR
+		patch -Np1 < ../sdl2-fix-timer.patch
+	)
+
+	cp $CP_ARGS icu icu-native
 
 	touch .patches-applied
 fi
@@ -54,7 +66,7 @@ function set_build_flags {
 	export CPPFLAGS="-I$PLATFORM_PREFIX/include"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 	export EM_CFLAGS="-Wno-warn-absolute-paths"
-	export EMMAKEN_CFLAGS="$EM_CFLAGS"
+	export EMCC_CFLAGS="$EM_CFLAGS"
 	export EM_PKG_CONFIG_PATH="$PLATFORM_PREFIX/lib/pkgconfig"
 	if [ "$ENABLE_CCACHE" ]; then
 		export CC="ccache gcc"
@@ -63,17 +75,6 @@ function set_build_flags {
 
 	# force mmap support in mpg123 (actually unused, but needed for building)
 	export ac_cv_func_mmap_fixed_mapped=yes
-}
-
-function install_lib_sdl2 {
-	msg "Building SDL2"
-
-	(cd SDL2
-		emconfigure ./configure --prefix=$WORKSPACE --host=asmjs-unknown-emscripten \
-			--disable-shared --enable-static --disable-assembly --disable-threads --disable-cpuinfo
-		make clean
-		make install
-	)
 }
 
 install_lib_icu_native
@@ -90,6 +91,12 @@ cd $WORKSPACE
 
 # Install libraries
 set_build_flags
+
+if [ $os = "Darwin" ] ; then
+	# Workaround wrong libtool being detected
+	# Do not use this on Linux, fails with autoconf 2.69
+	export TARGET_HOST="asmjs-unknown-emscripten"
+fi
 
 install_lib_zlib
 install_lib $LIBPNG_DIR $LIBPNG_ARGS
@@ -111,12 +118,17 @@ install_lib_cmake $FLUIDSYNTH_DIR $FLUIDSYNTH_ARGS
 install_lib_cmake $NLOHMANNJSON_DIR $NLOHMANNJSON_ARGS
 install_lib_cmake $FMT_DIR $FMT_ARGS
 
-install_lib_sdl2
+# emscripten TARGET_HOST does not work for all libraries but SDL2 requires it
+export TARGET_HOST="asmjs-unknown-emscripten"
+rm -f config.cache
+install_lib $SDL2_DIR $SDL2_ARGS --disable-assembly --disable-threads --disable-cpuinfo
+rm -f config.cache
+unset TARGET_HOST
+
+install_lib_liblcf
 
 install_lib_icu_cross
 icu_force_data_install
-
-install_lib_liblcf
 
 #### additional stuff
 

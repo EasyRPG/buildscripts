@@ -8,8 +8,17 @@ export WORKSPACE=$PWD
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
 
-# Number of CPU
-nproc=$(nproc)
+# Platform configuration
+os=`uname`
+if [ $os = "Darwin" ] ; then
+	nproc=$(getconf _NPROCESSORS_ONLN)
+	CP_ARGS="-r"
+	NDK_ARCH="darwin-x86_64"
+else
+	nproc=$(nproc)
+	CP_ARGS="-rup"
+	NDK_ARCH="linux-x86_64"
+fi
 
 # Use ccache?
 test_ccache
@@ -19,7 +28,7 @@ if [ ! -f .patches-applied ]; then
 
 	patches_common
 
-	cp -rup icu icu-native
+	cp $CP_ARGS icu icu-native
 
 	# pixman: hardcode cpufeatures (crashes armeabi-v7a)
 	(cd $PIXMAN_DIR
@@ -75,6 +84,10 @@ function build() {
 
 	export PATH=$PLATFORM_PREFIX/bin:$PATH
 
+	export AR=$NDK_PATH/llvm-ar
+	export NM=$NDK_PATH/llvm-nm
+	export RANLIB=$NDK_PATH/llvm-ranlib
+
 	export CFLAGS="-no-integrated-as -g0 -O2 -fPIC $5"
 	export CXXFLAGS="$CFLAGS"
 	export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/cpufeatures"
@@ -116,15 +129,16 @@ export NDK_ROOT=$SDK_ROOT/ndk/21.4.7075529
 
 export MAKEFLAGS="-j${nproc:-2}"
 
-# Setup PATH
-PATH=$NDK_ROOT:$NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin:$SDK_ROOT/tools:$PATH
-
-export OLD_PATH=$PATH
-
 # Install host ICU
 cd $WORKSPACE
 
 install_lib_icu_native
+
+# Setup PATH
+NDK_PATH=$NDK_ROOT/toolchains/llvm/prebuilt/$NDK_ARCH/bin
+PATH=$NDK_ROOT:$NDK_PATH:$SDK_ROOT/tools:$PATH
+
+export OLD_PATH=$PATH
 
 # Correctly detected mmap support in mpg123
 export ac_cv_func_mmap_fixed_mapped=yes

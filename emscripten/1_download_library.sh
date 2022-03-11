@@ -8,6 +8,16 @@ export WORKSPACE=$PWD
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
 
+os=`uname`
+if [ $os = "Darwin" ] ; then
+	echo "#############################################################"
+	echo "#"
+	echo "# macOS / Darwin detected. Please make sure the needed"
+	echo "# tools are installed. See the README.md file for reference."
+	echo "#"
+	echo "#############################################################"
+fi
+
 msg " [1] Checking Emscripten"
 
 if hash emcc >/dev/null 2>&1; then
@@ -15,9 +25,13 @@ if hash emcc >/dev/null 2>&1; then
 else
 	echo "Preparing portable SDK"
 
-	# Number of CPU
-	nproc=$(nproc)
-	export MAKEFLAGS="-j${nproc:-2}"
+	if [ $os = "Darwin" ] ; then
+		if [ "$(uname -m)" = "arm64" ] ; then
+			echo "macOS arm64 requires a preinstalled emscripten."
+			echo "Run 'brew install emscripten' to install it."
+			exit 1
+		fi
+	fi
 
 	rm -rf emsdk-portable
 	git_clone https://github.com/emscripten-core/emsdk.git emsdk-portable
@@ -28,12 +42,9 @@ else
 	# Prevents usage of the global config file in the home directory.
 	touch .emscripten
 
-	# Fetch the latest registry of available tools.
-	./emsdk update-tags
-
 	# Download and install the latest SDK tools and set up the compiler configuration to point to it.
-	./emsdk install 2.0.20
-	./emsdk activate 2.0.20
+	./emsdk install 3.1.7
+	./emsdk activate 3.1.7
 
 	# Set the current Emscripten path
 	source ./emsdk_env.sh
@@ -123,11 +134,9 @@ download_and_extract $ICU_URL
 rm -f $ICUDATA_FILES
 download_and_extract $ICUDATA_URL
 
-msg " [2] Preparing platform libraries"
-
 # SDL2
-rm -rf SDL2/
-git clone --depth=1 https://github.com/emscripten-ports/SDL2.git
+rm -rf $SDL2_DIR
+download_and_extract $SDL2_URL
 
 # liblcf
 rm -rf liblcf
