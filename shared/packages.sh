@@ -1,7 +1,7 @@
 #!/bin/bash
 
 lib=zlib
-ver=1.2.11
+ver=1.2.12
 ZLIB_URL="https://zlib.net/$lib-$ver.tar.gz"
 ZLIB_DIR="$lib-$ver"
 
