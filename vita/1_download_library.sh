@@ -18,7 +18,7 @@ function download_and_extract_shaders {
 msg " [1] Installing local Vita SDK"
 
 export VITASDK=$PWD/vitasdk
-export URL="https://github.com/vitasdk/autobuilds/releases/download/master-linux-v1498/vitasdk-x86_64-linux-gnu-2021-06-13_20-39-05.tar.bz2"
+export URL="https://github.com/vitasdk/autobuilds/releases/download/master-linux-v2.341/vitasdk-x86_64-linux-gnu-2022-05-20_11-10-55.tar.bz2"
 
 mkdir -p vitasdk
 curl -sSLR -o vitasdk-nightly.tar.bz2 "$URL"
@@ -104,11 +104,8 @@ download_and_extract $ICUDATA_URL
 
 msg " [3] Downloading platform libraries"
 
-# libvitashaders
-rm -rf vitashaders
-download_and_extract_shaders
-
-git_clone https://github.com/frangarcj/vita2dlib
+# libvita2d
+git_clone https://github.com/xerpi/libvita2d.git
 
 # liblcf
 rm -rf liblcf

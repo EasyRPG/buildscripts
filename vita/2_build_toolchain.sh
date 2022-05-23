@@ -41,7 +41,7 @@ if [ ! -f .patches-applied ]; then
 	patch -Np0 < $SCRIPT_DIR/icu69-vita.patch
 
 	# Disable vita2dlib jpeg dependency
-	patch -Np0 < $SCRIPT_DIR/vita2dlib-no-jpeg.patch
+	patch -Np0 < $SCRIPT_DIR/libvita2d-no-jpeg.patch
 
 	# Allow the cmake toolchain finding libfmt
 	patch -Np0 < $SCRIPT_DIR/vitasdk-cmake.patch
@@ -76,21 +76,10 @@ function set_build_flags {
 function install_lib_vita2d() {
 	msg "Building patched libvita2d"
 
-	cd vita2dlib
-	git checkout fbo
-	cd libvita2d
-	make clean
-	make -j1
-	make install
-	cd ../..
-}
-
-function install_shaders() {
-	msg "Copying precompiled shaders"
-
-	(cd vitashaders
-		cp -a ./lib/. $PLATFORM_PREFIX/lib/
-		cp -a ./includes/. $PLATFORM_PREFIX/include/
+	(cd libvita2d/libvita2d
+		make clean
+		make -j1 CFLAGS='-Wl,-q -Wall -O3 -I$(INCLUDES) -I$(VITASDK)/arm-vita-eabi/include/freetype2'
+		make install
 	)
 }
 
@@ -119,4 +108,3 @@ install_lib_icu_cross
 install_lib_liblcf
 
 install_lib_vita2d
-install_shaders

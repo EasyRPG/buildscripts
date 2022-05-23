@@ -8,6 +8,6 @@ source $SCRIPT_DIR/../shared/import.sh
 
 cleanup
 
-rm -rf vita2dlib/ vitashaders/
+rm -rf libvita2d/
 
 echo " -> done"
