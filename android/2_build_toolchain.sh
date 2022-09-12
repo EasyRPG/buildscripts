@@ -122,6 +122,7 @@ function build() {
 	install_lib_cmake $FMT_DIR $FMT_ARGS
 	install_lib_icu_cross
 	install_lib_sdl "$2"
+	install_lib_liblcf
 }
 
 export SDK_ROOT=$WORKSPACE/android-sdk

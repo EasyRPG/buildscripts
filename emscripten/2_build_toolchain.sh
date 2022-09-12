@@ -32,6 +32,11 @@ if [ ! -f .patches-applied ]; then
 		autoreconf -fi
 	)
 
+	# Fix pixman (Remove when 0.42.0 is released)
+	(cd $PIXMAN_DIR
+		patch -Np1 < $SCRIPT_DIR/pixman-incompatible-function-pointer.patch
+	)
+
 	# disable unsupported compiler flags by emcc clang in libogg
 	perl -pi -e 's/-O20/-g0 -O2/g' $LIBOGG_DIR/configure
 
@@ -42,11 +47,6 @@ if [ ! -f .patches-applied ]; then
 	# Fix libxmp-lite
 	(cd $LIBXMP_LITE_DIR
 		patch -Np1 < ../xmp-emscripten.patch
-	)
-
-	# Fix SDL2 compile error (remove when 2.0.22 is out)
-	(cd $SDL2_DIR
-		patch -Np1 < ../sdl2-fix-timer.patch
 	)
 
 	cp $CP_ARGS icu icu-native
@@ -125,10 +125,10 @@ install_lib $SDL2_DIR $SDL2_ARGS --disable-assembly --disable-threads --disable-
 rm -f config.cache
 unset TARGET_HOST
 
-install_lib_liblcf
-
 install_lib_icu_cross
 icu_force_data_install
+
+install_lib_liblcf
 
 #### additional stuff
 
