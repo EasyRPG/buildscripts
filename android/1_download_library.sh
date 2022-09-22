@@ -38,7 +38,7 @@ else
 	exit 1
 fi
 
-SDK_VERSION="6858069_latest"
+SDK_VERSION="8512546_latest"
 SDK_URL="https://dl.google.com/android/repository/commandlinetools-${SDK_PLATFORM}-${SDK_VERSION}.zip"
 download $SDK_URL
 unzip commandlinetools-${SDK_PLATFORM}-${SDK_VERSION}.zip
@@ -53,16 +53,18 @@ msg " [2] Installing SDK and Platform-tools"
 # Otherwise installed to the wrong directory
 cd android-sdk
 
-# Android SDK Build-tools, revision 26.0.1
-echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "build-tools;28.0.0"
+# Android SDK Build-tools, revision 33.0.0
+echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "build-tools;33.0.0"
 # Android SDK Platform-tools
 echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "platform-tools"
-# SDK Platform Android 10, API 29
-echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "platforms;android-29"
+# SDK Platform Android 13, API 33
+echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "platforms;android-33"
 # Android Support Library Repository
 echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "extras;android;m2repository"
 # Google Repository
 echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "extras;google;m2repository"
+# CMake 3.22.1
+echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "cmake;3.22.1"
 
 msg " [3] Installing Android NDK"
 
@@ -151,3 +153,7 @@ download_and_extract $ICUDATA_URL
 # SDL2
 rm -rf $SDL2_DIR
 download_and_extract $SDL2_URL
+
+# liblcf
+rm -rf liblcf
+download_liblcf

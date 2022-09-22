@@ -1,0 +1,34 @@
+From e0d4403e78a7af8f4be4110ae25e9c3d1ac93a78 Mon Sep 17 00:00:00 2001
+From: Alex Richardson <Alexander.Richardson@cl.cam.ac.uk>
+Date: Wed, 14 Jul 2021 12:46:20 +0100
+Subject: [PATCH] Fix -Wincompatible-function-pointer-types warning
+
+Adding const to the return type does nothing and means that the function
+pointer types do not match exactly:
+
+error: incompatible function pointer types passing 'const float (int, int)' to parameter of type 'dither_factor_t' (aka 'float (*)(int, int)')
+---
+ pixman/pixman-bits-image.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/pixman/pixman-bits-image.c b/pixman/pixman-bits-image.c
+index a0d9441..6f65420 100644
+--- a/pixman/pixman-bits-image.c
++++ b/pixman/pixman-bits-image.c
+@@ -1055,14 +1055,14 @@ dest_write_back_narrow (pixman_iter_t *iter)
+     iter->y++;
+ }
+ 
+-static const float
++static float
+ dither_factor_blue_noise_64 (int x, int y)
+ {
+     float m = dither_blue_noise_64x64[((y & 0x3f) << 6) | (x & 0x3f)];
+     return m * (1. / 4096.f) + (1. / 8192.f);
+ }
+ 
+-static const float
++static float
+ dither_factor_bayer_8 (int x, int y)
+ {
+     uint32_t m;

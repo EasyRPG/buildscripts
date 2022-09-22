@@ -8,17 +8,10 @@ export WORKSPACE=$PWD
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
 
-function download_and_extract_shaders {
-	mkdir vitashaders
-	cd vitashaders
-	download_and_extract https://github.com/frangarcj/vita-shader-collection/releases/download/master-0.1-v86/vita-shader-collection.tar.gz
-	cd ..
-}
-
 msg " [1] Installing local Vita SDK"
 
 export VITASDK=$PWD/vitasdk
-export URL="https://github.com/vitasdk/autobuilds/releases/download/master-linux-v2.341/vitasdk-x86_64-linux-gnu-2022-05-20_11-10-55.tar.bz2"
+export URL="https://github.com/vitasdk/autobuilds/releases/download/master-linux-v2.414/vitasdk-x86_64-linux-gnu-2022-09-09_14-50-22.tar.bz2"
 
 mkdir -p vitasdk
 curl -sSLR -o vitasdk-nightly.tar.bz2 "$URL"

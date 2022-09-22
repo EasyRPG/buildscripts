@@ -1,10 +1,10 @@
-From 29be22557607952b410d7095550edb9aaa158f0a Mon Sep 17 00:00:00 2001
-From: Ghabry <gabriel+github mastergk de>
+From 580ff3c001d57f2a8477cb6ec0698fff86083781 Mon Sep 17 00:00:00 2001
+From: Ghabry <gabriel+github@mastergk.de>
 Date: Fri, 16 Jul 2021 20:04:37 +0200
-Subject: [PATCH] Shim glib
+Subject: [PATCH 1/2] Shim glib
 
 ---
- CMakeLists.txt                   | 53 +++++++++----------
+ CMakeLists.txt                   |  3 +-
  src/CMakeLists.txt               |  4 +-
  src/bindings/fluid_cmd.c         |  3 ++
  src/glib_shim.c                  | 12 +++++
@@ -17,89 +17,24 @@ Subject: [PATCH] Shim glib
  src/utils/fluid_sys.c            |  9 +++-
  src/utils/fluid_sys.h            |  8 +--
  src/utils/fluidsynth_priv.h      |  2 +-
- 13 files changed, 155 insertions(+), 61 deletions(-)
+ 13 files changed, 130 insertions(+), 36 deletions(-)
  create mode 100644 src/glib_shim.c
  create mode 100644 src/glib_shim.h
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index d0293363b..22d930e44 100644
+index d1a12e48..89ba7102 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -68,47 +68,47 @@ option ( enable-trap-on-fpe "enable SIGFPE trap on Floating Point Exceptions" of
- option ( enable-ubsan "compile and link against UBSan (for debugging fluidsynth internals)" off )
- 
- # Options enabled by default
--option ( enable-aufile "compile support for sound file output" on )
-+option ( enable-aufile "compile support for sound file output" off )
- option ( BUILD_SHARED_LIBS "Build a shared object or DLL" on )
--option ( enable-dbus "compile DBUS support (if it is available)" on )
--option ( enable-ipv6  "enable ipv6 support" on )
--option ( enable-jack "compile JACK support (if it is available)" on )
--option ( enable-ladspa "enable LADSPA effect units" on )
--option ( enable-libinstpatch "use libinstpatch (if available) to load DLS and GIG files" on )
--option ( enable-libsndfile "compile libsndfile support (if it is available)" on )
--option ( enable-midishare "compile MidiShare support (if it is available)" on )
-+option ( enable-dbus "compile DBUS support (if it is available)" off )
-+option ( enable-ipv6  "enable ipv6 support" off )
-+option ( enable-jack "compile JACK support (if it is available)" off )
-+option ( enable-ladspa "enable LADSPA effect units" off )
-+option ( enable-libinstpatch "use libinstpatch (if available) to load DLS and GIG files" off )
-+option ( enable-libsndfile "compile libsndfile support (if it is available)" off )
-+option ( enable-midishare "compile MidiShare support (if it is available)" off )
- option ( enable-opensles "compile OpenSLES support (if it is available)" off )
- option ( enable-oboe "compile Oboe support (requires OpenSLES and/or AAudio)" off )
--option ( enable-network "enable network support (requires BSD sockets)" on )
--option ( enable-oss "compile OSS support (if it is available)" on )
--option ( enable-dsound "compile DirectSound support (if it is available)" on )
--option ( enable-wasapi "compile Windows WASAPI support (if it is available)" on )
--option ( enable-waveout "compile Windows WaveOut support (if it is available)" on )
--option ( enable-winmidi "compile Windows MIDI support (if it is available)" on )
--option ( enable-sdl2 "compile SDL2 audio support (if it is available)" on )
--option ( enable-pkgconfig "use pkg-config to locate fluidsynth's (mostly optional) dependencies" on )
--option ( enable-pulseaudio "compile PulseAudio support (if it is available)" on )
--option ( enable-readline "compile readline lib line editing (if it is available)" on )
--option ( enable-threads "enable multi-threading support (such as parallel voice synthesis)" on )
-+option ( enable-network "enable network support (requires BSD sockets)" off )
-+option ( enable-oss "compile OSS support (if it is available)" off )
-+option ( enable-dsound "compile DirectSound support (if it is available)" off )
-+option ( enable-wasapi "compile Windows WASAPI support (if it is available)" off )
-+option ( enable-waveout "compile Windows WaveOut support (if it is available)" off )
-+option ( enable-winmidi "compile Windows MIDI support (if it is available)" off )
-+option ( enable-sdl2 "compile SDL2 audio support (if it is available)" off )
-+option ( enable-pkgconfig "use pkg-config to locate fluidsynth's (mostly optional) dependencies" off )
-+option ( enable-pulseaudio "compile PulseAudio support (if it is available)" off )
-+option ( enable-readline "compile readline lib line editing (if it is available)" off )
-+option ( enable-threads "enable multi-threading support (such as parallel voice synthesis)" off )
- 
- # Platform specific options
- if ( CMAKE_SYSTEM MATCHES "Linux|FreeBSD|DragonFly" )
--    option ( enable-lash "compile LASH support (if it is available)" on )
--    option ( enable-alsa "compile ALSA support (if it is available)" on )
-+    option ( enable-lash "compile LASH support (if it is available)" off )
-+    option ( enable-alsa "compile ALSA support (if it is available)" off )
- endif ( CMAKE_SYSTEM MATCHES "Linux|FreeBSD|DragonFly" )
- 
- if ( CMAKE_SYSTEM MATCHES "Linux" )
--    option ( enable-systemd "compile systemd support (if it is available)" on )
-+    option ( enable-systemd "compile systemd support (if it is available)" off )
- endif ( CMAKE_SYSTEM MATCHES "Linux" )
- 
- if ( CMAKE_SYSTEM MATCHES "Darwin" )
--    option ( enable-coreaudio "compile CoreAudio support (if it is available)" on )
--    option ( enable-coremidi "compile CoreMIDI support (if it is available)" on )
--    option ( enable-framework "create a Mac OSX style FluidSynth.framework" on )
-+    option ( enable-coreaudio "compile CoreAudio support (if it is available)" off )
-+    option ( enable-coremidi "compile CoreMIDI support (if it is available)" off )
-+    option ( enable-framework "create a Mac OSX style FluidSynth.framework" off )
- endif ( CMAKE_SYSTEM MATCHES "Darwin" )
+@@ -110,7 +110,7 @@ endif ( CMAKE_SYSTEM MATCHES "Darwin" )
  
  if ( CMAKE_SYSTEM MATCHES "OS2" )
--    option ( enable-dart "compile DART support (if it is available)" on )
-+    option ( enable-dart "compile DART support (if it is available)" off )
-     set ( enable-ipv6 off )
+     option ( enable-dart "compile DART support (if it is available)" on )
+-    set ( enable-ipv6 off )
++    set ( enable-ipv6 on )
  endif ( CMAKE_SYSTEM MATCHES "OS2" )
  
-@@ -781,7 +781,6 @@ configure_file ( ${CMAKE_SOURCE_DIR}/src/config.cmake
+ # Initialize the library directory name suffix.
+@@ -827,7 +827,6 @@ configure_file ( ${CMAKE_SOURCE_DIR}/src/config.cmake
  
  # Setup linker directories NOW, as the command will apply only to targets created after it has been called.
  link_directories (
@@ -108,7 +43,7 @@ index d0293363b..22d930e44 100644
      ${JACK_LIBRARY_DIRS}
      ${ALSA_LIBRARY_DIRS}
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index e913cb212..44e4c7254 100644
+index 2803ca88..616c68c3 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
 @@ -35,7 +35,6 @@ include_directories (
@@ -127,7 +62,7 @@ index e913cb212..44e4c7254 100644
      utils/fluid_conv.c
      utils/fluid_conv.h
      utils/fluid_hash.c
-@@ -349,8 +349,6 @@ else ( MACOSX_FRAMEWORK )
+@@ -355,8 +355,6 @@ else ( MACOSX_FRAMEWORK )
  endif ( MACOSX_FRAMEWORK )
  
  target_link_libraries ( libfluidsynth
@@ -137,7 +72,7 @@ index e913cb212..44e4c7254 100644
      ${JACK_LIBRARIES}
      ${ALSA_LIBRARIES}
 diff --git a/src/bindings/fluid_cmd.c b/src/bindings/fluid_cmd.c
-index 1d4baaed0..25a54364d 100644
+index 87c7bb8f..578c268f 100644
 --- a/src/bindings/fluid_cmd.c
 +++ b/src/bindings/fluid_cmd.c
 @@ -433,6 +433,8 @@ static const fluid_cmd_t fluid_commands[] =
@@ -159,7 +94,7 @@ index 1d4baaed0..25a54364d 100644
  /**
 diff --git a/src/glib_shim.c b/src/glib_shim.c
 new file mode 100644
-index 000000000..40b8b5602
+index 00000000..40b8b560
 --- /dev/null
 +++ b/src/glib_shim.c
 @@ -0,0 +1,12 @@
@@ -177,7 +112,7 @@ index 000000000..40b8b5602
 +}
 diff --git a/src/glib_shim.h b/src/glib_shim.h
 new file mode 100644
-index 000000000..f90f0eb42
+index 00000000..f90f0eb4
 --- /dev/null
 +++ b/src/glib_shim.h
 @@ -0,0 +1,90 @@
@@ -272,7 +207,7 @@ index 000000000..f90f0eb42
 +
 +#endif
 diff --git a/src/rvoice/fluid_rvoice_mixer.c b/src/rvoice/fluid_rvoice_mixer.c
-index 0b2d16066..450a01d05 100644
+index 0b2d1606..450a01d0 100644
 --- a/src/rvoice/fluid_rvoice_mixer.c
 +++ b/src/rvoice/fluid_rvoice_mixer.c
 @@ -463,7 +463,6 @@ fluid_rvoice_buffers_mix(fluid_rvoice_buffers_t *buffers,
@@ -328,10 +263,10 @@ index 0b2d16066..450a01d05 100644
          {
              int dsp_i = i * FLUID_MIXER_MAX_BUFFERS_DEFAULT * FLUID_BUFSIZE + j;
 diff --git a/src/sfloader/fluid_defsfont.c b/src/sfloader/fluid_defsfont.c
-index f1539808c..a76070732 100644
+index 3b953493..c152d78c 100644
 --- a/src/sfloader/fluid_defsfont.c
 +++ b/src/sfloader/fluid_defsfont.c
-@@ -394,8 +394,6 @@ int fluid_defsfont_load_all_sampledata(fluid_defsfont_t *defsfont, SFData *sfdat
+@@ -395,8 +395,6 @@ int fluid_defsfont_load_all_sampledata(fluid_defsfont_t *defsfont, SFData *sfdat
          }
      }
  
@@ -340,11 +275,11 @@ index f1539808c..a76070732 100644
      for(list = defsfont->sample; list; list = fluid_list_next(list))
      {
          sample = fluid_list_get(list);
-@@ -404,11 +402,9 @@ int fluid_defsfont_load_all_sampledata(fluid_defsfont_t *defsfont, SFData *sfdat
+@@ -405,11 +403,9 @@ int fluid_defsfont_load_all_sampledata(fluid_defsfont_t *defsfont, SFData *sfdat
          {
              /* SF3 samples get loaded individually, as most (or all) of them are in Ogg Vorbis format
               * anyway */
--            #pragma omp task firstprivate(sample,sfdata,defsfont) shared(sample_parsing_result) default(none)
+-            #pragma omp task firstprivate(sample,sfdata,defsfont) shared(sample_parsing_result, invalid_loops_were_sanitized) default(none)
              {
                  if(fluid_defsfont_load_sampledata(defsfont, sfdata, sample) == FLUID_FAILED)
                  {
@@ -352,16 +287,16 @@ index f1539808c..a76070732 100644
                      {
                          FLUID_LOG(FLUID_ERR, "Failed to load sample '%s'", sample->name);
                          sample_parsing_result = FLUID_FAILED;
-@@ -423,7 +419,6 @@ int fluid_defsfont_load_all_sampledata(fluid_defsfont_t *defsfont, SFData *sfdat
+@@ -431,7 +427,6 @@ int fluid_defsfont_load_all_sampledata(fluid_defsfont_t *defsfont, SFData *sfdat
          }
          else
          {
--            #pragma omp task firstprivate(sample, defsfont) default(none)
+-            #pragma omp task firstprivate(sample, defsfont) shared(invalid_loops_were_sanitized) default(none)
              {
+                 int modified;
                  /* Data pointers of SF2 samples point to large sample data block loaded above */
-                 sample->data = defsfont->sampledata;
 diff --git a/src/sfloader/fluid_samplecache.c b/src/sfloader/fluid_samplecache.c
-index 64e9e9e70..4c504c0fc 100644
+index 64e9e9e7..4c504c0f 100644
 --- a/src/sfloader/fluid_samplecache.c
 +++ b/src/sfloader/fluid_samplecache.c
 @@ -282,6 +282,7 @@ static fluid_samplecache_entry_t *get_samplecache_entry(SFData *sf,
@@ -381,7 +316,7 @@ index 64e9e9e70..4c504c0fc 100644
  }
  
 diff --git a/src/synth/fluid_synth.c b/src/synth/fluid_synth.c
-index fc0d35fcd..61ebf4c05 100644
+index 7d058258..ba09732d 100644
 --- a/src/synth/fluid_synth.c
 +++ b/src/synth/fluid_synth.c
 @@ -631,8 +631,9 @@ new_fluid_synth(fluid_settings_t *settings)
@@ -413,7 +348,7 @@ index fc0d35fcd..61ebf4c05 100644
  
  #ifdef LADSPA
      /* Release the LADSPA effects unit */
-@@ -7371,7 +7372,7 @@ fluid_synth_tuning_iteration_start(fluid_synth_t *synth)
+@@ -7387,7 +7388,7 @@ fluid_synth_tuning_iteration_start(fluid_synth_t *synth)
  {
      fluid_return_if_fail(synth != NULL);
      fluid_synth_api_enter(synth);
@@ -422,7 +357,7 @@ index fc0d35fcd..61ebf4c05 100644
      fluid_synth_api_exit(synth);
  }
  
-@@ -7394,7 +7395,7 @@ fluid_synth_tuning_iteration_next(fluid_synth_t *synth, int *bank, int *prog)
+@@ -7410,7 +7411,7 @@ fluid_synth_tuning_iteration_next(fluid_synth_t *synth, int *bank, int *prog)
      fluid_synth_api_enter(synth);
  
      /* Current tuning iteration stored as: bank << 8 | program */
@@ -431,7 +366,7 @@ index fc0d35fcd..61ebf4c05 100644
      p = FLUID_POINTER_TO_INT(pval);
      b = (p >> 8) & 0xFF;
      p &= 0xFF;
-@@ -7423,12 +7424,11 @@ fluid_synth_tuning_iteration_next(fluid_synth_t *synth, int *bank, int *prog)
+@@ -7439,12 +7440,11 @@ fluid_synth_tuning_iteration_next(fluid_synth_t *synth, int *bank, int *prog)
  
              if(p < 127)
              {
@@ -447,7 +382,7 @@ index fc0d35fcd..61ebf4c05 100644
  
              FLUID_API_RETURN(1);
 diff --git a/src/synth/fluid_synth.h b/src/synth/fluid_synth.h
-index 132a98dda..7cd3a330f 100644
+index 132a98dd..7cd3a330 100644
 --- a/src/synth/fluid_synth.h
 +++ b/src/synth/fluid_synth.h
 @@ -152,7 +152,7 @@ struct _fluid_synth_t
@@ -460,7 +395,7 @@ index 132a98dda..7cd3a330f 100644
      fluid_sample_timer_t *sample_timers; /**< List of timers triggered before a block is processed */
      unsigned int min_note_length_ticks; /**< If note-offs are triggered just after a note-on, they will be delayed */
 diff --git a/src/utils/fluid_sys.c b/src/utils/fluid_sys.c
-index e3c0ea4d0..7e1235c57 100644
+index 08f41200..a5d5896f 100644
 --- a/src/utils/fluid_sys.c
 +++ b/src/utils/fluid_sys.c
 @@ -33,7 +33,7 @@
@@ -515,7 +450,7 @@ index e3c0ea4d0..7e1235c57 100644
  #if OLD_GLIB_THREAD_API
  
 diff --git a/src/utils/fluid_sys.h b/src/utils/fluid_sys.h
-index 86a47f32d..0495262ba 100644
+index 635bcf6d..4d3576a0 100644
 --- a/src/utils/fluid_sys.h
 +++ b/src/utils/fluid_sys.h
 @@ -157,7 +157,7 @@ typedef gintptr  intptr_t;
@@ -536,7 +471,7 @@ index 86a47f32d..0495262ba 100644
  
  #ifdef WIN32
  char* fluid_get_windows_error(void);
-@@ -309,13 +309,13 @@ delete_fluid_cond(fluid_cond_t *cond)
+@@ -312,13 +312,13 @@ delete_fluid_cond(fluid_cond_t *cond)
  }
  
  /* Thread private data */
@@ -553,7 +488,7 @@ index 86a47f32d..0495262ba 100644
  
  /* glib prior to 2.32 */
 diff --git a/src/utils/fluidsynth_priv.h b/src/utils/fluidsynth_priv.h
-index f8f36381f..665bea2ec 100644
+index 5c3ab828..1a677483 100644
 --- a/src/utils/fluidsynth_priv.h
 +++ b/src/utils/fluidsynth_priv.h
 @@ -29,7 +29,7 @@
@@ -565,3 +500,6 @@ index f8f36381f..665bea2ec 100644
  
  #include "config.h"
  
+-- 
+2.37.3
+

@@ -305,6 +305,7 @@ function patches_common {
 	if [ -d "$FLUIDSYNTH_DIR" ]; then
 		(cd $FLUIDSYNTH_DIR
 			patch -Np1 < $_SCRIPT_DIR/fluidsynth-no-glib.patch
+			patch -Np1 < $_SCRIPT_DIR/fluidsynth-no-deps.patch
 		)
 	fi
 

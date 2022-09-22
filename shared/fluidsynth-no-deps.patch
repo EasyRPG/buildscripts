@@ -1,0 +1,95 @@
+From 04b62a88cca0c7edabd2fcf3d9e6ade5a342b6c7 Mon Sep 17 00:00:00 2001
+From: Ghabry <gabriel+github@mastergk.de>
+Date: Mon, 12 Sep 2022 13:51:02 +0200
+Subject: [PATCH 2/2] Disable dependencies
+
+---
+ CMakeLists.txt | 58 +++++++++++++++++++++++++-------------------------
+ 1 file changed, 29 insertions(+), 29 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 89ba7102..3ee487a2 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -68,49 +68,49 @@ option ( enable-trap-on-fpe "enable SIGFPE trap on Floating Point Exceptions" of
+ option ( enable-ubsan "compile and link against UBSan (for debugging fluidsynth internals)" off )
+ 
+ # Options enabled by default
+-option ( enable-aufile "compile support for sound file output" on )
+-option ( BUILD_SHARED_LIBS "Build a shared object or DLL" on )
+-option ( enable-dbus "compile DBUS support (if it is available)" on )
+-option ( enable-ipv6  "enable ipv6 support" on )
+-option ( enable-jack "compile JACK support (if it is available)" on )
+-option ( enable-ladspa "enable LADSPA effect units" on )
+-option ( enable-libinstpatch "use libinstpatch (if available) to load DLS and GIG files" on )
+-option ( enable-libsndfile "compile libsndfile support (if it is available)" on )
+-option ( enable-midishare "compile MidiShare support (if it is available)" on )
++option ( enable-aufile "compile support for sound file output" off )
++option ( BUILD_SHARED_LIBS "Build a shared object or DLL" off )
++option ( enable-dbus "compile DBUS support (if it is available)" off )
++option ( enable-ipv6  "enable ipv6 support" off )
++option ( enable-jack "compile JACK support (if it is available)" off )
++option ( enable-ladspa "enable LADSPA effect units" off )
++option ( enable-libinstpatch "use libinstpatch (if available) to load DLS and GIG files" off )
++option ( enable-libsndfile "compile libsndfile support (if it is available)" off )
++option ( enable-midishare "compile MidiShare support (if it is available)" off )
+ option ( enable-opensles "compile OpenSLES support (if it is available)" off )
+ option ( enable-oboe "compile Oboe support (requires OpenSLES and/or AAudio)" off )
+-option ( enable-network "enable network support (requires BSD sockets)" on )
+-option ( enable-oss "compile OSS support (if it is available)" on )
+-option ( enable-dsound "compile DirectSound support (if it is available)" on )
+-option ( enable-wasapi "compile Windows WASAPI support (if it is available)" on )
+-option ( enable-waveout "compile Windows WaveOut support (if it is available)" on )
+-option ( enable-winmidi "compile Windows MIDI support (if it is available)" on )
+-option ( enable-sdl2 "compile SDL2 audio support (if it is available)" on )
+-option ( enable-pkgconfig "use pkg-config to locate fluidsynth's (mostly optional) dependencies" on )
+-option ( enable-pulseaudio "compile PulseAudio support (if it is available)" on )
+-option ( enable-readline "compile readline lib line editing (if it is available)" on )
+-option ( enable-threads "enable multi-threading support (such as parallel voice synthesis)" on )
+-option ( enable-openmp "enable OpenMP support (parallelization of soundfont decoding, vectorization of voice mixing, etc.)" on )
++option ( enable-network "enable network support (requires BSD sockets)" off )
++option ( enable-oss "compile OSS support (if it is available)" off )
++option ( enable-dsound "compile DirectSound support (if it is available)" off )
++option ( enable-wasapi "compile Windows WASAPI support (if it is available)" off )
++option ( enable-waveout "compile Windows WaveOut support (if it is available)" off )
++option ( enable-winmidi "compile Windows MIDI support (if it is available)" off )
++option ( enable-sdl2 "compile SDL2 audio support (if it is available)" off )
++option ( enable-pkgconfig "use pkg-config to locate fluidsynth's (mostly optional) dependencies" off )
++option ( enable-pulseaudio "compile PulseAudio support (if it is available)" off )
++option ( enable-readline "compile readline lib line editing (if it is available)" off )
++option ( enable-threads "enable multi-threading support (such as parallel voice synthesis)" off )
++option ( enable-openmp "enable OpenMP support (parallelization of soundfont decoding, vectorization of voice mixing, etc.)" off )
+ 
+ # Platform specific options
+ if ( CMAKE_SYSTEM MATCHES "Linux|FreeBSD|DragonFly" )
+-    option ( enable-lash "compile LASH support (if it is available)" on )
+-    option ( enable-alsa "compile ALSA support (if it is available)" on )
++    option ( enable-lash "compile LASH support (if it is available)" off )
++    option ( enable-alsa "compile ALSA support (if it is available)" off )
+ endif ( CMAKE_SYSTEM MATCHES "Linux|FreeBSD|DragonFly" )
+ 
+ if ( CMAKE_SYSTEM MATCHES "Linux" )
+-    option ( enable-systemd "compile systemd support (if it is available)" on )
++    option ( enable-systemd "compile systemd support (if it is available)" off )
+ endif ( CMAKE_SYSTEM MATCHES "Linux" )
+ 
+ if ( CMAKE_SYSTEM MATCHES "Darwin" )
+-    option ( enable-coreaudio "compile CoreAudio support (if it is available)" on )
+-    option ( enable-coremidi "compile CoreMIDI support (if it is available)" on )
+-    option ( enable-framework "create a Mac OSX style FluidSynth.framework" on )
++    option ( enable-coreaudio "compile CoreAudio support (if it is available)" off )
++    option ( enable-coremidi "compile CoreMIDI support (if it is available)" off )
++    option ( enable-framework "create a Mac OSX style FluidSynth.framework" off )
+ endif ( CMAKE_SYSTEM MATCHES "Darwin" )
+ 
+ if ( CMAKE_SYSTEM MATCHES "OS2" )
+-    option ( enable-dart "compile DART support (if it is available)" on )
+-    set ( enable-ipv6 on )
++    option ( enable-dart "compile DART support (if it is available)" off )
++    set ( enable-ipv6 off )
+ endif ( CMAKE_SYSTEM MATCHES "OS2" )
+ 
+ # Initialize the library directory name suffix.
+-- 
+2.37.3
+
