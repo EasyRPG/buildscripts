@@ -6,7 +6,7 @@ ZLIB_URL="https://zlib.net/$lib-$ver.tar.gz"
 ZLIB_DIR="$lib-$ver"
 
 lib=libpng
-ver=1.6.37
+ver=1.6.38
 LIBPNG_URL="https://download.sourceforge.net/libpng/$lib-$ver.tar.xz"
 LIBPNG_DIR="$lib-$ver"
 
