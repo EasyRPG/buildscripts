@@ -22,6 +22,10 @@ msg " [1] Checking Emscripten"
 
 if hash emcc >/dev/null 2>&1; then
 	echo "Using pre-installed version"
+    echo "WARNING: New version of emscripten may be incompatible with buildscripts"
+    echo "If you meet any compile errors, try downgrading to 3.1.7 or using portable SDK"
+    echo "Press enter to continue..."
+    read
 else
 	echo "Preparing portable SDK"
 
