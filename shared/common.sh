@@ -92,7 +92,7 @@ function install_lib_cmake {
 	(cd $1
 		shift
 
-		rm -rf CMakeCache.txt CMakeFiles/
+		rm -rf build
 
 		if [ -n "$AR" ]; then
 			export CMAKE_AR="-DCMAKE_AR=$AR"
@@ -112,13 +112,12 @@ function install_lib_cmake {
 			CMAKE_RANLIB=
 		fi
 
-		$CMAKE_WRAPPER cmake . -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=OFF \
+		$CMAKE_WRAPPER cmake . -GNinja -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=OFF \
 			-DCMAKE_C_FLAGS="$CFLAGS $CPPFLAGS" -DCMAKE_CXX_FLAGS="$CXXFLAGS $CPPFLAGS" \
 			-DCMAKE_INSTALL_LIBDIR=lib $CMAKE_AR $CMAKE_NM $CMAKE_RANLIB \
 			-DCMAKE_INSTALL_PREFIX=$PLATFORM_PREFIX -DCMAKE_SYSTEM_NAME=$CMAKE_SYSTEM_NAME $@
-		make clean
-		make
-		make install
+		cmake --build build --target clean
+		cmake --build build --target install
 	)
 }
 
