@@ -64,8 +64,8 @@ rm -rf $LIBPNG_DIR
 download_and_extract $LIBPNG_URL
 
 # freetype
-#rm -rf $FREETYPE_DIR
-#download_and_extract $FREETYPE_URL
+rm -rf $FREETYPE_DIR
+download_and_extract $FREETYPE_URL
 
 # harfbuzz
 #rm -rf $HARFBUZZ_DIR

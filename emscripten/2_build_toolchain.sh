@@ -100,9 +100,9 @@ fi
 
 install_lib_zlib
 install_lib $LIBPNG_DIR $LIBPNG_ARGS
-#install_lib $FREETYPE_DIR $FREETYPE_ARGS --without-harfbuzz
+install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS_CMAKE -DCMAKE_DISABLE_FIND_PACKAGE_HarfBuzz=ON
 #install_lib $HARFBUZZ_DIR $HARFBUZZ_ARGS
-#install_lib $FREETYPE_DIR $FREETYPE_ARGS --with-harfbuzz
+#install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS_CMAKE -DCMAKE_DISABLE_FIND_PACKAGE_HarfBuzz=OFF
 install_lib $PIXMAN_DIR $PIXMAN_ARGS
 install_lib_cmake $EXPAT_DIR $EXPAT_ARGS
 install_lib $LIBOGG_DIR $LIBOGG_ARGS
@@ -129,8 +129,3 @@ install_lib_icu_cross
 icu_force_data_install
 
 install_lib_liblcf
-
-#### additional stuff
-
-# for freetype, build apinames apart with gcc:
-#gcc src/tools/apinames.c -o objs/apinames
