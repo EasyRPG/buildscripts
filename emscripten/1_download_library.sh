@@ -44,8 +44,8 @@ else
 
 	# Download and install the latest SDK tools and set up the compiler configuration to point to it.
 	# FIXME: SDL2 build fails when updating this
-	./emsdk install 3.1.7
-	./emsdk activate 3.1.7
+	./emsdk install 3.1.24
+	./emsdk activate 3.1.24
 
 	# Set the current Emscripten path
 	source ./emsdk_env.sh
@@ -64,8 +64,8 @@ rm -rf $LIBPNG_DIR
 download_and_extract $LIBPNG_URL
 
 # freetype
-#rm -rf $FREETYPE_DIR
-#download_and_extract $FREETYPE_URL
+rm -rf $FREETYPE_DIR
+download_and_extract $FREETYPE_URL
 
 # harfbuzz
 #rm -rf $HARFBUZZ_DIR

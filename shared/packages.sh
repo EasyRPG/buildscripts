@@ -15,6 +15,7 @@ ver=2.11.0
 FREETYPE_URL="https://download.savannah.gnu.org/releases/$lib/$lib-$ver.tar.xz"
 FREETYPE_DIR="$lib-$ver"
 FREETYPE_ARGS="--without-bzip2 --without-png --without-zlib"
+FREETYPE_ARGS_CMAKE="-DCMAKE_DISABLE_FIND_PACKAGE_ZLIB=ON -DCMAKE_DISABLE_FIND_PACKAGE_PNG=ON -DCMAKE_DISABLE_FIND_PACKAGE_PNG=ON"
 
 lib=harfbuzz
 ver=3.0.0
