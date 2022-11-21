@@ -115,7 +115,8 @@ function install_lib_cmake {
 		$CMAKE_WRAPPER cmake . -GNinja -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=OFF \
 			-DCMAKE_C_FLAGS="$CFLAGS $CPPFLAGS" -DCMAKE_CXX_FLAGS="$CXXFLAGS $CPPFLAGS" \
 			-DCMAKE_INSTALL_LIBDIR=lib $CMAKE_AR $CMAKE_NM $CMAKE_RANLIB \
-			-DCMAKE_INSTALL_PREFIX=$PLATFORM_PREFIX -DCMAKE_SYSTEM_NAME=$CMAKE_SYSTEM_NAME $@
+			-DCMAKE_INSTALL_PREFIX=$PLATFORM_PREFIX -DCMAKE_SYSTEM_NAME=$CMAKE_SYSTEM_NAME \
+			-DCMAKE_PREFIX_PATH=$PLATFORM_PREFIX $@
 		cmake --build build --target clean
 		cmake --build build --target install
 	)
@@ -244,15 +245,6 @@ function patches_common {
 		perl -pi -e 's/SUBDIRS = .*/SUBDIRS = pixman/' Makefile.am
 		autoreconf -fi
 	)
-
-	# disable harfbuzz tests, docs and most features
-	if [ -d "$HARFBUZZ_DIR" ]; then
-		(cd $HARFBUZZ_DIR
-			patch -Np1 < $_SCRIPT_DIR/harfbuzz-no-docs-tests.patch
-			patch -Np1 < $_SCRIPT_DIR/harfbuzz-no-features.patch
-			autoreconf -fi
-		)
-	fi
 
 	# disable unsupported compiler flags by clang in libvorbis
 	if [ -d "$LIBVORBIS_DIR" ]; then

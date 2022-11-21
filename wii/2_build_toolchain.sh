@@ -49,11 +49,6 @@ if [ ! -f .patches-applied ]; then
 		autoreconf -fi
 	)
 
-	# Fix harfbuzz
-	(cd $HARFBUZZ_DIR
-		patch -Np1 < $SCRIPT_DIR/../shared/extra/harfbuzz-climits.patch
-	)
-
 	# Fix icu build
 	perl -pi -e 's/xlocale/locale/' icu/source/i18n/digitlst.cpp
 	cp -rup icu icu-native
@@ -97,9 +92,9 @@ set_build_flags
 
 install_lib_zlib
 install_lib $LIBPNG_DIR $LIBPNG_ARGS
-install_lib $FREETYPE_DIR $FREETYPE_ARGS --without-harfbuzz
-install_lib $HARFBUZZ_DIR $HARFBUZZ_ARGS
-install_lib $FREETYPE_DIR $FREETYPE_ARGS --with-harfbuzz
+install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=ON
+#install_lib_cmake $HARFBUZZ_DIR $HARFBUZZ_ARGS
+#install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=OFF
 install_lib $PIXMAN_DIR $PIXMAN_ARGS --disable-vmx
 install_lib_cmake $EXPAT_DIR $EXPAT_ARGS
 install_lib $LIBOGG_DIR $LIBOGG_ARGS

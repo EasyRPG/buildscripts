@@ -33,8 +33,8 @@ rm -rf $FREETYPE_DIR
 download_and_extract $FREETYPE_URL
 
 # harfbuzz
-rm -rf $HARFBUZZ_DIR
-download_and_extract $HARFBUZZ_URL
+#rm -rf $HARFBUZZ_DIR
+#download_and_extract $HARFBUZZ_URL
 
 # pixman
 rm -rf $PIXMAN_DIR
