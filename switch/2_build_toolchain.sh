@@ -31,12 +31,6 @@ if [ ! -f .patches-applied ]; then
 		autoreconf -fi
 	)
 
-	# Fix libsndfile
-	(cd $LIBSNDFILE_DIR
-		patch -Np1 < $SCRIPT_DIR/../shared/extra/libsndfile.patch
-		autoreconf -fi
-	)
-
 	# disable libsamplerate examples and tests
 	(cd $LIBSAMPLERATE_DIR
 		perl -pi -e 's/examples tests//' Makefile.am
@@ -90,7 +84,6 @@ install_lib_cmake $EXPAT_DIR $EXPAT_ARGS
 install_lib $LIBOGG_DIR $LIBOGG_ARGS
 install_lib $TREMOR_DIR $TREMOR_ARGS
 install_lib_mpg123
-install_lib $LIBSNDFILE_DIR $LIBSNDFILE_ARGS
 install_lib_cmake $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
 install_lib $LIBSAMPLERATE_DIR $LIBSAMPLERATE_ARGS
 install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS

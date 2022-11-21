@@ -53,10 +53,6 @@ download_and_extract $TREMOR_URL
 rm -rf $MPG123_DIR
 download_and_extract $MPG123_URL
 
-# libsndfile
-rm -rf $LIBSNDFILE_DIR
-download_and_extract $LIBSNDFILE_URL
-
 # libxmp-lite
 rm -rf $LIBXMP_LITE_DIR
 download_and_extract $LIBXMP_LITE_URL

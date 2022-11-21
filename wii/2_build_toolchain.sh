@@ -34,14 +34,6 @@ if [ ! -f .patches-applied ]; then
 		autoreconf -fi
 	)
 
-	# Fix libsndfile
-	(cd $LIBSNDFILE_DIR
-		patch -Np1 < $SCRIPT_DIR/../shared/extra/libsndfile.patch
-		# do not fortify source
-		perl -pi -e 's/AX_ADD_FORTIFY_SOURCE//' configure.ac
-		autoreconf -fi
-	)
-
 	# Fix opus
 	(cd $OPUS_DIR
 		# do not fortify source
@@ -100,7 +92,6 @@ install_lib_cmake $EXPAT_DIR $EXPAT_ARGS
 install_lib $LIBOGG_DIR $LIBOGG_ARGS
 install_lib $TREMOR_DIR $TREMOR_ARGS
 install_lib_mpg123
-install_lib $LIBSNDFILE_DIR $LIBSNDFILE_ARGS
 install_lib_cmake $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
 install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
 install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS
