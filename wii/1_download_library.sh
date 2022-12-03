@@ -33,8 +33,8 @@ rm -rf $FREETYPE_DIR
 download_and_extract $FREETYPE_URL
 
 # harfbuzz
-rm -rf $HARFBUZZ_DIR
-download_and_extract $HARFBUZZ_URL
+#rm -rf $HARFBUZZ_DIR
+#download_and_extract $HARFBUZZ_URL
 
 # pixman
 rm -rf $PIXMAN_DIR
@@ -55,10 +55,6 @@ download_and_extract $TREMOR_URL
 # mpg123
 rm -rf $MPG123_DIR
 download_and_extract $MPG123_URL
-
-# libsndfile
-rm -rf $LIBSNDFILE_DIR
-download_and_extract $LIBSNDFILE_URL
 
 # libxmp-lite
 rm -rf $LIBXMP_LITE_DIR
