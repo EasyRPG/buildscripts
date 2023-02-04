@@ -316,5 +316,6 @@ function cleanup {
 	SDL2-*/ SDL2_image-*/ fmt-*/ FluidLite-*/ fluidsynth-*/ json-*/ \
 	liblcf/
 	rm -f *.zip *.bz2 *.gz *.xz *.tgz icudt* *.pl .patches-applied config.cache
-	rm -rf bin/ sbin/ share/
+	rm -rf sbin/ share/
+	find bin ! -name "sdl2*" -delete
 }
