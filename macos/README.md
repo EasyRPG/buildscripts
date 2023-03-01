@@ -1,12 +1,12 @@
 # EasyRPG buildscripts
 
-## MacOSX Toolchain and libraries
+## macOS Toolchain and libraries
 
 Requires macOS 10.12 or newer.
 
 Additional building requirements for macOS:
 
- - XCode
+ - Xcode
 
 Local build process:
 
