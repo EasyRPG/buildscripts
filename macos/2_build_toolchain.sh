@@ -83,7 +83,7 @@ function build() {
 	install_lib_cmake $FMT_DIR $FMT_ARGS
 	install_lib_icu_cross
 	install_lib_liblcf
-	install_lib $SDL2_DIR $SDL2_ARGS
+	install_lib $SDL2_DIR $SDL2_ARGS --disable-assembly
 }
 
 export MAKEFLAGS="-j${nproc:-2}"
