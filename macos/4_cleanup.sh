@@ -8,4 +8,6 @@ source $SCRIPT_DIR/../shared/import.sh
 
 cleanup
 
+rm -rf arm64/config.cache x86_64/config.cache
+
 echo " -> done"

@@ -16,3 +16,4 @@
 *.xz
 *.pl
 *.cache
+.DS_Store
