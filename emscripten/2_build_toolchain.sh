@@ -32,11 +32,6 @@ if [ ! -f .patches-applied ]; then
 		autoreconf -fi
 	)
 
-	# Fix pixman (Remove when 0.42.0 is released)
-	(cd $PIXMAN_DIR
-		patch -Np1 < $SCRIPT_DIR/pixman-incompatible-function-pointer.patch
-	)
-
 	# disable unsupported compiler flags by emcc clang in libogg
 	perl -pi -e 's/-O20/-g0 -O2/g' $LIBOGG_DIR/configure
 

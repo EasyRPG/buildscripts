@@ -254,8 +254,6 @@ function patches_common {
 	# disable libsndfile examples and tests
 	if [ -d "$LIBSNDFILE_DIR" ]; then
 		(cd $LIBSNDFILE_DIR
-			# Remove next line when next version is out
-			patch -Np1 < $_SCRIPT_DIR/libsndfile-subst-external-libs.patch
 			perl -pi -e 's/ examples tests//' Makefile.am
 			perl -pi -e 's/ examples regtest tests programs//' Makefile.am
 			autoreconf -fi
@@ -317,5 +315,4 @@ function cleanup {
 	liblcf/
 	rm -f *.zip *.bz2 *.gz *.xz *.tgz icudt* *.pl .patches-applied config.cache
 	rm -rf sbin/ share/
-	find bin ! -name "sdl2*" -delete
 }

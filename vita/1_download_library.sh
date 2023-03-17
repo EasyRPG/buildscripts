@@ -11,7 +11,8 @@ source $SCRIPT_DIR/../shared/import.sh
 msg " [1] Installing local Vita SDK"
 
 export VITASDK=$PWD/vitasdk
-export URL="https://github.com/vitasdk/autobuilds/releases/download/master-linux-v2.414/vitasdk-x86_64-linux-gnu-2022-09-09_14-50-22.tar.bz2"
+VERSION=master-linux-v2.481/vitasdk-x86_64-linux-gnu-2023-03-17_05-46-17.tar.bz2
+export URL="https://github.com/vitasdk/autobuilds/releases/download/$VERSION"
 
 mkdir -p vitasdk
 curl -sSLR -o vitasdk-nightly.tar.bz2 "$URL"

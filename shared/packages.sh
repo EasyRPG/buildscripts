@@ -11,25 +11,26 @@ LIBPNG_URL="https://download.sourceforge.net/libpng/$lib-$ver.tar.xz"
 LIBPNG_DIR="$lib-$ver"
 
 lib=freetype
-ver=2.12.1
-FREETYPE_URL="https://download.savannah.gnu.org/releases/$lib/$lib-$ver.tar.xz"
+ver=2.13.0
+#FREETYPE_URL="https://download.savannah.gnu.org/releases/$lib/$lib-$ver.tar.xz" Some mirrors give 404
+FREETYPE_URL="https://mirrors.sarata.com/non-gnu/$lib/$lib-$ver.tar.xz"
 FREETYPE_DIR="$lib-$ver"
 FREETYPE_ARGS="-DFT_DISABLE_BZIP2=ON -DFT_DISABLE_BROTLI=ON"
 
 lib=harfbuzz
-ver=5.3.1
+ver=7.1.0
 HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/$ver/$lib-$ver.tar.xz"
 HARFBUZZ_DIR="$lib-$ver"
 HARFBUZZ_ARGS="-DHB_HAVE_FREETYPE=ON -DHB_BUILD_SUBSET=OFF"
 
 lib=pixman
-ver=0.40.0
+ver=0.42.2
 PIXMAN_URL="https://cairographics.org/releases/$lib-$ver.tar.gz"
 PIXMAN_DIR="$lib-$ver"
 PIXMAN_ARGS="--disable-libpng --enable-dependency-tracking"
 
 lib=expat
-ver=2.4.9
+ver=2.5.0
 EXPAT_URL="https://github.com/libexpat/libexpat/releases/download/R_${ver//./_}/$lib-$ver.tar.bz2"
 EXPAT_DIR="$lib-$ver"
 EXPAT_ARGS="-DEXPAT_BUILD_TOOLS=OFF -DEXPAT_BUILD_EXAMPLES=OFF -DEXPAT_BUILD_TESTS=OFF -DEXPAT_BUILD_DOCS=OFF -DEXPAT_SHARED_LIBS=OFF"
@@ -50,12 +51,12 @@ TREMOR_URL="https://gitlab.xiph.org/xiph/$lib/-/archive/$ver/$lib-$ver.tar.bz2"
 TREMOR_DIR="$lib-$ver"
 
 lib=mpg123
-ver=1.30.2
+ver=1.31.2
 MPG123_URL=https://www.mpg123.de/download/$lib-$ver.tar.bz2
 MPG123_DIR="$lib-$ver"
 
 lib=libsndfile
-ver=1.1.0
+ver=1.2.0
 LIBSNDFILE_URL=https://github.com/libsndfile/libsndfile/releases/download/$ver/$lib-$ver.tar.xz
 LIBSNDFILE_DIR="$lib-$ver"
 LIBSNDFILE_ARGS="--disable-alsa --disable-sqlite --disable-full-suite --disable-external-libs --disable-mpeg"
@@ -77,7 +78,7 @@ LIBSAMPLERATE_URL="https://github.com/libsndfile/libsamplerate/releases/download
 LIBSAMPLERATE_DIR="$lib-$ver"
 
 lib=wildmidi
-ver=0.4.4
+ver=0.4.5
 WILDMIDI_URL="https://github.com/Mindwerks/wildmidi/archive/$lib-$ver.tar.gz"
 WILDMIDI_DIR="$lib-$lib-$ver"
 WILDMIDI_ARGS="-DWANT_PLAYER=OFF -DWANT_STATIC=ON"
@@ -95,7 +96,7 @@ OPUSFILE_DIR="$lib-$ver"
 OPUSFILE_ARGS="--disable-http --disable-examples"
 
 lib=fluidsynth
-ver=2.2.9
+ver=2.3.1
 FLUIDSYNTH_URL="https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v$ver.tar.gz"
 FLUIDSYNTH_DIR="$lib-$ver"
 FLUIDSYNTH_ARGS="-DLIB_SUFFIX=''"
@@ -107,7 +108,7 @@ FLUIDLITE_DIR="$lib-$ver"
 FLUIDLITE_ARGS="-DFLUIDLITE_BUILD_STATIC=ON -DFLUIDLITE_BUILD_SHARED=OFF"
 
 lib=json
-ver=3.10.4
+ver=3.11.2
 NLOHMANNJSON_URL="https://github.com/nlohmann/$lib/archive/v$ver.tar.gz"
 NLOHMANNJSON_DIR=$lib-$ver
 NLOHMANNJSON_ARGS="-DJSON_BuildTests=OFF"
@@ -131,13 +132,13 @@ ICUDATA_URL=https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icud
 ICUDATA_FILES=icudt*.dat
 
 lib=SDL2
-ver=2.24.0
+ver=2.26.4
 SDL2_URL="https://libsdl.org/release/$lib-$ver.tar.gz"
 SDL2_DIR="$lib-$ver"
 
 # only needed for lmu2png tool
 lib=SDL2_image
-ver=2.0.5
+ver=2.6.3
 SDL2_IMAGE_URL="https://www.libsdl.org/projects/SDL_image/release/$lib-$ver.tar.gz"
 SDL2_IMAGE_DIR="$lib-$ver"
 SDL2_IMAGE_ARGS="--disable-jpg --disable-png-shared --disable-tif --disable-webp"
