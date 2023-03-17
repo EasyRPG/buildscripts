@@ -44,9 +44,19 @@ if [ ! -f .patches-applied ]; then
 		patch -Np1 < ../xmp-emscripten.patch
 	)
 
+	if [ "$USE_WASM_SIMD" == "1" ]; then
+		(cd $PIXMAN_DIR
+			patch -Np2 < ../pixman-wasm.patch
+		)
+	fi
+
 	cp $CP_ARGS icu icu-native
 
 	touch .patches-applied
+fi
+
+if [ "$USE_WASM_SIMD" == "1" ]; then
+	CFLAGS_SIMD="-msimd128"
 fi
 
 export PLATFORM_PREFIX=$WORKSPACE
@@ -56,7 +66,7 @@ export MAKEFLAGS="-j${nproc:-2}"
 
 function set_build_flags {
 	export PATH="$PATH:$PLATFORM_PREFIX/bin" # for icu-config
-	export CFLAGS="-O2 -g0 -sUSE_SDL=0"
+	export CFLAGS="-O2 -g0 -sUSE_SDL=0 $CFLAGS_SIMD"
 	export CXXFLAGS="$CFLAGS"
 	export CPPFLAGS="-I$PLATFORM_PREFIX/include"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
