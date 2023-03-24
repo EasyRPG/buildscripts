@@ -1,17 +1,17 @@
-From 04b62a88cca0c7edabd2fcf3d9e6ade5a342b6c7 Mon Sep 17 00:00:00 2001
+From 26375ec141612aeb130f2a546996a11897cfc9db Mon Sep 17 00:00:00 2001
 From: Ghabry <gabriel+github@mastergk.de>
-Date: Mon, 12 Sep 2022 13:51:02 +0200
-Subject: [PATCH 2/2] Disable dependencies
+Date: Fri, 17 Mar 2023 14:02:43 +0100
+Subject: [PATCH 2/2] Disable most features
 
 ---
- CMakeLists.txt | 58 +++++++++++++++++++++++++-------------------------
- 1 file changed, 29 insertions(+), 29 deletions(-)
+ CMakeLists.txt | 54 +++++++++++++++++++++++++-------------------------
+ 1 file changed, 27 insertions(+), 27 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 89ba7102..3ee487a2 100644
+index bc50e983..3c90b16f 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -68,49 +68,49 @@ option ( enable-trap-on-fpe "enable SIGFPE trap on Floating Point Exceptions" of
+@@ -70,44 +70,44 @@ option ( enable-trap-on-fpe "enable SIGFPE trap on Floating Point Exceptions" of
  option ( enable-ubsan "compile and link against UBSan (for debugging fluidsynth internals)" off )
  
  # Options enabled by default
@@ -42,8 +42,8 @@ index 89ba7102..3ee487a2 100644
 -option ( enable-waveout "compile Windows WaveOut support (if it is available)" on )
 -option ( enable-winmidi "compile Windows MIDI support (if it is available)" on )
 -option ( enable-sdl2 "compile SDL2 audio support (if it is available)" on )
--option ( enable-pkgconfig "use pkg-config to locate fluidsynth's (mostly optional) dependencies" on )
 -option ( enable-pulseaudio "compile PulseAudio support (if it is available)" on )
+-option ( enable-pipewire "compile PipeWire support (if it is available)" on )
 -option ( enable-readline "compile readline lib line editing (if it is available)" on )
 -option ( enable-threads "enable multi-threading support (such as parallel voice synthesis)" on )
 -option ( enable-openmp "enable OpenMP support (parallelization of soundfont decoding, vectorization of voice mixing, etc.)" on )
@@ -54,8 +54,8 @@ index 89ba7102..3ee487a2 100644
 +option ( enable-waveout "compile Windows WaveOut support (if it is available)" off )
 +option ( enable-winmidi "compile Windows MIDI support (if it is available)" off )
 +option ( enable-sdl2 "compile SDL2 audio support (if it is available)" off )
-+option ( enable-pkgconfig "use pkg-config to locate fluidsynth's (mostly optional) dependencies" off )
 +option ( enable-pulseaudio "compile PulseAudio support (if it is available)" off )
++option ( enable-pipewire "compile PipeWire support (if it is available)" off )
 +option ( enable-readline "compile readline lib line editing (if it is available)" off )
 +option ( enable-threads "enable multi-threading support (such as parallel voice synthesis)" off )
 +option ( enable-openmp "enable OpenMP support (parallelization of soundfont decoding, vectorization of voice mixing, etc.)" off )
@@ -83,13 +83,6 @@ index 89ba7102..3ee487a2 100644
  endif ( CMAKE_SYSTEM MATCHES "Darwin" )
  
  if ( CMAKE_SYSTEM MATCHES "OS2" )
--    option ( enable-dart "compile DART support (if it is available)" on )
--    set ( enable-ipv6 on )
-+    option ( enable-dart "compile DART support (if it is available)" off )
-+    set ( enable-ipv6 off )
- endif ( CMAKE_SYSTEM MATCHES "OS2" )
- 
- # Initialize the library directory name suffix.
 -- 
-2.37.3
+2.39.2
 

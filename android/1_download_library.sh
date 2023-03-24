@@ -38,9 +38,9 @@ else
 	exit 1
 fi
 
-SDK_VERSION="8512546_latest"
+SDK_VERSION="9477386_latest"
 SDK_URL="https://dl.google.com/android/repository/commandlinetools-${SDK_PLATFORM}-${SDK_VERSION}.zip"
-download $SDK_URL
+curl -sSLOR "$SDK_URL"
 unzip commandlinetools-${SDK_PLATFORM}-${SDK_VERSION}.zip
 
 mkdir -p android-sdk/cmdline-tools/
