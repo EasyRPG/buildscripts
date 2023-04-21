@@ -5,7 +5,7 @@
 !/windows/icu-easyrpg/
 
 # Except everything in shared
-!/shared/
+!/shared/*
 
 .patches-applied
 *.dat

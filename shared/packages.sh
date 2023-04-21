@@ -51,7 +51,7 @@ TREMOR_URL="https://gitlab.xiph.org/xiph/$lib/-/archive/$ver/$lib-$ver.tar.bz2"
 TREMOR_DIR="$lib-$ver"
 
 lib=mpg123
-ver=1.31.2
+ver=1.31.3
 MPG123_URL=https://www.mpg123.de/download/$lib-$ver.tar.bz2
 MPG123_DIR="$lib-$ver"
 
@@ -84,8 +84,8 @@ WILDMIDI_DIR="$lib-$lib-$ver"
 WILDMIDI_ARGS="-DWANT_PLAYER=OFF -DWANT_STATIC=ON"
 
 lib=opus
-ver=1.3.1
-OPUS_URL="https://archive.mozilla.org/pub/opus/$lib-$ver.tar.gz"
+ver=1.4
+OPUS_URL="https://downloads.xiph.org/releases/$lib/$lib-$ver.tar.gz"
 OPUS_DIR="$lib-$ver"
 OPUS_ARGS="--disable-intrinsics --disable-extra-programs"
 
@@ -96,6 +96,7 @@ OPUSFILE_DIR="$lib-$ver"
 OPUSFILE_ARGS="--disable-http --disable-examples"
 
 lib=fluidsynth
+# no-glib patch must be updated first
 ver=2.3.1
 FLUIDSYNTH_URL="https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v$ver.tar.gz"
 FLUIDSYNTH_DIR="$lib-$ver"
@@ -132,7 +133,7 @@ ICUDATA_URL=https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icud
 ICUDATA_FILES=icudt*.dat
 
 lib=SDL2
-ver=2.26.4
+ver=2.26.5
 SDL2_URL="https://libsdl.org/release/$lib-$ver.tar.gz"
 SDL2_DIR="$lib-$ver"
 
