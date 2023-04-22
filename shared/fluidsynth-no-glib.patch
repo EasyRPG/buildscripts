@@ -1,11 +1,11 @@
-From c5c1012f82d9bfc1104401467b0d035c39caaf49 Mon Sep 17 00:00:00 2001
-From: Ghabry <gabriel+github@mastergk.de>
+From 9491c60ddeddcc9ed14963a1ec8aff733797763e Mon Sep 17 00:00:00 2001
+From: Ghabry
 Date: Fri, 17 Mar 2023 14:00:45 +0100
 Subject: [PATCH 1/2] Shim glib
 
 ---
  CMakeLists.txt                   |  4 +-
- src/CMakeLists.txt               |  1 +
+ src/CMakeLists.txt               |  3 +-
  src/bindings/fluid_cmd.c         |  3 ++
  src/glib_shim.c                  | 12 +++++
  src/glib_shim.h                  | 90 ++++++++++++++++++++++++++++++++
@@ -17,30 +17,30 @@ Subject: [PATCH 1/2] Shim glib
  src/utils/fluid_sys.c            |  9 +++-
  src/utils/fluid_sys.h            |  8 +--
  src/utils/fluidsynth_priv.h      |  2 +-
- 13 files changed, 131 insertions(+), 33 deletions(-)
+ 13 files changed, 132 insertions(+), 34 deletions(-)
  create mode 100644 src/glib_shim.c
  create mode 100644 src/glib_shim.h
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 8699d53c..bc50e983 100644
+index 3b12afa..dd3a0c8 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -478,8 +478,8 @@ endif(ASTYLE)
- find_package ( PkgConfig REQUIRED )
+@@ -522,8 +522,8 @@ if ( CMAKE_VERSION VERSION_GREATER_EQUAL 3.15 AND VCPKG_TOOLCHAIN )
+ endif ()
  
  # Mandatory libraries: glib and gthread
--pkg_check_modules ( GLIB REQUIRED glib-2.0>=2.6.5 gthread-2.0>=2.6.5 IMPORTED_TARGET )
+-find_package ( GLib2 ${GLIB2_MINUMUM_VERSION} REQUIRED )
 -list( APPEND PC_REQUIRES_PRIV "glib-2.0" "gthread-2.0")
-+# pkg_check_modules ( GLIB REQUIRED glib-2.0>=2.6.5 gthread-2.0>=2.6.5 IMPORTED_TARGET )
++# find_package ( GLib2 ${GLIB2_MINUMUM_VERSION} REQUIRED )
 +# list( APPEND PC_REQUIRES_PRIV "glib-2.0" "gthread-2.0")
  
- if ( GLIB_glib-2.0_VERSION AND GLIB_glib-2.0_VERSION VERSION_LESS "2.26.0" )
+ if ( GLib2_VERSION AND GLib2_VERSION VERSION_LESS "2.26.0" )
      message ( WARNING "Your version of glib is very old. This may cause problems with fluidsynth's sample cache on Windows. Consider updating to glib 2.26 or newer!" )
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index e86a6429..5cfdcab6 100644
+index 114fa16..53e8c6a 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
-@@ -109,6 +109,7 @@ endif ( OBOE_SUPPORT )
+@@ -108,6 +108,7 @@ endif ( OBOE_SUPPORT )
  set ( config_SOURCES ${FluidSynth_BINARY_DIR}/config.h )
  
  set ( libfluidsynth_SOURCES
@@ -48,8 +48,17 @@ index e86a6429..5cfdcab6 100644
      utils/fluid_conv.c
      utils/fluid_conv.h
      utils/fluid_hash.c
+@@ -353,7 +354,7 @@ if ( TARGET OpenMP::OpenMP_C AND HAVE_OPENMP )
+     target_link_libraries ( libfluidsynth-OBJ PUBLIC OpenMP::OpenMP_C )
+ endif()
+ 
+-target_link_libraries ( libfluidsynth-OBJ PUBLIC GLib2::glib-2 GLib2::gthread-2 )
++# target_link_libraries ( libfluidsynth-OBJ PUBLIC GLib2::glib-2 GLib2::gthread-2 )
+ 
+ if ( TARGET SndFile::sndfile AND LIBSNDFILE_SUPPORT )
+     target_link_libraries ( libfluidsynth-OBJ PUBLIC SndFile::sndfile )
 diff --git a/src/bindings/fluid_cmd.c b/src/bindings/fluid_cmd.c
-index 85e742b9..a01f9920 100644
+index 444b263..74780e1 100644
 --- a/src/bindings/fluid_cmd.c
 +++ b/src/bindings/fluid_cmd.c
 @@ -433,6 +433,8 @@ static const fluid_cmd_t fluid_commands[] =
@@ -71,7 +80,7 @@ index 85e742b9..a01f9920 100644
  /**
 diff --git a/src/glib_shim.c b/src/glib_shim.c
 new file mode 100644
-index 00000000..40b8b560
+index 0000000..40b8b56
 --- /dev/null
 +++ b/src/glib_shim.c
 @@ -0,0 +1,12 @@
@@ -89,7 +98,7 @@ index 00000000..40b8b560
 +}
 diff --git a/src/glib_shim.h b/src/glib_shim.h
 new file mode 100644
-index 00000000..f90f0eb4
+index 0000000..f90f0eb
 --- /dev/null
 +++ b/src/glib_shim.h
 @@ -0,0 +1,90 @@
@@ -184,7 +193,7 @@ index 00000000..f90f0eb4
 +
 +#endif
 diff --git a/src/rvoice/fluid_rvoice_mixer.c b/src/rvoice/fluid_rvoice_mixer.c
-index c1e2fb2e..92553131 100644
+index c1e2fb2..9255313 100644
 --- a/src/rvoice/fluid_rvoice_mixer.c
 +++ b/src/rvoice/fluid_rvoice_mixer.c
 @@ -478,7 +478,6 @@ fluid_rvoice_buffers_mix(fluid_rvoice_buffers_t *buffers,
@@ -240,7 +249,7 @@ index c1e2fb2e..92553131 100644
          {
              int dsp_i = i * FLUID_MIXER_MAX_BUFFERS_DEFAULT * FLUID_BUFSIZE + j;
 diff --git a/src/sfloader/fluid_defsfont.c b/src/sfloader/fluid_defsfont.c
-index 9721a097..e9daff3f 100644
+index 9721a09..e9daff3 100644
 --- a/src/sfloader/fluid_defsfont.c
 +++ b/src/sfloader/fluid_defsfont.c
 @@ -395,8 +395,6 @@ int fluid_defsfont_load_all_sampledata(fluid_defsfont_t *defsfont, SFData *sfdat
@@ -273,7 +282,7 @@ index 9721a097..e9daff3f 100644
                  int modified;
                  /* Data pointers of SF2 samples point to large sample data block loaded above */
 diff --git a/src/sfloader/fluid_samplecache.c b/src/sfloader/fluid_samplecache.c
-index 64e9e9e7..4c504c0f 100644
+index 64e9e9e..4c504c0 100644
 --- a/src/sfloader/fluid_samplecache.c
 +++ b/src/sfloader/fluid_samplecache.c
 @@ -282,6 +282,7 @@ static fluid_samplecache_entry_t *get_samplecache_entry(SFData *sf,
@@ -293,7 +302,7 @@ index 64e9e9e7..4c504c0f 100644
  }
  
 diff --git a/src/synth/fluid_synth.c b/src/synth/fluid_synth.c
-index 3a58eb60..3e11dabd 100644
+index 76c4a0f..95d52ea 100644
 --- a/src/synth/fluid_synth.c
 +++ b/src/synth/fluid_synth.c
 @@ -631,8 +631,9 @@ new_fluid_synth(fluid_settings_t *settings)
@@ -359,7 +368,7 @@ index 3a58eb60..3e11dabd 100644
  
              FLUID_API_RETURN(1);
 diff --git a/src/synth/fluid_synth.h b/src/synth/fluid_synth.h
-index cb838e92..6e04566f 100644
+index cb838e9..6e04566 100644
 --- a/src/synth/fluid_synth.h
 +++ b/src/synth/fluid_synth.h
 @@ -152,7 +152,7 @@ struct _fluid_synth_t
@@ -372,11 +381,11 @@ index cb838e92..6e04566f 100644
      fluid_sample_timer_t *sample_timers; /**< List of timers triggered before a block is processed */
      unsigned int min_note_length_ticks; /**< If note-offs are triggered just after a note-on, they will be delayed */
 diff --git a/src/utils/fluid_sys.c b/src/utils/fluid_sys.c
-index 54bd294b..afb46d75 100644
+index d5ebd16..63a6c52 100644
 --- a/src/utils/fluid_sys.c
 +++ b/src/utils/fluid_sys.c
 @@ -33,7 +33,7 @@
- #if HAVE_PTHREAD_H && !defined(WIN32)
+ #if HAVE_PTHREAD_H && !defined(_WIN32)
  // Do not include pthread on windows. It includes winsock.h, which collides with ws2tcpip.h from fluid_sys.h
  // It isn't need on Windows anyway.
 -#include <pthread.h>
@@ -427,10 +436,10 @@ index 54bd294b..afb46d75 100644
  #if OLD_GLIB_THREAD_API
  
 diff --git a/src/utils/fluid_sys.h b/src/utils/fluid_sys.h
-index 8c8284b8..dc6fd2c2 100644
+index cefff4a..a8067ff 100644
 --- a/src/utils/fluid_sys.h
 +++ b/src/utils/fluid_sys.h
-@@ -157,7 +157,7 @@ typedef gintptr  intptr_t;
+@@ -168,7 +168,7 @@ typedef gintptr  intptr_t;
  #include <gmodule.h>
  #endif
  
@@ -439,16 +448,16 @@ index 8c8284b8..dc6fd2c2 100644
  
  /**
   * Macro used for safely accessing a message from a GError and using a default
-@@ -165,7 +165,7 @@ typedef gintptr  intptr_t;
+@@ -176,7 +176,7 @@ typedef gintptr  intptr_t;
   * @param err Pointer to a GError to access the message field of.
   * @return Message string
   */
 -#define fluid_gerror_message(err)  ((err) ? err->message : "No error details")
 +#define fluid_gerror_message(err)  ("No error details")
  
- #ifdef WIN32
+ #if defined(_WIN32) || defined(__CYGWIN__)
  char* fluid_get_windows_error(void);
-@@ -318,13 +318,13 @@ delete_fluid_cond(fluid_cond_t *cond)
+@@ -329,13 +329,13 @@ delete_fluid_cond(fluid_cond_t *cond)
  }
  
  /* Thread private data */
@@ -465,7 +474,7 @@ index 8c8284b8..dc6fd2c2 100644
  
  /* glib prior to 2.32 */
 diff --git a/src/utils/fluidsynth_priv.h b/src/utils/fluidsynth_priv.h
-index ce5fb7fd..40952bab 100644
+index fbcbc6f..8bd400a 100644
 --- a/src/utils/fluidsynth_priv.h
 +++ b/src/utils/fluidsynth_priv.h
 @@ -31,7 +31,7 @@
@@ -478,5 +487,5 @@ index ce5fb7fd..40952bab 100644
  #if HAVE_STDLIB_H
  #include <stdlib.h> // malloc, free
 -- 
-2.39.2
+2.40.0
 

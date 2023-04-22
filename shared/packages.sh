@@ -96,8 +96,7 @@ OPUSFILE_DIR="$lib-$ver"
 OPUSFILE_ARGS="--disable-http --disable-examples"
 
 lib=fluidsynth
-# no-glib patch must be updated first
-ver=2.3.1
+ver=2.3.2
 FLUIDSYNTH_URL="https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v$ver.tar.gz"
 FLUIDSYNTH_DIR="$lib-$ver"
 FLUIDSYNTH_ARGS="-DLIB_SUFFIX=''"

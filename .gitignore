@@ -3,6 +3,8 @@
 
 # Except some Windows folders
 !/windows/icu-easyrpg/
+!/windows/fluidsynth-easyrpg/
+!/windows/helper/
 
 # Except everything in shared
 !/shared/*
