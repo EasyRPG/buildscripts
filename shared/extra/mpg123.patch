@@ -53,7 +53,7 @@ diff '--color=auto' -Naur mpg123-1.28.1-orig/src/control_generic.c mpg123-1.28.1
  		outstream = stdout;
  		out_is_term = stdout_is_term;
  	}
--#ifndef WIN32
+-#ifndef _WIN32
 +#if defined(GEKKO) || defined(_3DS) || defined(__SWITCH__)
 +	fprintf(outstream, "The control interface is not supported on this platform\n");
 +	return 0;

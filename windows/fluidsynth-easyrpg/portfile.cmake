@@ -1,41 +1,90 @@
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO FluidSynth/fluidsynth
-    REF 926581851ed1a095ef5b8659f77b38272d57e624 #v2.2.3
-    SHA512 df30a3df20ba4c1c3f248e718c47856761004b5a63285e55e46bc1a3dd61b0b2d4b0b1139d0edf64135de68d6592f84bcf5308c76a9774415769b8d3aa682a7a
+    REF "v${VERSION}"
+    SHA512 21798b5a80a7edd8ef02b983d9b230af45cc66b98b32d593228e12dbec15b12c6cf6c0f3692c12af66de1ba2049fa9d6ad2b68c7d1579347eec14d24870b0025
     HEAD_REF master
     PATCHES
-       force-x86-gentables.patch
-       fluidsynth-no-glib.patch
+        gentables.patch
+        fluidsynth-no-glib.patch
+        fluidsynth-no-deps.patch
 )
 
-set(feature_list dbus jack libinstpatch libsndfile midishare opensles oboe oss sdl2 pulseaudio readline lash alsa systemd coreaudio coremidi dart)
-set(FEATURE_OPTIONS)
-foreach(_feature IN LISTS feature_list)
-    list(APPEND FEATURE_OPTIONS -Denable-${_feature}:BOOL=OFF)
-endforeach()
-
-#vcpkg_find_acquire_program(PKGCONFIG)
-vcpkg_configure_cmake(
-    SOURCE_PATH ${SOURCE_PATH}
-    OPTIONS 
-        ${FEATURE_OPTIONS}
-    OPTIONS_DEBUG
-        -Denable-debug:BOOL=ON
+vcpkg_check_features(
+    OUT_FEATURE_OPTIONS FEATURE_OPTIONS
+    FEATURES
+        buildtools  VCPKG_BUILD_MAKE_TABLES
+        sndfile     enable-libsndfile
 )
 
-vcpkg_install_cmake()
+# enable platform-specific features, force the build to fail if the required libraries are not found,
+# and disable all other features to avoid system libraries to be picked up
+set(WINDOWS_OPTIONS enable-dsound enable-wasapi enable-waveout enable-winmidi HAVE_MMSYSTEM_H HAVE_DSOUND_H HAVE_OBJBASE_H)
+set(MACOS_OPTIONS enable-coreaudio enable-coremidi COREAUDIO_FOUND COREMIDI_FOUND)
+set(LINUX_OPTIONS enable-alsa ALSA_FOUND)
+set(ANDROID_OPTIONS enable-opensles OpenSLES_FOUND)
+set(IGNORED_OPTIONS enable-coverage enable-dbus enable-floats enable-fpe-check enable-framework enable-jack enable-lash
+    enable-libinstpatch enable-midishare enable-oboe enable-openmp enable-oss enable-pipewire enable-portaudio
+    enable-profiling enable-pulseaudio enable-readline enable-sdl2 enable-systemd enable-trap-on-fpe enable-ubsan)
 
-# Copy fluidsynth.exe to tools dir
-vcpkg_copy_tools(TOOL_NAMES fluidsynth AUTO_CLEAN)
-
-# Remove unnecessary files
-file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/include)
-file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/share)
-
-if(VCPKG_LIBRARY_LINKAGE STREQUAL static)
-    file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/bin ${CURRENT_PACKAGES_DIR}/debug/bin)
+if(VCPKG_TARGET_IS_WINDOWS)
+    set(OPTIONS_TO_ENABLE ${WINDOWS_OPTIONS})
+    set(OPTIONS_TO_DISABLE ${MACOS_OPTIONS} ${LINUX_OPTIONS} ${ANDROID_OPTIONS})
+elseif(VCPKG_TARGET_IS_OSX)
+    set(OPTIONS_TO_ENABLE ${MACOS_OPTIONS})
+    set(OPTIONS_TO_DISABLE ${WINDOWS_OPTIONS} ${LINUX_OPTIONS} ${ANDROID_OPTIONS})
+elseif(VCPKG_TARGET_IS_LINUX)
+    set(OPTIONS_TO_ENABLE ${LINUX_OPTIONS})
+    set(OPTIONS_TO_DISABLE ${WINDOWS_OPTIONS} ${MACOS_OPTIONS} ${ANDROID_OPTIONS})
+elseif(VCPKG_TARGET_IS_ANDROID)
+    set(OPTIONS_TO_ENABLE ${ANDROID_OPTIONS})
+    set(OPTIONS_TO_DISABLE ${WINDOWS_OPTIONS} ${MACOS_OPTIONS} ${LINUX_OPTIONS})
 endif()
 
-# Handle copyright
-file(INSTALL ${SOURCE_PATH}/LICENSE DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT} RENAME copyright)
+foreach(_option IN LISTS OPTIONS_TO_ENABLE)
+    list(APPEND ENABLED_OPTIONS "-D{_option}:BOOL=ON")
+endforeach()
+    
+foreach(_option IN LISTS OPTIONS_TO_DISABLE IGNORED_OPTIONS)
+    list(APPEND DISABLED_OPTIONS "-D${_option}:BOOL=OFF")
+endforeach()
+
+vcpkg_find_acquire_program(PKGCONFIG)
+vcpkg_cmake_configure(
+    SOURCE_PATH "${SOURCE_PATH}"
+    OPTIONS
+        "-DVCPKG_HOST_TRIPLET=${HOST_TRIPLET}"
+        ${FEATURE_OPTIONS}
+        ${ENABLED_OPTIONS}
+        ${DISABLED_OPTIONS}
+        "-DPKG_CONFIG_EXECUTABLE=${PKGCONFIG}"
+    MAYBE_UNUSED_VARIABLES
+        ${OPTIONS_TO_DISABLE}
+        VCPKG_BUILD_MAKE_TABLES
+        enable-coverage
+        enable-framework
+        enable-ubsan
+)
+
+vcpkg_cmake_install()
+
+vcpkg_cmake_config_fixup(CONFIG_PATH lib/cmake/fluidsynth)
+
+vcpkg_fixup_pkgconfig()
+
+set(tools fluidsynth)
+if("buildtools" IN_LIST FEATURES)
+    list(APPEND tools make_tables)
+endif()
+vcpkg_copy_tools(TOOL_NAMES ${tools} AUTO_CLEAN)
+
+vcpkg_copy_pdbs()
+
+file(REMOVE_RECURSE
+    "${CURRENT_PACKAGES_DIR}/debug/include"
+    "${CURRENT_PACKAGES_DIR}/debug/share"
+    "${CURRENT_PACKAGES_DIR}/share/man")
+
+vcpkg_install_copyright(FILE_LIST "${SOURCE_PATH}/LICENSE")
+
+file(INSTALL "${CMAKE_CURRENT_LIST_DIR}/usage" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}")

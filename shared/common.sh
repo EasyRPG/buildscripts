@@ -300,6 +300,13 @@ function patches_common {
 		)
 	fi
 
+	# nlohmann json: Install pkgconfig/cmake into lib (share is deleted by us)
+	if [ -d "$NLOHMANNJSON_DIR" ]; then
+		(cd $NLOHMANNJSON_DIR
+			perl -pi -e 's/CMAKE_INSTALL_DATADIR/CMAKE_INSTALL_LIBDIR/' CMakeLists.txt
+		)
+	fi
+
 	cp icudt*.dat $ICU_DIR/source/data/in
 	(cd $ICU_DIR/source
 		chmod u+x configure
