@@ -1,2 +1,5 @@
 # do not convert line ending of patch files
 *.patch -text
+
+# do not convert line ending of windows batch files
+*.cmd -text
