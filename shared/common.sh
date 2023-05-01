@@ -226,7 +226,7 @@ function icu_force_data_install {
 		make clean
 		make
 
-		cp ../lib/libicudata.a "$WORKSPACE/lib/"
+		cp ../lib/libicudata.a "$PLATFORM_PREFIX/lib/"
 	)
 }
 
