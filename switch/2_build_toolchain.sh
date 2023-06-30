@@ -31,6 +31,11 @@ if [ ! -f .patches-applied ]; then
 		autoreconf -fi
 	)
 
+	# Fix opusfile
+	(cd $OPUSFILE_DIR
+		patch -Np1 < $SCRIPT_DIR/../shared/extra/opusfile-devkit.patch
+	)
+
 	# disable libsamplerate examples and tests
 	(cd $LIBSAMPLERATE_DIR
 		perl -pi -e 's/examples tests//' Makefile.am
