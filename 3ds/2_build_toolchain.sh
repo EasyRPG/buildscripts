@@ -34,6 +34,11 @@ if [ ! -f .patches-applied ]; then
 		autoreconf -fi
 	)
 
+	# Fix opusfile
+	(cd $OPUSFILE_DIR
+		patch -Np1 < $SCRIPT_DIR/../shared/extra/opusfile-devkit.patch
+	)
+
 	# Fix icu build
 	perl -pi -e 's/xlocale/locale/' icu/source/i18n/digitlst.cpp
 	cp -rup icu icu-native

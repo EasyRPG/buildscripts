@@ -1,0 +1,15 @@
+diff --color -Naur opusfile-0.12.original/src/internal.h opusfile-0.12/src/internal.h
+--- opusfile-0.12.original/src/internal.h	2020-06-27 02:44:15.000000000 +0200
++++ opusfile-0.12/src/internal.h	2023-07-01 01:04:05.753151020 +0200
+@@ -28,6 +28,11 @@
+ #  define _FILE_OFFSET_BITS 64
+ # endif
+ 
++#ifdef __GNUC__
++/* c89 fix for devkitXXX */
++# define inline __inline__
++#endif
++
+ # include <stdlib.h>
+ # include <opusfile.h>
+ 
