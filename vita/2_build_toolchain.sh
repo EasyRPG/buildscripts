@@ -25,6 +25,11 @@ if [ ! -f .patches-applied ]; then
 		autoreconf -fi
 	)
 
+	# Fix lhasa
+	(cd $LHASA_DIR
+		patch -Np1 < $SCRIPT_DIR/../shared/extra/lhasa.patch
+	)
+
 	# Fix icu build
 	cp -rup icu icu-native
 	patch -Np0 < $SCRIPT_DIR/icu69-vita.patch
@@ -91,6 +96,8 @@ install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS
 install_lib_cmake $FLUIDLITE_DIR $FLUIDLITE_ARGS -DENABLE_SF3=ON
 install_lib $OPUS_DIR $OPUS_ARGS
 install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
+install_lib_meson $INIH_DIR $INIH_ARGS
+install_lib $LHASA_DIR $LHASA_ARGS
 install_lib_cmake $FMT_DIR $FMT_ARGS
 install_lib_icu_cross
 install_lib_liblcf

@@ -5,10 +5,10 @@ echo "REMOVE THIS LINE";exit 1
 
 # Edit these variables
 # Remove _cmake when the lib uses autotools for building
-NAME=nlohmann-json
-LIBVAR=NLOHMANNJSON
-TOOLCHAIN_DIRS=(linux-static osx android emscripten 3ds switch vita wii ios)
-CMAKE=_cmake
+NAME=lhasa
+LIBVAR=LHASA
+TOOLCHAIN_DIRS=(linux-static macos android emscripten 3ds switch vita wii ios)
+CMAKE=
 
 #-------
 
@@ -23,7 +23,7 @@ do
 	echo "Updating $n"
 	sed -i "/# fmt/i\\$repA" $SCRIPT_DIR/../$n/1_*.sh
 
-	if [ $n == "android" ]; then
+	if [ $n == "android" ] || [ $n == "macos" ]; then
 		OFFSET="\t"
 	else
 		OFFSET=""
@@ -32,6 +32,3 @@ do
 	sed -i "/install_lib_cmake \$FMT_DIR/i\\${OFFSET}$repB" $SCRIPT_DIR/../$n/2_*.sh
 
 done
-
-
-

@@ -58,6 +58,8 @@ install_lib $OPUS_DIR $OPUS_ARGS
 install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 install_lib_cmake $FLUIDSYNTH_DIR $FLUIDSYNTH_ARGS
 install_lib_cmake $NLOHMANNJSON_DIR $NLOHMANNJSON_ARGS
+install_lib_meson $INIH_DIR $INIH_ARGS
+install_lib $LHASA_DIR $LHASA_ARGS
 install_lib_cmake $FMT_DIR $FMT_ARGS
 install_lib $ICU_DIR/source $ICU_ARGS
 install_lib_liblcf

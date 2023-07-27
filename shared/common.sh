@@ -122,6 +122,26 @@ function install_lib_cmake {
 	)
 }
 
+# generic meson library installer
+function install_lib_meson {
+	msg "**** Building ${1%-*} ****"
+
+	if [ -f "$PLATFORM_PREFIX/meson-cross.txt" ]; then
+		MESON_CROSS="$PLATFORM_PREFIX/meson-cross.txt"
+	else
+		MESON_CROSS="/dev/null"
+	fi
+
+	(cd $1
+		shift
+
+		meson setup build --prefix $PLATFORM_PREFIX --buildtype release \
+			-Ddefault_library=static --cross-file $MESON_CROSS $@
+		meson compile -C build
+		meson install -C build
+	)
+}
+
 function install_lib_zlib {
 	msg "**** Building zlib ****"
 

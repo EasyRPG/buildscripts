@@ -39,6 +39,11 @@ if [ ! -f .patches-applied ]; then
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/opusfile-devkit.patch
 	)
 
+	# Fix lhasa
+	(cd $LHASA_DIR
+		patch -Np1 < $SCRIPT_DIR/../shared/extra/lhasa.patch
+	)
+
 	# Fix icu build
 	perl -pi -e 's/xlocale/locale/' icu/source/i18n/digitlst.cpp
 	cp -rup icu icu-native
@@ -95,6 +100,8 @@ install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS
 install_lib $OPUS_DIR $OPUS_ARGS
 install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 install_lib_cmake $FLUIDLITE_DIR $FLUIDLITE_ARGS
+install_lib_meson $INIH_DIR $INIH_ARGS
+install_lib $LHASA_DIR $LHASA_ARGS
 install_lib_cmake $FMT_DIR $FMT_ARGS
 install_lib_icu_cross
 install_lib_liblcf
