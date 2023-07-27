@@ -6,19 +6,19 @@ ZLIB_URL="https://zlib.net/$lib-$ver.tar.gz"
 ZLIB_DIR="$lib-$ver"
 
 lib=libpng
-ver=1.6.39
+ver=1.6.40
 LIBPNG_URL="https://download.sourceforge.net/libpng/$lib-$ver.tar.xz"
 LIBPNG_DIR="$lib-$ver"
 
 lib=freetype
-ver=2.13.0
+ver=2.13.1
 #FREETYPE_URL="https://download.savannah.gnu.org/releases/$lib/$lib-$ver.tar.xz" Some mirrors give 404
 FREETYPE_URL="https://mirrors.sarata.com/non-gnu/$lib/$lib-$ver.tar.xz"
 FREETYPE_DIR="$lib-$ver"
 FREETYPE_ARGS="-DFT_DISABLE_BZIP2=ON -DFT_DISABLE_BROTLI=ON"
 
 lib=harfbuzz
-ver=7.1.0
+ver=8.0.1
 HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/$ver/$lib-$ver.tar.xz"
 HARFBUZZ_DIR="$lib-$ver"
 HARFBUZZ_ARGS="-DHB_HAVE_FREETYPE=ON -DHB_BUILD_SUBSET=OFF"
@@ -62,7 +62,7 @@ LIBSNDFILE_DIR="$lib-$ver"
 LIBSNDFILE_ARGS="--disable-alsa --disable-sqlite --disable-full-suite --disable-external-libs --disable-mpeg"
 
 lib=libxmp-lite
-ver=4.5.0
+ver=4.6.0
 LIBXMP_LITE_URL="https://github.com/libxmp/libxmp/releases/download/libxmp-$ver/$lib-$ver.tar.gz"
 LIBXMP_LITE_DIR="$lib-$ver"
 
@@ -96,7 +96,7 @@ OPUSFILE_DIR="$lib-$ver"
 OPUSFILE_ARGS="--disable-http --disable-examples"
 
 lib=fluidsynth
-ver=2.3.2
+ver=2.3.3
 FLUIDSYNTH_URL="https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v$ver.tar.gz"
 FLUIDSYNTH_DIR="$lib-$ver"
 FLUIDSYNTH_ARGS="-DLIB_SUFFIX=''"
@@ -114,7 +114,7 @@ NLOHMANNJSON_DIR=$lib-$ver
 NLOHMANNJSON_ARGS="-DJSON_BuildTests=OFF"
 
 lib=fmt
-ver=9.1.0
+ver=10.0.0
 FMT_URL="https://github.com/fmtlib/fmt/releases/download/$ver/$lib-$ver.zip"
 FMT_DIR="$lib-$ver"
 FMT_ARGS="-DFMT_DOC=OFF -DFMT_TEST=OFF"
@@ -132,7 +132,7 @@ ICUDATA_URL=https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icud
 ICUDATA_FILES=icudt*.dat
 
 lib=SDL2
-ver=2.26.5
+ver=2.28.1
 SDL2_URL="https://libsdl.org/release/$lib-$ver.tar.gz"
 SDL2_DIR="$lib-$ver"
 

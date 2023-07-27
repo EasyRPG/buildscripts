@@ -39,11 +39,6 @@ if [ ! -f .patches-applied ]; then
 	# (see https://groups.google.com/forum/#!topic/emscripten-discuss/YM3jC_qQoPk)
 	perl -pi -e 's/HAVE_ARC4RANDOM\)/NO_ARC4RANDOM\)/' $EXPAT_DIR/ConfigureChecks.cmake
 
-	# Fix libxmp-lite
-	(cd $LIBXMP_LITE_DIR
-		patch -Np1 < ../xmp-emscripten.patch
-	)
-
 	if [ "$USE_WASM_SIMD" == "1" ]; then
 		(cd $PIXMAN_DIR
 			patch -Np2 < ../pixman-wasm.patch
