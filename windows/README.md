@@ -5,35 +5,71 @@ for Windows (Visual Studio compiler) easily.
 
 ## Requirements
 
-Any version of Visual Studio 2015 Update 3 or newer.
+The latest version of Visual Studio 2022.
 
-## How to compile
+The ARM architecture is not supported.
+
+## Compiling
 
  - For EasyRPG Player: Run build.cmd
- - For EasyRPG Editor: Run build_qt5.cmd
+ - For EasyRPG Editor: (currently unsupported)
 
 This bootstraps vcpkg and builds all required libraries.
 
+The first time you run the build it will take about 30 minutes to complete.
+
+## Prebuilt libraries
+
+If you do not want to build the libraries yourself, you can download a
+prebuilt version. Run ``download_prebuilt.cmd`` to obtain them.
+
+This precompiled version will only work on the latest version of Visual Studio
+2022. If you are using a different version, please compile it yourself.
+
 ## After compiling
 
-Use vcpkg in combination with CMake.
+### Environment setup
 
-When not using the Visual Studio generator open a Visual Studio command prompt
-beforehand.
+Run ``setup_env.cmd`` once to configure the necessary environment variables.
 
-For 32bit:
+Then log out of Windows to ensure that the changes take effect.
 
-    cmake -DSHARED_RUNTIME=OFF -DVCPKG_TARGET_TRIPLET=x86-windows-static^
-      -DCMAKE_TOOLCHAIN_FILE=[VCPKG_PATH]\scripts\buildsystems\vcpkg.cmake^
-      -DCMAKE_BUILD_TYPE=[BUILD_TYPE]
+### Configuring
 
-For 64bit:
+Open the "Developer Command Prompt for Visual Studio 2022" from the Start menu
+and navigate to your _EasyRPG Player_ directory.
 
-    cmake -DSHARED_RUNTIME=OFF -DVCPKG_TARGET_TRIPLET=x64-windows-static^
-      -DCMAKE_TOOLCHAIN_FILE=[VCPKG_PATH]\scripts\buildsystems\vcpkg.cmake^
-      -DCMAKE_BUILD_TYPE=[BUILD_TYPE]
+To configure for a standalone Player run:
 
-Replace ``[VCPKG_PATH]`` with the path to vcpkg (you find in this folder) and
-``[BUILD_TYPE]`` with Debug, Release or RelWithDebInfo. This is even needed
-when generating Visual Studio Projects, otherwise the wrong library versions
-are selected because not all have a debug suffix.
+```
+cmake --preset windows-[ARCH]-vs2022-[BUILD_TYPE]
+```
+
+To configure for a libretro core run:
+
+```
+cmake --preset windows-[ARCH]-vs2022-libretro-[BUILD_TYPE]
+```
+
+Options for ``[ARCH]``:
+
+- ``x86``: Build for 32-bit architecture
+- ``x64``: Build for 64-bit architecture
+
+Options for ``[BUILD_TYPE]``:
+
+- ``debug``: Debug build
+- ``relwithdebinfo``: Release build with debug symbols
+- ``release``: Release build without debug symbols
+
+liblcf is not provided by the buildscript. Either compile it yourself or add
+``-DPLAYER_BUILD_LIBLCF=ON`` to the CMake line to build it as part of the
+Player.
+
+### Building
+
+Open the ``EasyRPG_Player.sln`` file created in ``build\[PRESET]`` in Visual
+Studio (``[PRESET]`` is equal to the value after ``--preset`` above).
+
+When the build type is different to Debug, you must set the correct build type
+manually in Visual Studio, otherwise you will get strange build errors.
