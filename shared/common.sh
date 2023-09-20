@@ -204,11 +204,14 @@ function install_lib_icu_cross {
 	(cd icu/source
 		cp config/mh-linux config/mh-unknown
 
+		export CPPFLAGS="$CPPFLAGS -I$(pwd)/common"
+
 		chmod u+x configure
 		$CONFIGURE_WRAPPER ./configure --enable-static --enable-shared=no --prefix=$PLATFORM_PREFIX \
 			--host=$TARGET_HOST --with-cross-build=$ICU_CROSS_BUILD \
 			--enable-tools=no $ICU_ARGS
 		make clean
+		# add VERBOSE=1 or V=1 to show what make is attempting to do
 		make
 		make install
 	)
