@@ -1,8 +1,8 @@
 #!/bin/bash
 
 lib=zlib
-ver=1.2.13
-ZLIB_URL="https://zlib.net/$lib-$ver.tar.gz"
+ver=1.3
+ZLIB_URL="https://zlib.net/fossils/$lib-$ver.tar.gz"
 ZLIB_DIR="$lib-$ver"
 
 lib=libpng
