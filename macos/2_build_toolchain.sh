@@ -23,6 +23,12 @@ if [ ! -f .patches-applied ]; then
 
 	patches_common
 
+	# Fix inih
+	# Remove when r58 is out
+	(cd $INIH_DIR
+		patch -Np1 < $SCRIPT_DIR/inih-std11.patch
+	)
+
 	cp -rp icu icu-native
 
 	touch .patches-applied
