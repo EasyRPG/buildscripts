@@ -55,7 +55,8 @@ function set_build_flags() {
 	fi
 	export CFLAGS="-g -O2 -mmacosx-version-min=10.9 -isysroot $SDKPATH $3"
 	export CXXFLAGS=$CFLAGS
-	export CPPFLAGS="-I$PLATFORM_PREFIX/include"
+	# ICU include is required for arm64
+	export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$WORKSPACE/icu/source/common"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib $ARCH -mmacosx-version-min=10.9 -isysroot $SDKPATH"
 
 	export MACOSX_DEPLOYMENT_TARGET=10.9

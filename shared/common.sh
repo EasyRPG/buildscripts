@@ -135,6 +135,8 @@ function install_lib_meson {
 	(cd $1
 		shift
 
+		rm -rf build
+
 		meson setup build --prefix $PLATFORM_PREFIX --buildtype release \
 			-Ddefault_library=static --cross-file $MESON_CROSS $@
 		meson compile -C build
