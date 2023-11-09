@@ -1,154 +1,107 @@
 #!/bin/bash
 
-lib=zlib
-ver=1.3
-ZLIB_URL="https://zlib.net/fossils/$lib-$ver.tar.gz"
-ZLIB_DIR="$lib-$ver"
+##### GENERATED FILE, DO NOT EDIT! ####
+# edit packages.ini and run ini2sh.py #
+#######################################
 
-lib=libpng
-ver=1.6.39
-LIBPNG_URL="https://download.sourceforge.net/libpng/$lib-$ver.tar.xz"
-LIBPNG_DIR="$lib-$ver"
 
-lib=freetype
-ver=2.13.0
-#FREETYPE_URL="https://download.savannah.gnu.org/releases/$lib/$lib-$ver.tar.xz" Some mirrors give 404
-FREETYPE_URL="https://mirrors.sarata.com/non-gnu/$lib/$lib-$ver.tar.xz"
-FREETYPE_DIR="$lib-$ver"
+ZLIB_URL="https://zlib.net/fossils/zlib-1.3.tar.gz"
+ZLIB_DIR="zlib-1.3"
+
+LIBPNG_URL="https://download.sourceforge.net/libpng/libpng-1.6.39.tar.xz"
+LIBPNG_DIR="libpng-1.6.39"
+
+FREETYPE_URL="https://mirrors.sarata.com/non-gnu/freetype/freetype-2.13.0.tar.xz"
 FREETYPE_ARGS="-DFT_DISABLE_BZIP2=ON -DFT_DISABLE_BROTLI=ON"
+FREETYPE_DIR="freetype-2.13.0"
 
-lib=harfbuzz
-ver=7.1.0
-HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/$ver/$lib-$ver.tar.xz"
-HARFBUZZ_DIR="$lib-$ver"
+HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/7.1.0/harfbuzz-7.1.0.tar.xz"
 HARFBUZZ_ARGS="-DHB_HAVE_FREETYPE=ON -DHB_BUILD_SUBSET=OFF"
+HARFBUZZ_DIR="harfbuzz-7.1.0"
 
-lib=pixman
-ver=0.42.2
-PIXMAN_URL="https://cairographics.org/releases/$lib-$ver.tar.gz"
-PIXMAN_DIR="$lib-$ver"
+PIXMAN_URL="https://cairographics.org/releases/pixman-0.42.2.tar.gz"
 PIXMAN_ARGS="--disable-libpng --enable-dependency-tracking"
+PIXMAN_DIR="pixman-0.42.2"
 
-lib=expat
-ver=2.5.0
-EXPAT_URL="https://github.com/libexpat/libexpat/releases/download/R_${ver//./_}/$lib-$ver.tar.bz2"
-EXPAT_DIR="$lib-$ver"
-EXPAT_ARGS="-DEXPAT_BUILD_TOOLS=OFF -DEXPAT_BUILD_EXAMPLES=OFF -DEXPAT_BUILD_TESTS=OFF -DEXPAT_BUILD_DOCS=OFF -DEXPAT_SHARED_LIBS=OFF"
+EXPAT_URL="https://github.com/libexpat/libexpat/releases/download/R_2_5_0/expat-2.5.0.tar.bz2"
+EXPAT_ARGS="-DEXPAT_BUILD_TOOLS=OFF -DEXPAT_BUILD_EXAMPLES=OFF \
+-DEXPAT_BUILD_TESTS=OFF -DEXPAT_BUILD_DOCS=OFF -DEXPAT_SHARED_LIBS=OFF"
+EXPAT_DIR="expat-2.5.0"
 
-lib=libogg
-ver=1.3.5
-LIBOGG_URL="https://downloads.xiph.org/releases/ogg/$lib-$ver.tar.xz"
-LIBOGG_DIR="$lib-$ver"
+LIBOGG_URL="https://downloads.xiph.org/releases/ogg/libogg-1.3.5.tar.xz"
+LIBOGG_DIR="libogg-1.3.5"
 
-lib=libvorbis
-ver=1.3.7
-LIBVORBIS_URL="https://downloads.xiph.org/releases/vorbis/$lib-$ver.tar.xz"
-LIBVORBIS_DIR="$lib-$ver"
+LIBVORBIS_URL="https://downloads.xiph.org/releases/vorbis/libvorbis-1.3.7.tar.xz"
+LIBVORBIS_DIR="libvorbis-1.3.7"
 
-lib=tremor
-ver=7c30a66346199f3f09017a09567c6c8a3a0eedc8
-TREMOR_URL="https://gitlab.xiph.org/xiph/$lib/-/archive/$ver/$lib-$ver.tar.bz2"
-TREMOR_DIR="$lib-$ver"
+TREMOR_URL="https://gitlab.xiph.org/xiph/tremor/-/archive/7c30a66346199f3f09017a09567c6c8a3a0eedc8/tremor-7c30a66346199f3f09017a09567c6c8a3a0eedc8.tar.bz2"
+TREMOR_DIR="tremor-7c30a66346199f3f09017a09567c6c8a3a0eedc8"
 
-lib=mpg123
-ver=1.31.3
-MPG123_URL=https://www.mpg123.de/download/$lib-$ver.tar.bz2
-MPG123_DIR="$lib-$ver"
+MPG123_URL="https://www.mpg123.de/download/mpg123-1.31.3.tar.bz2"
+MPG123_DIR="mpg123-1.31.3"
 
-lib=libsndfile
-ver=1.2.0
-LIBSNDFILE_URL=https://github.com/libsndfile/libsndfile/releases/download/$ver/$lib-$ver.tar.xz
-LIBSNDFILE_DIR="$lib-$ver"
+LIBSNDFILE_URL="https://github.com/libsndfile/libsndfile/releases/download/1.2.0/libsndfile-1.2.0.tar.xz"
 LIBSNDFILE_ARGS="--disable-alsa --disable-sqlite --disable-full-suite --disable-external-libs --disable-mpeg"
+LIBSNDFILE_DIR="libsndfile-1.2.0"
 
-lib=libxmp-lite
-ver=4.5.0
-LIBXMP_LITE_URL="https://github.com/libxmp/libxmp/releases/download/libxmp-$ver/$lib-$ver.tar.gz"
-LIBXMP_LITE_DIR="$lib-$ver"
+LIBXMP_LITE_URL="https://github.com/libxmp/libxmp/releases/download/libxmp-4.5.0/libxmp-lite-4.5.0.tar.gz"
+LIBXMP_LITE_DIR="libxmp-lite-4.5.0"
 
-lib=speexdsp
-ver=1.2.1
-SPEEXDSP_URL="https://downloads.xiph.org/releases/speex/$lib-$ver.tar.gz"
-SPEEXDSP_DIR="$lib-$ver"
+SPEEXDSP_URL="https://downloads.xiph.org/releases/speex/speexdsp-1.2.1.tar.gz"
 SPEEXDSP_ARGS="--disable-sse --disable-neon"
+SPEEXDSP_DIR="speexdsp-1.2.1"
 
-lib=libsamplerate
-ver=0.2.2
-LIBSAMPLERATE_URL="https://github.com/libsndfile/libsamplerate/releases/download/$ver/$lib-$ver.tar.xz"
-LIBSAMPLERATE_DIR="$lib-$ver"
+LIBSAMPLERATE_URL="https://github.com/libsndfile/libsamplerate/releases/download/0.2.2/libsamplerate-0.2.2.tar.xz"
+LIBSAMPLERATE_DIR="libsamplerate-0.2.2"
 
-lib=wildmidi
-ver=0.4.5
-WILDMIDI_URL="https://github.com/Mindwerks/wildmidi/archive/$lib-$ver.tar.gz"
-WILDMIDI_DIR="$lib-$lib-$ver"
+WILDMIDI_URL="https://github.com/Mindwerks/wildmidi/archive/wildmidi-0.4.5.tar.gz"
+WILDMIDI_DIR="wildmidi-wildmidi-0.4.5"
 WILDMIDI_ARGS="-DWANT_PLAYER=OFF -DWANT_STATIC=ON"
 
-lib=opus
-ver=1.4
-OPUS_URL="https://downloads.xiph.org/releases/$lib/$lib-$ver.tar.gz"
-OPUS_DIR="$lib-$ver"
+OPUS_URL="https://downloads.xiph.org/releases/opus/opus-1.4.tar.gz"
 OPUS_ARGS="--disable-intrinsics --disable-extra-programs"
+OPUS_DIR="opus-1.4"
 
-lib=opusfile
-ver=0.12
-OPUSFILE_URL="https://github.com/xiph/opusfile/releases/download/v$ver/$lib-$ver.tar.gz"
-OPUSFILE_DIR="$lib-$ver"
+OPUSFILE_URL="https://github.com/xiph/opusfile/releases/download/v0.12/opusfile-0.12.tar.gz"
 OPUSFILE_ARGS="--disable-http --disable-examples"
+OPUSFILE_DIR="opusfile-0.12"
 
-lib=fluidsynth
-ver=2.3.2
-FLUIDSYNTH_URL="https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v$ver.tar.gz"
-FLUIDSYNTH_DIR="$lib-$ver"
+FLUIDSYNTH_URL="https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v2.3.2.tar.gz"
 FLUIDSYNTH_ARGS="-DLIB_SUFFIX=''"
+FLUIDSYNTH_DIR="fluidsynth-2.3.2"
 
-lib=FluidLite
-ver=57a0e74e708f699b13d7c85b28a4e1ff5b71887c
-FLUIDLITE_URL="https://github.com/divideconcept/$lib/archive/$ver.zip"
-FLUIDLITE_DIR="$lib-$ver"
+FLUIDLITE_URL="https://github.com/divideconcept/FluidLite/archive/57a0e74e708f699b13d7c85b28a4e1ff5b71887c.zip"
 FLUIDLITE_ARGS="-DFLUIDLITE_BUILD_STATIC=ON -DFLUIDLITE_BUILD_SHARED=OFF"
+FLUIDLITE_DIR="FluidLite-57a0e74e708f699b13d7c85b28a4e1ff5b71887c"
 
-lib=json
-ver=3.11.2
-NLOHMANNJSON_URL="https://github.com/nlohmann/$lib/archive/v$ver.tar.gz"
-NLOHMANNJSON_DIR=$lib-$ver
+NLOHMANNJSON_URL="https://github.com/nlohmann/json/archive/v3.11.2.tar.gz"
+NLOHMANNJSON_DIR="json-3.11.2"
 NLOHMANNJSON_ARGS="-DJSON_BuildTests=OFF"
 
-lib=fmt
-ver=9.1.0
-FMT_URL="https://github.com/fmtlib/fmt/releases/download/$ver/$lib-$ver.zip"
-FMT_DIR="$lib-$ver"
+FMT_URL="https://github.com/fmtlib/fmt/releases/download/9.1.0/fmt-9.1.0.zip"
 FMT_ARGS="-DFMT_DOC=OFF -DFMT_TEST=OFF"
+FMT_DIR="fmt-9.1.0"
 
-lib=inih
-ver=r57
-INIH_URL="https://github.com/benhoyt/inih/archive/refs/tags/$ver.tar.gz"
-INIH_DIR="$lib-$ver"
+INIH_URL="https://github.com/benhoyt/inih/archive/refs/tags/r57.tar.gz"
+INIH_DIR="inih-r57"
 
-lib=lhasa
-ver=0.4.0
-LHASA_URL="https://github.com/fragglet/lhasa/releases/download/v$ver/$lib-$ver.tar.gz"
-LHASA_DIR="$lib-$ver"
+LHASA_URL="https://github.com/fragglet/lhasa/releases/download/v0.4.0/lhasa-0.4.0.tar.gz"
+LHASA_DIR="lhasa-0.4.0"
 
-lib=ICU
-ver=69.1
-ICU_URL=https://github.com/unicode-org/icu/releases/download/release-${ver//./-}/icu4c-${ver//./_}-src.tgz
+ICU_URL="https://github.com/unicode-org/icu/releases/download/release-69-1/icu4c-69_1-src.tgz"
 ICU_DIR="icu"
 ICU_ARGS="--enable-strict=no --disable-tests --disable-samples \
-	--disable-dyload --disable-extras --disable-icuio \
-	--with-data-packaging=static --disable-layout --disable-layoutex"
+--disable-dyload --disable-extras --disable-icuio \
+--with-data-packaging=static --disable-layout --disable-layoutex"
 
-lib=icudata
 ICUDATA_URL=https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata.tar.gz
-ICUDATA_FILES=icudt*.dat
+ICUDATA_FILES="icudt*.dat"
 
-lib=SDL2
-ver=2.26.5
-SDL2_URL="https://libsdl.org/release/$lib-$ver.tar.gz"
-SDL2_DIR="$lib-$ver"
+SDL2_URL="https://libsdl.org/release/SDL2-2.26.5.tar.gz"
+SDL2_DIR="SDL2-2.26.5"
 
 # only needed for lmu2png tool
-lib=SDL2_image
-ver=2.6.3
-SDL2_IMAGE_URL="https://www.libsdl.org/projects/SDL_image/release/$lib-$ver.tar.gz"
-SDL2_IMAGE_DIR="$lib-$ver"
+SDL2_IMAGE_URL="https://libsdl.org/projects/SDL_image/release/SDL2_image-2.6.3.tar.gz"
 SDL2_IMAGE_ARGS="--disable-jpg --disable-png-shared --disable-tif --disable-webp"
+SDL2_IMAGE_DIR="SDL2_image-2.6.3"
+
