@@ -23,6 +23,12 @@ if [ ! -f .patches-applied ]; then
 
 	patches_common
 
+	# Fix inih
+	# Remove when r58 is out
+	(cd $INIH_DIR
+		patch -Np1 < $SCRIPT_DIR/inih-std11.patch
+	)
+
 	cp -rp icu icu-native
 
 	touch .patches-applied
@@ -49,7 +55,8 @@ function set_build_flags() {
 	fi
 	export CFLAGS="-g -O2 -mmacosx-version-min=10.9 -isysroot $SDKPATH $3"
 	export CXXFLAGS=$CFLAGS
-	export CPPFLAGS="-I$PLATFORM_PREFIX/include"
+	# ICU include is required for arm64
+	export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$WORKSPACE/icu/source/common"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib $ARCH -mmacosx-version-min=10.9 -isysroot $SDKPATH"
 
 	export MACOSX_DEPLOYMENT_TARGET=10.9
@@ -80,6 +87,8 @@ function build() {
 	install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 	install_lib_cmake $FLUIDSYNTH_DIR $FLUIDSYNTH_ARGS
 	install_lib_cmake $NLOHMANNJSON_DIR $NLOHMANNJSON_ARGS
+	install_lib_meson $INIH_DIR $INIH_ARGS
+	install_lib $LHASA_DIR $LHASA_ARGS
 	install_lib_cmake $FMT_DIR $FMT_ARGS
 	install_lib_icu_cross
 	icu_force_data_install

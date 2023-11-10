@@ -78,6 +78,14 @@ download_and_extract $OPUSFILE_URL
 rm -rf $FLUIDSYNTH_DIR
 download_and_extract $FLUIDSYNTH_URL
 
+# inih
+rm -rf $INIH_DIR
+download_and_extract $INIH_URL
+
+# lhasa
+rm -rf $LHASA_DIR
+download_and_extract $LHASA_URL
+
 # fmt
 rm -rf $FMT_DIR
 download_and_extract $FMT_URL

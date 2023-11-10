@@ -9,6 +9,8 @@ fmt: MIT
 freetype: FreeType License or GPLv2 or later (see docs/LICENSE.TXT)
 harfbuzz: MIT
 icu4c: ICU license
+inih: BSD
+lhasa: ISC
 modplug: Public Domain
 mpg123: LGPLv2.1+
 nlohmann-json: MIT

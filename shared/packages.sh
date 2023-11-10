@@ -119,6 +119,16 @@ FMT_URL="https://github.com/fmtlib/fmt/releases/download/$ver/$lib-$ver.zip"
 FMT_DIR="$lib-$ver"
 FMT_ARGS="-DFMT_DOC=OFF -DFMT_TEST=OFF"
 
+lib=inih
+ver=r57
+INIH_URL="https://github.com/benhoyt/inih/archive/refs/tags/$ver.tar.gz"
+INIH_DIR="$lib-$ver"
+
+lib=lhasa
+ver=0.4.0
+LHASA_URL="https://github.com/fragglet/lhasa/releases/download/v$ver/$lib-$ver.tar.gz"
+LHASA_DIR="$lib-$ver"
+
 lib=ICU
 ver=69.1
 ICU_URL=https://github.com/unicode-org/icu/releases/download/release-${ver//./-}/icu4c-${ver//./_}-src.tgz
