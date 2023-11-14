@@ -1,0 +1,52 @@
+name: Update libraries
+
+on:
+  workflow_dispatch: # allow running on-demand
+  schedule:
+    # every friday at 18:00 UTC
+    - cron: '0 18 * * 5'
+
+jobs:
+  update:
+    name: Update & Open Pull Request
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade requests packaging
+
+      - name: Update library versions
+        run: |
+          python shared/updater.py
+          python shared/ini2sh.py
+
+      - name: Adapt PR body
+        run: |
+          echo "See also: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> pr-body.txt
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v5
+        with:
+          add-paths: shared/packages.*
+          commit-message: Update libraries
+          branch: update/libraries
+          delete-branch: true
+          title: 'Automatic library update'
+          body-path: pr-body.txt
+          labels: |
+            update
+            automated pr
+          reviewers: carstene1ns, Ghabry, fdelapena
+
+      - name: Check outputs
+        if: ${{ steps.cpr.outputs.pull-request-number }}
+        run: |
+          echo "Pull Request was ${{ steps.cpr.outputs.pull-request-operation }}:"
+          echo "Number = ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "URL: ${{ steps.cpr.outputs.pull-request-url }}"
