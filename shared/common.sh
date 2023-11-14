@@ -19,11 +19,23 @@ function download {
 
 	[ $# -ne 0 ] && msg "Downloading $url..."
 
+	file=${url##*/}
+
+	# Try cache folder first
+	if [ "x$EASYRPG_PATH_DOWNLOADCACHE" != "x" ]; then
+		if [ -e $EASYRPG_PATH_DOWNLOADCACHE/$file ]; then
+			cp -rup $EASYRPG_PATH_DOWNLOADCACHE/$file $file
+			echo "[copied from cache]"
+			return
+		fi
+	fi
+
 	# Fallback to easyrpg.org when <100KB/s for >3s
 	if [ "x$USE_EASYRPG_MIRROR" == "x1" ] || \
 		! curl -sSLOR -y3 -Y102400 --connect-timeout 3 $url; then
-		curl -sSLOR https://easyrpg.org/downloads/sources/$(basename $url)
+		curl -sSLOR https://easyrpg.org/downloads/sources/$file
 	fi
+	[ $? -eq 0 ] && echo "done."
 }
 
 function download_and_extract {
