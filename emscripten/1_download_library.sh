@@ -43,8 +43,8 @@ else
 	touch .emscripten
 
 	# Download and install the latest SDK tools and set up the compiler configuration to point to it.
-	./emsdk install 3.1.34
-	./emsdk activate 3.1.34
+	./emsdk install 3.1.49
+	./emsdk activate 3.1.49
 
 	# Set the current Emscripten path
 	source ./emsdk_env.sh
