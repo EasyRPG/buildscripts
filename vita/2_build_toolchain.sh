@@ -32,7 +32,7 @@ if [ ! -f .patches-applied ]; then
 
 	# Fix icu build
 	cp -rup icu icu-native
-	patch -Np0 < $SCRIPT_DIR/icu69-vita.patch
+	patch -Np0 < $SCRIPT_DIR/icu-vita.patch
 
 	# Disable vita2dlib jpeg dependency
 	patch -Np0 < $SCRIPT_DIR/libvita2d-no-jpeg.patch
