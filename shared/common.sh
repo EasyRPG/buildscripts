@@ -294,15 +294,6 @@ function patches_common {
 		)
 	fi
 
-	# libxmp-lite
-	if [ -d "$LIBXMP_LITE_DIR" ]; then
-		# compile fix
-		(cd $LIBXMP_LITE_DIR
-			# Use custom CMakeLists.txt
-			cp $_SCRIPT_DIR/CMakeLists_xmplite.txt ./CMakeLists.txt
-		)
-	fi
-
 	# Tremor: Generate configure & Makefile, fix build
 	if [ -d "$TREMOR_DIR" ]; then
 		(cd $TREMOR_DIR
