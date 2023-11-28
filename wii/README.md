@@ -4,7 +4,7 @@
 
 ### Prequisites:
 
-- Install devkitPPC, libogc, libfat-ogc and gamecube-tools.
+- Install devkitPPC, libogc, libfat-ogc, gamecube-tools and wii-cmake.
   (Environment variables `DEVKITPRO` and `DEVKITPPC` need to be set)
 
 ### Local build process:

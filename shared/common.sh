@@ -332,6 +332,12 @@ function patches_common {
 		)
 	fi
 
+	# lhasa: disable binary and tests
+	(cd $LHASA_DIR
+		perl -pi -e 's/ src test//' Makefile.am
+		autoreconf -fi
+	)
+
 	cp icudt*.dat $ICU_DIR/source/data/in
 	(cd $ICU_DIR/source
 		chmod u+x configure
