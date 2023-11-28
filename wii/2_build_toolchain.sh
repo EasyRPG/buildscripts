@@ -96,7 +96,7 @@ install_lib $PIXMAN_DIR $PIXMAN_ARGS --disable-vmx
 install_lib_cmake $EXPAT_DIR $EXPAT_ARGS
 install_lib $LIBOGG_DIR $LIBOGG_ARGS
 install_lib $TREMOR_DIR $TREMOR_ARGS
-install_lib_mpg123
+install_lib $MPG123_DIR $MPG123_ARGS
 install_lib_cmake $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
 install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
 install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS
