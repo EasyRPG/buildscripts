@@ -8,9 +8,6 @@ export WORKSPACE=$PWD
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
 
-# Override ICU version to 58.1, custom SDL
-source $SCRIPT_DIR/packages.sh
-
 # Number of CPU
 nproc=$(nproc)
 
@@ -47,12 +44,7 @@ if [ ! -f .patches-applied ]; then
 	)
 
 	# Fix icu build
-	perl -pi -e 's/xlocale/locale/' icu/source/i18n/digitlst.cpp
 	cp -rup icu icu-native
-	# Fix ICU compilation problems on Wii
-	patch -Np0 < icu-wii.patch
-	# Emit correct bigendian icudata header
-	patch -Np0 < icu-pkg_genc.patch
 
 	touch .patches-applied
 fi

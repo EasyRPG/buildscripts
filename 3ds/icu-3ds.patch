@@ -1,0 +1,305 @@
+--- icu-native/source/i18n/number_types.h	2023-10-27 23:53:02.000000000 +0200
++++ icu/source/i18n/number_types.h	2023-11-29 14:42:35.343975696 +0100
+@@ -118,11 +118,11 @@
+ 
+     virtual ~AffixPatternProvider();
+ 
+-    virtual char16_t charAt(int flags, int i) const = 0;
++    virtual char16_t charAt(int32_t flags, int32_t i) const = 0;
+ 
+-    virtual int length(int flags) const = 0;
++    virtual int32_t length(int32_t flags) const = 0;
+ 
+-    virtual UnicodeString getString(int flags) const = 0;
++    virtual UnicodeString getString(int32_t flags) const = 0;
+ 
+     virtual bool hasCurrencySign() const = 0;
+ 
+@@ -174,7 +174,7 @@
+      *            formatted.
+      * @return The number of characters (UTF-16 code units) that were added to the string builder.
+      */
+-    virtual int32_t apply(FormattedStringBuilder& output, int leftIndex, int rightIndex,
++    virtual int32_t apply(FormattedStringBuilder& output, int32_t leftIndex, int32_t rightIndex,
+                           UErrorCode& status) const = 0;
+ 
+     /**
+--- icu-native/source/i18n/formatted_string_builder.cpp	2023-10-27 23:53:02.000000000 +0200
++++ icu/source/i18n/formatted_string_builder.cpp	2023-11-29 14:42:35.357309031 +0100
+@@ -433,7 +433,7 @@
+             }
+             sb.append(c);
+         } else {
+-            sb.append(u'0' + fieldAt(i).getCategory());
++            sb.append(static_cast<UChar32>(u'0' + fieldAt(i).getCategory()));
+         }
+     }
+     sb.append(u"]>", -1);
+--- icu-native/source/i18n/decimfmt.cpp	2023-10-27 23:53:02.000000000 +0200
++++ icu/source/i18n/decimfmt.cpp	2023-11-29 14:42:35.347309032 +0100
+@@ -1880,7 +1880,7 @@
+             *(--ptr) = fields->fastData.cpGroupingSeparator;
+             group = 1;
+         }
+-        std::div_t res = std::div(input, 10);
++        std::div_t res = std::div(static_cast<int>(input), 10);
+         *(--ptr) = static_cast<char16_t>(fields->fastData.cpZero + res.rem);
+         input = res.quot;
+     }
+--- icu-native/source/i18n/number_modifiers.cpp	2023-10-27 23:53:02.000000000 +0200
++++ icu/source/i18n/number_modifiers.cpp	2023-11-29 14:42:35.357309031 +0100
+@@ -78,7 +78,7 @@
+ }
+ 
+ 
+-int32_t ConstantAffixModifier::apply(FormattedStringBuilder &output, int leftIndex, int rightIndex,
++int32_t ConstantAffixModifier::apply(FormattedStringBuilder &output, int32_t leftIndex, int32_t rightIndex,
+                                      UErrorCode &status) const {
+     // Insert the suffix first since inserting the prefix will change the rightIndex
+     int length = output.insert(rightIndex, fSuffix, fField, status);
+@@ -163,7 +163,7 @@
+         : fField(kUndefinedField), fStrong(false), fPrefixLength(0), fSuffixLength(0) {
+ }
+ 
+-int32_t SimpleModifier::apply(FormattedStringBuilder &output, int leftIndex, int rightIndex,
++int32_t SimpleModifier::apply(FormattedStringBuilder &output, int32_t leftIndex, int32_t rightIndex,
+                               UErrorCode &status) const {
+     return formatAsPrefixSuffix(output, leftIndex, rightIndex, status);
+ }
+@@ -293,7 +293,7 @@
+ }
+ 
+ 
+-int32_t ConstantMultiFieldModifier::apply(FormattedStringBuilder &output, int leftIndex, int rightIndex,
++int32_t ConstantMultiFieldModifier::apply(FormattedStringBuilder &output, int32_t leftIndex, int32_t rightIndex,
+                                           UErrorCode &status) const {
+     int32_t length = output.insert(leftIndex, fPrefix, status);
+     if (fOverwrite) {
+@@ -383,7 +383,7 @@
+     }
+ }
+ 
+-int32_t CurrencySpacingEnabledModifier::apply(FormattedStringBuilder &output, int leftIndex, int rightIndex,
++int32_t CurrencySpacingEnabledModifier::apply(FormattedStringBuilder &output, int32_t leftIndex, int32_t rightIndex,
+                                               UErrorCode &status) const {
+     // Currency spacing logic
+     int length = 0;
+--- icu-native/source/i18n/number_patternstring.cpp	2023-10-27 23:53:02.000000000 +0200
++++ icu/source/i18n/number_patternstring.cpp	2023-11-29 14:42:35.350642365 +0100
+@@ -945,7 +945,7 @@
+     table[10][standIdx] = u"#";
+     table[10][localIdx] = symbols.getConstSymbol(DecimalFormatSymbols::kDigitSymbol);
+     for (int i = 0; i < 10; i++) {
+-        table[11 + i][standIdx] = u'0' + i;
++        table[11 + i][standIdx] = static_cast<char16_t>(u'0' + i);
+         table[11 + i][localIdx] = symbols.getConstDigitSymbol(i);
+     }
+ 
+--- icu-native/source/i18n/number_decimalquantity.cpp	2023-10-27 23:53:02.000000000 +0200
++++ icu/source/i18n/number_decimalquantity.cpp	2023-11-29 14:42:35.357309031 +0100
+@@ -293,7 +293,7 @@
+     return exponent;
+ }
+ 
+-void DecimalQuantity::adjustExponent(int delta) {
++void DecimalQuantity::adjustExponent(int32_t delta) {
+     exponent = exponent + delta;
+ }
+ 
+@@ -503,8 +503,8 @@
+     // Call the slow oracle function (Double.toString in Java, DoubleToAscii in C++).
+     char buffer[DoubleToStringConverter::kBase10MaximalLength + 1];
+     bool sign; // unused; always positive
+-    int32_t length;
+-    int32_t point;
++    int length;
++    int point;
+     DoubleToStringConverter::DoubleToAscii(
+         origDouble,
+         DoubleToStringConverter::DtoaMode::SHORTEST,
+@@ -560,15 +560,15 @@
+ DecimalQuantity DecimalQuantity::fromExponentString(UnicodeString num, UErrorCode& status) {
+     if (num.indexOf(u'e') >= 0 || num.indexOf(u'c') >= 0
+                 || num.indexOf(u'E') >= 0 || num.indexOf(u'C') >= 0) {
+-        int32_t ePos = num.lastIndexOf('e');
++        int32_t ePos = num.lastIndexOf(u'e');
+         if (ePos < 0) {
+-            ePos = num.lastIndexOf('c');
++            ePos = num.lastIndexOf(u'c');
+         }
+         if (ePos < 0) {
+-            ePos = num.lastIndexOf('E');
++            ePos = num.lastIndexOf(u'E');
+         }
+         if (ePos < 0) {
+-            ePos = num.lastIndexOf('C');
++            ePos = num.lastIndexOf(u'C');
+         }
+         int32_t expNumPos = ePos + 1;
+         UnicodeString exponentStr = num.tempSubString(expNumPos, num.length() - expNumPos);
+@@ -608,7 +608,7 @@
+ }
+ 
+ int32_t DecimalQuantity::getVisibleFractionCount(UnicodeString value) {
+-    int decimalPos = value.indexOf('.') + 1;
++    int decimalPos = value.indexOf(u'.') + 1;
+     if (decimalPos == 0) {
+         return 0;
+     } else {
+@@ -623,7 +623,7 @@
+     uint64_t result = 0L;
+     int32_t upperMagnitude = exponent + scale + precision - 1;
+     if (truncateIfOverflow) {
+-        upperMagnitude = std::min(upperMagnitude, 17);
++        upperMagnitude = std::min<int32_t>(upperMagnitude, 17);
+     }
+     for (int32_t magnitude = upperMagnitude; magnitude >= 0; magnitude--) {
+         result = result * 10 + getDigitPos(magnitude - scale - exponent);
+@@ -699,7 +699,7 @@
+     // We are processing well-formed input, so we don't need any special options to StringToDoubleConverter.
+     StringToDoubleConverter converter(0, 0, 0, "", "");
+     UnicodeString numberString = this->toScientificString();
+-    int32_t count;
++    int count;
+     return converter.StringToDouble(
+             reinterpret_cast<const uint16_t*>(numberString.getBuffer()),
+             numberString.length(),
+@@ -1004,13 +1004,13 @@
+         sb.append(u'0');
+     }
+     for (; p >= 0; p--) {
+-        sb.append(u'0' + getDigitPos(p - scale - exponent));
++        sb.append(static_cast<char16_t>(u'0' + getDigitPos(p - scale - exponent)));
+     }
+     if (lower < 0) {
+         sb.append(u'.');
+     }
+     for(; p >= lower; p--) {
+-        sb.append(u'0' + getDigitPos(p - scale - exponent));
++        sb.append(static_cast<char16_t>(u'0' + getDigitPos(p - scale - exponent)));
+     }
+     return sb;
+ }
+@@ -1036,13 +1036,13 @@
+         sb.append(u'0');
+     }
+     for (; p >= 0; p--) {
+-        sb.append(u'0' + getDigitPos(p - scale));
++        sb.append(static_cast<char16_t>(u'0' + getDigitPos(p - scale)));
+     }
+     if (lower < 0) {
+         sb.append(u'.');
+     }
+     for(; p >= lower; p--) {
+-        sb.append(u'0' + getDigitPos(p - scale));
++        sb.append(static_cast<char16_t>(u'0' + getDigitPos(p - scale)));
+     }
+ 
+     if (exponent != 0) {
+@@ -1066,11 +1066,11 @@
+     int32_t upperPos = precision - 1;
+     int32_t lowerPos = 0;
+     int32_t p = upperPos;
+-    result.append(u'0' + getDigitPos(p));
++    result.append(static_cast<char16_t>(u'0' + getDigitPos(p)));
+     if ((--p) >= lowerPos) {
+         result.append(u'.');
+         for (; p >= lowerPos; p--) {
+-            result.append(u'0' + getDigitPos(p));
++            result.append(static_cast<char16_t>(u'0' + getDigitPos(p)));
+         }
+     }
+     result.append(u'E');
+@@ -1089,8 +1089,8 @@
+     }
+     int32_t insertIndex = result.length();
+     while (_scale > 0) {
+-        std::div_t res = std::div(_scale, 10);
+-        result.insert(insertIndex, u'0' + res.rem);
++        std::div_t res = std::div(static_cast<int>(_scale), 10);
++        result.insert(insertIndex, static_cast<char16_t>(u'0' + res.rem));
+         _scale = res.quot;
+     }
+     return result;
+--- icu-native/source/i18n/number_utils.cpp	2023-10-27 23:53:02.000000000 +0200
++++ icu/source/i18n/number_utils.cpp	2023-11-29 14:42:35.353975698 +0100
+@@ -139,8 +139,8 @@
+     // Allocate enough room for: all digits, "E-324", and NUL-terminator.
+     char buffer[DoubleToStringConverter::kBase10MaximalLength + 6];
+     bool sign; // unused; always positive
+-    int32_t length;
+-    int32_t point;
++    int length;
++    int point;
+     DoubleToStringConverter::DoubleToAscii(
+             d,
+             DoubleToStringConverter::DtoaMode::SHORTEST,
+--- icu-native/source/i18n/erarules.cpp	2023-10-27 23:53:02.000000000 +0200
++++ icu/source/i18n/erarules.cpp	2023-11-29 14:42:35.343975696 +0100
+@@ -251,7 +251,7 @@
+         status = U_ILLEGAL_ARGUMENT_ERROR;
+         return year;
+     }
+-    int fields[3];
++    int32_t fields[3];
+     decodeDate(startDates[eraIdx], fields);
+     year = fields[0];
+ 
+@@ -305,7 +305,7 @@
+         localMillis += (rawOffset + dstOffset);
+     }
+ 
+-    int year, month0, dom, dow, doy, mid;
++    int32_t year, month0, dom, dow, doy, mid;
+     Grego::timeToFields(localMillis, year, month0, dom, dow, doy, mid);
+     int currentEncodedDate = encodeDate(year, month0 + 1 /* changes to 1-base */, dom);
+     int eraIdx = numEras - 1;
+--- icu-native/source/i18n/units_converter.cpp	2023-10-27 23:53:02.000000000 +0200
++++ icu/source/i18n/units_converter.cpp	2023-11-29 14:42:35.343975696 +0100
+@@ -73,7 +73,7 @@
+         return;
+     }
+ 
+-    int32_t prefixPower = umeas_getPrefixPower(unitPrefix);
++    int prefixPower = umeas_getPrefixPower(unitPrefix);
+     double prefixFactor = std::pow((double)umeas_getPrefixBase(unitPrefix), (double)std::abs(prefixPower));
+     if (prefixPower >= 0) {
+         factorNum *= prefixFactor;
+@@ -114,7 +114,7 @@
+     // We are processing well-formed input, so we don't need any special options to
+     // StringToDoubleConverter.
+     StringToDoubleConverter converter(0, 0, 0, "", "");
+-    int32_t count;
++    int count;
+     double result = converter.StringToDouble(strNum.data(), strNum.length(), &count);
+     if (count != strNum.length()) {
+         status = U_INVALID_FORMAT_ERROR;
+--- icu-native/source/i18n/number_mapper.cpp	2023-10-27 23:53:02.000000000 +0200
++++ icu/source/i18n/number_mapper.cpp	2023-11-29 14:42:35.353975698 +0100
+@@ -391,11 +391,11 @@
+     fCurrencyAsDecimal = properties.currencyAsDecimal;
+ }
+ 
+-char16_t PropertiesAffixPatternProvider::charAt(int flags, int i) const {
++char16_t PropertiesAffixPatternProvider::charAt(int32_t flags, int32_t i) const {
+     return getStringInternal(flags).charAt(i);
+ }
+ 
+-int PropertiesAffixPatternProvider::length(int flags) const {
++int32_t PropertiesAffixPatternProvider::length(int32_t flags) const {
+     return getStringInternal(flags).length();
+ }
+ 
+--- icu-native/source/common/unifiedcache.cpp	2023-10-27 23:53:02.000000000 +0200
++++ icu/source/common/unifiedcache.cpp	2023-11-29 14:42:35.327309033 +0100
+@@ -268,8 +268,8 @@
+     int32_t evictableItems = totalItems - fNumValuesInUse;
+ 
+     int32_t unusedLimitByPercentage = fNumValuesInUse * fMaxPercentageOfInUse / 100;
+-    int32_t unusedLimit = std::max(unusedLimitByPercentage, fMaxUnused);
+-    int32_t countOfItemsToEvict = std::max(0, evictableItems - unusedLimit);
++    int32_t unusedLimit = std::max<int32_t>(unusedLimitByPercentage, fMaxUnused);
++    int32_t countOfItemsToEvict = std::max<int32_t>(0, evictableItems - unusedLimit);
+     return countOfItemsToEvict;
+ }
+ 

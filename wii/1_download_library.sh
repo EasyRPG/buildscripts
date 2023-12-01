@@ -8,9 +8,6 @@ export WORKSPACE=$PWD
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
 
-# Override ICU version to 58.1, custom SDL
-source $SCRIPT_DIR/packages.sh
-
 msg " [1] Checking devkitPPC"
 
 if [[ -z $DEVKITPRO || -z $DEVKITPPC ]]; then
