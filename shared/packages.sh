@@ -75,8 +75,8 @@ FLUIDLITE_URL="https://github.com/divideconcept/FluidLite/archive/57a0e74e708f69
 FLUIDLITE_ARGS="-DFLUIDLITE_BUILD_STATIC=ON -DFLUIDLITE_BUILD_SHARED=OFF"
 FLUIDLITE_DIR="FluidLite-57a0e74e708f699b13d7c85b28a4e1ff5b71887c"
 
-NLOHMANNJSON_URL="https://github.com/nlohmann/json/archive/v3.11.2.tar.gz"
-NLOHMANNJSON_DIR="json-3.11.2"
+NLOHMANNJSON_URL="https://github.com/nlohmann/json/archive/v3.11.3.tar.gz"
+NLOHMANNJSON_DIR="json-3.11.3"
 NLOHMANNJSON_ARGS="-DJSON_BuildTests=OFF"
 
 FMT_URL="https://github.com/fmtlib/fmt/releases/download/10.1.1/fmt-10.1.1.zip"
