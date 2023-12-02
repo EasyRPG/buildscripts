@@ -94,6 +94,9 @@ download_and_extract $ICU_URL
 rm -f $ICUDATA_FILES
 download_and_extract $ICUDATA_URL
 
+msg "Copying icu to icu-native"
+cp -r icu icu-native
+
 msg " [2] Downloading platform libraries"
 
 # SDL2
