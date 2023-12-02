@@ -14,12 +14,16 @@ LIBPNG_DIR="libpng-1.6.39"
 FREETYPE_URL="https://mirrors.sarata.com/non-gnu/freetype/freetype-2.13.2.tar.xz"
 if [ "$IS_IPHONEOS" != 1 ]; then
    FREETYPE_ARGS="-DFT_DISABLE_BZIP2=ON -DFT_DISABLE_BROTLI=ON"
+else
+   FREETYPE_ARGS=""
 fi
 FREETYPE_DIR="freetype-2.13.2"
 
 HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfbuzz-8.3.0.tar.xz"
 if [ "$IS_IPHONEOS" != 1 ]; then
    HARFBUZZ_ARGS="-DHB_HAVE_FREETYPE=ON -DHB_BUILD_SUBSET=OFF"
+else
+   HARFBUZZ_ARGS=""
 fi
 HARFBUZZ_DIR="harfbuzz-8.3.0"
 
