@@ -31,6 +31,10 @@ if [ ! -f .patches-applied ]; then
 	(cd $INIH_DIR
 		patch -Np1 < $SCRIPT_DIR/inih-std11.patch
 	)
+	# Fix SDL2 for iOS
+	(cd $SDL2_DIR
+		patch -Np1 < $SCRIPT_DIR/SDL2-iOS.patch
+	)
 
 	touch .patches-applied
 fi
