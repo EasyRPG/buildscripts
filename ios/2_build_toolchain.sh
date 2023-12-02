@@ -19,22 +19,6 @@ nproc=$(getconf _NPROCESSORS_ONLN)
 # Use ccache?
 test_ccache
 
-if [ ! -f .patches-applied ]; then
-	echo "Patching libraries"
-
-	patches_common
-
-	# Fix ogg build
-	# Remove this when the next version is out
-	(cd $LIBOGG_DIR
-		patch -Np1 < $SCRIPT_DIR/libogg-fix-typedefs.patch
-	)
-
-	cp -r icu icu-native
-
-	touch .patches-applied
-fi
-
 function set_build_flags {
 	CLANG=`xcodebuild -find clang`
 	CLANGXX=`xcodebuild -find clang++`
