@@ -12,11 +12,15 @@ LIBPNG_URL="https://download.sourceforge.net/libpng/libpng-1.6.39.tar.xz"
 LIBPNG_DIR="libpng-1.6.39"
 
 FREETYPE_URL="https://mirrors.sarata.com/non-gnu/freetype/freetype-2.13.2.tar.xz"
-FREETYPE_ARGS="-DFT_DISABLE_BZIP2=ON -DFT_DISABLE_BROTLI=ON"
+if [ "$IS_IPHONEOS" != 1 ]; then
+   FREETYPE_ARGS="-DFT_DISABLE_BZIP2=ON -DFT_DISABLE_BROTLI=ON"
+fi
 FREETYPE_DIR="freetype-2.13.2"
 
 HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfbuzz-8.3.0.tar.xz"
-HARFBUZZ_ARGS="-DHB_HAVE_FREETYPE=ON -DHB_BUILD_SUBSET=OFF"
+if [ "$IS_IPHONEOS" != 1 ]; then
+   HARFBUZZ_ARGS="-DHB_HAVE_FREETYPE=ON -DHB_BUILD_SUBSET=OFF"
+fi
 HARFBUZZ_DIR="harfbuzz-8.3.0"
 
 PIXMAN_URL="https://cairographics.org/releases/pixman-0.42.2.tar.gz"

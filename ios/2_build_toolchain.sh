@@ -8,6 +8,7 @@ fi
 # abort on error
 set -e
 
+IS_IPHONEOS=1
 export WORKSPACE=$PWD
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
