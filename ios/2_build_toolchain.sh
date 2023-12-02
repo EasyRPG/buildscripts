@@ -136,6 +136,10 @@ function install_lib_inih() {
 	make_inih_universal
 }
 
+# Emptying harfbuzz and freetype's build arguments because they aren't supported
+HARFBUZZ_ARGS=""
+FREETYPE_ARGS=""
+
 install_lib_icu_native
 
 set_universal_build_flags
