@@ -13,6 +13,7 @@ export WORKSPACE=$PWD
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
+CMAKE_SYSTEM_NAME="iOS"
 
 # Number of CPU
 nproc=$(getconf _NPROCESSORS_ONLN)
