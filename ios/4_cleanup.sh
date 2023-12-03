@@ -8,7 +8,4 @@ source $SCRIPT_DIR/../shared/import.sh
 
 cleanup
 
-# Delete iOS CMake toolchain folder
-rm -rf ios-cmake
-
 echo " -> done"
