@@ -8,10 +8,13 @@ fi
 # abort on error
 set -e
 
-
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
-CMAKE_SYSTEM_NAME="iOS"
+
+if [ ! -d "ios-cmake" ]; then
+	echo "Cloning iOS CMake toolchain"
+	git clone https://github.com/leetal/ios-cmake.git ios-cmake
+fi
 
 export WORKSPACE=$PWD
 
@@ -43,6 +46,12 @@ function set_build_flags() {
 	if [ ! -d $1 ]; then
 		mkdir $1
 	fi
+	IOS_PLATFORM="OS"
+	if [ $1 == "arm64" ]; then
+		IOS_PLATFORM="OS64"
+	fi
+	# Used a trick here to avoid modifying shared/common.sh file
+	CMAKE_SYSTEM_NAME="iOS -DCMAKE_TOOLCHAIN_FILE=$SCRIPT_DIR/ios-cmake/ios.toolchain.cmake -DDEPLOYMENT_TARGET=7.0 -DPLATFORM=$IOS_PLATFORM -DARCHS=$1"
 	export PLATFORM_PREFIX=$WORKSPACE/$1
 	export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 	export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
