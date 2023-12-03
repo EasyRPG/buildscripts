@@ -12,7 +12,7 @@ echo "Creating universal libraries"
 
 # Prepare
 rm -rf universal
-mkdir -p universal
+mkdir universal
 
 # Copy files needed by CMake
 cp -R armv7/bin armv7/include armv7/lib universal

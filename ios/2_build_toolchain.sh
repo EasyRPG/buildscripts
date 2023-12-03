@@ -17,7 +17,6 @@ if [ ! -d "icu-native" ]; then
 fi
 
 CMAKE_SYSTEM_NAME="iOS"
-
 export WORKSPACE=$PWD
 
 # Number of CPU
@@ -88,12 +87,15 @@ function install_lib_sdl2() {
 }
 
 function build() {
-	install_lib_icu_native
+	# Add some arguments to FreeType and Harfbuzz to fix library missing errors
+	HB_FREETYPE_ARGS="-DFREETYPE_LIBRARY=$PLATFORM_PREFIX/lib/libfreetype.a -DFREETYPE_INCLUDE_DIRS=$PLATFORM_PREFIX/include/freetype2"
+	FT_LIBPNG_ARGS="-DPNG_LIBRARY=$PLATFORM_PREFIX/lib/libpng16.a -DPNG_PNG_INCLUDE_DIR=$PLATFORM_PREFIX/include/libpng16"
+
 	install_lib_zlib
 	install_lib $LIBPNG_DIR $LIBPNG_ARGS
-	install_lib $FREETYPE_DIR $FREETYPE_ARGS --without-harfbuzz
-	install_lib $HARFBUZZ_DIR $HARFBUZZ_ARGS
-	install_lib $FREETYPE_DIR $FREETYPE_ARGS --with-harfbuzz
+	install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS $FT_LIBPNG_ARGS -DFT_DISABLE_HARFBUZZ=ON
+	install_lib_cmake $HARFBUZZ_DIR $HARFBUZZ_ARGS $HB_FREETYPE_ARGS
+	install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS $FT_LIBPNG_ARGS -DFT_DISABLE_HARFBUZZ=OFF
 	install_lib $PIXMAN_DIR $PIXMAN_ARGS --disable-arm-a64-neon --disable-arm-neon
 	install_lib_cmake $EXPAT_DIR $EXPAT_ARGS
 	install_lib $LIBOGG_DIR $LIBOGG_ARGS
@@ -114,9 +116,7 @@ function build() {
 	install_lib_sdl2
 }
 
-# Emptying harfbuzz and freetype's build arguments because they aren't supported
-HARFBUZZ_ARGS=""
-FREETYPE_ARGS=""
+install_lib_icu_native
 
 set_build_flags "armv7"
 build
