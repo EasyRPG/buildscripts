@@ -11,6 +11,11 @@ set -e
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
 
+if [ ! -d "icu-native" ]; then
+	msg "Copying icu to icu-native"
+	cp -r icu icu-native
+fi
+
 if [ ! -d "ios-cmake" ]; then
 	echo "Cloning iOS CMake toolchain"
 	git clone https://github.com/leetal/ios-cmake.git ios-cmake
