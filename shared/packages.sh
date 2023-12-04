@@ -38,6 +38,9 @@ TREMOR_URL="https://gitlab.xiph.org/xiph/tremor/-/archive/7c30a66346199f3f09017a
 TREMOR_DIR="tremor-7c30a66346199f3f09017a09567c6c8a3a0eedc8"
 
 MPG123_URL="https://www.mpg123.de/download/mpg123-1.32.3.tar.bz2"
+MPG123_ARGS="--with-cpu=generic --disable-fifo --disable-ipv6 --disable-network \
+--disable-int-quality --with-default-audio=dummy --with-optimization=2 \
+--disable-components --enable-libmpg123"
 MPG123_DIR="mpg123-1.32.3"
 
 LIBSNDFILE_URL="https://github.com/libsndfile/libsndfile/releases/download/1.2.2/libsndfile-1.2.2.tar.xz"

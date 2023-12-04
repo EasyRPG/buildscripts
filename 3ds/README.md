@@ -4,7 +4,7 @@
 
 ### Prequisites:
 
-- Install devkitARM, libctru, citro3d, citro2d, tex3ds and 3dstools.
+- Install devkitARM, libctru, citro3d, citro2d, tex3ds, 3dstools and 3ds-cmake.
   (Environment variables `DEVKITPRO` and `DEVKITARM` need to be set)
 
 ### Local build process:
