@@ -1,10 +1,10 @@
 # EasyRPG buildscripts
 
-## Wii Toolchain and libraries
+## WiiU Toolchain and libraries
 
 ### Prequisites:
 
-- Install devkitPPC, libogc, libfat-ogc, gamecube-tools and wii-cmake.
+- Install devkitPPC, wut, wut-tools, wiiu-cmake and wiiu-sdl2.
   (Environment variables `DEVKITPRO` and `DEVKITPPC` need to be set)
 
 ### Local build process:

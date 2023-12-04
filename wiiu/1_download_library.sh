@@ -8,9 +8,6 @@ export WORKSPACE=$PWD
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
 
-# Override ICU version to 58.1
-source $SCRIPT_DIR/packages.sh
-
 msg " [1] Checking devkitPPC"
 
 if [[ -z $DEVKITPRO || -z $DEVKITPPC ]]; then
@@ -49,8 +46,8 @@ rm -rf $LIBOGG_DIR
 download_and_extract $LIBOGG_URL
 
 # tremor
-rm -rf $TREMOR_DIR
-download_and_extract $TREMOR_URL
+rm -rf $LIBVORBIS_DIR
+download_and_extract $LIBVORBIS_URL
 
 # mpg123
 rm -rf $MPG123_DIR
@@ -63,10 +60,6 @@ download_and_extract $LIBXMP_LITE_URL
 # speexdsp
 rm -rf $SPEEXDSP_DIR
 download_and_extract $SPEEXDSP_URL
-
-# wildmidi
-rm -rf $WILDMIDI_DIR
-download_and_extract $WILDMIDI_URL
 
 # opus
 rm -rf $OPUS_DIR

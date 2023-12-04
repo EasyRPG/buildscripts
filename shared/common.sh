@@ -128,7 +128,7 @@ function install_lib_cmake {
 			-DCMAKE_C_FLAGS="$CFLAGS $CPPFLAGS" -DCMAKE_CXX_FLAGS="$CXXFLAGS $CPPFLAGS" \
 			-DCMAKE_INSTALL_LIBDIR=lib $CMAKE_AR $CMAKE_NM $CMAKE_RANLIB \
 			-DCMAKE_INSTALL_PREFIX=$PLATFORM_PREFIX -DCMAKE_SYSTEM_NAME=$CMAKE_SYSTEM_NAME \
-			-DCMAKE_PREFIX_PATH=$PLATFORM_PREFIX $@
+			-DCMAKE_PREFIX_PATH=$PLATFORM_PREFIX $CMAKE_EXTRA_ARGS $@
 		cmake --build build --target clean
 		cmake --build build --target install
 	)
@@ -165,26 +165,6 @@ function install_lib_zlib {
 		# only build static library, no tests/examples
 		make libz.a
 		make install
-	)
-}
-
-function install_lib_mpg123 {
-	msg "**** Building libmpg123 ****"
-
-	(cd $MPG123_DIR
-		$CONFIGURE_WRAPPER ./configure --prefix=$PLATFORM_PREFIX --disable-shared --enable-static \
-			--disable-dependency-tracking --enable-silent-rules \
-			--host=$TARGET_HOST --cache-file="$PLATFORM_PREFIX/config.cache" \
-			--with-cpu=generic --disable-fifo --disable-ipv6 --disable-network \
-			--disable-int-quality --with-default-audio=dummy --with-optimization=2 $@
-		make clean
-		# only build libmpg123
-		make src/libmpg123/libmpg123.la
-		# custom installation
-		mkdir -p $PLATFORM_PREFIX/include $PLATFORM_PREFIX/lib/pkgconfig
-		install -m644 src/libmpg123/{fmt,mpg}123.h $PLATFORM_PREFIX/include
-		install -m644 libmpg123.pc $PLATFORM_PREFIX/lib/pkgconfig
-		./libtool --mode=install install src/libmpg123/libmpg123.la $PLATFORM_PREFIX/lib
 	)
 }
 
@@ -331,6 +311,12 @@ function patches_common {
 			perl -pi -e 's/CMAKE_INSTALL_DATADIR/CMAKE_INSTALL_LIBDIR/' CMakeLists.txt
 		)
 	fi
+
+	# lhasa: disable binary and tests
+	(cd $LHASA_DIR
+		perl -pi -e 's/ src test//' Makefile.am
+		autoreconf -fi
+	)
 
 	cp icudt*.dat $ICU_DIR/source/data/in
 	(cd $ICU_DIR/source
