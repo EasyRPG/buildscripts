@@ -5,8 +5,8 @@
 #######################################
 
 
-ZLIB_URL="https://zlib.net/fossils/zlib-1.3.tar.gz"
-ZLIB_DIR="zlib-1.3"
+ZLIB_URL="https://zlib.net/fossils/zlib-1.3.1.tar.gz"
+ZLIB_DIR="zlib-1.3.1"
 
 LIBPNG_URL="https://download.sourceforge.net/libpng/libpng-1.6.39.tar.xz"
 LIBPNG_DIR="libpng-1.6.39"
@@ -19,14 +19,14 @@ HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfb
 HARFBUZZ_ARGS="-DHB_HAVE_FREETYPE=ON -DHB_BUILD_SUBSET=OFF"
 HARFBUZZ_DIR="harfbuzz-8.3.0"
 
-PIXMAN_URL="https://cairographics.org/releases/pixman-0.42.2.tar.gz"
+PIXMAN_URL="https://cairographics.org/releases/pixman-0.43.4.tar.gz"
 PIXMAN_ARGS="--disable-libpng --enable-dependency-tracking"
-PIXMAN_DIR="pixman-0.42.2"
+PIXMAN_DIR="pixman-0.43.4"
 
-EXPAT_URL="https://github.com/libexpat/libexpat/releases/download/R_2_5_0/expat-2.5.0.tar.bz2"
+EXPAT_URL="https://github.com/libexpat/libexpat/releases/download/R_2_6_1/expat-2.6.1.tar.bz2"
 EXPAT_ARGS="-DEXPAT_BUILD_TOOLS=OFF -DEXPAT_BUILD_EXAMPLES=OFF \
 -DEXPAT_BUILD_TESTS=OFF -DEXPAT_BUILD_DOCS=OFF -DEXPAT_SHARED_LIBS=OFF"
-EXPAT_DIR="expat-2.5.0"
+EXPAT_DIR="expat-2.6.1"
 
 LIBOGG_URL="https://downloads.xiph.org/releases/ogg/libogg-1.3.5.tar.xz"
 LIBOGG_DIR="libogg-1.3.5"
@@ -37,11 +37,11 @@ LIBVORBIS_DIR="libvorbis-1.3.7"
 TREMOR_URL="https://gitlab.xiph.org/xiph/tremor/-/archive/7c30a66346199f3f09017a09567c6c8a3a0eedc8/tremor-7c30a66346199f3f09017a09567c6c8a3a0eedc8.tar.bz2"
 TREMOR_DIR="tremor-7c30a66346199f3f09017a09567c6c8a3a0eedc8"
 
-MPG123_URL="https://www.mpg123.de/download/mpg123-1.32.3.tar.bz2"
+MPG123_URL="https://www.mpg123.de/download/mpg123-1.32.5.tar.bz2"
 MPG123_ARGS="--with-cpu=generic --disable-fifo --disable-ipv6 --disable-network \
 --disable-int-quality --with-default-audio=dummy --with-optimization=2 \
 --disable-components --enable-libmpg123"
-MPG123_DIR="mpg123-1.32.3"
+MPG123_DIR="mpg123-1.32.5"
 
 LIBSNDFILE_URL="https://github.com/libsndfile/libsndfile/releases/download/1.2.2/libsndfile-1.2.2.tar.xz"
 LIBSNDFILE_ARGS="--disable-alsa --disable-sqlite --disable-full-suite --disable-external-libs --disable-mpeg"
@@ -82,17 +82,17 @@ NLOHMANNJSON_URL="https://github.com/nlohmann/json/archive/v3.11.3.tar.gz"
 NLOHMANNJSON_DIR="json-3.11.3"
 NLOHMANNJSON_ARGS="-DJSON_BuildTests=OFF"
 
-FMT_URL="https://github.com/fmtlib/fmt/releases/download/10.1.1/fmt-10.1.1.zip"
+FMT_URL="https://github.com/fmtlib/fmt/releases/download/10.2.1/fmt-10.2.1.zip"
 FMT_ARGS="-DFMT_DOC=OFF -DFMT_TEST=OFF"
-FMT_DIR="fmt-10.1.1"
+FMT_DIR="fmt-10.2.1"
 
-INIH_URL="https://github.com/benhoyt/inih/archive/refs/tags/r57.tar.gz"
-INIH_DIR="inih-r57"
+INIH_URL="https://github.com/benhoyt/inih/archive/refs/tags/r58.tar.gz"
+INIH_DIR="inih-r58"
 
 LHASA_URL="https://github.com/fragglet/lhasa/releases/download/v0.4.0/lhasa-0.4.0.tar.gz"
 LHASA_DIR="lhasa-0.4.0"
 
-ICU_URL="https://github.com/unicode-org/icu/releases/download/release-74-1/icu4c-74_1-src.tgz"
+ICU_URL="https://github.com/unicode-org/icu/releases/download/release-74-2/icu4c-74_2-src.tgz"
 ICU_DIR="icu"
 ICU_ARGS="--enable-strict=no --disable-tests --disable-samples \
 --disable-dyload --disable-extras --disable-icuio \
@@ -101,11 +101,11 @@ ICU_ARGS="--enable-strict=no --disable-tests --disable-samples \
 ICUDATA_URL=https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata.tar.gz
 ICUDATA_FILES="icudt*.dat"
 
-SDL2_URL="https://libsdl.org/release/SDL2-2.28.5.tar.gz"
-SDL2_DIR="SDL2-2.28.5"
+SDL2_URL="https://libsdl.org/release/SDL2-2.30.0.tar.gz"
+SDL2_DIR="SDL2-2.30.0"
 
 # only needed for lmu2png tool
-SDL2_IMAGE_URL="https://libsdl.org/projects/SDL_image/release/SDL2_image-2.6.3.tar.gz"
+SDL2_IMAGE_URL="https://libsdl.org/projects/SDL_image/release/SDL2_image-2.8.0.tar.gz"
 SDL2_IMAGE_ARGS="--disable-jpg --disable-png-shared --disable-tif --disable-webp"
-SDL2_IMAGE_DIR="SDL2_image-2.6.3"
+SDL2_IMAGE_DIR="SDL2_image-2.8.0"
 
