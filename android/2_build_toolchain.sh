@@ -107,7 +107,7 @@ function build() {
 	install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=ON
 	install_lib_cmake $HARFBUZZ_DIR $HARFBUZZ_ARGS
 	install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=OFF
-	install_lib $PIXMAN_DIR $PIXMAN_ARGS
+	install_lib_meson $PIXMAN_DIR $PIXMAN_ARGS
 	install_lib_cmake $EXPAT_DIR $EXPAT_ARGS
 	install_lib $LIBOGG_DIR $LIBOGG_ARGS
 	install_lib $LIBVORBIS_DIR $LIBVORBIS_ARGS

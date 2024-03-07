@@ -86,7 +86,7 @@ install_lib $LIBPNG_DIR $LIBPNG_ARGS
 install_lib $FREETYPE_DIR $FREETYPE_ARGS --without-harfbuzz
 install_lib $HARFBUZZ_DIR $HARFBUZZ_ARGS
 install_lib $FREETYPE_DIR $FREETYPE_ARGS --with-harfbuzz
-install_lib $PIXMAN_DIR $PIXMAN_ARGS
+install_lib_meson $PIXMAN_DIR $PIXMAN_ARGS # untested, FIXME
 install_lib_cmake $EXPAT_DIR $EXPAT_ARGS
 install_lib $LIBOGG_DIR $LIBOGG_ARGS
 install_lib $LIBVORBIS_DIR $LIBVORBIS_ARGS

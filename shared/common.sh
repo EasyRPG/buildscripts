@@ -254,12 +254,6 @@ function patches_common {
 		autoreconf -fi
 	)
 
-	# pixman: disable examples and tests
-	(cd $PIXMAN_DIR
-		perl -pi -e 's/SUBDIRS = .*/SUBDIRS = pixman/' Makefile.am
-		autoreconf -fi
-	)
-
 	# disable unsupported compiler flags by clang in libvorbis
 	if [ -d "$LIBVORBIS_DIR" ]; then
 		perl -pi -e 's/-mno-ieee-fp//' $LIBVORBIS_DIR/configure

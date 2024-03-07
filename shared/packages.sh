@@ -19,9 +19,9 @@ HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfb
 HARFBUZZ_ARGS="-DHB_HAVE_FREETYPE=ON -DHB_BUILD_SUBSET=OFF"
 HARFBUZZ_DIR="harfbuzz-8.3.0"
 
-PIXMAN_URL="https://cairographics.org/releases/pixman-0.42.2.tar.gz"
-PIXMAN_ARGS="--disable-libpng --enable-dependency-tracking"
-PIXMAN_DIR="pixman-0.42.2"
+PIXMAN_URL="https://cairographics.org/releases/pixman-0.43.4.tar.gz"
+PIXMAN_ARGS="-Dtests=disabled -Ddemos=disabled -Dlibpng=disabled"
+PIXMAN_DIR="pixman-0.43.4"
 
 EXPAT_URL="https://github.com/libexpat/libexpat/releases/download/R_2_6_1/expat-2.6.1.tar.bz2"
 EXPAT_ARGS="-DEXPAT_BUILD_TOOLS=OFF -DEXPAT_BUILD_EXAMPLES=OFF \
