@@ -19,9 +19,9 @@ HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfb
 HARFBUZZ_ARGS="-DHB_HAVE_FREETYPE=ON -DHB_BUILD_SUBSET=OFF"
 HARFBUZZ_DIR="harfbuzz-8.3.0"
 
-PIXMAN_URL="https://cairographics.org/releases/pixman-0.43.4.tar.gz"
+PIXMAN_URL="https://cairographics.org/releases/pixman-0.42.2.tar.gz"
 PIXMAN_ARGS="--disable-libpng --enable-dependency-tracking"
-PIXMAN_DIR="pixman-0.43.4"
+PIXMAN_DIR="pixman-0.42.2"
 
 EXPAT_URL="https://github.com/libexpat/libexpat/releases/download/R_2_6_1/expat-2.6.1.tar.bz2"
 EXPAT_ARGS="-DEXPAT_BUILD_TOOLS=OFF -DEXPAT_BUILD_EXAMPLES=OFF \
@@ -101,8 +101,8 @@ ICU_ARGS="--enable-strict=no --disable-tests --disable-samples \
 ICUDATA_URL=https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata.tar.gz
 ICUDATA_FILES="icudt*.dat"
 
-SDL2_URL="https://libsdl.org/release/SDL2-2.30.0.tar.gz"
-SDL2_DIR="SDL2-2.30.0"
+SDL2_URL="https://libsdl.org/release/SDL2-2.28.5.tar.gz"
+SDL2_DIR="SDL2-2.28.5"
 
 # only needed for lmu2png tool
 SDL2_IMAGE_URL="https://libsdl.org/projects/SDL_image/release/SDL2_image-2.8.0.tar.gz"
