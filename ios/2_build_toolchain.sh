@@ -8,10 +8,16 @@ fi
 # abort on error
 set -e
 
-export WORKSPACE=$PWD
-
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
+
+if [ ! -d "icu-native" ]; then
+	msg "Copying icu to icu-native"
+	cp -r icu icu-native
+fi
+
+CMAKE_SYSTEM_NAME="iOS"
+export WORKSPACE=$PWD
 
 # Number of CPU
 nproc=$(getconf _NPROCESSORS_ONLN)
@@ -24,22 +30,30 @@ if [ ! -f .patches-applied ]; then
 
 	patches_common
 
-	# Fix ogg build
-	# Remove this when the next version is out
-	(cd $LIBOGG_DIR
-		patch -Np1 < $SCRIPT_DIR/libogg-fix-typedefs.patch
+	# Fix inih
+	# Remove when r58 is out
+	(cd $INIH_DIR
+		patch -Np1 < $SCRIPT_DIR/inih-std11.patch
 	)
-
-	cp -r icu icu-native
+	# Fix SDL2 for iOS
+	(cd $SDL2_DIR
+		patch -Np1 < $SCRIPT_DIR/SDL2-iOS.patch
+	)
 
 	touch .patches-applied
 fi
 
-function set_build_flags {
+function set_build_flags() {
+	if [ ! -d $1 ]; then
+		mkdir $1
+	fi
+	export PLATFORM_PREFIX=$WORKSPACE/$1
+	export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
+	export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 	CLANG=`xcodebuild -find clang`
 	CLANGXX=`xcodebuild -find clang++`
 	SDKPATH=`xcrun -sdk iphoneos --show-sdk-path`
-	ARCH="-arch armv7 -arch arm64"
+	ARCH="-arch $1"
 
 	export CC="$CLANG $ARCH"
 	export CXX="$CLANGXX $ARCH"
@@ -47,8 +61,8 @@ function set_build_flags {
 		export CC="ccache $CC"
 		export CXX="ccache $CXX"
 	fi
-	export CPP="$CLANG -arch armv7 -E -isysroot $SDKPATH"
-	export CXXCPP="$CLANGXX -arch armv7 -E -isysroot $SDKPATH"
+	export CPP="$CLANG $ARCH -E -isysroot $SDKPATH"
+	export CXXCPP="$CLANGXX $ARCH -E -isysroot $SDKPATH"
 
 	export CFLAGS="-g -O2 -miphoneos-version-min=7.0 -isysroot $SDKPATH -fobjc-arc"
 	export CXXFLAGS=$CFLAGS
@@ -56,19 +70,14 @@ function set_build_flags {
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib $ARCH -miphoneos-version-min=7.0 -isysroot $SDKPATH"
 }
 
-export WORKSPACE=$PWD
-
-export PLATFORM_PREFIX=$WORKSPACE
 export TARGET_HOST=arm-apple-darwin
-export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
-export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 export MAKEFLAGS="-j${nproc:-2}"
 
 function install_lib_sdl2() {
 	msg "Building SDL2"
 
 	(cd $SDL2_DIR
-		./configure --host=$TARGET_HOST --prefix=$WORKSPACE \
+		./configure --host=$TARGET_HOST --prefix=$PLATFORM_PREFIX \
 			--disable-shared --enable-static
 		cp include/SDL_config_iphoneos.h include/SDL_config.h
 		make clean
@@ -77,31 +86,39 @@ function install_lib_sdl2() {
 	)
 }
 
+function build() {
+	# Add some arguments to FreeType and Harfbuzz to fix library missing errors
+	HB_FREETYPE_ARGS="-DFREETYPE_LIBRARY=$PLATFORM_PREFIX/lib/libfreetype.a -DFREETYPE_INCLUDE_DIRS=$PLATFORM_PREFIX/include/freetype2"
+	FT_LIBPNG_ARGS="-DPNG_LIBRARY=$PLATFORM_PREFIX/lib/libpng16.a -DPNG_PNG_INCLUDE_DIR=$PLATFORM_PREFIX/include/libpng16"
+
+	install_lib_zlib
+	install_lib $LIBPNG_DIR $LIBPNG_ARGS
+	install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS $FT_LIBPNG_ARGS -DFT_DISABLE_HARFBUZZ=ON
+	install_lib_cmake $HARFBUZZ_DIR $HARFBUZZ_ARGS $HB_FREETYPE_ARGS
+	install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS $FT_LIBPNG_ARGS -DFT_DISABLE_HARFBUZZ=OFF
+	install_lib $PIXMAN_DIR $PIXMAN_ARGS --disable-arm-a64-neon --disable-arm-neon
+	install_lib_cmake $EXPAT_DIR $EXPAT_ARGS
+	install_lib $LIBOGG_DIR $LIBOGG_ARGS
+	install_lib $LIBVORBIS_DIR $LIBVORBIS_ARGS
+	install_lib $MPG123_DIR $MPG123_ARGS
+	install_lib $LIBSNDFILE_DIR $LIBSNDFILE_ARGS
+	install_lib_cmake $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
+	install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
+	install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS
+	install_lib $OPUS_DIR $OPUS_ARGS
+	install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
+	install_lib_cmake $FLUIDLITE_DIR $FLUIDLITE_ARGS -DENABLE_SF3=ON
+	install_lib_meson $INIH_DIR $INIH_ARGS
+	install_lib $LHASA_DIR $LHASA_ARGS
+	install_lib_cmake $FMT_DIR $FMT_ARGS
+	install_lib_icu_cross
+	install_lib_liblcf
+	install_lib_sdl2
+}
+
 install_lib_icu_native
 
-set_build_flags
-
-install_lib_zlib
-install_lib $LIBPNG_DIR $LIBPNG_ARGS
-install_lib $FREETYPE_DIR $FREETYPE_ARGS --without-harfbuzz
-install_lib $HARFBUZZ_DIR $HARFBUZZ_ARGS
-install_lib $FREETYPE_DIR $FREETYPE_ARGS --with-harfbuzz
-install_lib $PIXMAN_DIR $PIXMAN_ARGS
-install_lib_cmake $EXPAT_DIR $EXPAT_ARGS
-install_lib $LIBOGG_DIR $LIBOGG_ARGS
-install_lib $LIBVORBIS_DIR $LIBVORBIS_ARGS
-install_lib $MPG123_DIR $MPG123_ARGS
-install_lib $LIBSNDFILE_DIR $LIBSNDFILE_ARGS
-install_lib_cmake $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
-install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
-install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS
-install_lib $OPUS_DIR $OPUS_ARGS
-install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
-install_lib_cmake $FLUIDLITE_DIR $FLUIDLITE_ARGS -DENABLE_SF3=ON
-install_lib_meson $INIH_DIR $INIH_ARGS
-install_lib $LHASA_DIR $LHASA_ARGS
-install_lib_cmake $FMT_DIR $FMT_ARGS
-install_lib_icu_cross
-install_lib_liblcf
-
-install_lib_sdl2
+set_build_flags "armv7"
+build
+set_build_flags "arm64"
+build

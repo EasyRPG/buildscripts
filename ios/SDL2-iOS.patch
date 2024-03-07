@@ -1,0 +1,164 @@
+diff --git a/configure b/configure
+index c5b466b..b4ec33c 100755
+--- a/configure
++++ b/configure
+@@ -25350,7 +25350,7 @@ printf %s "checking for Cocoa framework... " >&6; }
+         cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
+ 
+-          #import <Cocoa/Cocoa.h>
++          #import <Foundation/Foundation.h>
+ 
+ int
+ main (void)
+@@ -25406,7 +25406,7 @@ printf %s "checking for Metal framework... " >&6; }
+         cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
+ 
+-          #import <Cocoa/Cocoa.h>
++          #import <Foundation/Foundation.h>
+           #import <Metal/Metal.h>
+           #import <QuartzCore/CAMetalLayer.h>
+ 
+@@ -26355,7 +26355,7 @@ rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+                 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
+ 
+-                  #include <Cocoa/Cocoa.h>
++                  #include <Foundation/Foundation.h>
+                   #include <Metal/Metal.h>
+                   #include <QuartzCore/CAMetalLayer.h>
+ 
+diff --git a/configure.ac b/configure.ac
+index 5588958..ee8489b 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -2275,7 +2275,7 @@ dnl     Work around that we don't have Objective-C support in autoconf
+         AC_MSG_CHECKING(for Cocoa framework)
+         have_cocoa=no
+         AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+-          #import <Cocoa/Cocoa.h>
++          #import <Foundation/Foundation.h>
+         ]],[])], [have_cocoa=yes],[])
+         AC_MSG_RESULT($have_cocoa)
+         CFLAGS="$save_CFLAGS"
+@@ -2303,7 +2303,7 @@ dnl     Work around that we don't have Objective-C support in autoconf
+         AC_MSG_CHECKING(for Metal framework)
+         have_metal=no
+         AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+-          #import <Cocoa/Cocoa.h>
++          #import <Foundation/Foundation.h>
+           #import <Metal/Metal.h>
+           #import <QuartzCore/CAMetalLayer.h>
+ 
+@@ -2725,7 +2725,7 @@ CheckVulkan()
+ dnl             Work around that we don't have Objective-C support in autoconf
+                 CFLAGS="$CFLAGS -x objective-c"
+                 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+-                  #include <Cocoa/Cocoa.h>
++                  #include <Foundation/Foundation.h>
+                   #include <Metal/Metal.h>
+                   #include <QuartzCore/CAMetalLayer.h>
+ 
+diff --git a/src/hidapi/testgui/mac_support_cocoa.m b/src/hidapi/testgui/mac_support_cocoa.m
+index 75de7e9..084a6e1 100644
+--- a/src/hidapi/testgui/mac_support_cocoa.m
++++ b/src/hidapi/testgui/mac_support_cocoa.m
+@@ -6,7 +6,7 @@
+ *******************************/
+ 
+ #include <fx.h>
+-#import <Cocoa/Cocoa.h>
++#import <Foundation/Foundation.h>
+ 
+ extern FXMainWindow *g_main_window;
+ 
+diff --git a/src/misc/macosx/SDL_sysurl.m b/src/misc/macosx/SDL_sysurl.m
+index 657c8f5..b8fe052 100644
+--- a/src/misc/macosx/SDL_sysurl.m
++++ b/src/misc/macosx/SDL_sysurl.m
+@@ -21,15 +21,14 @@
+ 
+ #include "../SDL_sysurl.h"
+ 
+-#import <Cocoa/Cocoa.h>
++#import <UIKit/UIKit.h>
+ 
+ int SDL_SYS_OpenURL(const char *url)
+ {
+     @autoreleasepool {
+-        CFURLRef cfurl = CFURLCreateWithBytes(NULL, (const UInt8 *)url, SDL_strlen(url), kCFStringEncodingUTF8, NULL);
+-        OSStatus status = LSOpenCFURLRef(cfurl, NULL);
+-        CFRelease(cfurl);
+-        return status == noErr ? 0 : -1;
++        NSString *nsstr = [NSString stringWithUTF8String:url];
++        NSURL *nsurl = [NSURL URLWithString:nsstr];
++        return [[UIApplication sharedApplication] openURL:nsurl] ? 0 : -1;
+     }
+ }
+ 
+diff --git a/src/video/cocoa/SDL_cocoametalview.h b/src/video/cocoa/SDL_cocoametalview.h
+index 22571eb..67e03c4 100644
+--- a/src/video/cocoa/SDL_cocoametalview.h
++++ b/src/video/cocoa/SDL_cocoametalview.h
+@@ -35,7 +35,7 @@
+ 
+ #import "SDL_cocoawindow.h"
+ 
+-#import <Cocoa/Cocoa.h>
++#import <Foundation/Foundation.h>
+ #import <Metal/Metal.h>
+ #import <QuartzCore/CAMetalLayer.h>
+ 
+diff --git a/src/video/cocoa/SDL_cocoaopengl.h b/src/video/cocoa/SDL_cocoaopengl.h
+index 0bd549f..16bfe0c 100644
+--- a/src/video/cocoa/SDL_cocoaopengl.h
++++ b/src/video/cocoa/SDL_cocoaopengl.h
+@@ -26,7 +26,7 @@
+ #if SDL_VIDEO_OPENGL_CGL
+ 
+ #include "SDL_atomic.h"
+-#import <Cocoa/Cocoa.h>
++#import <Foundation/Foundation.h>
+ #import <QuartzCore/CVDisplayLink.h>
+ 
+ /* We still support OpenGL as long as Apple offers it, deprecated or not, so disable deprecation warnings about it. */
+diff --git a/src/video/cocoa/SDL_cocoavideo.h b/src/video/cocoa/SDL_cocoavideo.h
+index 246ad04..7b04d68 100644
+--- a/src/video/cocoa/SDL_cocoavideo.h
++++ b/src/video/cocoa/SDL_cocoavideo.h
+@@ -27,7 +27,7 @@
+ 
+ #include <ApplicationServices/ApplicationServices.h>
+ #include <IOKit/pwr_mgt/IOPMLib.h>
+-#include <Cocoa/Cocoa.h>
++#include <Foundation/Foundation.h>
+ 
+ #include "SDL_keycode.h"
+ #include "../SDL_sysvideo.h"
+diff --git a/src/video/cocoa/SDL_cocoawindow.h b/src/video/cocoa/SDL_cocoawindow.h
+index 7ed00fe..24277d1 100644
+--- a/src/video/cocoa/SDL_cocoawindow.h
++++ b/src/video/cocoa/SDL_cocoawindow.h
+@@ -23,7 +23,7 @@
+ #ifndef SDL_cocoawindow_h_
+ #define SDL_cocoawindow_h_
+ 
+-#import <Cocoa/Cocoa.h>
++#import <Foundation/Foundation.h>
+ 
+ #if SDL_VIDEO_OPENGL_EGL
+ #include "../SDL_egl_c.h"
+diff --git a/test/testnativecocoa.m b/test/testnativecocoa.m
+index e895072..9276688 100644
+--- a/test/testnativecocoa.m
++++ b/test/testnativecocoa.m
+@@ -4,7 +4,7 @@
+ #ifdef TEST_NATIVE_COCOA
+ 
+ #include <AvailabilityMacros.h>
+-#include <Cocoa/Cocoa.h>
++#include <Foundation/Foundation.h>
+ 
+ #ifndef MAC_OS_X_VERSION_10_12
+ static const unsigned int NSWindowStyleMaskTitled = NSTitledWindowMask;

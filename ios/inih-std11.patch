@@ -1,0 +1,26 @@
+From a4aab8874708ce62db7a866bdb2dbfca83fd392a Mon Sep 17 00:00:00 2001
+From: DownerCase <119755054+DownerCase@users.noreply.github.com>
+Date: Sun, 6 Aug 2023 20:50:28 +0100
+Subject: [PATCH] Specify C++11 std in meson build
+
+Compilers differ on what the default standard is and I had to set C++11 standard as part of the [vcpkg port](https://github.com/microsoft/vcpkg/pull/33001) to get it work on MacOS.
+
+Also you forgot to bump the version number last release.
+---
+ meson.build | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/meson.build b/meson.build
+index f810525..e0340ff 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1,7 +1,8 @@
+ project('inih',
+     ['c'],
+     license : 'BSD-3-Clause',
+-    version : '56',
++    version : '57',
++    default_options : ['cpp_std=c++11']
+ )
+ 
+ #### options ####
