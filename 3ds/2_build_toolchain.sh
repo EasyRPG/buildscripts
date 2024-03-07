@@ -18,10 +18,7 @@ nproc=$(nproc)
 test_ccache
 
 # Toolchain available?
-if [[ -z $DEVKITPRO || -z $DEVKITARM ]]; then
-	echo "Setup devkitARM properly. \$DEVKITPRO and \$DEVKITARM need to be set."
-	exit 1
-fi
+test_dkp "devkitARM"
 
 if [ ! -f .patches-applied ]; then
 	echo "Patching libraries"

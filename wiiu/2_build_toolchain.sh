@@ -15,10 +15,7 @@ nproc=$(nproc)
 test_ccache
 
 # Toolchain available?
-if [[ -z $DEVKITPRO || -z $DEVKITPPC ]]; then
-	echo "Setup devkitPPC properly. \$DEVKITPRO and \$DEVKITPPC need to be set."
-	exit 1
-fi
+test_dkp "devkitPPC"
 
 if [ ! -f .patches-applied ]; then
 	echo "Patching libraries"

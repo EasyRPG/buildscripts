@@ -13,10 +13,7 @@ source $SCRIPT_DIR/packages.sh
 
 msg " [1] Checking devkitARM"
 
-if [[ -z $DEVKITPRO || -z $DEVKITARM ]]; then
-	echo "Setup devkitARM properly. \$DEVKITPRO and \$DEVKITARM need to be set."
-	exit 1
-fi
+test_dkp "devkitARM"
 
 msg " [2] Downloading generic libraries"
 

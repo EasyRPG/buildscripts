@@ -16,8 +16,7 @@ test_ccache
 
 # Toolchain available?
 if [[ -z $DEVKITPRO || ! -d "$DEVKITPRO/devkitA64" ]]; then
-	echo "Setup devkitA64 properly. \$DEVKITPRO needs to be set."
-	exit 1
+	errormsg "Setup devkitA64 properly. \$DEVKITPRO needs to be set."
 fi
 
 if [ ! -f .patches-applied ]; then

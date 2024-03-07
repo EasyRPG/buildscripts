@@ -67,9 +67,34 @@ function download_liblcf {
 	fi
 }
 
-function msg {
+# color check
+HAVE_COLORS=0
+if [ -t 1 ] ; then
+	HAVE_COLORS=1	
+fi
+
+function colormsg {
+	if [ $HAVE_COLORS -eq 1 ]; then
+		printf "\033[$2$1\033[0m\n"
+	else
+		echo "$1"
+	fi
+}
+
+function headermsg {
 	echo ""
-	echo "$1"
+	colormsg "$1" "34;1m"
+}
+
+function errormsg {
+	echo ""
+	colormsg "$1" "31m"
+
+	exit 1
+}
+
+function msg {
+	colormsg "$1" "32m"
 }
 
 function test_ccache {
@@ -81,9 +106,18 @@ function test_ccache {
 	fi
 }
 
+function test_dkp {
+	platform=$1
+	envvar=${platform^^}
+
+	if [ -z "$DEVKITPRO" ] || [ -z "${!envvar}" ]; then
+		errormsg "Setup ${platform} properly. \$DEVKITPRO and \$${envvar} need to be set."
+	fi
+}
+
 # generic autotools library installer
 function install_lib {
-	msg "**** Building ${1%-*} ****"
+	headermsg "**** Building ${1%-*} ****"
 
 	(cd $1
 		shift
@@ -99,7 +133,7 @@ function install_lib {
 
 # generic cmake library installer
 function install_lib_cmake {
-	msg "**** Building ${1%-*} ****"
+	headermsg "**** Building ${1%-*} ****"
 
 	(cd $1
 		shift
@@ -136,7 +170,7 @@ function install_lib_cmake {
 
 # generic meson library installer
 function install_lib_meson {
-	msg "**** Building ${1%-*} ****"
+	headermsg "**** Building ${1%-*} ****"
 
 	MESON_CROSS=""
 	if [ -f "$PLATFORM_PREFIX/meson-cross.txt" ]; then
@@ -156,7 +190,7 @@ function install_lib_meson {
 }
 
 function install_lib_zlib {
-	msg "**** Building zlib ****"
+	headermsg "**** Building zlib ****"
 
 	(cd $ZLIB_DIR
 		CHOST=$TARGET_HOST $CONFIGURE_WRAPPER ./configure --static --prefix=$PLATFORM_PREFIX
@@ -174,7 +208,7 @@ function install_lib_liblcf {
 }
 
 function install_lib_icu_native {
-	msg "**** Building ICU (native) ****"
+	headermsg "**** Building ICU (native) ****"
 
 	(cd icu-native/source
 		unset CC
@@ -193,7 +227,7 @@ function install_lib_icu_native {
 # Only needed for a mixed endian compile, on other platforms use
 # install_lib_icu_native
 function install_lib_icu_native_without_assembly {
-	msg "**** Building ICU (native without ASM) ****"
+	headermsg "**** Building ICU (native without ASM) ****"
 
 	(cd icu-native/source
 		unset CC
@@ -210,7 +244,7 @@ function install_lib_icu_native_without_assembly {
 }
 
 function install_lib_icu_cross {
-	msg "**** Building ICU (cross) ****"
+	headermsg "**** Building ICU (cross) ****"
 
 	export ICU_CROSS_BUILD=$PWD/icu-native/source
 
@@ -230,7 +264,7 @@ function install_lib_icu_cross {
 # Use this when crosscompiling but configure assumes we are building native
 # (required by emscripten)
 function icu_force_data_install {
-	msg "**** Force install ICU data file ****"
+	headermsg "**** Force install ICU data file ****"
 
 	# Disable assembly
 	export PKGDATA_OPTS="-w -v -O $PWD/icu/source/config/pkgdata.inc"
