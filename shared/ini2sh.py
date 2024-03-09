@@ -17,6 +17,7 @@ LEGACY_MAP = {
 	"directory" : "DIR",
 	"files" : "FILES",
 	"arguments" : "ARGS",
+	"arguments_cmake" : "ARGS_CMAKE",
 }
 ini_file = "packages.ini"
 shell_file = "packages.sh"

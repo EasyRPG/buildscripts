@@ -65,6 +65,8 @@ function set_build_flags {
 	export CXXFLAGS="$CFLAGS"
 	export CPPFLAGS="-DPSP2"
 	export CMAKE_SYSTEM_NAME="Generic"
+
+	$SCRIPT_DIR/../shared/mk-meson-cross.sh vita "$ENABLE_CCACHE" > meson-cross.txt
 }
 
 function install_lib_vita2d() {
@@ -83,7 +85,7 @@ set_build_flags
 install_lib_zlib
 install_lib $LIBPNG_DIR $LIBPNG_ARGS
 install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=ON
-install_lib_cmake $HARFBUZZ_DIR $HARFBUZZ_ARGS
+install_lib_meson $HARFBUZZ_DIR $HARFBUZZ_ARGS
 install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=OFF
 install_lib_meson $PIXMAN_DIR $PIXMAN_ARGS
 install_lib_cmake $EXPAT_DIR $EXPAT_ARGS

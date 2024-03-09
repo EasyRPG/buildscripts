@@ -76,6 +76,8 @@ function set_build_flags {
 	export LIBS="-lwut"
 	export CMAKE_SYSTEM_NAME="Generic"
 	export CMAKE_EXTRA_ARGS="-DCMAKE_C_BYTE_ORDER=BIG_ENDIAN"
+
+	$SCRIPT_DIR/../shared/mk-meson-cross.sh ogc "$ENABLE_CCACHE" > meson-cross.txt
 }
 
 install_lib_icu_native
@@ -85,7 +87,7 @@ set_build_flags
 install_lib_zlib
 install_lib $LIBPNG_DIR $LIBPNG_ARGS
 install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=ON
-#install_lib_cmake $HARFBUZZ_DIR $HARFBUZZ_ARGS
+#install_lib_cmake $HARFBUZZ_DIR $HARFBUZZ_ARGS_CMAKE
 #install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=OFF
 install_lib_meson $PIXMAN_DIR $PIXMAN_ARGS -Dvmx=disabled
 install_lib_cmake $EXPAT_DIR $EXPAT_ARGS

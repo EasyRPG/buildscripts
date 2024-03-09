@@ -66,7 +66,7 @@ function build() {
 	install_lib_zlib
 	install_lib $LIBPNG_DIR $LIBPNG_ARGS
 	install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=ON
-	install_lib_cmake $HARFBUZZ_DIR $HARFBUZZ_ARGS
+	install_lib_meson $HARFBUZZ_DIR $HARFBUZZ_ARGS
 	install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=OFF
 	install_lib_meson $PIXMAN_DIR $PIXMAN_ARGS -Da64-neon=disabled
 	install_lib_cmake $EXPAT_DIR $EXPAT_ARGS
