@@ -15,18 +15,18 @@ FREETYPE_URL="https://mirrors.sarata.com/non-gnu/freetype/freetype-2.13.2.tar.xz
 FREETYPE_ARGS="-DFT_DISABLE_BZIP2=ON -DFT_DISABLE_BROTLI=ON"
 FREETYPE_DIR="freetype-2.13.2"
 
-HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfbuzz-8.3.0.tar.xz"
+HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/8.3.1/harfbuzz-8.3.1.tar.xz"
 HARFBUZZ_ARGS="-DHB_HAVE_FREETYPE=ON -DHB_BUILD_SUBSET=OFF"
-HARFBUZZ_DIR="harfbuzz-8.3.0"
+HARFBUZZ_DIR="harfbuzz-8.3.1"
 
-PIXMAN_URL="https://cairographics.org/releases/pixman-0.42.2.tar.gz"
+PIXMAN_URL="https://cairographics.org/releases/pixman-0.43.4.tar.gz"
 PIXMAN_ARGS="--disable-libpng --enable-dependency-tracking"
-PIXMAN_DIR="pixman-0.42.2"
+PIXMAN_DIR="pixman-0.43.4"
 
-EXPAT_URL="https://github.com/libexpat/libexpat/releases/download/R_2_6_1/expat-2.6.1.tar.bz2"
+EXPAT_URL="https://github.com/libexpat/libexpat/releases/download/R_2_6_2/expat-2.6.2.tar.bz2"
 EXPAT_ARGS="-DEXPAT_BUILD_TOOLS=OFF -DEXPAT_BUILD_EXAMPLES=OFF \
 -DEXPAT_BUILD_TESTS=OFF -DEXPAT_BUILD_DOCS=OFF -DEXPAT_SHARED_LIBS=OFF"
-EXPAT_DIR="expat-2.6.1"
+EXPAT_DIR="expat-2.6.2"
 
 LIBOGG_URL="https://downloads.xiph.org/releases/ogg/libogg-1.3.5.tar.xz"
 LIBOGG_DIR="libogg-1.3.5"
@@ -62,9 +62,9 @@ WILDMIDI_URL="https://github.com/Mindwerks/wildmidi/archive/wildmidi-0.4.5.tar.g
 WILDMIDI_DIR="wildmidi-wildmidi-0.4.5"
 WILDMIDI_ARGS="-DWANT_PLAYER=OFF -DWANT_STATIC=ON"
 
-OPUS_URL="https://downloads.xiph.org/releases/opus/opus-1.4.tar.gz"
+OPUS_URL="https://downloads.xiph.org/releases/opus/opus-1.5.1.tar.gz"
 OPUS_ARGS="--disable-intrinsics --disable-extra-programs"
-OPUS_DIR="opus-1.4"
+OPUS_DIR="opus-1.5.1"
 
 OPUSFILE_URL="https://github.com/xiph/opusfile/releases/download/v0.12/opusfile-0.12.tar.gz"
 OPUSFILE_ARGS="--disable-http --disable-examples"
@@ -101,8 +101,8 @@ ICU_ARGS="--enable-strict=no --disable-tests --disable-samples \
 ICUDATA_URL=https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata.tar.gz
 ICUDATA_FILES="icudt*.dat"
 
-SDL2_URL="https://libsdl.org/release/SDL2-2.28.5.tar.gz"
-SDL2_DIR="SDL2-2.28.5"
+SDL2_URL="https://libsdl.org/release/SDL2-2.30.1.tar.gz"
+SDL2_DIR="SDL2-2.30.1"
 
 # only needed for lmu2png tool
 SDL2_IMAGE_URL="https://libsdl.org/projects/SDL_image/release/SDL2_image-2.8.0.tar.gz"
