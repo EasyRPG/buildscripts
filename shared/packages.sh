@@ -17,7 +17,6 @@ FREETYPE_DIR="freetype-2.13.2"
 
 HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfbuzz-8.3.0.tar.xz"
 HARFBUZZ_ARGS="-Dfreetype=enabled -Dtests=disabled -Dutilities=disabled" # TODO disable subset
-HARFBUZZ_ARGS_CMAKE="-DHB_HAVE_FREETYPE=ON -DHB_BUILD_SUBSET=OFF"
 HARFBUZZ_DIR="harfbuzz-8.3.0"
 
 PIXMAN_URL="https://cairographics.org/releases/pixman-0.43.4.tar.gz"

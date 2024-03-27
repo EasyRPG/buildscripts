@@ -84,7 +84,7 @@ set_build_flags
 install_lib_zlib
 install_lib $LIBPNG_DIR $LIBPNG_ARGS
 install_lib $FREETYPE_DIR $FREETYPE_ARGS --without-harfbuzz
-install_lib_cmake $HARFBUZZ_DIR $HARFBUZZ_ARGS_CMAKE
+install_lib_meson $HARFBUZZ_DIR $HARFBUZZ_ARGS # untested, FIXME
 install_lib $FREETYPE_DIR $FREETYPE_ARGS --with-harfbuzz
 install_lib_meson $PIXMAN_DIR $PIXMAN_ARGS # untested, FIXME
 install_lib_cmake $EXPAT_DIR $EXPAT_ARGS
