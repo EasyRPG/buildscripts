@@ -77,7 +77,7 @@ function set_build_flags {
 	export CMAKE_SYSTEM_NAME="Generic"
 	export CMAKE_EXTRA_ARGS="-DCMAKE_C_BYTE_ORDER=BIG_ENDIAN"
 
-	$SCRIPT_DIR/../shared/mk-meson-cross.sh ogc "$ENABLE_CCACHE" > meson-cross.txt
+	$SCRIPT_DIR/../shared/mk-meson-cross.sh ogc > meson-cross.txt
 }
 
 install_lib_icu_native

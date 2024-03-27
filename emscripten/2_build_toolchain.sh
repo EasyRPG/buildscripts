@@ -75,6 +75,8 @@ function set_build_flags {
 
 	# force mmap support in mpg123 (actually unused, but needed for building)
 	export ac_cv_func_mmap_fixed_mapped=yes
+
+	emconfigure $SCRIPT_DIR/../shared/mk-meson-cross.sh asmjs > meson-cross.txt
 }
 
 install_lib_icu_native

@@ -66,7 +66,7 @@ function set_build_flags {
 	export CPPFLAGS="-DPSP2"
 	export CMAKE_SYSTEM_NAME="Generic"
 
-	$SCRIPT_DIR/../shared/mk-meson-cross.sh vita "$ENABLE_CCACHE" > meson-cross.txt
+	$SCRIPT_DIR/../shared/mk-meson-cross.sh vita > meson-cross.txt
 }
 
 function install_lib_vita2d() {

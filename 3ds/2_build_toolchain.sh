@@ -79,7 +79,7 @@ function set_build_flags {
 	export LIBS="-lctru"
 	export CMAKE_SYSTEM_NAME="Generic"
 
-	$SCRIPT_DIR/../shared/mk-meson-cross.sh 3ds "$ENABLE_CCACHE" > meson-cross.txt
+	$SCRIPT_DIR/../shared/mk-meson-cross.sh 3ds > meson-cross.txt
 }
 
 install_lib_icu_native
