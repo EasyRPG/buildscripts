@@ -1,0 +1,95 @@
+diff --color -Naur pixman-0.43.4.orig/meson.build pixman-0.43.4/meson.build
+--- pixman-0.43.4.orig/meson.build	2024-02-29 17:13:20.000000000 +0100
++++ pixman-0.43.4/meson.build	2024-03-07 23:20:58.616866224 +0100
+@@ -471,35 +471,6 @@
+   config.set('HAVE_LIBPNG', 1)
+ endif
+ dep_m = cc.find_library('m', required : false)
+-dep_threads = dependency('threads')
+-
+-# MSVC-style compilers do not come with pthreads, so we must link
+-# to it explicitly, currently pthreads-win32 is supported
+-pthreads_found = false
+-
+-if dep_threads.found() and cc.has_header('pthread.h')
+-  if cc.get_argument_syntax() == 'msvc'
+-    pthread_lib = null_dep
+-    foreach pthread_type : ['VC3', 'VSE3', 'VCE3', 'VC2', 'VSE2', 'VCE2']
+-      if not pthread_lib.found()
+-        pthread_lib = cc.find_library('pthread@0@'.format(pthread_type), required : false)
+-      endif
+-    endforeach
+-    if pthread_lib.found()
+-      pthreads_found = true
+-      dep_threads = pthread_lib
+-    endif
+-  else
+-    pthreads_found = true
+-  endif
+-else
+-  # Avoid linking with -pthread if we don't actually have pthreads
+-  dep_threads = null_dep
+-endif
+-
+-if pthreads_found
+-  config.set('HAVE_PTHREADS', 1)
+-endif
+ 
+ funcs = ['sigaction', 'alarm', 'mprotect', 'getpagesize', 'mmap', 'getisax', 'gettimeofday']
+ # mingw claimes to have posix_memalign, but it doesn't
+@@ -530,26 +501,8 @@
+   endif
+ endforeach
+ 
+-use_tls = get_option('tls')
+-have_tls = ''
+-if not use_tls.disabled()
+-  # gcc on Windows only warns that __declspec(thread) isn't supported,
+-  # passing -Werror=attributes makes it fail.
+-  if (host_machine.system() == 'windows' and
+-      cc.compiles('int __declspec(thread) foo;',
+-                  args : cc.get_supported_arguments(['-Werror=attributes']),
+-                  name : 'TLS via __declspec(thread)'))
+-    have_tls = '__declspec(thread)'
+-  elif cc.compiles('int __thread foo;', name : 'TLS via __thread')
+-    have_tls = '__thread'
+-  endif
+-endif
+-
+-if have_tls != ''
+-  config.set('TLS', have_tls)
+-elif use_tls.enabled()
+-  error('Compiler TLS Support unavailable, but required')
+-endif
++# disable TLS
++config.set('PIXMAN_NO_TLS', 1)
+ 
+ if cc.links('''
+     static int x = 1;
+diff --color -Naur pixman-0.43.4.orig/meson_options.txt pixman-0.43.4/meson_options.txt
+--- pixman-0.43.4.orig/meson_options.txt	2024-02-29 17:13:20.000000000 +0100
++++ pixman-0.43.4/meson_options.txt	2024-03-07 23:27:00.756426834 +0100
+@@ -80,11 +80,6 @@
+   description : 'Use GNU style inline assembler',
+ )
+ option(
+-  'tls',
+-  type : 'feature',
+-  description : 'Use compiler support for thread-local storage',
+-)
+-option(
+   'cpu-features-path',
+   type : 'string',
+   description : 'Path to platform-specific cpu-features.[ch] for systems that do not provide it (e.g. Android)',
+diff --color -Naur pixman-0.43.4.orig/pixman/meson.build pixman-0.43.4/pixman/meson.build
+--- pixman-0.43.4.orig/pixman/meson.build	2024-02-29 17:13:20.000000000 +0100
++++ pixman-0.43.4/pixman/meson.build	2024-03-07 23:25:46.740538009 +0100
+@@ -123,7 +123,7 @@
+   [pixman_files, config_h, version_h, cpu_features_sources],
+   link_with: pixman_simd_libs,
+   c_args : libpixman_extra_cargs,
+-  dependencies : [dep_m, dep_threads],
++  dependencies : [dep_m],
+   include_directories : cpu_features_inc,
+   version : meson.project_version(),
+   install : true,

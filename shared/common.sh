@@ -149,7 +149,7 @@ function install_lib_meson {
 
 		rm -rf build
 
-		meson setup build --prefix $PLATFORM_PREFIX --buildtype release \
+		meson setup build --prefix $PLATFORM_PREFIX --buildtype=plain \
 			-Ddefault_library=static --cross-file $MESON_CROSS $@
 		meson compile -C build
 		meson install -C build
@@ -251,12 +251,6 @@ function patches_common {
 	(cd $LIBPNG_DIR
 		perl -pi -e 's/^check_PROGRAMS.*//' Makefile.am
 		perl -pi -e 's/^bin_PROGRAMS.*//' Makefile.am
-		autoreconf -fi
-	)
-
-	# pixman: disable examples and tests
-	(cd $PIXMAN_DIR
-		perl -pi -e 's/SUBDIRS = .*/SUBDIRS = pixman/' Makefile.am
 		autoreconf -fi
 	)
 
