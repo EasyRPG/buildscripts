@@ -9,5 +9,6 @@ source $SCRIPT_DIR/../shared/import.sh
 cleanup
 
 rm -rf SDL2/
+rm -f meson-cross.txt
 
 echo " -> done"

@@ -25,6 +25,11 @@ if [ ! -f .patches-applied ]; then
 
 	patches_common
 
+	# Fix pixman
+	(cd $PIXMAN_DIR
+		patch -Np1 < $SCRIPT_DIR/../shared/extra/pixman-no-tls.patch
+	)
+
 	# Fix expat
 	(cd $EXPAT_DIR
 		perl -pi -e 's/.*arc4random.*//g' ConfigureChecks.cmake
@@ -33,11 +38,6 @@ if [ ! -f .patches-applied ]; then
 	# Fix lhasa
 	(cd $LHASA_DIR
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/lhasa.patch
-	)
-
-	# Fix pixman
-	(cd $PIXMAN_DIR
-		perl -pi -e 's/PIXMAN_NO_TLS/__WUT__/' pixman/pixman-compiler.h
 	)
 
 	# Fix icu build
@@ -76,6 +76,8 @@ function set_build_flags {
 	export LIBS="-lwut"
 	export CMAKE_SYSTEM_NAME="Generic"
 	export CMAKE_EXTRA_ARGS="-DCMAKE_C_BYTE_ORDER=BIG_ENDIAN"
+
+	$SCRIPT_DIR/../shared/mk-meson-cross.sh ogc > meson-cross.txt
 }
 
 install_lib_icu_native
@@ -85,9 +87,9 @@ set_build_flags
 install_lib_zlib
 install_lib $LIBPNG_DIR $LIBPNG_ARGS
 install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=ON
-#install_lib_cmake $HARFBUZZ_DIR $HARFBUZZ_ARGS
+#install_lib_meson $HARFBUZZ_DIR $HARFBUZZ_ARGS
 #install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=OFF
-install_lib $PIXMAN_DIR $PIXMAN_ARGS --disable-vmx
+install_lib_meson $PIXMAN_DIR $PIXMAN_ARGS -Dvmx=disabled
 install_lib_cmake $EXPAT_DIR $EXPAT_ARGS
 install_lib $LIBOGG_DIR $LIBOGG_ARGS
 install_lib $LIBVORBIS_DIR $LIBVORBIS_ARGS

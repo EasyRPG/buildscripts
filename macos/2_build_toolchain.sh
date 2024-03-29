@@ -23,12 +23,6 @@ if [ ! -f .patches-applied ]; then
 
 	patches_common
 
-	# Fix inih
-	# Remove when r58 is out
-	(cd $INIH_DIR
-		patch -Np1 < $SCRIPT_DIR/inih-std11.patch
-	)
-
 	cp -rp icu icu-native
 
 	touch .patches-applied
@@ -64,6 +58,9 @@ function set_build_flags() {
 	export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 	export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 	export TARGET_HOST="$2"
+
+	mkdir -p $PLATFORM_PREFIX
+	$SCRIPT_DIR/../shared/mk-meson-cross.sh "${TARGET_HOST}" > $PLATFORM_PREFIX/meson-cross.txt
 }
 
 function build() {
@@ -72,9 +69,9 @@ function build() {
 	install_lib_zlib
 	install_lib $LIBPNG_DIR $LIBPNG_ARGS
 	install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=ON
-	install_lib_cmake $HARFBUZZ_DIR $HARFBUZZ_ARGS
+	install_lib_meson $HARFBUZZ_DIR $HARFBUZZ_ARGS
 	install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=OFF
-	install_lib $PIXMAN_DIR $PIXMAN_ARGS --disable-arm-a64-neon
+	install_lib_meson $PIXMAN_DIR $PIXMAN_ARGS -Da64-neon=disabled
 	install_lib_cmake $EXPAT_DIR $EXPAT_ARGS
 	install_lib $LIBOGG_DIR $LIBOGG_ARGS
 	install_lib $LIBVORBIS_DIR $LIBVORBIS_ARGS

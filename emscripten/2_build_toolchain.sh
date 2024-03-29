@@ -18,8 +18,7 @@ else
 	CP_ARGS="-rup"
 fi
 
-# Use ccache?
-test_ccache
+# no ccache support currently with em* wrappers
 
 if [ ! -f .patches-applied ]; then
 	echo "Patching libraries"
@@ -57,6 +56,7 @@ fi
 export PLATFORM_PREFIX=$WORKSPACE
 export CONFIGURE_WRAPPER=emconfigure
 export CMAKE_WRAPPER=emcmake
+export MESON_WRAPPER=emconfigure
 export MAKEFLAGS="-j${nproc:-2}"
 
 function set_build_flags {
@@ -64,17 +64,15 @@ function set_build_flags {
 	export CFLAGS="-O2 -g0 -sUSE_SDL=0 $CFLAGS_SIMD"
 	export CXXFLAGS="$CFLAGS"
 	export CPPFLAGS="-I$PLATFORM_PREFIX/include"
-	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
+	export LDFLAGS="-L$PLATFORM_PREFIX/lib -sEXPORT_ALL=1"
 	export EM_CFLAGS="-Wno-warn-absolute-paths"
 	export EMCC_CFLAGS="$EM_CFLAGS"
 	export EM_PKG_CONFIG_PATH="$PLATFORM_PREFIX/lib/pkgconfig"
-	if [ "$ENABLE_CCACHE" ]; then
-		export CC="ccache gcc"
-		export CXX="ccache g++"
-	fi
 
 	# force mmap support in mpg123 (actually unused, but needed for building)
 	export ac_cv_func_mmap_fixed_mapped=yes
+
+	emconfigure $SCRIPT_DIR/../shared/mk-meson-cross.sh asmjs > meson-cross.txt
 }
 
 install_lib_icu_native
@@ -100,10 +98,10 @@ fi
 
 install_lib_zlib
 install_lib $LIBPNG_DIR $LIBPNG_ARGS
-install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS_CMAKE -DFT_DISABLE_HARFBUZZ=ON
-install_lib_cmake $HARFBUZZ_DIR $HARFBUZZ_ARGS -DCMAKE_FIND_ROOT_PATH=$PLATFORM_PREFIX
-install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS_CMAKE -DFT_DISABLE_HARFBUZZ=OFF -DCMAKE_FIND_ROOT_PATH=$PLATFORM_PREFIX
-install_lib $PIXMAN_DIR $PIXMAN_ARGS
+install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=ON
+install_lib_meson $HARFBUZZ_DIR $HARFBUZZ_ARGS
+install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=OFF -DCMAKE_FIND_ROOT_PATH=$PLATFORM_PREFIX
+install_lib_meson $PIXMAN_DIR $PIXMAN_ARGS
 install_lib_cmake $EXPAT_DIR $EXPAT_ARGS
 install_lib $LIBOGG_DIR $LIBOGG_ARGS
 install_lib $LIBVORBIS_DIR $LIBVORBIS_ARGS

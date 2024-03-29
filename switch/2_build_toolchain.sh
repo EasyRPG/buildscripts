@@ -78,6 +78,8 @@ function set_build_flags {
 	export LDFLAGS="$ARCH_FLAGS -L$PLATFORM_PREFIX/lib -L$DEVKITPRO/libnx/lib"
 	export LIBS="-lnx"
 	export CMAKE_SYSTEM_NAME="Generic"
+
+	$SCRIPT_DIR/../shared/mk-meson-cross.sh switch > meson-cross.txt
 }
 
 install_lib_icu_native
@@ -87,9 +89,9 @@ set_build_flags
 install_lib_zlib
 install_lib $LIBPNG_DIR $LIBPNG_ARGS
 install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=ON
-install_lib_cmake $HARFBUZZ_DIR $HARFBUZZ_ARGS
+install_lib_meson $HARFBUZZ_DIR $HARFBUZZ_ARGS
 install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=OFF
-install_lib $PIXMAN_DIR $PIXMAN_ARGS
+install_lib_meson $PIXMAN_DIR $PIXMAN_ARGS
 install_lib_cmake $EXPAT_DIR $EXPAT_ARGS
 install_lib $LIBOGG_DIR $LIBOGG_ARGS
 install_lib $TREMOR_DIR $TREMOR_ARGS
