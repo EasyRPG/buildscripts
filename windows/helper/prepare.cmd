@@ -16,3 +16,5 @@ call bootstrap-vcpkg.bat
 xcopy /Y /I /E ..\icu-easyrpg ports\icu-easyrpg
 :: fluidsynth without glib dependency
 xcopy /Y /I /E ..\fluidsynth-easyrpg ports\fluidsynth-easyrpg
+:: lhasa (delete when upstream port accepted)
+xcopy /Y /I /E ..\lhasa-easyrpg ports\lhasa-easyrpg
