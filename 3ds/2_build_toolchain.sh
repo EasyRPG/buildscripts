@@ -34,6 +34,11 @@ if [ ! -f .patches-applied ]; then
 		autoreconf -fi
 	)
 
+	# Fix opus (remove when next version is out)
+	(cd $OPUS_DIR
+		patch -Np1 < $SCRIPT_DIR/opus-fix-types.patch
+	)
+
 	# Fix opusfile
 	(cd $OPUSFILE_DIR
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/opusfile-devkit.patch
@@ -99,7 +104,7 @@ install_lib $MPG123_DIR $MPG123_ARGS
 install_lib_cmake $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
 install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
 install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS
-install_lib $OPUS_DIR $OPUS_ARGS
+install_lib $OPUS_DIR $OPUS_ARGS --disable-asm
 install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 install_lib_cmake $FLUIDLITE_DIR $FLUIDLITE_ARGS
 install_lib_meson $INIH_DIR $INIH_ARGS
