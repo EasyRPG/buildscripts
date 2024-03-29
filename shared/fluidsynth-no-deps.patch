@@ -1,14 +1,14 @@
-From 9682aa045f1ae8265919770bf2a63a8337764eca Mon Sep 17 00:00:00 2001
+From d11f0149429f8fc5a2f9ad79c7d9040bf72af5cc Mon Sep 17 00:00:00 2001
 From: Ghabry
 Date: Fri, 17 Mar 2023 14:02:43 +0100
-Subject: [PATCH 2/2] Disable most features
+Subject: [PATCH] Disable most features
 
 ---
  CMakeLists.txt | 54 +++++++++++++++++++++++++-------------------------
  1 file changed, 27 insertions(+), 27 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index dd3a0c8..7dda03e 100644
+index 433197fe..df81f4c7 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -76,44 +76,44 @@ option ( enable-trap-on-fpe "enable SIGFPE trap on Floating Point Exceptions" of
@@ -62,9 +62,8 @@ index dd3a0c8..7dda03e 100644
  
  # Platform specific options
  if ( CMAKE_SYSTEM MATCHES "Linux|FreeBSD|DragonFly" )
--    option ( enable-lash "compile LASH support (if it is available)" on )
+     option ( enable-lash "compile LASH support (if it is available)" off )
 -    option ( enable-alsa "compile ALSA support (if it is available)" on )
-+    option ( enable-lash "compile LASH support (if it is available)" off )
 +    option ( enable-alsa "compile ALSA support (if it is available)" off )
  endif ( CMAKE_SYSTEM MATCHES "Linux|FreeBSD|DragonFly" )
  
@@ -84,5 +83,5 @@ index dd3a0c8..7dda03e 100644
  
  if ( CMAKE_SYSTEM MATCHES "OS2" )
 -- 
-2.40.0
+2.44.0
 
