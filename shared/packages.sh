@@ -15,18 +15,18 @@ FREETYPE_URL="https://mirrors.sarata.com/non-gnu/freetype/freetype-2.13.2.tar.xz
 FREETYPE_ARGS="-DFT_DISABLE_BZIP2=ON -DFT_DISABLE_BROTLI=ON"
 FREETYPE_DIR="freetype-2.13.2"
 
-HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfbuzz-8.3.0.tar.xz"
+HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/8.3.1/harfbuzz-8.3.1.tar.xz"
 HARFBUZZ_ARGS="-Dfreetype=enabled -Dtests=disabled -Dutilities=disabled" # TODO disable subset
-HARFBUZZ_DIR="harfbuzz-8.3.0"
+HARFBUZZ_DIR="harfbuzz-8.3.1"
 
 PIXMAN_URL="https://cairographics.org/releases/pixman-0.43.4.tar.gz"
 PIXMAN_ARGS="-Dtests=disabled -Ddemos=disabled -Dlibpng=disabled"
 PIXMAN_DIR="pixman-0.43.4"
 
-EXPAT_URL="https://github.com/libexpat/libexpat/releases/download/R_2_6_1/expat-2.6.1.tar.bz2"
+EXPAT_URL="https://github.com/libexpat/libexpat/releases/download/R_2_6_2/expat-2.6.2.tar.bz2"
 EXPAT_ARGS="-DEXPAT_BUILD_TOOLS=OFF -DEXPAT_BUILD_EXAMPLES=OFF \
 -DEXPAT_BUILD_TESTS=OFF -DEXPAT_BUILD_DOCS=OFF -DEXPAT_SHARED_LIBS=OFF"
-EXPAT_DIR="expat-2.6.1"
+EXPAT_DIR="expat-2.6.2"
 
 LIBOGG_URL="https://downloads.xiph.org/releases/ogg/libogg-1.3.5.tar.xz"
 LIBOGG_DIR="libogg-1.3.5"
@@ -62,17 +62,17 @@ WILDMIDI_URL="https://github.com/Mindwerks/wildmidi/archive/wildmidi-0.4.5.tar.g
 WILDMIDI_DIR="wildmidi-wildmidi-0.4.5"
 WILDMIDI_ARGS="-DWANT_PLAYER=OFF -DWANT_STATIC=ON"
 
-OPUS_URL="https://downloads.xiph.org/releases/opus/opus-1.4.tar.gz"
+OPUS_URL="https://downloads.xiph.org/releases/opus/opus-1.5.1.tar.gz"
 OPUS_ARGS="--disable-intrinsics --disable-extra-programs"
-OPUS_DIR="opus-1.4"
+OPUS_DIR="opus-1.5.1"
 
 OPUSFILE_URL="https://github.com/xiph/opusfile/releases/download/v0.12/opusfile-0.12.tar.gz"
 OPUSFILE_ARGS="--disable-http --disable-examples"
 OPUSFILE_DIR="opusfile-0.12"
 
-FLUIDSYNTH_URL="https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v2.3.4.tar.gz"
+FLUIDSYNTH_URL="https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v2.3.5.tar.gz"
 FLUIDSYNTH_ARGS="-DLIB_SUFFIX=''"
-FLUIDSYNTH_DIR="fluidsynth-2.3.4"
+FLUIDSYNTH_DIR="fluidsynth-2.3.5"
 
 FLUIDLITE_URL="https://github.com/divideconcept/FluidLite/archive/57a0e74e708f699b13d7c85b28a4e1ff5b71887c.zip"
 FLUIDLITE_ARGS="-DFLUIDLITE_BUILD_STATIC=ON -DFLUIDLITE_BUILD_SHARED=OFF"
@@ -101,8 +101,8 @@ ICU_ARGS="--enable-strict=no --disable-tests --disable-samples \
 ICUDATA_URL=https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata.tar.gz
 ICUDATA_FILES="icudt*.dat"
 
-SDL2_URL="https://libsdl.org/release/SDL2-2.28.5.tar.gz"
-SDL2_DIR="SDL2-2.28.5"
+SDL2_URL="https://libsdl.org/release/SDL2-2.30.1.tar.gz"
+SDL2_DIR="SDL2-2.30.1"
 
 # only needed for lmu2png tool
 SDL2_IMAGE_URL="https://libsdl.org/projects/SDL_image/release/SDL2_image-2.8.0.tar.gz"
