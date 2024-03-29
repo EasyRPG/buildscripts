@@ -15,9 +15,9 @@ FREETYPE_URL="https://mirrors.sarata.com/non-gnu/freetype/freetype-2.13.2.tar.xz
 FREETYPE_ARGS="-DFT_DISABLE_BZIP2=ON -DFT_DISABLE_BROTLI=ON"
 FREETYPE_DIR="freetype-2.13.2"
 
-HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/8.3.1/harfbuzz-8.3.1.tar.xz"
+HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/8.4.0/harfbuzz-8.4.0.tar.xz"
 HARFBUZZ_ARGS="-Dfreetype=enabled -Dtests=disabled -Dutilities=disabled" # TODO disable subset
-HARFBUZZ_DIR="harfbuzz-8.3.1"
+HARFBUZZ_DIR="harfbuzz-8.4.0"
 
 PIXMAN_URL="https://cairographics.org/releases/pixman-0.43.4.tar.gz"
 PIXMAN_ARGS="-Dtests=disabled -Ddemos=disabled -Dlibpng=disabled"
