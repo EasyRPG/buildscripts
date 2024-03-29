@@ -138,10 +138,9 @@ function install_lib_cmake {
 function install_lib_meson {
 	msg "**** Building ${1%-*} ****"
 
+	MESON_CROSS=""
 	if [ -f "$PLATFORM_PREFIX/meson-cross.txt" ]; then
-		MESON_CROSS="$PLATFORM_PREFIX/meson-cross.txt"
-	else
-		MESON_CROSS="/dev/null"
+		MESON_CROSS="--cross-file $PLATFORM_PREFIX/meson-cross.txt"
 	fi
 
 	(cd $1
@@ -149,8 +148,8 @@ function install_lib_meson {
 
 		rm -rf build
 
-		meson setup build --prefix $PLATFORM_PREFIX --buildtype=plain \
-			-Ddefault_library=static --cross-file $MESON_CROSS $@
+		$MESON_WRAPPER meson setup build --prefix $PLATFORM_PREFIX --buildtype=plain \
+			-Ddefault_library=static $MESON_CROSS $@
 		meson compile -C build
 		meson install -C build
 	)

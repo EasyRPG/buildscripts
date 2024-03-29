@@ -18,16 +18,16 @@ fi
 PLAT_ENDIAN="little"
 
 # prefer from environment
-if [[ ! -v CC ]]; then
+if [ -z "$CC" ]; then
 	CC=${TARGET_HOST}-gcc
 fi
-if [[ ! -v CXX ]]; then
+if [ -z "$CXX" ]; then
 	CXX=${TARGET_HOST}-g++
 fi
-if [[ ! -v AR ]]; then
+if [ -z "$AR" ]; then
 	AR=${TARGET_HOST}-gcc-ar
 fi
-if [[ ! -v STRIP ]]; then
+if [ -z "$STRIP" ]; then
 	STRIP=${TARGET_HOST}-strip
 fi
 
@@ -74,8 +74,32 @@ case "$1" in
 	x86_64*)
 		PLAT_CPU_FAMILY="x86_64"
 		;;
+	*)
+		echo "Unsupported Android platform." 1>&2
+		exit 1
+		;;
 	esac
 	STRIP="llvm-strip"
+	;;
+*apple-darwin)
+	PLAT_SYSTEM="darwin"
+	case "$1" in
+	arm*)
+		PLAT_CPU_FAMILY="arm"
+		;;
+	aarch64*)
+		PLAT_CPU_FAMILY="aarch64"
+		;;
+	x86_64*)
+		PLAT_CPU_FAMILY="x86_64"
+		;;
+	*)
+		echo "Unsupported macOS/iOS platform." 1>&2
+		exit 1
+		;;
+	esac
+	AR="ar"
+	STRIP="strip"
 	;;
 *)
 	echo "Unsupported platform." 1>&2

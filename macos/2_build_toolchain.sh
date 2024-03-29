@@ -58,6 +58,9 @@ function set_build_flags() {
 	export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 	export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
 	export TARGET_HOST="$2"
+
+	mkdir -p $PLATFORM_PREFIX
+	$SCRIPT_DIR/../shared/mk-meson-cross.sh "${TARGET_HOST}" > $PLATFORM_PREFIX/meson-cross.txt
 }
 
 function build() {
