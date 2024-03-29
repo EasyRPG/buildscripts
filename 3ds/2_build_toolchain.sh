@@ -25,6 +25,11 @@ if [ ! -f .patches-applied ]; then
 
 	patches_common
 
+	# Fix pixman
+	(cd $PIXMAN_DIR
+		patch -Np1 < $SCRIPT_DIR/../shared/extra/pixman-no-tls.patch
+	)
+
 	# Fix mpg123
 	(cd $MPG123_DIR
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/mpg123.patch
