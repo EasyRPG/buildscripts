@@ -1,8 +1,7 @@
 #!/bin/bash
 
 if [ "$(uname)" != "Darwin" ]; then
-	echo "This buildscript requires macOS!"
-	exit 1
+	errormsg "This buildscript requires macOS!"
 fi
 
 # abort on error

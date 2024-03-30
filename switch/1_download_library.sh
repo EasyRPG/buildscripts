@@ -11,8 +11,7 @@ source $SCRIPT_DIR/../shared/import.sh
 msg " [1] Checking devkitA64"
 
 if [[ -z $DEVKITPRO || ! -d "$DEVKITPRO/devkitA64" ]]; then
-	echo "Setup devkitA64 properly. \$DEVKITPRO needs to be set."
-	exit 1
+	errormsg "Setup devkitA64 properly. \$DEVKITPRO needs to be set."
 fi
 
 msg " [2] Downloading generic libraries"

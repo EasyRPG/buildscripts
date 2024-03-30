@@ -16,6 +16,7 @@ fi
 
 # defaults
 PLAT_ENDIAN="little"
+PLAT_OPTIONS_ADD="# custom options here"
 
 # prefer from environment
 if [ -z "$CC" ]; then
@@ -52,6 +53,7 @@ case "$1" in
 	PLAT_CPU_FAMILY="ppc"
 	PLAT_CPU="ppc750"
 	PLAT_ENDIAN="big"
+	PLAT_OPTIONS_ADD="b_staticpic = false"
 	;;
 "asmjs")
 	PLAT_SYSTEM="emscripten"
@@ -123,6 +125,7 @@ c_args = [` array2list ${CPPFLAGS} ${CFLAGS} `]
 c_link_args = [` array2list ${LDFLAGS} ${LIBS} `]
 cpp_args = [` array2list ${CPPFLAGS} ${CXXFLAGS} `]
 cpp_link_args = [` array2list ${LDFLAGS} ${LIBS} `]
+${PLAT_OPTIONS_ADD}
 
 [host_machine]
 system = '${PLAT_SYSTEM}'

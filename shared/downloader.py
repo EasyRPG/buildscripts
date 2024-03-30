@@ -71,12 +71,13 @@ def cleanup_dir(dir, age, confirm):
 		return
 
 	if confirm:
-		print(f"You want to delete {count} file(s).")
-		if not input("   Are you sure? (y/N) ").lower() == 'y':
+		print(f"You want to delete {count} file(s):")
+		for item in to_delete:
+			print(f"  {item.name}")
+		if not input("Are you sure? (y/N) ").lower() == 'y':
 			return
 
 	for item in to_delete:
-		print(f"Deleting {item.name}.")
 		item.unlink()
 
 if __name__ == '__main__':

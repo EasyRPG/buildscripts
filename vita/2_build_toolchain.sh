@@ -52,6 +52,8 @@ export PATH=$PWD/vitasdk/bin:$PATH
 
 export TARGET_HOST=arm-vita-eabi
 export PLATFORM_PREFIX=$VITASDK/$TARGET_HOST
+unset PKG_CONFIG_PATH
+export PKG_CONFIG_LIBDIR=$PLATFORM_PREFIX/lib/pkgconfig
 export MAKEFLAGS="-j${nproc:-2}"
 
 function set_build_flags {
@@ -66,7 +68,7 @@ function set_build_flags {
 	export CPPFLAGS="-DPSP2"
 	export CMAKE_SYSTEM_NAME="Generic"
 
-	$SCRIPT_DIR/../shared/mk-meson-cross.sh vita > meson-cross.txt
+	$SCRIPT_DIR/../shared/mk-meson-cross.sh vita > $PLATFORM_PREFIX/meson-cross.txt
 }
 
 function install_lib_vita2d() {

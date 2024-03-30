@@ -18,15 +18,17 @@ nproc=$(nproc)
 test_ccache
 
 # Toolchain available?
-if [[ -z $DEVKITPRO || -z $DEVKITARM ]]; then
-	echo "Setup devkitARM properly. \$DEVKITPRO and \$DEVKITARM need to be set."
-	exit 1
-fi
+test_dkp "devkitARM"
 
 if [ ! -f .patches-applied ]; then
 	echo "Patching libraries"
 
 	patches_common
+
+	# Fix pixman
+	(cd $PIXMAN_DIR
+		patch -Np1 < $SCRIPT_DIR/../shared/extra/pixman-no-tls.patch
+	)
 
 	# Fix mpg123
 	(cd $MPG123_DIR

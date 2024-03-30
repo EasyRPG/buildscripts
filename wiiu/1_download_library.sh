@@ -10,10 +10,7 @@ source $SCRIPT_DIR/../shared/import.sh
 
 msg " [1] Checking devkitPPC"
 
-if [[ -z $DEVKITPRO || -z $DEVKITPPC ]]; then
-	echo "Setup devkitPPC properly. \$DEVKITPRO and \$DEVKITPPC need to be set."
-	exit 1
-fi
+test_dkp "devkitPPC"
 
 msg " [2] Downloading generic libraries"
 
