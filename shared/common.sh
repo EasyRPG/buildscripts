@@ -224,25 +224,6 @@ function install_lib_icu_native {
 	)
 }
 
-# Only needed for a mixed endian compile, on other platforms use
-# install_lib_icu_native
-function install_lib_icu_native_without_assembly {
-	headermsg "**** Building ICU (native without ASM) ****"
-
-	(cd icu-native/source
-		unset CC
-		unset CXX
-		unset CFLAGS
-		unset CPPFLAGS
-		unset CXXFLAGS
-		unset LDFLAGS
-
-		chmod u+x configure
-		CPPFLAGS="-DBUILD_DATA_WITHOUT_ASSEMBLY -DU_DISABLE_OBJ_CODE" ./configure --enable-static --enable-shared=no $ICU_ARGS
-		make
-	)
-}
-
 function install_lib_icu_cross {
 	headermsg "**** Building ICU (cross) ****"
 
@@ -358,6 +339,6 @@ function cleanup {
 	libsamplerate-*/ wildmidi-*/ opus-*/ opusfile-*/ icu/ icu-native/ \
 	SDL2-*/ SDL2_image-*/ fmt-*/ FluidLite-*/ fluidsynth-*/ json-*/ inih-*/ \
 	lhasa-*/ liblcf/
-	rm -f *.zip *.bz2 *.gz *.xz *.tgz icudt* *.pl .patches-applied config.cache
+	rm -f *.zip *.bz2 *.gz *.xz *.tgz icudt* .patches-applied config.cache
 	rm -rf sbin/ share/
 }

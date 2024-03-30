@@ -46,7 +46,13 @@ if [ ! -f .patches-applied ]; then
 	)
 
 	# Fix icu build
+	# Do not write objects, but source files
+	perl -pi -e 's|#ifndef U_DISABLE_OBJ_CODE|#if 0 // U_DISABLE_OBJ_CODE|' icu/source/tools/toolutil/pkg_genc.h
 	cp -rup icu icu-native
+	# Emit correct bigendian icudata header
+	patch -Np0 < icu-pkg_genc.patch
+	# Patch mutex support in
+	patch -Np0 < icu-wii-mutex.patch
 
 	touch .patches-applied
 fi
@@ -72,14 +78,14 @@ function set_build_flags {
 	fi
 	export CFLAGS="-g0 -O2 -mcpu=750 -meabi -mhard-float -ffunction-sections -fdata-sections"
 	export CXXFLAGS="$CFLAGS"
-	export CPPFLAGS="-I$PLATFORM_PREFIX/include -DGEKKO"
+	export CPPFLAGS="-I$PLATFORM_PREFIX/include -DGEKKO -I$DEVKITPRO/libogc/include"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 	export CMAKE_SYSTEM_NAME="Generic"
 
 	$SCRIPT_DIR/../shared/mk-meson-cross.sh ogc > meson-cross.txt
 }
 
-install_lib_icu_native_without_assembly
+install_lib_icu_native
 
 set_build_flags
 
