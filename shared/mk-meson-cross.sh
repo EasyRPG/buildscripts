@@ -37,6 +37,7 @@ case "$1" in
 	PLAT_SYSTEM="vita"
 	PLAT_CPU_FAMILY="arm"
 	PLAT_CPU="cortex-a9mpcore"
+	PLAT_OPTIONS_ADD="b_staticpic = false"
 	;;
 "switch")
 	PLAT_SYSTEM="horizon"
