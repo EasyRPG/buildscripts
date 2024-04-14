@@ -42,6 +42,7 @@ function set_build_flags {
 	export PATH=$PLATFORM_PREFIX/bin:$PATH
 	export CC="$CLANG $ARCH"
 	export CXX="$CLANGXX $ARCH"
+	export OBJC="$CLANG $ARCH"
 	if [ "$ENABLE_CCACHE" ]; then
 		export CC="ccache $CC"
 		export CXX="ccache $CXX"
@@ -87,23 +88,10 @@ function build() {
 	install_lib_icu_cross
 	icu_force_data_install
 	install_lib_liblcf
-	install_lib $SDL2_DIR $SDL2_ARGS --disable-assembly
+	install_lib_cmake $SDL2_DIR $SDL2_ARGS
 }
 
 export MAKEFLAGS="-j${nproc:-2}"
-
-function install_lib_sdl2() {
-	msg "Building SDL2"
-
-	(cd $SDL2_DIR
-		./configure --host=$TARGET_HOST --prefix=$WORKSPACE \
-			--disable-shared --enable-static
-		cp include/SDL_config_iphoneos.h include/SDL_config.h
-		make clean
-		make
-		make install
-	)
-}
 
 install_lib_icu_native
 
