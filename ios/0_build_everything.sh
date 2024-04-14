@@ -10,4 +10,5 @@ fi
 
 ./1_download_library.sh
 ./2_build_toolchain.sh
-./3_cleanup.sh
+./3_build_universal.sh
+./4_cleanup.sh
