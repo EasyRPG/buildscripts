@@ -183,7 +183,7 @@ function install_lib_meson {
 		rm -rf build
 
 		$MESON_WRAPPER meson setup build --prefix $PLATFORM_PREFIX --buildtype=plain \
-			-Ddefault_library=static $MESON_CROSS $@
+			-Ddefault_library=static --libdir=lib $MESON_CROSS $@
 		meson compile -C build
 		meson install -C build
 	)
