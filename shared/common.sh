@@ -290,6 +290,8 @@ function patches_common {
 	# disable unsupported compiler flags by clang in libvorbis
 	if [ -d "$LIBVORBIS_DIR" ]; then
 		perl -pi -e 's/-mno-ieee-fp//' $LIBVORBIS_DIR/configure
+		# Invalid since macOS Sonoma
+		perl -pi -e 's/-force_cpusubtype_ALL//' $LIBVORBIS_DIR/configure
 	fi
 
 	# disable libsndfile examples and tests

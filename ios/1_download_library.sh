@@ -8,7 +8,7 @@ export WORKSPACE=$PWD
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../shared/import.sh
 
-msg " [1] Preparing libraries"
+msg " [1] Downloading generic libraries"
 
 # zlib
 rm -rf $ZLIB_DIR
@@ -70,9 +70,13 @@ download_and_extract $OPUS_URL
 rm -rf $OPUSFILE_DIR
 download_and_extract $OPUSFILE_URL
 
-# FluidLite
-rm -rf $FLUIDLITE_DIR
-download_and_extract $FLUIDLITE_URL
+# FluidSynth
+rm -rf $FLUIDSYNTH_DIR
+download_and_extract $FLUIDSYNTH_URL
+
+# nlohmann-json
+rm -rf $NLOHMANNJSON_DIR
+download_and_extract $NLOHMANNJSON_URL
 
 # inih
 rm -rf $INIH_DIR
@@ -94,7 +98,7 @@ download_and_extract $ICU_URL
 rm -f $ICUDATA_FILES
 download_and_extract $ICUDATA_URL
 
-msg " [2] Downloading platform libraries"
+msg " [3] Downloading platform libraries"
 
 # SDL2
 rm -rf $SDL2_DIR
