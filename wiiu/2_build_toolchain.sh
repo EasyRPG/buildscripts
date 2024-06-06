@@ -16,6 +16,10 @@ test_ccache
 
 # Toolchain available?
 test_dkp "devkitPPC"
+export PATH=$DEVKITPPC/bin:$DEVKITPRO/tools/bin:$PATH
+
+# Extra tools available?
+require_tool wuhbtool
 
 if [ ! -f .patches-applied ]; then
 	echo "Patching libraries"
@@ -50,8 +54,6 @@ fi
 cd $WORKSPACE
 
 echo "Preparing toolchain"
-
-export PATH=$DEVKITPPC/bin:$PATH
 
 export PLATFORM_PREFIX=$WORKSPACE
 export TARGET_HOST=powerpc-eabi

@@ -97,9 +97,19 @@ function msg {
 	colormsg "$1" "32m"
 }
 
+function test_tool {
+	hash $1 >/dev/null 2>&1
+}
+
+function require_tool {
+	if ! test_tool $1; then
+		errormsg "The required tool $1 is missing!"
+	fi
+}
+
 function test_ccache {
 	if [ -z ${NO_CCACHE+x} ]; then
-		if hash ccache >/dev/null 2>&1; then
+		if test_tool ccache; then
 			ENABLE_CCACHE=1
 			echo "CCACHE enabled"
 		fi

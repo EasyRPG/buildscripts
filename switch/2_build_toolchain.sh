@@ -18,6 +18,10 @@ test_ccache
 if [[ -z $DEVKITPRO || ! -d "$DEVKITPRO/devkitA64" ]]; then
 	errormsg "Setup devkitA64 properly. \$DEVKITPRO needs to be set."
 fi
+export PATH=$DEVKITPRO/devkitA64/bin:$DEVKITPRO/tools/bin:$PATH
+
+# Extra tools available?
+require_tool elf2nro
 
 if [ ! -f .patches-applied ]; then
 	echo "Patching libraries"
@@ -54,8 +58,6 @@ fi
 cd $WORKSPACE
 
 echo "Preparing toolchain"
-
-export PATH=$DEVKITPRO/devkitA64/bin:$PATH
 
 export PLATFORM_PREFIX=$WORKSPACE
 export TARGET_HOST=aarch64-none-elf

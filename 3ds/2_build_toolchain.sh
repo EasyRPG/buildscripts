@@ -16,6 +16,21 @@ test_ccache
 
 # Toolchain available?
 test_dkp "devkitARM"
+export PATH=$DEVKITARM/bin:$DEVKITPRO/tools/bin:$PATH
+
+# Extra tools available?
+if test_tool bannertool && test_tool makerom && test_tool 3dstool; then
+	: # nothing
+else
+	msg "The following tools need to be installed to allow building .cia"
+	msg "bundles or creating custom banners:"
+	msg "  https://github.com/dnasdw/3dstool"
+	#msg "  https://github.com/Steveice10/bannertool"
+	msg "  https://github.com/carstene1ns/3ds-bannertool"
+	msg "  https://github.com/profi200/Project_CTR"
+fi
+require_tool tex3ds
+require_tool 3dsxtool
 
 if [ ! -f .patches-applied ]; then
 	echo "Patching libraries"
@@ -58,8 +73,6 @@ fi
 cd $WORKSPACE
 
 echo "Preparing toolchain"
-
-export PATH=$DEVKITARM/bin:$PATH
 
 export PLATFORM_PREFIX=$WORKSPACE
 export TARGET_HOST=arm-none-eabi
