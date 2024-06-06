@@ -1,7 +1,6 @@
-diff -Naur icu-orig/source/tools/toolutil/pkg_gencmn.c icu-native/source/tools/toolutil/pkg_gencmn.c
---- icu-orig/source/tools/toolutil/pkg_gencmn.c	2017-02-04 00:17:49.890595524 +0100
-+++ icu-native/source/tools/toolutil/pkg_gencmn.c	2017-02-04 00:20:52.285692721 +0100
-@@ -371,7 +371,7 @@
+--- icu.orig/source/tools/toolutil/pkg_gencmn.cpp	2023-10-27 23:53:02.000000000 +0200
++++ icu/source/tools/toolutil/pkg_gencmn.cpp	2023-11-28 20:30:02.740591664 +0100
+@@ -373,7 +373,7 @@
              "} U_EXPORT2 %s_dat = {\n"
              "    32, 0xda, 0x27, {\n"
              "        %lu, 0,\n"
@@ -10,13 +9,13 @@ diff -Naur icu-orig/source/tools/toolutil/pkg_gencmn.c icu-native/source/tools/t
              "        {0x54, 0x6f, 0x43, 0x50},\n"
              "        {1, 0, 0, 0},\n"
              "        {0, 0, 0, 0}\n"
-@@ -381,9 +381,6 @@
-             (unsigned long)fileCount,
+@@ -383,9 +383,6 @@
+             static_cast<unsigned long>(fileCount),
              entrypointName,
-             (unsigned long)sizeof(UDataInfo),
+             static_cast<unsigned long>(sizeof(UDataInfo)),
 -            U_IS_BIG_ENDIAN,
 -            U_CHARSET_FAMILY,
 -            U_SIZEOF_UCHAR,
-             (unsigned long)fileCount
+             static_cast<unsigned long>(fileCount)
          );
          T_FileStream_writeLine(out, buffer);

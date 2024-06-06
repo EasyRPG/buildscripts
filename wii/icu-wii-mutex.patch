@@ -1,0 +1,158 @@
+diff --color -Naur icu.orig icu
+--- icu.orig/source/common/umutex.cpp	2023-10-27 23:53:02.000000000 +0200
++++ icu/source/common/umutex.cpp	2023-12-02 04:50:47.142748510 +0100
+@@ -44,20 +44,26 @@
+  *************************************************************************************************/
+ 
+ namespace {
++mutex_t initMutex;
++#if 0
+ std::mutex *initMutex;
+ std::condition_variable *initCondition;
++#endif
+ 
+ // The ICU global mutex.
+ // Used when ICU implementation code passes nullptr for the mutex pointer.
+ UMutex globalMutex;
+ 
++#if 0
+ std::once_flag initFlag;
+ std::once_flag *pInitFlag = &initFlag;
++#endif
+ 
+ }  // Anonymous namespace
+ 
+ U_CDECL_BEGIN
+ static UBool U_CALLCONV umtx_cleanup() {
++#if 0
+     initMutex->~mutex();
+     initCondition->~condition_variable();
+     UMutex::cleanup();
+@@ -66,17 +72,23 @@
+     // Do not use this trick anywhere else in ICU; use umtx_initOnce, not std::call_once().
+     pInitFlag->~once_flag();
+     pInitFlag = new(&initFlag) std::once_flag();
++#endif
++    LWP_MutexDestroy(initMutex);
+     return true;
+ }
+ 
+ static void U_CALLCONV umtx_init() {
++#if 0
+     initMutex = STATIC_NEW(std::mutex);
+     initCondition = STATIC_NEW(std::condition_variable);
+     ucln_common_registerCleanup(UCLN_COMMON_MUTEX, umtx_cleanup);
++#endif
++    LWP_MutexInit(&initMutex, 0);
+ }
+ U_CDECL_END
+ 
+ 
++#if 0
+ std::mutex *UMutex::getMutex() {
+     std::mutex *retPtr = fMutex.load(std::memory_order_acquire);
+     if (retPtr == nullptr) {
+@@ -106,6 +118,7 @@
+     }
+     gListHead = nullptr;
+ }
++#endif
+ 
+ 
+ U_CAPI void  U_EXPORT2
+@@ -143,8 +156,11 @@
+ //
+ U_COMMON_API UBool U_EXPORT2
+ umtx_initImplPreInit(UInitOnce &uio) {
++    LWP_MutexLock(initMutex);
++#if 0
+     std::call_once(*pInitFlag, umtx_init);
+     std::unique_lock<std::mutex> lock(*initMutex);
++#endif
+     if (umtx_loadAcquire(uio.fState) == 0) {
+         umtx_storeRelease(uio.fState, 1);
+         return true;      // Caller will next call the init function.
+@@ -152,7 +168,7 @@
+         while (umtx_loadAcquire(uio.fState) == 1) {
+             // Another thread is currently running the initialization.
+             // Wait until it completes.
+-            initCondition->wait(lock);
++//            initCondition->wait(lock);
+         }
+         U_ASSERT(uio.fState == 2);
+         return false;
+@@ -168,11 +184,15 @@
+ 
+ U_COMMON_API void U_EXPORT2
+ umtx_initImplPostInit(UInitOnce &uio) {
++#if 0
+     {
+         std::unique_lock<std::mutex> lock(*initMutex);
+         umtx_storeRelease(uio.fState, 2);
+     }
+     initCondition->notify_all();
++#endif
++    umtx_storeRelease(uio.fState, 2);
++    LWP_MutexUnlock(initMutex);
+ }
+ 
+ U_NAMESPACE_END
+diff --color -Naur icu.orig icu
+--- icu.orig/source/common/umutex.h	2023-10-27 23:53:02.000000000 +0200
++++ icu/source/common/umutex.h	2023-12-02 04:53:38.320939984 +0100
+@@ -25,6 +25,8 @@
+ #include <mutex>
+ #include <type_traits>
+ 
++#include <gccore.h>
++
+ #include "unicode/utypes.h"
+ #include "unicode/uclean.h"
+ #include "unicode/uobject.h"
+@@ -218,8 +220,10 @@
+ 
+ class U_COMMON_API UMutex {
+ public:
+-    UMUTEX_CONSTEXPR UMutex() {}
+-    ~UMutex() = default;
++    //UMUTEX_CONSTEXPR UMutex() {}
++    //~UMutex() = default;
++    UMutex() { LWP_MutexInit(&mutex, 0); }
++    ~UMutex() { LWP_MutexDestroy(mutex); }
+ 
+     UMutex(const UMutex &other) = delete;
+     UMutex &operator =(const UMutex &other) = delete;
+@@ -227,12 +231,24 @@
+ 
+     // requirements for C++ BasicLockable, allows UMutex to work with std::lock_guard
+     void lock() {
++#if 0
+         std::mutex *m = fMutex.load(std::memory_order_acquire);
+         if (m == nullptr) { m = getMutex(); }
+         m->lock();
++#endif
++        LWP_MutexLock(mutex);
++    }
++    void unlock() {
++#if 0
++        fMutex.load(std::memory_order_relaxed)->unlock();
++#endif
++        LWP_MutexUnlock(mutex);
+     }
+-    void unlock() { fMutex.load(std::memory_order_relaxed)->unlock(); }
+ 
++private:
++    mutex_t mutex;
++
++#if 0
+     static void cleanup();
+ 
+ private:
+@@ -250,6 +266,7 @@
+      * be nullptr.
+      */
+     std::mutex *getMutex();
++#endif
+ };
+ 
+ 
