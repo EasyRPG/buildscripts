@@ -40,6 +40,7 @@ if [ ! -f .patches-applied ]; then
 	# Fix pixman
 	(cd $PIXMAN_DIR
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/pixman-no-tls.patch
+		patch -Np1 < $SCRIPT_DIR/pixman-fix-types.patch
 	)
 
 	# Fix mpg123
@@ -48,20 +49,17 @@ if [ ! -f .patches-applied ]; then
 		autoreconf -fi
 	)
 
+	# Fix tremor
+	patch -d $TREMOR_DIR -Np1 < $SCRIPT_DIR/tremor-fix-types.patch
+
 	# Fix opus (remove when next version is out)
-	(cd $OPUS_DIR
-		patch -Np1 < $SCRIPT_DIR/opus-fix-types.patch
-	)
+	patch -d $OPUS_DIR -Np1 < $SCRIPT_DIR/opus-fix-types.patch
 
 	# Fix opusfile
-	(cd $OPUSFILE_DIR
-		patch -Np1 < $SCRIPT_DIR/../shared/extra/opusfile-devkit.patch
-	)
+	patch -d $OPUSFILE_DIR -Np1 < $SCRIPT_DIR/../shared/extra/opusfile-devkit.patch
 
 	# Fix lhasa
-	(cd $LHASA_DIR
-		patch -Np1 < $SCRIPT_DIR/../shared/extra/lhasa.patch
-	)
+	patch -d $LHASA_DIR -Np1 < $SCRIPT_DIR/../shared/extra/lhasa.patch
 
 	# Fix icu build
 	patch -Np0 < $SCRIPT_DIR/icu-3ds.patch

@@ -1,6 +1,6 @@
-diff '--color=auto' -Naur opus-1.5.1-orig/src/opus_private.h opus-1.5.1/src/opus_private.h
---- opus-1.5.1-orig/src/opus_private.h	2024-01-26 06:17:36.000000000 +0100
-+++ opus-1.5.1/src/opus_private.h	2024-03-29 12:35:28.073702694 +0100
+diff --color -Nur opus-1.5.1.orig/src/opus_private.h opus-1.5.1/src/opus_private.h
+--- opus-1.5.1.orig/src/opus_private.h	2024-01-26 06:17:36.000000000 +0100
++++ opus-1.5.1/src/opus_private.h	2024-06-07 19:15:48.414257500 +0200
 @@ -214,7 +214,7 @@
  
  opus_int32 opus_packet_extensions_parse(const unsigned char *data, opus_int32 len, opus_extension_data *extensions, opus_int32 *nb_extensions);
@@ -10,3 +10,16 @@ diff '--color=auto' -Naur opus-1.5.1-orig/src/opus_private.h opus-1.5.1/src/opus
  
  opus_int32 opus_packet_extensions_count(const unsigned char *data, opus_int32 len);
  
+diff --color -Nur opus-1.5.1.orig/src/repacketizer.c opus-1.5.1/src/repacketizer.c
+--- opus-1.5.1.orig/src/repacketizer.c	2024-02-20 21:05:04.000000000 +0100
++++ opus-1.5.1/src/repacketizer.c	2024-06-07 19:33:17.139842439 +0200
+@@ -155,7 +155,8 @@
+    /* incorporate any extensions from the repacketizer padding */
+    for (i=begin;i<end;i++)
+    {
+-      int frame_ext_count, j;
++      opus_int32 frame_ext_count;
++      int j;
+       frame_ext_count = total_ext_count - ext_count;
+       int ret = opus_packet_extensions_parse(rp->paddings[i], rp->padding_len[i],
+          &all_extensions[ext_count], &frame_ext_count);

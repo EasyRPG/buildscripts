@@ -1,0 +1,31 @@
+--- tremor.orig/sharedbook.c	2018-03-19 21:08:57.000000000 +0100
++++ tremor-7c30a66346199f3f09017a09567c6c8a3a0eedc8/sharedbook.c	2024-06-07 19:26:43.278590551 +0200
+@@ -218,12 +218,11 @@
+       quantvals=_book_maptype1_quantvals(b);
+       for(j=0;j<b->entries;j++){
+ 	if((sparsemap && b->lengthlist[j]) || !sparsemap){
+-	  ogg_int32_t last=0;
+-	  int lastpoint=0;
++	  ogg_int32_t last=0, lastpoint=0;
+ 	  int indexdiv=1;
+ 	  for(k=0;k<b->dim;k++){
+ 	    int index= (j/indexdiv)%quantvals;
+-	    int point=0;
++	    ogg_int32_t point=0;
+ 	    int val=VFLOAT_MULTI(delta,delpoint,
+ 				 abs(b->quantlist[index]),&point);
+ 
+@@ -253,11 +252,10 @@
+     case 2:
+       for(j=0;j<b->entries;j++){
+ 	if((sparsemap && b->lengthlist[j]) || !sparsemap){
+-	  ogg_int32_t last=0;
+-	  int         lastpoint=0;
++	  ogg_int32_t last=0, lastpoint=0;
+ 
+ 	  for(k=0;k<b->dim;k++){
+-	    int point=0;
++	    ogg_int32_t point=0;
+ 	    int val=VFLOAT_MULTI(delta,delpoint,
+ 				 abs(b->quantlist[j*b->dim+k]),&point);
+ 
