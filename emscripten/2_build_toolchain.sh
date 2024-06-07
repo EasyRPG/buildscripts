@@ -12,10 +12,8 @@ source $SCRIPT_DIR/../shared/import.sh
 os=`uname`
 if [ $os = "Darwin" ] ; then
 	nproc=$(getconf _NPROCESSORS_ONLN)
-	CP_ARGS="-r"
 else
 	nproc=$(nproc)
-	CP_ARGS="-rup"
 fi
 
 # no ccache support currently with em* wrappers
@@ -43,8 +41,6 @@ if [ ! -f .patches-applied ]; then
 			patch -Np2 < ../pixman-wasm.patch
 		)
 	fi
-
-	cp $CP_ARGS icu icu-native
 
 	touch .patches-applied
 fi

@@ -44,7 +44,6 @@ if [ ! -f .patches-applied ]; then
 	# Fix icu build
 	# Do not write objects, but source files
 	perl -pi -e 's|#ifndef U_DISABLE_OBJ_CODE.*|#if 0 // U_DISABLE_OBJ_CODE|' icu/source/tools/toolutil/pkg_genc.h
-	cp -rup icu icu-native
 	# Emit correct bigendian icudata header
 	patch -Np0 < icu-pkg_genc.patch
 

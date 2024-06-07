@@ -12,11 +12,9 @@ source $SCRIPT_DIR/../shared/import.sh
 os=`uname`
 if [ $os = "Darwin" ] ; then
 	nproc=$(getconf _NPROCESSORS_ONLN)
-	CP_ARGS="-r"
 	NDK_ARCH="darwin-x86_64"
 else
 	nproc=$(nproc)
-	CP_ARGS="-rup"
 	NDK_ARCH="linux-x86_64"
 fi
 
@@ -27,8 +25,6 @@ if [ ! -f .patches-applied ]; then
 	echo "Patching libraries"
 
 	patches_common
-
-	cp $CP_ARGS icu icu-native
 
 	# pixman: hardcode cpufeatures (crashes armeabi-v7a)
 	(cd $PIXMAN_DIR

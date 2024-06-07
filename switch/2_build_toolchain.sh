@@ -50,8 +50,6 @@ if [ ! -f .patches-applied ]; then
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/lhasa.patch
 	)
 
-	cp -rup icu icu-native
-
 	touch .patches-applied
 fi
 

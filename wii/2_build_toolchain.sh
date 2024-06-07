@@ -27,9 +27,7 @@ if [ ! -f .patches-applied ]; then
 	patches_common
 
 	# Fix pixman
-	(cd $PIXMAN_DIR
-		patch -Np1 < $SCRIPT_DIR/../shared/extra/pixman-no-tls.patch
-	)
+	patch -d $PIXMAN_DIR -Np1 < $SCRIPT_DIR/../shared/extra/pixman-no-tls.patch
 
 	# Fix mpg123
 	(cd $MPG123_DIR
@@ -45,14 +43,11 @@ if [ ! -f .patches-applied ]; then
 	)
 
 	# Fix lhasa
-	(cd $LHASA_DIR
-		patch -Np1 < $SCRIPT_DIR/../shared/extra/lhasa.patch
-	)
+	patch -d $LHASA_DIR -Np1 < $SCRIPT_DIR/../shared/extra/lhasa.patch
 
 	# Fix icu build
 	# Do not write objects, but source files
 	perl -pi -e 's|#ifndef U_DISABLE_OBJ_CODE|#if 0 // U_DISABLE_OBJ_CODE|' icu/source/tools/toolutil/pkg_genc.h
-	cp -rup icu icu-native
 	# Emit correct bigendian icudata header
 	patch -Np0 < icu-pkg_genc.patch
 	# Patch mutex support in

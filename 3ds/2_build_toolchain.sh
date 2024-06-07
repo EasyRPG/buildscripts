@@ -64,7 +64,6 @@ if [ ! -f .patches-applied ]; then
 	)
 
 	# Fix icu build
-	cp -rup icu icu-native
 	patch -Np0 < $SCRIPT_DIR/icu-3ds.patch
 
 	touch .patches-applied

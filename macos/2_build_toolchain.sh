@@ -22,8 +22,6 @@ if [ ! -f .patches-applied ]; then
 
 	patches_common
 
-	cp -rp icu icu-native
-
 	touch .patches-applied
 fi
 

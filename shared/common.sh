@@ -220,7 +220,8 @@ function install_lib_liblcf {
 function install_lib_icu_native {
 	headermsg "**** Building ICU (native) ****"
 
-	(cd icu-native/source
+	mkdir -p icu-native
+	(cd icu-native
 		unset CC
 		unset CXX
 		unset CFLAGS
@@ -228,8 +229,8 @@ function install_lib_icu_native {
 		unset CXXFLAGS
 		unset LDFLAGS
 
-		chmod u+x configure
-		./configure --enable-static --enable-shared=no $ICU_ARGS
+		../icu/source/configure --enable-static --disable-shared $ICU_ARGS
+		make clean
 		make
 	)
 }
@@ -237,15 +238,14 @@ function install_lib_icu_native {
 function install_lib_icu_cross {
 	headermsg "**** Building ICU (cross) ****"
 
-	export ICU_CROSS_BUILD=$PWD/icu-native/source
+	ICU_CROSS_BUILD=$PWD/icu-native
 
-	(cd icu/source
-		cp config/mh-linux config/mh-unknown
-
-		chmod u+x configure
-		$CONFIGURE_WRAPPER ./configure --enable-static --enable-shared=no --prefix=$PLATFORM_PREFIX \
+	mkdir -p icu-cross
+	(cd icu-cross
+		$CONFIGURE_WRAPPER ../icu/source/configure \
+			--enable-static --disable-shared --prefix=$PLATFORM_PREFIX \
 			--host=$TARGET_HOST --with-cross-build=$ICU_CROSS_BUILD \
-			--enable-tools=no $ICU_ARGS
+			--disable-tools $ICU_ARGS
 		make clean
 		make
 		make install
@@ -258,9 +258,9 @@ function icu_force_data_install {
 	headermsg "**** Force install ICU data file ****"
 
 	# Disable assembly
-	export PKGDATA_OPTS="-w -v -O $PWD/icu/source/config/pkgdata.inc"
+	export PKGDATA_OPTS="-w -v -O $PWD/icu-cross/config/pkgdata.inc"
 
-	(cd icu/source/data
+	(cd icu-cross/data
 		make clean
 		make
 
@@ -341,6 +341,7 @@ function patches_common {
 	cp icudt*.dat $ICU_DIR/source/data/in
 	(cd $ICU_DIR/source
 		chmod u+x configure
+		cp config/mh-linux config/mh-unknown
 		perl -pi -e 's/SMALL_BUFFER_MAX_SIZE 512/SMALL_BUFFER_MAX_SIZE 2048/' tools/toolutil/pkg_genc.h
 	)
 }
@@ -348,7 +349,7 @@ function patches_common {
 function cleanup {
 	rm -rf zlib-*/ libpng-*/ freetype-*/ harfbuzz-*/ pixman-*/ expat-*/ libogg-*/ \
 	libvorbis-*/ tremor-*/ mpg123-*/ libsndfile-*/ libxmp-lite-*/ speexdsp-*/ \
-	libsamplerate-*/ wildmidi-*/ opus-*/ opusfile-*/ icu/ icu-native/ \
+	libsamplerate-*/ wildmidi-*/ opus-*/ opusfile-*/ icu/ icu-native/ icu-cross/ \
 	SDL2-*/ SDL2_image-*/ fmt-*/ FluidLite-*/ fluidsynth-*/ json-*/ inih-*/ \
 	lhasa-*/ liblcf/
 	rm -f *.zip *.bz2 *.gz *.xz *.tgz icudt* .patches-applied config.cache meson-cross.txt
