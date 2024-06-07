@@ -351,6 +351,7 @@ function cleanup {
 	libsamplerate-*/ wildmidi-*/ opus-*/ opusfile-*/ icu/ icu-native/ \
 	SDL2-*/ SDL2_image-*/ fmt-*/ FluidLite-*/ fluidsynth-*/ json-*/ inih-*/ \
 	lhasa-*/ liblcf/
-	rm -f *.zip *.bz2 *.gz *.xz *.tgz icudt* .patches-applied config.cache
+	rm -f *.zip *.bz2 *.gz *.xz *.tgz icudt* .patches-applied config.cache meson-cross.txt
 	rm -rf sbin/ share/
+	rm -f lib/*.la
 }

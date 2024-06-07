@@ -7,7 +7,6 @@ headermsg "Cleaning up library build folders and other stuff..."
 
 cleanup
 
-rm -f meson-cross.txt
 rm -rf libvita2d/
 
 echo " -> done"
