@@ -97,6 +97,10 @@ function msg {
 	colormsg "$1" "32m"
 }
 
+function verbosemsg {
+	colormsg "$1" "33m"
+}
+
 function test_tool {
 	hash $1 >/dev/null 2>&1
 }
@@ -199,18 +203,6 @@ function install_lib_meson {
 	)
 }
 
-function install_lib_zlib {
-	headermsg "**** Building zlib ****"
-
-	(cd $ZLIB_DIR
-		CHOST=$TARGET_HOST $CONFIGURE_WRAPPER ./configure --static --prefix=$PLATFORM_PREFIX
-		make clean
-		# only build static library, no tests/examples
-		make libz.a
-		make install
-	)
-}
-
 function install_lib_liblcf {
 	if [ "$BUILD_LIBLCF" == "1" ]; then
 		install_lib liblcf --disable-update-mimedb --disable-tools
@@ -271,15 +263,28 @@ function icu_force_data_install {
 function patches_common {
 	_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-	# disable png utils
-	(cd $LIBPNG_DIR
-		perl -pi -e 's/^check_PROGRAMS.*//' Makefile.am
-		perl -pi -e 's/^bin_PROGRAMS.*//' Makefile.am
-		autoreconf -fi
-	)
+	# zlib: Install pkgconfig into lib (share is deleted by us)
+	if [ -d "$ZLIB_DIR" ]; then
+		verbosemsg "zlib"
+
+		(cd $ZLIB_DIR
+			perl -pi -e 's#/share/pkgconfig#/lib/pkgconfig#' CMakeLists.txt
+		)
+	fi
+
+	# png: move cmake configuration
+	if [ -d "$LIBPNG_DIR" ]; then
+		verbosemsg "libpng"
+
+		(cd $LIBPNG_DIR
+			perl -pi -e 's#DESTINATION lib/libpng#DESTINATION lib/cmake/libpng#' CMakeLists.txt
+		)
+	fi
 
 	# disable unsupported compiler flags by clang in libvorbis
 	if [ -d "$LIBVORBIS_DIR" ]; then
+		verbosemsg "libvorbis"
+
 		perl -pi -e 's/-mno-ieee-fp//' $LIBVORBIS_DIR/configure
 		# Invalid since macOS Sonoma
 		perl -pi -e 's/-force_cpusubtype_ALL//' $LIBVORBIS_DIR/configure
@@ -287,6 +292,8 @@ function patches_common {
 
 	# disable libsndfile examples and tests
 	if [ -d "$LIBSNDFILE_DIR" ]; then
+		verbosemsg "libsndfile"
+
 		(cd $LIBSNDFILE_DIR
 			perl -pi -e 's/ examples tests//' Makefile.am
 			perl -pi -e 's/ examples regtest tests programs//' Makefile.am
@@ -296,6 +303,8 @@ function patches_common {
 
 	# Tremor: Generate configure & Makefile, fix build
 	if [ -d "$TREMOR_DIR" ]; then
+		verbosemsg "tremor"
+
 		(cd $TREMOR_DIR
 			perl -pi -e 's/XIPH_PATH_OGG.*//' configure.in
 			autoreconf -fi
@@ -304,6 +313,8 @@ function patches_common {
 
 	# libsamplerate: disable examples
 	if [ -d "$LIBSAMPLERATE_DIR" ]; then
+		verbosemsg "libsamplerate"
+
 		(cd $LIBSAMPLERATE_DIR
 			patch -Np1 < $_SCRIPT_DIR/libsamplerate-no-examples.patch
 			autoreconf -fi
@@ -312,6 +323,8 @@ function patches_common {
 
 	# Expat: Disable error when high entropy randomness is unavailable
 	if [ -d "$EXPAT_DIR" ]; then
+		verbosemsg "expat"
+
 		(cd $EXPAT_DIR
 			perl -pi -e 's/#  error/#warning/' lib/xmlparse.c
 		)
@@ -319,6 +332,8 @@ function patches_common {
 
 	# FluidSynth: Shim glib and disable all optional features
 	if [ -d "$FLUIDSYNTH_DIR" ]; then
+		verbosemsg "fluidsynth"
+
 		(cd $FLUIDSYNTH_DIR
 			patch -Np1 < $_SCRIPT_DIR/fluidsynth-no-glib.patch
 			patch -Np1 < $_SCRIPT_DIR/fluidsynth-no-deps.patch
@@ -327,17 +342,24 @@ function patches_common {
 
 	# nlohmann json: Install pkgconfig/cmake into lib (share is deleted by us)
 	if [ -d "$NLOHMANNJSON_DIR" ]; then
+		verbosemsg "nlohmann_json"
+
 		(cd $NLOHMANNJSON_DIR
 			perl -pi -e 's/CMAKE_INSTALL_DATADIR/CMAKE_INSTALL_LIBDIR/' CMakeLists.txt
 		)
 	fi
 
 	# lhasa: disable binary and tests
-	(cd $LHASA_DIR
-		perl -pi -e 's/ src test//' Makefile.am
-		autoreconf -fi
-	)
+	if [ -d "$LHASA_DIR" ]; then
+		verbosemsg "lhasa"
 
+		(cd $LHASA_DIR
+			perl -pi -e 's/ src test//' Makefile.am
+			autoreconf -fi
+		)
+	fi
+
+	verbosemsg "ICU"
 	cp icudt*.dat $ICU_DIR/source/data/in
 	(cd $ICU_DIR/source
 		chmod u+x configure

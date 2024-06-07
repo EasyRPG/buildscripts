@@ -101,8 +101,8 @@ function build() {
 	mkdir -p $PLATFORM_PREFIX
 	$SCRIPT_DIR/../shared/mk-meson-cross.sh "${TARGET_HOST}${TARGET_API}" > $PLATFORM_PREFIX/meson-cross.txt
 
-	install_lib_zlib
-	install_lib $LIBPNG_DIR $LIBPNG_ARGS
+	install_lib_cmake $ZLIB_DIR $ZLIB_ARGS
+	install_lib_cmake $LIBPNG_DIR $LIBPNG_ARGS
 	install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=ON
 	install_lib_meson $HARFBUZZ_DIR $HARFBUZZ_ARGS
 	install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=OFF
