@@ -58,16 +58,12 @@ export MAKEFLAGS="-j${nproc:-2}"
 function set_build_flags {
 	export CC="$TARGET_HOST-gcc"
 	export CXX="$TARGET_HOST-g++"
-	if [ "$ENABLE_CCACHE" ]; then
-		export CC="ccache $CC"
-		export CXX="ccache $CXX"
-	fi
 	export CFLAGS="-g0 -O2"
 	export CXXFLAGS="$CFLAGS"
 	export CPPFLAGS="-DPSP2"
 	export CMAKE_SYSTEM_NAME="Generic"
 
-	$SCRIPT_DIR/../shared/mk-meson-cross.sh vita > $PLATFORM_PREFIX/meson-cross.txt
+	make_meson_cross vita > $PLATFORM_PREFIX/meson-cross.txt
 }
 
 function install_lib_vita2d() {

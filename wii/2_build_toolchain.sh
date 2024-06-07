@@ -69,17 +69,13 @@ export MAKEFLAGS="-j${nproc:-2}"
 function set_build_flags {
 	export CC="$TARGET_HOST-gcc"
 	export CXX="$TARGET_HOST-g++"
-	if [ "$ENABLE_CCACHE" ]; then
-		export CC="ccache $CC"
-		export CXX="ccache $CXX"
-	fi
 	export CFLAGS="-g0 -O2 -mcpu=750 -meabi -mhard-float -ffunction-sections -fdata-sections"
 	export CXXFLAGS="$CFLAGS"
 	export CPPFLAGS="-I$PLATFORM_PREFIX/include -DGEKKO -I$DEVKITPRO/libogc/include"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 	export CMAKE_SYSTEM_NAME="Generic"
 
-	$SCRIPT_DIR/../shared/mk-meson-cross.sh ogc > meson-cross.txt
+	make_meson_cross ogc > meson-cross.txt
 }
 
 install_lib_icu_native

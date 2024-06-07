@@ -82,10 +82,6 @@ export MAKEFLAGS="-j${nproc:-2}"
 function set_build_flags {
 	export CC="$TARGET_HOST-gcc"
 	export CXX="$TARGET_HOST-g++"
-	if [ "$ENABLE_CCACHE" ]; then
-		export CC="ccache $CC"
-		export CXX="ccache $CXX"
-	fi
 	ARCH_FLAGS="-march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -mword-relocations"
 	export CFLAGS="-g0 -O2 $ARCH_FLAGS -ffunction-sections -fdata-sections"
 	export CXXFLAGS="$CFLAGS"
@@ -94,7 +90,7 @@ function set_build_flags {
 	export LIBS="-lctru"
 	export CMAKE_SYSTEM_NAME="Generic"
 
-	$SCRIPT_DIR/../shared/mk-meson-cross.sh 3ds > meson-cross.txt
+	make_meson_cross 3ds > meson-cross.txt
 }
 
 install_lib_icu_native

@@ -111,6 +111,7 @@ function require_tool {
 	fi
 }
 
+ENABLE_CCACHE=0
 function test_ccache {
 	if [ -z ${NO_CCACHE+x} ]; then
 		if test_tool ccache; then
@@ -118,6 +119,33 @@ function test_ccache {
 			echo "CCACHE enabled"
 		fi
 	fi
+}
+
+function ccachify_compiler {
+	if [ $ENABLE_CCACHE -eq 1 ]; then
+		if [ -n "$CC" ]; then
+			saved_CC=$CC
+			export CC="ccache $CC"
+		fi
+
+		if [ -n "$CXX" ]; then
+			saved_CXX=$CXX
+			export CXX="ccache $CXX"
+		fi
+	fi
+}
+
+function unccachify_compiler {
+	if [ $ENABLE_CCACHE -eq 1 ]; then
+		[ -n "$saved_CC" ] && export CC=$saved_CC
+		[ -n "$saved_CXX" ] && export CXX=$saved_CXX
+	fi
+}
+
+function make_meson_cross {
+	ccachify_compiler
+	$SCRIPT_DIR/../shared/mk-meson-cross.sh $@
+	unccachify_compiler
 }
 
 function test_dkp {
@@ -133,6 +161,8 @@ function test_dkp {
 function install_lib {
 	headermsg "**** Building ${1%-*} ****"
 
+	ccachify_compiler
+
 	(cd $1
 		shift
 
@@ -143,6 +173,8 @@ function install_lib {
 		make
 		make install
 	)
+
+	unccachify_compiler
 }
 
 # generic cmake library installer
@@ -154,30 +186,35 @@ function install_lib_cmake {
 
 		rm -rf build
 
+		# cmake 3.17+, but this only reports unused options on older versions,
+		# so users unwilling to update cmake will not get ccache acceleration
+		CMAKE_CCACHE=
+		if [ $ENABLE_CCACHE -eq 1 ]; then
+			CMAKE_CCACHE="-DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache"
+		fi
+
+		CMAKE_AR=
 		if [ -n "$AR" ]; then
-			export CMAKE_AR="-DCMAKE_AR=$AR"
-		else
-			CMAKE_AR=
+			CMAKE_AR="-DCMAKE_AR=$AR"
 		fi
 
+		CMAKE_NM=
 		if [ -n "$NM" ]; then
-			export CMAKE_NM="-DCMAKE_NM=$NM"
-		else
-			CMAKE_NM=
+			CMAKE_NM="-DCMAKE_NM=$NM"
 		fi
 
+		CMAKE_RANLIB=
 		if [ -n "$RANLIB" ]; then
-			export CMAKE_RANLIB="-DCMAKE_RANLIB=$RANLIB"
-		else
-			CMAKE_RANLIB=
+			CMAKE_RANLIB="-DCMAKE_RANLIB=$RANLIB"
 		fi
 
-		$CMAKE_WRAPPER cmake . -GNinja -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=OFF \
+		$CMAKE_WRAPPER cmake . -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=OFF \
 			-DCMAKE_C_FLAGS="$CFLAGS $CPPFLAGS" -DCMAKE_CXX_FLAGS="$CXXFLAGS $CPPFLAGS" \
-			-DCMAKE_INSTALL_LIBDIR=lib $CMAKE_AR $CMAKE_NM $CMAKE_RANLIB \
+			-DCMAKE_INSTALL_LIBDIR=lib $CMAKE_AR $CMAKE_NM $CMAKE_RANLIB $CMAKE_CCACHE \
 			-DCMAKE_INSTALL_PREFIX=$PLATFORM_PREFIX -DCMAKE_SYSTEM_NAME=$CMAKE_SYSTEM_NAME \
 			-DCMAKE_PREFIX_PATH=$PLATFORM_PREFIX $CMAKE_EXTRA_ARGS $@
 		cmake --build build --target clean
+		cmake --build build
 		cmake --build build --target install
 	)
 }
@@ -212,25 +249,46 @@ function install_lib_liblcf {
 function install_lib_icu_native {
 	headermsg "**** Building ICU (native) ****"
 
+	# do not use cross environment
+	unset CC
+	unset CXX
+	unset CFLAGS
+	unset CPPFLAGS
+	unset CXXFLAGS
+	unset LDFLAGS
+
+	# ICU's configure will always check clang and then gcc first. Since they
+	# are used on many of our platforms, we can accelerate with ccache
+	if test_tool clang && test_tool clang++; then
+		export CC=clang
+		export CXX=clang++
+	elif test_tool gcc && test_tool g++; then
+		export CC=gcc
+		export CXX=g++
+	fi
+	if [ $ENABLE_CCACHE -eq 1 ]; then
+		export CC="ccache $CC"
+		export CXX="ccache $CXX"
+	fi
+
 	mkdir -p icu-native
 	(cd icu-native
-		unset CC
-		unset CXX
-		unset CFLAGS
-		unset CPPFLAGS
-		unset CXXFLAGS
-		unset LDFLAGS
-
 		../icu/source/configure --enable-static --disable-shared $ICU_ARGS
 		make clean
 		make
 	)
+
+	# reset
+	unset CC
+	unset CXX
 }
 
 function install_lib_icu_cross {
 	headermsg "**** Building ICU (cross) ****"
 
 	ICU_CROSS_BUILD=$PWD/icu-native
+
+	ccachify_compiler
 
 	mkdir -p icu-cross
 	(cd icu-cross
@@ -242,6 +300,8 @@ function install_lib_icu_cross {
 		make
 		make install
 	)
+
+	unccachify_compiler
 }
 
 # Use this when crosscompiling but configure assumes we are building native

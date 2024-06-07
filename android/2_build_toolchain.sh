@@ -93,13 +93,9 @@ function build() {
 	export TARGET_HOST="$4"
 	export CC="clang -target ${TARGET_HOST}${TARGET_API}"
 	export CXX="clang++ -target ${TARGET_HOST}${TARGET_API}"
-	if [ "$ENABLE_CCACHE" ]; then
-		export CC="ccache $CC"
-		export CXX="ccache $CXX"
-	fi
 
 	mkdir -p $PLATFORM_PREFIX
-	$SCRIPT_DIR/../shared/mk-meson-cross.sh "${TARGET_HOST}${TARGET_API}" > $PLATFORM_PREFIX/meson-cross.txt
+	make_meson_cross "${TARGET_HOST}${TARGET_API}" > $PLATFORM_PREFIX/meson-cross.txt
 
 	install_lib_cmake $ZLIB_DIR $ZLIB_ARGS
 	install_lib_cmake $LIBPNG_DIR $LIBPNG_ARGS

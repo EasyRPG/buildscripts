@@ -40,10 +40,6 @@ function set_build_flags() {
 	export PATH=$PLATFORM_PREFIX/bin:$PATH
 	export CC="$CLANG $ARCH"
 	export CXX="$CLANGXX $ARCH"
-	if [ "$ENABLE_CCACHE" ]; then
-		export CC="ccache $CC"
-		export CXX="ccache $CXX"
-	fi
 	export CFLAGS="-g -O2 -mmacosx-version-min=10.9 -isysroot $SDKPATH $3"
 	export CXXFLAGS=$CFLAGS
 	# ICU include is required for arm64
@@ -57,7 +53,7 @@ function set_build_flags() {
 	export TARGET_HOST="$2"
 
 	mkdir -p $PLATFORM_PREFIX
-	$SCRIPT_DIR/../shared/mk-meson-cross.sh "${TARGET_HOST}" > $PLATFORM_PREFIX/meson-cross.txt
+	make_meson_cross "${TARGET_HOST}" > $PLATFORM_PREFIX/meson-cross.txt
 }
 
 function build() {

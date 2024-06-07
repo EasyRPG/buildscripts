@@ -28,6 +28,13 @@ echo "Preparing toolchain"
 
 export PLATFORM_PREFIX=$WORKSPACE
 
+if test_tool clang && test_tool clang++; then
+	export CC=clang
+	export CXX=clang++
+elif test_tool gcc && test_tool g++; then
+	export CC=gcc
+	export CXX=g++
+fi
 export CFLAGS="-Os -g0 -fPIC -ffunction-sections -fdata-sections"
 export CXXFLAGS=$CFLAGS
 export CPPFLAGS="-I$PLATFORM_PREFIX/include"
@@ -35,10 +42,6 @@ export LDFLAGS="-fPIC -L$PLATFORM_PREFIX/lib"
 export MAKEFLAGS="-j${nproc:-2}"
 export PKG_CONFIG_PATH=$WORKSPACE/lib/pkgconfig
 export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
-if [ "$ENABLE_CCACHE" ]; then
-	export CC="ccache gcc"
-	export CXX="ccache g++"
-fi
 
 install_lib_cmake $ZLIB_DIR $ZLIB_ARGS
 install_lib_cmake $LIBPNG_DIR $LIBPNG_ARGS
