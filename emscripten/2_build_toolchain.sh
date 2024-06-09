@@ -64,6 +64,7 @@ function set_build_flags {
 	export EM_CFLAGS="-Wno-warn-absolute-paths"
 	export EMCC_CFLAGS="$EM_CFLAGS"
 	export EM_PKG_CONFIG_PATH="$PLATFORM_PREFIX/lib/pkgconfig"
+	export CMAKE_EXTRA_ARGS="-DCMAKE_FIND_ROOT_PATH=$PLATFORM_PREFIX"
 
 	# force mmap support in mpg123 (actually unused, but needed for building)
 	export ac_cv_func_mmap_fixed_mapped=yes

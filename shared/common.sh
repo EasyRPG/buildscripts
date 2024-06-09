@@ -332,12 +332,13 @@ function patches_common {
 		)
 	fi
 
-	# png: move cmake configuration
+	# png: move cmake configuration, fix using compiler with arguments
 	if [ -d "$LIBPNG_DIR" ]; then
 		verbosemsg "libpng"
 
 		(cd $LIBPNG_DIR
 			perl -pi -e 's#DESTINATION lib/libpng#DESTINATION lib/cmake/libpng#' CMakeLists.txt
+			patch -Np1 < $_SCRIPT_DIR/libpng-custom-cc.patch
 		)
 	fi
 
