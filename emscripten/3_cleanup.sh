@@ -8,6 +8,5 @@ headermsg "Cleaning up library build folders and other stuff..."
 cleanup
 
 rm -rf SDL2/
-rm -f meson-cross.txt
 
 echo " -> done"

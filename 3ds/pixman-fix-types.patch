@@ -1,0 +1,35 @@
+diff --color -Nur pixman-0.43.4.orig/pixman/pixman.h pixman-0.43.4/pixman/pixman.h
+--- pixman-0.43.4.orig/pixman/pixman.h	2024-02-29 17:13:20.000000000 +0100
++++ pixman-0.43.4/pixman/pixman.h	2024-06-07 18:28:33.819563120 +0200
+@@ -120,7 +120,7 @@
+ typedef uint32_t		pixman_fixed_1_31_t;
+ typedef uint32_t		pixman_fixed_1_16_t;
+ typedef int32_t			pixman_fixed_16_16_t;
+-typedef pixman_fixed_16_16_t	pixman_fixed_t;
++typedef int				pixman_fixed_t;
+ 
+ #define pixman_fixed_e			((pixman_fixed_t) 1)
+ #define pixman_fixed_1			(pixman_int_to_fixed(1))
+@@ -632,7 +632,7 @@
+ 
+ struct pixman_box32
+ {
+-    int32_t x1, y1, x2, y2;
++    int x1, y1, x2, y2;
+ };
+ 
+ struct pixman_region32
+diff --color -Nur pixman-0.43.4.orig/pixman/pixman-inlines.h pixman-0.43.4/pixman/pixman-inlines.h
+--- pixman-0.43.4.orig/pixman/pixman-inlines.h	2024-02-29 17:13:20.000000000 +0100
++++ pixman-0.43.4/pixman/pixman-inlines.h	2024-06-07 18:19:58.620034383 +0200
+@@ -792,8 +792,8 @@
+ 					 int32_t *       right_tz,
+ 					 int32_t *       right_pad)
+ {
+-	int width1 = *width, left_pad1, right_pad1;
+-	int width2 = *width, left_pad2, right_pad2;
++	int32_t width1 = *width, left_pad1, right_pad1;
++	int32_t width2 = *width, left_pad2, right_pad2;
+ 
+ 	pad_repeat_get_scanline_bounds (source_image_width, vx, unit_x,
+ 					&width1, &left_pad1, &right_pad1);

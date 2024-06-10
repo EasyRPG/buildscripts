@@ -31,7 +31,6 @@ if [ ! -f .patches-applied ]; then
 	)
 
 	# Fix icu build
-	cp -rup icu icu-native
 	patch -Np0 < $SCRIPT_DIR/icu-vita.patch
 
 	# Disable vita2dlib jpeg dependency
@@ -59,16 +58,12 @@ export MAKEFLAGS="-j${nproc:-2}"
 function set_build_flags {
 	export CC="$TARGET_HOST-gcc"
 	export CXX="$TARGET_HOST-g++"
-	if [ "$ENABLE_CCACHE" ]; then
-		export CC="ccache $CC"
-		export CXX="ccache $CXX"
-	fi
 	export CFLAGS="-g0 -O2"
 	export CXXFLAGS="$CFLAGS"
 	export CPPFLAGS="-DPSP2"
 	export CMAKE_SYSTEM_NAME="Generic"
 
-	$SCRIPT_DIR/../shared/mk-meson-cross.sh vita > $PLATFORM_PREFIX/meson-cross.txt
+	make_meson_cross vita > $PLATFORM_PREFIX/meson-cross.txt
 }
 
 function install_lib_vita2d() {
@@ -84,8 +79,9 @@ function install_lib_vita2d() {
 install_lib_icu_native
 
 set_build_flags
-install_lib_zlib
-install_lib $LIBPNG_DIR $LIBPNG_ARGS
+
+install_lib_cmake $ZLIB_DIR $ZLIB_ARGS
+install_lib_cmake $LIBPNG_DIR $LIBPNG_ARGS
 install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=ON
 install_lib_meson $HARFBUZZ_DIR $HARFBUZZ_ARGS
 install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=OFF

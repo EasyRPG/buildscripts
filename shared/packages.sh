@@ -6,9 +6,11 @@
 
 
 ZLIB_URL="https://zlib.net/fossils/zlib-1.3.1.tar.gz"
+ZLIB_ARGS="-DZLIB_BUILD_EXAMPLES=OFF"
 ZLIB_DIR="zlib-1.3.1"
 
 LIBPNG_URL="https://download.sourceforge.net/libpng/libpng-1.6.39.tar.xz"
+LIBPNG_ARGS="-DPNG_SHARED=OFF -DPNG_EXECUTABLES=OFF -DPNG_TESTS=OFF"
 LIBPNG_DIR="libpng-1.6.39"
 
 FREETYPE_URL="https://mirrors.sarata.com/non-gnu/freetype/freetype-2.13.2.tar.xz"

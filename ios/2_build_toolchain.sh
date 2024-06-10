@@ -22,8 +22,6 @@ if [ ! -f .patches-applied ]; then
 
 	patches_common
 
-	cp -rp icu icu-native
-
 	touch .patches-applied
 fi
 
@@ -43,10 +41,6 @@ function set_build_flags {
 	export CC="$CLANG $ARCH"
 	export CXX="$CLANGXX $ARCH"
 	export OBJC="$CLANG $ARCH"
-	if [ "$ENABLE_CCACHE" ]; then
-		export CC="ccache $CC"
-		export CXX="ccache $CXX"
-	fi
 	export CFLAGS="-g -O2 -miphoneos-version-min=9.0 -isysroot $SDKPATH $3"
 	export CXXFLAGS=$CFLAGS
 	# ICU include is required for arm64
@@ -58,14 +52,14 @@ function set_build_flags {
 	export TARGET_HOST="$2"
 
 	mkdir -p $PLATFORM_PREFIX
-	$SCRIPT_DIR/../shared/mk-meson-cross.sh "${TARGET_HOST}" > $PLATFORM_PREFIX/meson-cross.txt
+	make_meson_cross "${TARGET_HOST}" > $PLATFORM_PREFIX/meson-cross.txt
 }
 
 function build() {
 	cd "$WORKSPACE"
 
-	install_lib_zlib
-	install_lib $LIBPNG_DIR $LIBPNG_ARGS
+	install_lib_cmake $ZLIB_DIR $ZLIB_ARGS
+	install_lib_cmake $LIBPNG_DIR $LIBPNG_ARGS
 	install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=ON
 	install_lib_meson $HARFBUZZ_DIR $HARFBUZZ_ARGS
 	install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=OFF

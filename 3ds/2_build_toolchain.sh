@@ -16,6 +16,21 @@ test_ccache
 
 # Toolchain available?
 test_dkp "devkitARM"
+export PATH=$DEVKITARM/bin:$DEVKITPRO/tools/bin:$PATH
+
+# Extra tools available?
+if test_tool bannertool && test_tool makerom && test_tool 3dstool; then
+	: # nothing
+else
+	msg "The following tools need to be installed to allow building .cia"
+	msg "bundles or creating custom banners:"
+	msg "  https://github.com/dnasdw/3dstool"
+	#msg "  https://github.com/Steveice10/bannertool"
+	msg "  https://github.com/carstene1ns/3ds-bannertool"
+	msg "  https://github.com/profi200/Project_CTR"
+fi
+require_tool tex3ds
+require_tool 3dsxtool
 
 if [ ! -f .patches-applied ]; then
 	echo "Patching libraries"
@@ -25,6 +40,7 @@ if [ ! -f .patches-applied ]; then
 	# Fix pixman
 	(cd $PIXMAN_DIR
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/pixman-no-tls.patch
+		patch -Np1 < $SCRIPT_DIR/pixman-fix-types.patch
 	)
 
 	# Fix mpg123
@@ -33,23 +49,19 @@ if [ ! -f .patches-applied ]; then
 		autoreconf -fi
 	)
 
+	# Fix tremor
+	patch -d $TREMOR_DIR -Np1 < $SCRIPT_DIR/tremor-fix-types.patch
+
 	# Fix opus (remove when next version is out)
-	(cd $OPUS_DIR
-		patch -Np1 < $SCRIPT_DIR/opus-fix-types.patch
-	)
+	patch -d $OPUS_DIR -Np1 < $SCRIPT_DIR/opus-fix-types.patch
 
 	# Fix opusfile
-	(cd $OPUSFILE_DIR
-		patch -Np1 < $SCRIPT_DIR/../shared/extra/opusfile-devkit.patch
-	)
+	patch -d $OPUSFILE_DIR -Np1 < $SCRIPT_DIR/../shared/extra/opusfile-devkit.patch
 
 	# Fix lhasa
-	(cd $LHASA_DIR
-		patch -Np1 < $SCRIPT_DIR/../shared/extra/lhasa.patch
-	)
+	patch -d $LHASA_DIR -Np1 < $SCRIPT_DIR/../shared/extra/lhasa.patch
 
 	# Fix icu build
-	cp -rup icu icu-native
 	patch -Np0 < $SCRIPT_DIR/icu-3ds.patch
 
 	touch .patches-applied
@@ -58,8 +70,6 @@ fi
 cd $WORKSPACE
 
 echo "Preparing toolchain"
-
-export PATH=$DEVKITARM/bin:$PATH
 
 export PLATFORM_PREFIX=$WORKSPACE
 export TARGET_HOST=arm-none-eabi
@@ -70,10 +80,6 @@ export MAKEFLAGS="-j${nproc:-2}"
 function set_build_flags {
 	export CC="$TARGET_HOST-gcc"
 	export CXX="$TARGET_HOST-g++"
-	if [ "$ENABLE_CCACHE" ]; then
-		export CC="ccache $CC"
-		export CXX="ccache $CXX"
-	fi
 	ARCH_FLAGS="-march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft -mword-relocations"
 	export CFLAGS="-g0 -O2 $ARCH_FLAGS -ffunction-sections -fdata-sections"
 	export CXXFLAGS="$CFLAGS"
@@ -82,15 +88,15 @@ function set_build_flags {
 	export LIBS="-lctru"
 	export CMAKE_SYSTEM_NAME="Generic"
 
-	$SCRIPT_DIR/../shared/mk-meson-cross.sh 3ds > meson-cross.txt
+	make_meson_cross 3ds > meson-cross.txt
 }
 
 install_lib_icu_native
 
 set_build_flags
 
-install_lib_zlib
-install_lib $LIBPNG_DIR $LIBPNG_ARGS
+install_lib_cmake $ZLIB_DIR $ZLIB_ARGS
+install_lib_cmake $LIBPNG_DIR $LIBPNG_ARGS
 install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=ON
 #install_lib_meson $HARFBUZZ_DIR $HARFBUZZ_ARGS
 #install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=OFF

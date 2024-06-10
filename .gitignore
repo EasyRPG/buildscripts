@@ -22,3 +22,4 @@
 *.pl
 *.cache
 .DS_Store
+meson-cross.txt

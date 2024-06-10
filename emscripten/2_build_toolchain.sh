@@ -12,10 +12,8 @@ source $SCRIPT_DIR/../shared/import.sh
 os=`uname`
 if [ $os = "Darwin" ] ; then
 	nproc=$(getconf _NPROCESSORS_ONLN)
-	CP_ARGS="-r"
 else
 	nproc=$(nproc)
-	CP_ARGS="-rup"
 fi
 
 # no ccache support currently with em* wrappers
@@ -44,8 +42,6 @@ if [ ! -f .patches-applied ]; then
 		)
 	fi
 
-	cp $CP_ARGS icu icu-native
-
 	touch .patches-applied
 fi
 
@@ -68,6 +64,7 @@ function set_build_flags {
 	export EM_CFLAGS="-Wno-warn-absolute-paths"
 	export EMCC_CFLAGS="$EM_CFLAGS"
 	export EM_PKG_CONFIG_PATH="$PLATFORM_PREFIX/lib/pkgconfig"
+	export CMAKE_EXTRA_ARGS="-DCMAKE_FIND_ROOT_PATH=$PLATFORM_PREFIX"
 
 	# force mmap support in mpg123 (actually unused, but needed for building)
 	export ac_cv_func_mmap_fixed_mapped=yes
@@ -96,8 +93,8 @@ if [ $os = "Darwin" ] ; then
 	export TARGET_HOST="asmjs-unknown-emscripten"
 fi
 
-install_lib_zlib
-install_lib $LIBPNG_DIR $LIBPNG_ARGS
+install_lib_cmake $ZLIB_DIR $ZLIB_ARGS
+install_lib_cmake $LIBPNG_DIR $LIBPNG_ARGS
 install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=ON
 install_lib_meson $HARFBUZZ_DIR $HARFBUZZ_ARGS
 install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=OFF -DCMAKE_FIND_ROOT_PATH=$PLATFORM_PREFIX

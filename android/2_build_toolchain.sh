@@ -12,11 +12,9 @@ source $SCRIPT_DIR/../shared/import.sh
 os=`uname`
 if [ $os = "Darwin" ] ; then
 	nproc=$(getconf _NPROCESSORS_ONLN)
-	CP_ARGS="-r"
 	NDK_ARCH="darwin-x86_64"
 else
 	nproc=$(nproc)
-	CP_ARGS="-rup"
 	NDK_ARCH="linux-x86_64"
 fi
 
@@ -27,8 +25,6 @@ if [ ! -f .patches-applied ]; then
 	echo "Patching libraries"
 
 	patches_common
-
-	cp $CP_ARGS icu icu-native
 
 	# pixman: hardcode cpufeatures (crashes armeabi-v7a)
 	(cd $PIXMAN_DIR
@@ -97,16 +93,12 @@ function build() {
 	export TARGET_HOST="$4"
 	export CC="clang -target ${TARGET_HOST}${TARGET_API}"
 	export CXX="clang++ -target ${TARGET_HOST}${TARGET_API}"
-	if [ "$ENABLE_CCACHE" ]; then
-		export CC="ccache $CC"
-		export CXX="ccache $CXX"
-	fi
 
 	mkdir -p $PLATFORM_PREFIX
-	$SCRIPT_DIR/../shared/mk-meson-cross.sh "${TARGET_HOST}${TARGET_API}" > $PLATFORM_PREFIX/meson-cross.txt
+	make_meson_cross "${TARGET_HOST}${TARGET_API}" > $PLATFORM_PREFIX/meson-cross.txt
 
-	install_lib_zlib
-	install_lib $LIBPNG_DIR $LIBPNG_ARGS
+	install_lib_cmake $ZLIB_DIR $ZLIB_ARGS
+	install_lib_cmake $LIBPNG_DIR $LIBPNG_ARGS
 	install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=ON
 	install_lib_meson $HARFBUZZ_DIR $HARFBUZZ_ARGS
 	install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=OFF

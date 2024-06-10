@@ -18,6 +18,10 @@ test_ccache
 if [[ -z $DEVKITPRO || ! -d "$DEVKITPRO/devkitA64" ]]; then
 	errormsg "Setup devkitA64 properly. \$DEVKITPRO needs to be set."
 fi
+export PATH=$DEVKITPRO/devkitA64/bin:$DEVKITPRO/tools/bin:$PATH
+
+# Extra tools available?
+require_tool elf2nro
 
 if [ ! -f .patches-applied ]; then
 	echo "Patching libraries"
@@ -46,16 +50,12 @@ if [ ! -f .patches-applied ]; then
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/lhasa.patch
 	)
 
-	cp -rup icu icu-native
-
 	touch .patches-applied
 fi
 
 cd $WORKSPACE
 
 echo "Preparing toolchain"
-
-export PATH=$DEVKITPRO/devkitA64/bin:$PATH
 
 export PLATFORM_PREFIX=$WORKSPACE
 export TARGET_HOST=aarch64-none-elf
@@ -66,10 +66,6 @@ export MAKEFLAGS="-j${nproc:-2}"
 function set_build_flags {
 	export CC="$TARGET_HOST-gcc"
 	export CXX="$TARGET_HOST-g++"
-	if [ "$ENABLE_CCACHE" ]; then
-		export CC="ccache $CC"
-		export CXX="ccache $CXX"
-	fi
 	ARCH_FLAGS="-march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -fPIC -ftls-model=local-exec"
 	export CFLAGS="-g0 -O2 $ARCH_FLAGS -ffunction-sections -fdata-sections"
 	export CXXFLAGS="$CFLAGS"
@@ -78,15 +74,15 @@ function set_build_flags {
 	export LIBS="-lnx"
 	export CMAKE_SYSTEM_NAME="Generic"
 
-	$SCRIPT_DIR/../shared/mk-meson-cross.sh switch > meson-cross.txt
+	make_meson_cross switch > meson-cross.txt
 }
 
 install_lib_icu_native
 
 set_build_flags
 
-install_lib_zlib
-install_lib $LIBPNG_DIR $LIBPNG_ARGS
+install_lib_cmake $ZLIB_DIR $ZLIB_ARGS
+install_lib_cmake $LIBPNG_DIR $LIBPNG_ARGS
 install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=ON
 install_lib_meson $HARFBUZZ_DIR $HARFBUZZ_ARGS
 install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=OFF
