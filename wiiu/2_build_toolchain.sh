@@ -46,6 +46,8 @@ if [ ! -f .patches-applied ]; then
 	perl -pi -e 's|#ifndef U_DISABLE_OBJ_CODE.*|#if 0 // U_DISABLE_OBJ_CODE|' icu/source/tools/toolutil/pkg_genc.h
 	# Emit correct bigendian icudata header
 	patch -Np0 < icu-pkg_genc.patch
+	# Fix building data file without assembly
+	patch -Np0 < icu-data-char16.patch
 
 	touch .patches-applied
 fi

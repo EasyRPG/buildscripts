@@ -303,3 +303,23 @@
      return countOfItemsToEvict;
  }
  
+--- icu-native/source/i18n/persncal.cpp	2024-08-26 18:45:32.573623303 +0200
++++ icu/source/i18n/persncal.cpp	2024-08-26 18:45:43.337048627 +0200
+@@ -179,7 +179,7 @@
+         }
+     }
+ 
+-    int64_t julianDay = PERSIAN_EPOCH - 1LL + 365LL * (eyear - 1LL) + ClockMath::floorDivide(8LL * eyear + 21, 33);
++    int64_t julianDay = PERSIAN_EPOCH - 1LL + 365LL * (eyear - 1LL) + ClockMath::floorDivide(8 * eyear + 21, 33);
+ 
+     if (month != 0) {
+         julianDay += kPersianNumDays[month];
+@@ -225,7 +225,7 @@
+         return;
+     }
+ 
+-    int64_t farvardin1 = 365LL * (year - 1) + ClockMath::floorDivide(8LL * year + 21, 33);
++    int64_t farvardin1 = 365LL * (year - 1) + ClockMath::floorDivide((int32_t)(8 * year + 21), 33);
+     int32_t dayOfYear = daysSinceEpoch - farvardin1; // 0-based
+     U_ASSERT(dayOfYear >= 0);
+     U_ASSERT(dayOfYear < 366);

@@ -52,6 +52,8 @@ if [ ! -f .patches-applied ]; then
 	patch -Np0 < icu-pkg_genc.patch
 	# Patch mutex support in
 	patch -Np0 < icu-wii-mutex.patch
+	# Fix building data file without assembly
+	patch -Np0 < icu-data-char16.patch
 
 	touch .patches-applied
 fi

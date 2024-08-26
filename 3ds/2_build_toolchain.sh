@@ -52,9 +52,6 @@ if [ ! -f .patches-applied ]; then
 	# Fix tremor
 	patch -d $TREMOR_DIR -Np1 < $SCRIPT_DIR/tremor-fix-types.patch
 
-	# Fix opus (remove when next version is out)
-	patch -d $OPUS_DIR -Np1 < $SCRIPT_DIR/opus-fix-types.patch
-
 	# Fix opusfile
 	patch -d $OPUSFILE_DIR -Np1 < $SCRIPT_DIR/../shared/extra/opusfile-devkit.patch
 
