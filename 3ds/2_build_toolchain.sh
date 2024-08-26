@@ -84,6 +84,7 @@ function set_build_flags {
 	export LDFLAGS="$ARCH_FLAGS -L$PLATFORM_PREFIX/lib -L$DEVKITPRO/libctru/lib"
 	export LIBS="-lctru"
 	export CMAKE_SYSTEM_NAME="Generic"
+	export CMAKE_EXTRA_ARGS="-DCMAKE_SYSTEM_PROCESSOR=arm"
 
 	make_meson_cross 3ds > meson-cross.txt
 }

@@ -86,13 +86,15 @@ function build() {
 
 	export CFLAGS="-no-integrated-as -g0 -O2 -fPIC $5"
 	export CXXFLAGS="$CFLAGS"
-	export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$NDK_ROOT/sources/android/cpufeatures"
+	export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$ANDROID_NDK/sources/android/cpufeatures"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
 	unset PKG_CONFIG_PATH
 	export PKG_CONFIG_LIBDIR=$PLATFORM_PREFIX/lib/pkgconfig
 	export TARGET_HOST="$4"
 	export CC="clang -target ${TARGET_HOST}${TARGET_API}"
 	export CXX="clang++ -target ${TARGET_HOST}${TARGET_API}"
+
+	export CMAKE_EXTRA_ARGS="-DCMAKE_ANDROID_ARCH_ABI=$2 -DCMAKE_ANDROID_API=$TARGET_API"
 
 	mkdir -p $PLATFORM_PREFIX
 	make_meson_cross "${TARGET_HOST}${TARGET_API}" > $PLATFORM_PREFIX/meson-cross.txt
@@ -123,7 +125,7 @@ function build() {
 }
 
 export SDK_ROOT=$WORKSPACE/android-sdk
-export NDK_ROOT=$SDK_ROOT/ndk/21.4.7075529
+export ANDROID_NDK=$SDK_ROOT/ndk/21.4.7075529
 
 export MAKEFLAGS="-j${nproc:-2}"
 
@@ -133,13 +135,16 @@ cd $WORKSPACE
 install_lib_icu_native
 
 # Setup PATH
-NDK_PATH=$NDK_ROOT/toolchains/llvm/prebuilt/$NDK_ARCH/bin
-PATH=$NDK_ROOT:$NDK_PATH:$SDK_ROOT/tools:$PATH
+NDK_PATH=$ANDROID_NDK/toolchains/llvm/prebuilt/$NDK_ARCH/bin
+PATH=$ANDROID_NDK:$NDK_PATH:$SDK_ROOT/tools:$PATH
 
 export OLD_PATH=$PATH
 
 # Correctly detected mmap support in mpg123
 export ac_cv_func_mmap_fixed_mapped=yes
+
+# Target Android with CMake
+export CMAKE_SYSTEM_NAME=Android
 
 # ARMeabi-v7a
 build "ARMeabi-v7a" "armeabi-v7a" "arm" "armv7a-linux-androideabi" "-march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3"

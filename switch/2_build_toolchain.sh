@@ -73,6 +73,7 @@ function set_build_flags {
 	export LDFLAGS="$ARCH_FLAGS -L$PLATFORM_PREFIX/lib -L$DEVKITPRO/libnx/lib"
 	export LIBS="-lnx"
 	export CMAKE_SYSTEM_NAME="Generic"
+	export CMAKE_EXTRA_ARGS="-DCMAKE_SYSTEM_PROCESSOR=arm64"
 
 	make_meson_cross switch > meson-cross.txt
 }
