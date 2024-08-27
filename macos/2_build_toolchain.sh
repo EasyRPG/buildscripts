@@ -29,8 +29,8 @@ function set_build_flags() {
 	# $1: Arch (either x86_64 or arm64)
 	# $2: host for configure
 	# $3: additional cpp flags
-	CLANG="xcrun --sdk macosx clang"
-	CLANGXX="xcrun --sdk macosx clang++"
+	CLANG=`xcrun -f --sdk macosx clang`
+	CLANGXX=`xcrun -f --sdk macosx clang++`
 	ARCH="-arch $1"
 	SDKPATH=`xcrun -sdk macosx --show-sdk-path`
 	PLATFORM_PREFIX="$WORKSPACE/$1"
@@ -47,6 +47,7 @@ function set_build_flags() {
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib $ARCH -mmacosx-version-min=10.9 -isysroot $SDKPATH"
 
 	export MACOSX_DEPLOYMENT_TARGET=10.9
+	export CMAKE_EXTRA_ARGS="-DCMAKE_OSX_ARCHITECTURES=$1"
 
 	export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 	export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH

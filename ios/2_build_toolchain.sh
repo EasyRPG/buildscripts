@@ -29,8 +29,8 @@ function set_build_flags {
 	# $1: Arch (either armv7 or arm64)
 	# $2: host for configure
 	# $3: additional cpp flags
-	CLANG="xcrun --sdk iphoneos clang"
-	CLANGXX="xcrun --sdk iphoneos clang++"
+	CLANG=`xcrun -f --sdk iphoneos clang`
+	CLANGXX=`xcrun -f --sdk iphoneos clang++`
 	ARCH="-arch $1"
 	SDKPATH=`xcrun -sdk iphoneos --show-sdk-path`
 	PLATFORM_PREFIX="$WORKSPACE/$1"
@@ -46,6 +46,8 @@ function set_build_flags {
 	# ICU include is required for arm64
 	export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$WORKSPACE/icu/source/common"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib $ARCH -miphoneos-version-min=9.0 -isysroot $SDKPATH"
+
+	export CMAKE_EXTRA_ARGS="-DCMAKE_OSX_ARCHITECTURES=$1"
 
 	export PKG_CONFIG_PATH=$PLATFORM_PREFIX/lib/pkgconfig
 	export PKG_CONFIG_LIBDIR=$PKG_CONFIG_PATH
