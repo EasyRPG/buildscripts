@@ -106,8 +106,7 @@ ICUDATA_FILES="icudt*.dat"
 SDL2_URL="https://libsdl.org/release/SDL2-2.30.6.tar.gz"
 SDL2_DIR="SDL2-2.30.6"
 
-# only needed for lmu2png tool
-SDL2_IMAGE_URL="https://libsdl.org/projects/SDL_image/release/SDL2_image-2.8.0.tar.gz"
-SDL2_IMAGE_ARGS="--disable-jpg --disable-png-shared --disable-tif --disable-webp"
-SDL2_IMAGE_DIR="SDL2_image-2.8.0"
+# 3.18.0, only needed for lmu2png tool
+FREEIMAGE_URL="https://github.com/carstene1ns/freeimage-easyrpg/archive/d82954e4adcb6c1b223bd3cb2e953b6bbf54dfcd.zip"
+FREEIMAGE_DIR="freeimage-easyrpg-d82954e4adcb6c1b223bd3cb2e953b6bbf54dfcd"
 
