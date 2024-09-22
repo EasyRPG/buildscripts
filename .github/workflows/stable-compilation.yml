@@ -1,0 +1,68 @@
+name: Stable Compilation
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      git-ref:
+        description: Git Ref (Optional)
+        required: false
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  docker:
+    name: ${{ matrix.image }}
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ matrix.image }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+          #   version of: # gcc/g++ |     support end  #
+          # --------------------------------------------
+          - ubuntu:22.04  # 11.2.0  | LTS       (6/27) #
+          - debian:12     # 12.2.0  | stable    (6/26) #
+
+    steps:
+      - name: Install dependencies
+        run: |
+          export DEBIAN_FRONTEND="noninteractive"
+          apt-get update
+          apt-get install -yqq --no-install-recommends --no-install-suggests \
+            ca-certificates build-essential cmake ninja-build meson git \
+            autoconf autoconf-archive automake autotools-dev libtool \
+            sed gawk patch perl pkg-config curl unzip libpulse-dev
+
+      - name: Clone Repository
+        uses: actions/checkout@v4
+        if: github.event.inputs.git-ref == ''
+      - name: Clone Repository (with custom ref)
+        uses: actions/checkout@v4
+        if: github.event.inputs.git-ref != ''
+        with:
+          ref: ${{ github.event.inputs.git-ref }}
+
+      - name: Download
+        run: |
+          cd linux-static
+          ./1_download_library.sh
+
+      - name: Build and Install
+        run: |
+          cd linux-static
+          ./2_build_toolchain.sh
+
+      - name: Cleanup
+        run: |
+          cd linux-static
+          ./3_cleanup.sh
