@@ -60,6 +60,8 @@ if [ ! -f .patches-applied ]; then
 
 	# Fix icu build
 	patch -Np0 < $SCRIPT_DIR/icu-3ds.patch
+	# Patch mutex support out
+	patch -Np0 < $SCRIPT_DIR/icu-3ds-no-mutex.patch
 
 	touch .patches-applied
 fi
