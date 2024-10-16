@@ -11,6 +11,10 @@ IF EXIST vcpkg (
 :: Build vcpkg
 call bootstrap-vcpkg.bat
 
+:: Revert fmtlib to the previous version because fmt::styled does not compile
+:: Remove this when the next fmtlib version is released
+git restore -s 50ca16008cebab427e90a98f8ffc34208b215dba ports/fmt
+
 :: Optimize the debug libraries
 copy ..\helper\windows.cmake scripts\toolchains\windows.cmake
 
