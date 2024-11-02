@@ -47,6 +47,8 @@ fi
 
 if [ "$USE_WASM_SIMD" == "1" ]; then
 	CFLAGS_SIMD="-msimd128"
+	# Enable SSE2 fast paths for pixman, customize as needed
+	PIXMAN_EXTRA_ARGS="-Dsse2=enabled"
 fi
 
 export PLATFORM_PREFIX=$WORKSPACE
@@ -98,7 +100,7 @@ install_lib_cmake $LIBPNG_DIR $LIBPNG_ARGS
 install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=ON
 install_lib_meson $HARFBUZZ_DIR $HARFBUZZ_ARGS
 install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=OFF -DCMAKE_FIND_ROOT_PATH=$PLATFORM_PREFIX
-install_lib_meson $PIXMAN_DIR $PIXMAN_ARGS
+install_lib_meson $PIXMAN_DIR $PIXMAN_ARGS $PIXMAN_EXTRA_ARGS
 install_lib_cmake $EXPAT_DIR $EXPAT_ARGS
 install_lib $LIBOGG_DIR $LIBOGG_ARGS
 install_lib $LIBVORBIS_DIR $LIBVORBIS_ARGS
