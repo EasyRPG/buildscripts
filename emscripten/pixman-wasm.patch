@@ -1,39 +1,20 @@
 --- a/pixman/pixman/pixman-x86.c
 +++ b/pixman/pixman/pixman-x86.c
-@@ -77,13 +77,20 @@
+@@ -74,10 +74,12 @@ detect_cpu_features (void)
  
  #else
  
--#define _PIXMAN_X86_64							\
--    (defined(__amd64__) || defined(__x86_64__) || defined(_M_AMD64))
-+#if (defined(__amd64__) || defined(__x86_64__) || defined(_M_AMD64))
-+#define _PIXMAN_X86_64 1
-+#else
-+#define _PIXMAN_X86_64 0
-+#endif
- 
- static pixman_bool_t
- have_cpuid (void)
- {
--#if _PIXMAN_X86_64 || defined (_MSC_VER)
-+#if defined(__EMSCRIPTEN__)
-+
-+    return FALSE;
-+
-+#elif _PIXMAN_X86_64 || defined (_MSC_VER)
- 
-     return TRUE;
- 
-@@ -109,6 +109,8 @@
+-#if defined (__GNUC__)
++#if defined (__GNUC__) && !defined(__EMSCRIPTEN__)
+ #include <cpuid.h>
  #endif
- }
  
 +#if !defined(__EMSCRIPTEN__)
 +
  static void
  pixman_cpuid (uint32_t feature,
  	      uint32_t *a, uint32_t *b, uint32_t *c, uint32_t *d)
-@@ -156,10 +156,17 @@
+@@ -98,10 +100,17 @@ pixman_cpuid (uint32_t feature,
  #error Unknown compiler
  #endif
  }
@@ -45,13 +26,13 @@
  {
 +#if defined(__EMSCRIPTEN__)
 +
-+    return X86_SSE | X86_SSE2 | X86_SSSE3;
++    return X86_MMX | X86_MMX_EXTENSIONS | X86_SSE | X86_SSE2;
 +
 +#else
      uint32_t a, b, c, d;
      cpu_features_t features = 0;
  
-@@ -202,6 +202,8 @@
+@@ -147,6 +156,8 @@ detect_cpu_features (void)
      }
  
      return features;
@@ -72,37 +53,60 @@
  #include <xmmintrin.h>
  #include <emmintrin.h>
  #include <tmmintrin.h>
---- a/pixman/configure
-+++ b/pixman/configure
-@@ -14207,7 +14207,11 @@
- #if defined(__GNUC__) && (__GNUC__ < 3 || (__GNUC__ == 3 && __GNUC_MINOR__ < 4))
- #error "Need GCC >= 3.4 for MMX intrinsics"
- #endif
-+#if !defined(__EMSCRIPTEN__)
- #include <mmintrin.h>
-+#else
-+#include <xmmintrin.h>
-+#endif
- #include <stdint.h>
+--- a/pixman/meson.build
++++ b/pixman/meson.build
+@@ -160,14 +160,16 @@ elif cc.get_id() != 'msvc'
+   sse2_flags = ['-msse2', '-Winline']
+ endif
+ if not use_sse2.disabled()
+-  if host_machine.cpu_family() == 'x86'
++  # if host_machine.cpu_family() == 'x86'
+     if cc.compiles('''
+         #if defined(__GNUC__) && (__GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 2))
+-        #   if !defined(__amd64__) && !defined(__x86_64__)
++        #   if !defined(__amd64__) && !defined(__x86_64__) && !defined(__EMSCRIPTEN__)
+         #      error "Need GCC >= 4.2 for SSE2 intrinsics on x86"
+         #   endif
+         #endif
+-        #include <mmintrin.h>
++        #ifndef __EMSCRIPTEN__
++        #  include <mmintrin.h>
++        #endif
+         #include <xmmintrin.h>
+         #include <emmintrin.h>
+         int param;
+@@ -180,7 +182,7 @@ if not use_sse2.disabled()
+         name : 'SSE2 Intrinsic Support')
+       have_sse2 = true
+     endif
+-  elif host_machine.cpu_family() == 'x86_64'
++  if host_machine.cpu_family() == 'x86_64'
+     have_sse2 = true
+   endif
+ endif
+@@ -200,11 +200,14 @@ endif
  
- /* Check support for block expressions */
-@@ -14308,7 +14308,9 @@
- #      error "Need GCC >= 4.2 for SSE2 intrinsics on x86"
- #   endif
- #endif
-+#if !defined(__EMSCRIPTEN__)
- #include <mmintrin.h>
-+#endif
- #include <xmmintrin.h>
- #include <emmintrin.h>
- int param;
-@@ -14380,7 +14380,9 @@
- cat confdefs.h - <<_ACEOF >conftest.$ac_ext
- /* end confdefs.h.  */
+ # x64 pre-2010 MSVC compilers crashes when building the ssse3 code
+ if not use_ssse3.disabled() and not (cc.get_id() == 'msvc' and cc.version().version_compare('<16') and host_machine.cpu_family() == 'x86_64')
+-  if host_machine.cpu_family().startswith('x86')
++  # if host_machine.cpu_family().startswith('x86')
+     if cc.compiles('''
+-        #include <mmintrin.h>
++        #ifndef __EMSCRIPTEN__
++        #  include <mmintrin.h>
++        #endif
+         #include <xmmintrin.h>
+         #include <emmintrin.h>
++        #include <tmmintrin.h>
+         int param;
+         int main () {
+           __m128i a = _mm_set1_epi32 (param), b = _mm_set1_epi32 (param + 1), c;
+@@ -215,7 +218,7 @@ if not use_ssse3.disabled() and not (cc.get_id() == 'msvc' and cc.version().vers
+         name : 'SSSE3 Intrinsic Support')
+       have_ssse3 = true
+     endif
+-  endif
++  # endif
+ endif
  
-+#if !defined(__EMSCRIPTEN__)
- #include <mmintrin.h>
-+#endif
- #include <xmmintrin.h>
- #include <emmintrin.h>
- #include <tmmintrin.h>
+ if have_ssse3
