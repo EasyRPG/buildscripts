@@ -24,7 +24,7 @@ function download {
 	# Try cache folder first
 	if [ "x$EASYRPG_PATH_DOWNLOADCACHE" != "x" ]; then
 		if [ -e $EASYRPG_PATH_DOWNLOADCACHE/$file ]; then
-			cp -rup $EASYRPG_PATH_DOWNLOADCACHE/$file $file
+			cp $EASYRPG_PATH_DOWNLOADCACHE/$file $file
 			echo "[copied from cache]"
 			return
 		fi
