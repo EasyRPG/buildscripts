@@ -68,7 +68,7 @@ diff --color -Naur pixman-0.43.4.orig/meson.build pixman-0.43.4/meson.build
      static int x = 1;
 diff --color -Naur pixman-0.43.4.orig/meson_options.txt pixman-0.43.4/meson_options.txt
 --- pixman-0.43.4.orig/meson_options.txt	2024-02-29 17:13:20.000000000 +0100
-+++ pixman-0.43.4/meson_options.txt	2024-03-07 23:27:00.756426834 +0100
++++ pixman-0.43.4/meson.options	2024-03-07 23:27:00.756426834 +0100
 @@ -80,11 +80,6 @@
    description : 'Use GNU style inline assembler',
  )
