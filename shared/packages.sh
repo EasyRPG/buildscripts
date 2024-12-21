@@ -100,7 +100,7 @@ ICU_ARGS="--enable-strict=no --disable-tests --disable-samples \
 --disable-dyload --disable-extras --disable-icuio \
 --with-data-packaging=static --disable-layout --disable-layoutex"
 
-ICUDATA_URL=https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata.tar.gz
+ICUDATA_URL=https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata76_all.tar.gz
 ICUDATA_FILES="icudt*.dat"
 
 SDL2_URL="https://libsdl.org/release/SDL2-2.30.10.tar.gz"
