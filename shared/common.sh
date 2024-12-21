@@ -61,9 +61,6 @@ function git_clone {
 function download_liblcf {
 	if [ "$BUILD_LIBLCF" == "1" ]; then
 		git_clone "https://github.com/easyrpg/liblcf"
-		(cd liblcf
-			autoreconf -fi
-		)
 	fi
 }
 
@@ -242,7 +239,7 @@ function install_lib_meson {
 
 function install_lib_liblcf {
 	if [ "$BUILD_LIBLCF" == "1" ]; then
-		install_lib liblcf --disable-update-mimedb --disable-tools
+		install_lib_cmake liblcf -DLIBLCF_UPDATE_MIMEDB=OFF -DLIBLCF_ENABLE_TOOLS=OFF -DLIBLCF_ENABLE_TESTS=OFF
 	fi
 }
 
