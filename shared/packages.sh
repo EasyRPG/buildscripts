@@ -13,7 +13,7 @@ LIBPNG_URL="https://download.sourceforge.net/libpng/libpng-1.6.39.tar.xz"
 LIBPNG_ARGS="-DPNG_SHARED=OFF -DPNG_EXECUTABLES=OFF -DPNG_TESTS=OFF"
 LIBPNG_DIR="libpng-1.6.39"
 
-FREETYPE_URL="https://mirrors.sarata.com/non-gnu/freetype/freetype-2.13.3.tar.xz"
+FREETYPE_URL="https://download.savannah.gnu.org/releases/freetype/freetype-2.13.3.tar.xz"
 FREETYPE_ARGS="-DFT_DISABLE_BZIP2=ON -DFT_DISABLE_BROTLI=ON"
 FREETYPE_DIR="freetype-2.13.3"
 
