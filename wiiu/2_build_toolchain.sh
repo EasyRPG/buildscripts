@@ -41,6 +41,11 @@ if [ ! -f .patches-applied ]; then
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/lhasa.patch
 	)
 
+	# Fix fluidsynth
+	(cd $FLUIDSYNTH_DIR
+		patch -Np1 < $SCRIPT_DIR/fluidsynth-no-pthread.patch
+	)
+
 	# Fix icu build
 	# Do not write objects, but source files
 	perl -pi -e 's|#ifndef U_DISABLE_OBJ_CODE.*|#if 0 // U_DISABLE_OBJ_CODE|' icu/source/tools/toolutil/pkg_genc.h
@@ -92,7 +97,7 @@ install_lib $LIBVORBIS_DIR $LIBVORBIS_ARGS
 install_lib $MPG123_DIR $MPG123_ARGS
 install_lib_cmake $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
 install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
-install_lib_cmake $FLUIDLITE_DIR $FLUIDLITE_ARGS
+install_lib_cmake $FLUIDSYNTH_DIR $FLUIDSYNTH_ARGS
 install_lib $OPUS_DIR $OPUS_ARGS
 install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 install_lib_meson $INIH_DIR $INIH_ARGS

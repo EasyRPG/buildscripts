@@ -66,9 +66,9 @@ download_and_extract $OPUS_URL
 rm -rf $OPUSFILE_DIR
 download_and_extract $OPUSFILE_URL
 
-# FluidLite
-rm -rf $FLUIDLITE_DIR
-download_and_extract $FLUIDLITE_URL
+# FluidSynth
+rm -rf $FLUIDSYNTH_DIR
+download_and_extract $FLUIDSYNTH_URL
 
 # inih
 rm -rf $INIH_DIR
