@@ -32,7 +32,7 @@ function download {
 
 	# Fallback to easyrpg.org when <100KB/s for >3s
 	if [ "x$USE_EASYRPG_MIRROR" == "x1" ] || \
-		! curl -sSLOR -y3 -Y102400 --connect-timeout 3 $url; then
+		! curl --fail -sSLOR -y3 -Y102400 --connect-timeout 3 $url; then
 		curl -sSLOR https://easyrpg.org/downloads/sources/$file
 	fi
 	[ $? -eq 0 ] && echo "done."
