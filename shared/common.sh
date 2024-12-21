@@ -432,7 +432,7 @@ function cleanup {
 	libvorbis-*/ tremor-*/ mpg123-*/ libsndfile-*/ libxmp-lite-*/ speexdsp-*/ \
 	libsamplerate-*/ wildmidi-*/ opus-*/ opusfile-*/ icu/ icu-native/ icu-cross/ \
 	SDL2-*/ SDL2_image-*/ fmt-*/ FluidLite-*/ fluidsynth-*/ json-*/ inih-*/ \
-	lhasa-*/ liblcf/
+	lhasa-*/ freeimage-* liblcf/
 	rm -f *.zip *.bz2 *.gz *.xz *.tgz icudt* .patches-applied config.cache meson-cross.txt
 	rm -rf sbin/ share/
 	rm -f lib/*.la
