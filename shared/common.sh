@@ -424,6 +424,8 @@ function patches_common {
 		chmod u+x configure
 		cp config/mh-linux config/mh-unknown
 		perl -pi -e 's/SMALL_BUFFER_MAX_SIZE 512/SMALL_BUFFER_MAX_SIZE 2048/' tools/toolutil/pkg_genc.h
+		# Disable icu components not required for encoding
+		perl -pi -e 's/LIBCPPFLAGS =/LIBCPPFLAGS = -DUCONFIG_ONLY_COLLATION/' config/mh-unknown
 	)
 }
 
