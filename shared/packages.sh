@@ -49,9 +49,9 @@ LIBSNDFILE_URL="https://github.com/libsndfile/libsndfile/releases/download/1.2.2
 LIBSNDFILE_ARGS="--disable-alsa --disable-sqlite --disable-full-suite --disable-external-libs --disable-mpeg"
 LIBSNDFILE_DIR="libsndfile-1.2.2"
 
-LIBXMP_LITE_URL="https://github.com/libxmp/libxmp/releases/download/libxmp-4.6.0/libxmp-lite-4.6.0.tar.gz"
+LIBXMP_LITE_URL="https://github.com/libxmp/libxmp/releases/download/libxmp-4.6.1/libxmp-lite-4.6.1.tar.gz"
 LIBXMP_LITE_ARGS="-DBUILD_STATIC=ON -DBUILD_SHARED=OFF"
-LIBXMP_LITE_DIR="libxmp-lite-4.6.0"
+LIBXMP_LITE_DIR="libxmp-lite-4.6.1"
 
 SPEEXDSP_URL="https://downloads.xiph.org/releases/speex/speexdsp-1.2.1.tar.gz"
 SPEEXDSP_ARGS="--disable-sse --disable-neon"
@@ -72,9 +72,9 @@ OPUSFILE_URL="https://github.com/xiph/opusfile/releases/download/v0.12/opusfile-
 OPUSFILE_ARGS="--disable-http --disable-examples"
 OPUSFILE_DIR="opusfile-0.12"
 
-FLUIDSYNTH_URL="https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v2.4.1.tar.gz"
+FLUIDSYNTH_URL="https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v2.4.2.tar.gz"
 FLUIDSYNTH_ARGS="-DLIB_SUFFIX=''"
-FLUIDSYNTH_DIR="fluidsynth-2.4.1"
+FLUIDSYNTH_DIR="fluidsynth-2.4.2"
 
 FLUIDLITE_URL="https://github.com/divideconcept/FluidLite/archive/57a0e74e708f699b13d7c85b28a4e1ff5b71887c.zip"
 FLUIDLITE_ARGS="-DFLUIDLITE_BUILD_STATIC=ON -DFLUIDLITE_BUILD_SHARED=OFF"
@@ -84,9 +84,9 @@ NLOHMANNJSON_URL="https://github.com/nlohmann/json/archive/v3.11.3.tar.gz"
 NLOHMANNJSON_DIR="json-3.11.3"
 NLOHMANNJSON_ARGS="-DJSON_BuildTests=OFF"
 
-FMT_URL="https://github.com/fmtlib/fmt/releases/download/11.0.2/fmt-11.0.2.zip"
+FMT_URL="https://github.com/fmtlib/fmt/releases/download/11.1.1/fmt-11.1.1.zip"
 FMT_ARGS="-DFMT_DOC=OFF -DFMT_TEST=OFF"
-FMT_DIR="fmt-11.0.2"
+FMT_DIR="fmt-11.1.1"
 
 INIH_URL="https://github.com/benhoyt/inih/archive/refs/tags/r58.tar.gz"
 INIH_DIR="inih-r58"
@@ -104,8 +104,8 @@ ICU_ARGS="--enable-strict=no --disable-tests --disable-samples \
 ICUDATA_URL=https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata76_all.tar.gz
 ICUDATA_FILES="icudt*.dat"
 
-SDL2_URL="https://libsdl.org/release/SDL2-2.30.10.tar.gz"
-SDL2_DIR="SDL2-2.30.10"
+SDL2_URL="https://libsdl.org/release/SDL2-2.30.11.tar.gz"
+SDL2_DIR="SDL2-2.30.11"
 
 # 3.18.0, only needed for lmu2png tool
 FREEIMAGE_URL="https://github.com/carstene1ns/freeimage-easyrpg/archive/d82954e4adcb6c1b223bd3cb2e953b6bbf54dfcd.zip"
