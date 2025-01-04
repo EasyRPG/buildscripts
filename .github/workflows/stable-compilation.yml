@@ -41,7 +41,9 @@ jobs:
           apt-get install -yqq --no-install-recommends --no-install-suggests \
             ca-certificates build-essential cmake ninja-build meson git \
             autoconf autoconf-archive automake autotools-dev libtool \
-            sed gawk patch perl pkg-config curl unzip libpulse-dev
+            sed gawk patch perl pkg-config curl unzip libpulse-dev python3-pip
+          pip3 config set global.break-system-packages true
+          pip3 install --upgrade meson
 
       - name: Clone Repository
         uses: actions/checkout@v4

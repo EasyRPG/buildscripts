@@ -59,9 +59,10 @@ if [ ! -f .patches-applied ]; then
 	patch -d $LHASA_DIR -Np1 < $SCRIPT_DIR/../shared/extra/lhasa.patch
 
 	# Fix icu build
-	patch -Np0 < $SCRIPT_DIR/icu-3ds.patch
-	# Patch mutex support out
-	patch -Np0 < $SCRIPT_DIR/icu-3ds-no-mutex.patch
+	# Remove mutexes (crashes)
+	patch -Np0 < $SCRIPT_DIR/../shared/extra/icu-no-mutex.patch
+	# Fix char16 detection
+	patch -Np0 < $SCRIPT_DIR/icu-data-char16.patch
 
 	touch .patches-applied
 fi
