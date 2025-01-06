@@ -30,6 +30,12 @@ if [ ! -f .patches-applied ]; then
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/lhasa.patch
 	)
 
+	# Fix fmt
+	(cd $FMT_DIR
+		# Fix undefined reference to funlockfile
+		perl -pi -e 's/define FMT_USE_FALLBACK_FILE 0/define FMT_USE_FALLBACK_FILE 1/' include/fmt/format-inl.h
+	)
+
 	# Fix icu build
 	patch -Np0 < $SCRIPT_DIR/icu-vita.patch
 
