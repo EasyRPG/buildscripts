@@ -1,5 +1,5 @@
-From eccae438630ad7e64a6f8a74e6f2dea320fdf20c Mon Sep 17 00:00:00 2001
-From: Ghabry <gabriel+github@mastergk.de>
+From dbc6a1bb295fcf815b15ccc963143f8b8589e3ff Mon Sep 17 00:00:00 2001
+From: Ghabry
 Date: Fri, 17 Mar 2023 14:02:43 +0100
 Subject: [PATCH 2/2] Disable most features
 
@@ -8,7 +8,7 @@ Subject: [PATCH 2/2] Disable most features
  1 file changed, 27 insertions(+), 27 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index d86b9bc0..d58e43fc 100644
+index d86b9bc..d58e43f 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -76,41 +76,41 @@ option ( enable-trap-on-fpe "enable SIGFPE trap on Floating Point Exceptions" of

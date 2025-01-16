@@ -1,28 +1,29 @@
-From d7fd69a91c5293c18103f8b11a61d74f55c055c2 Mon Sep 17 00:00:00 2001
-From: Ghabry <gabriel+github@mastergk.de>
+From 4edd86332c57377c74a3694129ba9efb91ad82d9 Mon Sep 17 00:00:00 2001
+From: Ghabry
 Date: Fri, 17 Mar 2023 14:00:45 +0100
 Subject: [PATCH 1/2] Shim glib
 
 ---
  CMakeLists.txt                   |  4 +-
  src/CMakeLists.txt               |  3 +-
- src/bindings/fluid_cmd.c         |  3 ++
- src/glib_shim.c                  | 12 +++++
- src/glib_shim.h                  | 90 ++++++++++++++++++++++++++++++++
+ src/bindings/fluid_cmd.c         |  3 +
+ src/glib_shim.c                  | 12 ++++
+ src/glib_shim.h                  | 95 ++++++++++++++++++++++++++++++++
  src/rvoice/fluid_rvoice_mixer.c  | 10 ----
  src/sfloader/fluid_defsfont.c    |  5 --
  src/sfloader/fluid_samplecache.c |  2 +
+ src/sfloader/fluid_sffile.c      |  6 +-
  src/synth/fluid_synth.c          | 16 +++---
  src/synth/fluid_synth.h          |  2 +-
- src/utils/fluid_sys.c            |  9 +++-
+ src/utils/fluid_sys.c            |  9 ++-
  src/utils/fluid_sys.h            |  8 +--
  src/utils/fluidsynth_priv.h      |  2 +-
- 13 files changed, 132 insertions(+), 34 deletions(-)
+ 14 files changed, 142 insertions(+), 35 deletions(-)
  create mode 100644 src/glib_shim.c
  create mode 100644 src/glib_shim.h
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 849f8b37..d86b9bc0 100644
+index 849f8b3..d86b9bc 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -533,8 +533,8 @@ if ( CMAKE_VERSION VERSION_GREATER_EQUAL 3.15 AND VCPKG_TOOLCHAIN )
@@ -37,7 +38,7 @@ index 849f8b37..d86b9bc0 100644
  if ( GLib2_VERSION AND GLib2_VERSION VERSION_LESS "2.26.0" )
      message ( WARNING "Your version of glib is very old. This may cause problems with fluidsynth's sample cache on Windows. Consider updating to glib 2.26 or newer!" )
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index a2f9e55b..e2a1d752 100644
+index a2f9e55..e2a1d75 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
 @@ -108,6 +108,7 @@ endif ( OBOE_SUPPORT )
@@ -58,7 +59,7 @@ index a2f9e55b..e2a1d752 100644
  if ( TARGET SndFile::sndfile AND LIBSNDFILE_SUPPORT )
      target_link_libraries ( libfluidsynth-OBJ PUBLIC SndFile::sndfile )
 diff --git a/src/bindings/fluid_cmd.c b/src/bindings/fluid_cmd.c
-index 444b2635..74780e14 100644
+index 444b263..74780e1 100644
 --- a/src/bindings/fluid_cmd.c
 +++ b/src/bindings/fluid_cmd.c
 @@ -433,6 +433,8 @@ static const fluid_cmd_t fluid_commands[] =
@@ -80,7 +81,7 @@ index 444b2635..74780e14 100644
  /**
 diff --git a/src/glib_shim.c b/src/glib_shim.c
 new file mode 100644
-index 00000000..40b8b560
+index 0000000..40b8b56
 --- /dev/null
 +++ b/src/glib_shim.c
 @@ -0,0 +1,12 @@
@@ -98,10 +99,10 @@ index 00000000..40b8b560
 +}
 diff --git a/src/glib_shim.h b/src/glib_shim.h
 new file mode 100644
-index 00000000..f90f0eb4
+index 0000000..08582e3
 --- /dev/null
 +++ b/src/glib_shim.h
-@@ -0,0 +1,90 @@
+@@ -0,0 +1,95 @@
 +#ifndef GLIB_SHIM_H
 +#define GLIB_SHIM_H
 +
@@ -132,8 +133,13 @@ index 00000000..f90f0eb4
 +#define G_BIG_ENDIAN 1
 +#endif
 +
++#ifdef WORDS_BIGENDIAN
++#define GINT32_FROM_LE(x) ((x >> 24) | ((x<<8) & 0x00FF0000) | ((x>>8) & 0x0000FF00) | (x << 24))
++#define GINT16_FROM_LE(x) ((x >> 8) | (x << 8))
++#else
 +#define GINT32_FROM_LE(x) ((x))
 +#define GINT16_FROM_LE(x) ((x))
++#endif
 +
 +#define G_LIKELY
 +#define G_UNLIKELY
@@ -193,7 +199,7 @@ index 00000000..f90f0eb4
 +
 +#endif
 diff --git a/src/rvoice/fluid_rvoice_mixer.c b/src/rvoice/fluid_rvoice_mixer.c
-index c1e2fb2e..92553131 100644
+index c1e2fb2..9255313 100644
 --- a/src/rvoice/fluid_rvoice_mixer.c
 +++ b/src/rvoice/fluid_rvoice_mixer.c
 @@ -478,7 +478,6 @@ fluid_rvoice_buffers_mix(fluid_rvoice_buffers_t *buffers,
@@ -249,7 +255,7 @@ index c1e2fb2e..92553131 100644
          {
              int dsp_i = i * FLUID_MIXER_MAX_BUFFERS_DEFAULT * FLUID_BUFSIZE + j;
 diff --git a/src/sfloader/fluid_defsfont.c b/src/sfloader/fluid_defsfont.c
-index b601621e..a82362d3 100644
+index b601621..a82362d 100644
 --- a/src/sfloader/fluid_defsfont.c
 +++ b/src/sfloader/fluid_defsfont.c
 @@ -395,8 +395,6 @@ int fluid_defsfont_load_all_sampledata(fluid_defsfont_t *defsfont, SFData *sfdat
@@ -282,7 +288,7 @@ index b601621e..a82362d3 100644
                  int modified;
                  /* Data pointers of SF2 samples point to large sample data block loaded above */
 diff --git a/src/sfloader/fluid_samplecache.c b/src/sfloader/fluid_samplecache.c
-index 64e9e9e7..4c504c0f 100644
+index 64e9e9e..4c504c0 100644
 --- a/src/sfloader/fluid_samplecache.c
 +++ b/src/sfloader/fluid_samplecache.c
 @@ -282,6 +282,7 @@ static fluid_samplecache_entry_t *get_samplecache_entry(SFData *sf,
@@ -301,8 +307,28 @@ index 64e9e9e7..4c504c0f 100644
      return FLUID_OK;
  }
  
+diff --git a/src/sfloader/fluid_sffile.c b/src/sfloader/fluid_sffile.c
+index 8359424..2aae4db 100644
+--- a/src/sfloader/fluid_sffile.c
++++ b/src/sfloader/fluid_sffile.c
+@@ -2252,10 +2252,14 @@ static int fluid_sffile_read_wav(SFData *sf, unsigned int start, unsigned int en
+     if(FLUID_IS_BIG_ENDIAN)
+     {
+         unsigned int i;
++        unsigned short data;
+ 
+         for(i = 0; i < num_samples; i++)
+         {
+-            loaded_data[i] = FLUID_LE16TOH(loaded_data[i]);
++            data = loaded_data[i];
++            data = (data >> 8) | (data << 8);
++            //loaded_data[i] = FLUID_LE16TOH(loaded_data[i]);
++            loaded_data[i] = data;
+         }
+     }
+ 
 diff --git a/src/synth/fluid_synth.c b/src/synth/fluid_synth.c
-index e356982e..dbfe9002 100644
+index e356982..dbfe900 100644
 --- a/src/synth/fluid_synth.c
 +++ b/src/synth/fluid_synth.c
 @@ -636,8 +636,9 @@ new_fluid_synth(fluid_settings_t *settings)
@@ -368,7 +394,7 @@ index e356982e..dbfe9002 100644
  
              FLUID_API_RETURN(1);
 diff --git a/src/synth/fluid_synth.h b/src/synth/fluid_synth.h
-index 7dbcdc55..97f51752 100644
+index 7dbcdc5..97f5175 100644
 --- a/src/synth/fluid_synth.h
 +++ b/src/synth/fluid_synth.h
 @@ -152,7 +152,7 @@ struct _fluid_synth_t
@@ -381,7 +407,7 @@ index 7dbcdc55..97f51752 100644
      fluid_sample_timer_t *sample_timers; /**< List of timers triggered before a block is processed */
      unsigned int min_note_length_ticks; /**< If note-offs are triggered just after a note-on, they will be delayed */
 diff --git a/src/utils/fluid_sys.c b/src/utils/fluid_sys.c
-index babb11ff..e82094be 100644
+index babb11f..e82094b 100644
 --- a/src/utils/fluid_sys.c
 +++ b/src/utils/fluid_sys.c
 @@ -33,7 +33,7 @@
@@ -436,7 +462,7 @@ index babb11ff..e82094be 100644
  #if OLD_GLIB_THREAD_API
  
 diff --git a/src/utils/fluid_sys.h b/src/utils/fluid_sys.h
-index a756fc07..73abd986 100644
+index a756fc0..73abd98 100644
 --- a/src/utils/fluid_sys.h
 +++ b/src/utils/fluid_sys.h
 @@ -175,7 +175,7 @@ typedef gintptr  intptr_t;
@@ -474,7 +500,7 @@ index a756fc07..73abd986 100644
  
  /* glib prior to 2.32 */
 diff --git a/src/utils/fluidsynth_priv.h b/src/utils/fluidsynth_priv.h
-index 67e97abb..9dcfbb76 100644
+index 67e97ab..9dcfbb7 100644
 --- a/src/utils/fluidsynth_priv.h
 +++ b/src/utils/fluidsynth_priv.h
 @@ -31,7 +31,7 @@
