@@ -17,9 +17,9 @@ FREETYPE_URL="https://download.savannah.gnu.org/releases/freetype/freetype-2.13.
 FREETYPE_ARGS="-DFT_DISABLE_BZIP2=ON -DFT_DISABLE_BROTLI=ON"
 FREETYPE_DIR="freetype-2.13.3"
 
-HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/10.1.0/harfbuzz-10.1.0.tar.xz"
+HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/10.2.0/harfbuzz-10.2.0.tar.xz"
 HARFBUZZ_ARGS="-Dfreetype=enabled -Dtests=disabled -Dutilities=disabled" # TODO disable subset
-HARFBUZZ_DIR="harfbuzz-10.1.0"
+HARFBUZZ_DIR="harfbuzz-10.2.0"
 
 PIXMAN_URL="https://cairographics.org/releases/pixman-0.44.2.tar.gz"
 PIXMAN_ARGS="-Dtests=disabled -Ddemos=disabled -Dlibpng=disabled"
@@ -84,9 +84,9 @@ NLOHMANNJSON_URL="https://github.com/nlohmann/json/archive/v3.11.3.tar.gz"
 NLOHMANNJSON_DIR="json-3.11.3"
 NLOHMANNJSON_ARGS="-DJSON_BuildTests=OFF"
 
-FMT_URL="https://github.com/fmtlib/fmt/releases/download/11.1.1/fmt-11.1.1.zip"
+FMT_URL="https://github.com/fmtlib/fmt/releases/download/11.1.2/fmt-11.1.2.zip"
 FMT_ARGS="-DFMT_DOC=OFF -DFMT_TEST=OFF"
-FMT_DIR="fmt-11.1.1"
+FMT_DIR="fmt-11.1.2"
 
 INIH_URL="https://github.com/benhoyt/inih/archive/refs/tags/r58.tar.gz"
 INIH_DIR="inih-r58"
