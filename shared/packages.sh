@@ -104,8 +104,8 @@ ICU_ARGS="--enable-strict=no --disable-tests --disable-samples \
 ICUDATA_URL=https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata76_all.tar.gz
 ICUDATA_FILES="icudt*.dat"
 
-SDL2_URL="https://libsdl.org/release/SDL2-2.30.11.tar.gz"
-SDL2_DIR="SDL2-2.30.11"
+SDL2_URL="https://libsdl.org/release/SDL2-3.2.0.tar.gz"
+SDL2_DIR="SDL2-3.2.0"
 
 # 3.18.0, only needed for lmu2png tool
 FREEIMAGE_URL="https://github.com/carstene1ns/freeimage-easyrpg/archive/d82954e4adcb6c1b223bd3cb2e953b6bbf54dfcd.zip"
