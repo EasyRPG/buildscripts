@@ -72,9 +72,9 @@ OPUSFILE_URL="https://github.com/xiph/opusfile/releases/download/v0.12/opusfile-
 OPUSFILE_ARGS="--disable-http --disable-examples"
 OPUSFILE_DIR="opusfile-0.12"
 
-FLUIDSYNTH_URL="https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v2.4.2.tar.gz"
+FLUIDSYNTH_URL="https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v2.4.3.tar.gz"
 FLUIDSYNTH_ARGS="-DLIB_SUFFIX=''"
-FLUIDSYNTH_DIR="fluidsynth-2.4.2"
+FLUIDSYNTH_DIR="fluidsynth-2.4.3"
 
 FLUIDLITE_URL="https://github.com/divideconcept/FluidLite/archive/57a0e74e708f699b13d7c85b28a4e1ff5b71887c.zip"
 FLUIDLITE_ARGS="-DFLUIDLITE_BUILD_STATIC=ON -DFLUIDLITE_BUILD_SHARED=OFF"

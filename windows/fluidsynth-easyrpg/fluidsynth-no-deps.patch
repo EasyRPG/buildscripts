@@ -1,20 +1,21 @@
-From d11f0149429f8fc5a2f9ad79c7d9040bf72af5cc Mon Sep 17 00:00:00 2001
+From 379520cc8fe8fb35542bd5273d3d6d81cf4e8d61 Mon Sep 17 00:00:00 2001
 From: Ghabry
 Date: Fri, 17 Mar 2023 14:02:43 +0100
-Subject: [PATCH] Disable most features
+Subject: [PATCH 2/2] Disable most features
 
 ---
- CMakeLists.txt | 54 +++++++++++++++++++++++++-------------------------
- 1 file changed, 27 insertions(+), 27 deletions(-)
+ CMakeLists.txt | 52 +++++++++++++++++++++++++-------------------------
+ 1 file changed, 26 insertions(+), 26 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 433197fe..df81f4c7 100644
+index 8d48251..eb2da3b 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -76,44 +76,44 @@ option ( enable-trap-on-fpe "enable SIGFPE trap on Floating Point Exceptions" of
+@@ -76,41 +76,41 @@ option ( enable-trap-on-fpe "enable SIGFPE trap on Floating Point Exceptions" of
  option ( enable-ubsan "compile and link against UBSan (for debugging fluidsynth internals)" off )
  
  # Options enabled by default
+-option ( enable-alsa "compile ALSA support (if it is available)" on )
 -option ( enable-aufile "compile support for sound file output" on )
 -option ( BUILD_SHARED_LIBS "Build a shared object or DLL" on )
 -option ( enable-dbus "compile DBUS support (if it is available)" on )
@@ -24,6 +25,7 @@ index 433197fe..df81f4c7 100644
 -option ( enable-libinstpatch "use libinstpatch (if available) to load DLS and GIG files" on )
 -option ( enable-libsndfile "compile libsndfile support (if it is available)" on )
 -option ( enable-midishare "compile MidiShare support (if it is available)" on )
++option ( enable-alsa "compile ALSA support (if it is available)" off )
 +option ( enable-aufile "compile support for sound file output" off )
 +option ( BUILD_SHARED_LIBS "Build a shared object or DLL" off )
 +option ( enable-dbus "compile DBUS support (if it is available)" off )
@@ -41,32 +43,27 @@ index 433197fe..df81f4c7 100644
 -option ( enable-wasapi "compile Windows WASAPI support (if it is available)" on )
 -option ( enable-waveout "compile Windows WaveOut support (if it is available)" on )
 -option ( enable-winmidi "compile Windows MIDI support (if it is available)" on )
--option ( enable-sdl2 "compile SDL2 audio support (if it is available)" on )
--option ( enable-pulseaudio "compile PulseAudio support (if it is available)" on )
--option ( enable-pipewire "compile PipeWire support (if it is available)" on )
--option ( enable-readline "compile readline lib line editing (if it is available)" on )
--option ( enable-threads "enable multi-threading support (such as parallel voice synthesis)" on )
--option ( enable-openmp "enable OpenMP support (parallelization of soundfont decoding, vectorization of voice mixing, etc.)" on )
 +option ( enable-network "enable network support (requires BSD sockets)" off )
 +option ( enable-oss "compile OSS support (if it is available)" off )
 +option ( enable-dsound "compile DirectSound support (if it is available)" off )
 +option ( enable-wasapi "compile Windows WASAPI support (if it is available)" off )
 +option ( enable-waveout "compile Windows WaveOut support (if it is available)" off )
 +option ( enable-winmidi "compile Windows MIDI support (if it is available)" off )
-+option ( enable-sdl2 "compile SDL2 audio support (if it is available)" off )
+ option ( enable-sdl2 "compile SDL2 audio support (if it is available)" off )
+-option ( enable-pulseaudio "compile PulseAudio support (if it is available)" on )
+-option ( enable-pipewire "compile PipeWire support (if it is available)" on )
+-option ( enable-readline "compile readline lib line editing (if it is available)" on )
+-option ( enable-threads "enable multi-threading support (such as parallel voice synthesis)" on )
+-option ( enable-openmp "enable OpenMP support (parallelization of soundfont decoding, vectorization of voice mixing, etc.)" on )
+-option ( enable-unicode "enable UNICODE build for Windows" on )
 +option ( enable-pulseaudio "compile PulseAudio support (if it is available)" off )
 +option ( enable-pipewire "compile PipeWire support (if it is available)" off )
 +option ( enable-readline "compile readline lib line editing (if it is available)" off )
 +option ( enable-threads "enable multi-threading support (such as parallel voice synthesis)" off )
 +option ( enable-openmp "enable OpenMP support (parallelization of soundfont decoding, vectorization of voice mixing, etc.)" off )
++option ( enable-unicode "enable UNICODE build for Windows" off )
  
  # Platform specific options
- if ( CMAKE_SYSTEM MATCHES "Linux|FreeBSD|DragonFly" )
-     option ( enable-lash "compile LASH support (if it is available)" off )
--    option ( enable-alsa "compile ALSA support (if it is available)" on )
-+    option ( enable-alsa "compile ALSA support (if it is available)" off )
- endif ( CMAKE_SYSTEM MATCHES "Linux|FreeBSD|DragonFly" )
- 
  if ( CMAKE_SYSTEM MATCHES "Linux" )
 -    option ( enable-systemd "compile systemd support (if it is available)" on )
 +    option ( enable-systemd "compile systemd support (if it is available)" off )
@@ -83,5 +80,5 @@ index 433197fe..df81f4c7 100644
  
  if ( CMAKE_SYSTEM MATCHES "OS2" )
 -- 
-2.44.0
+2.48.1
 
