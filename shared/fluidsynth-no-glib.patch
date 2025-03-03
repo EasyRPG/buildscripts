@@ -1,10 +1,11 @@
-From 4edd86332c57377c74a3694129ba9efb91ad82d9 Mon Sep 17 00:00:00 2001
+From 192ef394e0806aaff18aa0d04eeb56b9a7df058d Mon Sep 17 00:00:00 2001
 From: Ghabry
 Date: Fri, 17 Mar 2023 14:00:45 +0100
 Subject: [PATCH 1/2] Shim glib
 
 ---
  CMakeLists.txt                   |  4 +-
+ FluidSynthConfig.cmake.in        |  2 +-
  src/CMakeLists.txt               |  3 +-
  src/bindings/fluid_cmd.c         |  3 +
  src/glib_shim.c                  | 12 ++++
@@ -18,12 +19,12 @@ Subject: [PATCH 1/2] Shim glib
  src/utils/fluid_sys.c            |  9 ++-
  src/utils/fluid_sys.h            |  8 +--
  src/utils/fluidsynth_priv.h      |  2 +-
- 14 files changed, 142 insertions(+), 35 deletions(-)
+ 15 files changed, 143 insertions(+), 36 deletions(-)
  create mode 100644 src/glib_shim.c
  create mode 100644 src/glib_shim.h
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 849f8b3..d86b9bc 100644
+index 75b8862..8d48251 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -533,8 +533,8 @@ if ( CMAKE_VERSION VERSION_GREATER_EQUAL 3.15 AND VCPKG_TOOLCHAIN )
@@ -37,8 +38,21 @@ index 849f8b3..d86b9bc 100644
  
  if ( GLib2_VERSION AND GLib2_VERSION VERSION_LESS "2.26.0" )
      message ( WARNING "Your version of glib is very old. This may cause problems with fluidsynth's sample cache on Windows. Consider updating to glib 2.26 or newer!" )
+diff --git a/FluidSynthConfig.cmake.in b/FluidSynthConfig.cmake.in
+index d2e0c5e..683d10c 100644
+--- a/FluidSynthConfig.cmake.in
++++ b/FluidSynthConfig.cmake.in
+@@ -73,7 +73,7 @@ if(NOT FLUIDSYNTH_IS_SHARED)
+   endif()
+ 
+   if(NOT TARGET GLib2::glib-2 OR NOT TARGET GLib2::gthread-2)
+-    find_dependency(GLib2 @GLIB2_MINUMUM_VERSION@)
++    #find_dependency(GLib2 @GLIB2_MINUMUM_VERSION@)
+   endif()
+ 
+   # Optional dependencies
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index a2f9e55..e2a1d75 100644
+index 0275227..65d8a1a 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
 @@ -108,6 +108,7 @@ endif ( OBOE_SUPPORT )
@@ -49,7 +63,7 @@ index a2f9e55..e2a1d75 100644
      utils/fluid_conv.c
      utils/fluid_conv.h
      utils/fluid_hash.c
-@@ -363,7 +364,7 @@ if ( TARGET OpenMP::OpenMP_C AND HAVE_OPENMP )
+@@ -352,7 +353,7 @@ if ( TARGET OpenMP::OpenMP_C AND HAVE_OPENMP )
      target_link_libraries ( libfluidsynth-OBJ PUBLIC OpenMP::OpenMP_C )
  endif()
  
@@ -308,10 +322,10 @@ index 64e9e9e..4c504c0 100644
  }
  
 diff --git a/src/sfloader/fluid_sffile.c b/src/sfloader/fluid_sffile.c
-index 8359424..2aae4db 100644
+index 21535c9..ee3aa0b 100644
 --- a/src/sfloader/fluid_sffile.c
 +++ b/src/sfloader/fluid_sffile.c
-@@ -2252,10 +2252,14 @@ static int fluid_sffile_read_wav(SFData *sf, unsigned int start, unsigned int en
+@@ -2258,10 +2258,14 @@ static int fluid_sffile_read_wav(SFData *sf, unsigned int start, unsigned int en
      if(FLUID_IS_BIG_ENDIAN)
      {
          unsigned int i;
@@ -328,10 +342,10 @@ index 8359424..2aae4db 100644
      }
  
 diff --git a/src/synth/fluid_synth.c b/src/synth/fluid_synth.c
-index e356982..dbfe900 100644
+index 82cfac4..76fed3d 100644
 --- a/src/synth/fluid_synth.c
 +++ b/src/synth/fluid_synth.c
-@@ -636,8 +636,9 @@ new_fluid_synth(fluid_settings_t *settings)
+@@ -637,8 +637,9 @@ new_fluid_synth(fluid_settings_t *settings)
      double sample_rate_min, sample_rate_max;
  
      /* initialize all the conversion tables and other stuff */
@@ -342,7 +356,7 @@ index e356982..dbfe900 100644
          fluid_synth_init();
      }
  
-@@ -813,7 +814,7 @@ new_fluid_synth(fluid_settings_t *settings)
+@@ -817,7 +818,7 @@ new_fluid_synth(fluid_settings_t *settings)
  
      fluid_atomic_int_set(&synth->ticks_since_start, 0);
      synth->tuning = NULL;
@@ -351,7 +365,7 @@ index e356982..dbfe900 100644
  
      /* Initialize multi-core variables if multiple cores enabled */
      if(synth->cores > 1)
-@@ -1199,7 +1200,7 @@ delete_fluid_synth(fluid_synth_t *synth)
+@@ -1203,7 +1204,7 @@ delete_fluid_synth(fluid_synth_t *synth)
          FLUID_FREE(synth->tuning);
      }
  
@@ -360,7 +374,7 @@ index e356982..dbfe900 100644
  
  #ifdef LADSPA
      /* Release the LADSPA effects unit */
-@@ -7450,7 +7451,7 @@ fluid_synth_tuning_iteration_start(fluid_synth_t *synth)
+@@ -7451,7 +7452,7 @@ fluid_synth_tuning_iteration_start(fluid_synth_t *synth)
  {
      fluid_return_if_fail(synth != NULL);
      fluid_synth_api_enter(synth);
@@ -369,7 +383,7 @@ index e356982..dbfe900 100644
      fluid_synth_api_exit(synth);
  }
  
-@@ -7473,7 +7474,7 @@ fluid_synth_tuning_iteration_next(fluid_synth_t *synth, int *bank, int *prog)
+@@ -7474,7 +7475,7 @@ fluid_synth_tuning_iteration_next(fluid_synth_t *synth, int *bank, int *prog)
      fluid_synth_api_enter(synth);
  
      /* Current tuning iteration stored as: bank << 8 | program */
@@ -378,7 +392,7 @@ index e356982..dbfe900 100644
      p = FLUID_POINTER_TO_INT(pval);
      b = (p >> 8) & 0xFF;
      p &= 0xFF;
-@@ -7502,12 +7503,11 @@ fluid_synth_tuning_iteration_next(fluid_synth_t *synth, int *bank, int *prog)
+@@ -7503,12 +7504,11 @@ fluid_synth_tuning_iteration_next(fluid_synth_t *synth, int *bank, int *prog)
  
              if(p < 127)
              {
@@ -394,10 +408,10 @@ index e356982..dbfe900 100644
  
              FLUID_API_RETURN(1);
 diff --git a/src/synth/fluid_synth.h b/src/synth/fluid_synth.h
-index 7dbcdc5..97f5175 100644
+index bcd964f..56c7976 100644
 --- a/src/synth/fluid_synth.h
 +++ b/src/synth/fluid_synth.h
-@@ -152,7 +152,7 @@ struct _fluid_synth_t
+@@ -158,7 +158,7 @@ struct _fluid_synth_t
      fluid_atomic_float_t cpu_load;                    /**< CPU load in percent (CPU time required / audio synthesized time * 100) */
  
      fluid_tuning_t ***tuning;          /**< 128 banks of 128 programs for the tunings */
@@ -462,7 +476,7 @@ index babb11f..e82094b 100644
  #if OLD_GLIB_THREAD_API
  
 diff --git a/src/utils/fluid_sys.h b/src/utils/fluid_sys.h
-index a756fc0..73abd98 100644
+index f491254..1521c4c 100644
 --- a/src/utils/fluid_sys.h
 +++ b/src/utils/fluid_sys.h
 @@ -175,7 +175,7 @@ typedef gintptr  intptr_t;
@@ -472,9 +486,9 @@ index a756fc0..73abd98 100644
 -#include <glib/gstdio.h>
 +#include "glib_shim.h"
  
- /**
-  * Macro used for safely accessing a message from a GError and using a default
-@@ -183,7 +183,7 @@ typedef gintptr  intptr_t;
+ #ifdef __cplusplus
+ extern "C" {
+@@ -187,7 +187,7 @@ extern "C" {
   * @param err Pointer to a GError to access the message field of.
   * @return Message string
   */
@@ -483,7 +497,7 @@ index a756fc0..73abd98 100644
  
  #if defined(_WIN32) || defined(__CYGWIN__)
  char* fluid_get_windows_error(void);
-@@ -336,13 +336,13 @@ delete_fluid_cond(fluid_cond_t *cond)
+@@ -340,13 +340,13 @@ delete_fluid_cond(fluid_cond_t *cond)
  }
  
  /* Thread private data */
@@ -513,5 +527,5 @@ index 67e97ab..9dcfbb7 100644
  #if HAVE_STDLIB_H
  #include <stdlib.h> // malloc, free
 -- 
-2.47.1
+2.48.1
 
