@@ -17,9 +17,9 @@ FREETYPE_URL="https://download.savannah.gnu.org/releases/freetype/freetype-2.13.
 FREETYPE_ARGS="-DFT_DISABLE_BZIP2=ON -DFT_DISABLE_BROTLI=ON"
 FREETYPE_DIR="freetype-2.13.3"
 
-HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/10.2.0/harfbuzz-10.2.0.tar.xz"
+HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/10.4.0/harfbuzz-10.4.0.tar.xz"
 HARFBUZZ_ARGS="-Dfreetype=enabled -Dtests=disabled -Dutilities=disabled" # TODO disable subset
-HARFBUZZ_DIR="harfbuzz-10.2.0"
+HARFBUZZ_DIR="harfbuzz-10.4.0"
 
 PIXMAN_URL="https://cairographics.org/releases/pixman-0.44.2.tar.gz"
 PIXMAN_ARGS="-Dtests=disabled -Ddemos=disabled -Dlibpng=disabled"
@@ -49,9 +49,9 @@ LIBSNDFILE_URL="https://github.com/libsndfile/libsndfile/releases/download/1.2.2
 LIBSNDFILE_ARGS="--disable-alsa --disable-sqlite --disable-full-suite --disable-external-libs --disable-mpeg"
 LIBSNDFILE_DIR="libsndfile-1.2.2"
 
-LIBXMP_LITE_URL="https://github.com/libxmp/libxmp/releases/download/libxmp-4.6.1/libxmp-lite-4.6.1.tar.gz"
+LIBXMP_LITE_URL="https://github.com/libxmp/libxmp/releases/download/libxmp-4.6.2/libxmp-lite-4.6.2.tar.gz"
 LIBXMP_LITE_ARGS="-DBUILD_STATIC=ON -DBUILD_SHARED=OFF"
-LIBXMP_LITE_DIR="libxmp-lite-4.6.1"
+LIBXMP_LITE_DIR="libxmp-lite-4.6.2"
 
 SPEEXDSP_URL="https://downloads.xiph.org/releases/speex/speexdsp-1.2.1.tar.gz"
 SPEEXDSP_ARGS="--disable-sse --disable-neon"
@@ -84,9 +84,9 @@ NLOHMANNJSON_URL="https://github.com/nlohmann/json/archive/v3.11.3.tar.gz"
 NLOHMANNJSON_DIR="json-3.11.3"
 NLOHMANNJSON_ARGS="-DJSON_BuildTests=OFF"
 
-FMT_URL="https://github.com/fmtlib/fmt/releases/download/11.1.2/fmt-11.1.2.zip"
+FMT_URL="https://github.com/fmtlib/fmt/releases/download/11.1.4/fmt-11.1.4.zip"
 FMT_ARGS="-DFMT_DOC=OFF -DFMT_TEST=OFF"
-FMT_DIR="fmt-11.1.2"
+FMT_DIR="fmt-11.1.4"
 
 INIH_URL="https://github.com/benhoyt/inih/archive/refs/tags/r58.tar.gz"
 INIH_DIR="inih-r58"
@@ -104,8 +104,8 @@ ICU_ARGS="--enable-strict=no --disable-tests --disable-samples \
 ICUDATA_URL=https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata76_all.tar.gz
 ICUDATA_FILES="icudt*.dat"
 
-SDL2_URL="https://libsdl.org/release/SDL2-2.30.11.tar.gz"
-SDL2_DIR="SDL2-2.30.11"
+SDL2_URL="https://libsdl.org/release/SDL2-2.32.2.tar.gz"
+SDL2_DIR="SDL2-2.32.2"
 
 # 3.18.0, only needed for lmu2png tool
 FREEIMAGE_URL="https://github.com/carstene1ns/freeimage-easyrpg/archive/d82954e4adcb6c1b223bd3cb2e953b6bbf54dfcd.zip"
