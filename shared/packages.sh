@@ -18,7 +18,7 @@ FREETYPE_ARGS="-DFT_DISABLE_BZIP2=ON -DFT_DISABLE_BROTLI=ON"
 FREETYPE_DIR="freetype-2.13.3"
 
 HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/10.4.0/harfbuzz-10.4.0.tar.xz"
-HARFBUZZ_ARGS="-Dfreetype=enabled -Dtests=disabled -Dutilities=disabled" # TODO disable subset
+HARFBUZZ_ARGS="-Dfreetype=enabled -Dicu=disabled -Dtests=disabled -Dutilities=disabled" # TODO disable subset
 HARFBUZZ_DIR="harfbuzz-10.4.0"
 
 PIXMAN_URL="https://cairographics.org/releases/pixman-0.44.2.tar.gz"
