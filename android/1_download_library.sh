@@ -38,7 +38,7 @@ else
 	exit 1
 fi
 
-SDK_VERSION="9477386_latest"
+SDK_VERSION="11076708_latest"
 SDK_URL="https://dl.google.com/android/repository/commandlinetools-${SDK_PLATFORM}-${SDK_VERSION}.zip"
 curl -sSLOR "$SDK_URL"
 unzip commandlinetools-${SDK_PLATFORM}-${SDK_VERSION}.zip
@@ -53,12 +53,12 @@ msg " [2] Installing SDK and Platform-tools"
 # Otherwise installed to the wrong directory
 cd android-sdk
 
-# Android SDK Build-tools, revision 33.0.0
-echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "build-tools;33.0.0"
+# Android SDK Build-tools, revision 36.0.0
+echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "build-tools;36.0.0"
 # Android SDK Platform-tools
 echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "platform-tools"
-# SDK Platform Android 13, API 33
-echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "platforms;android-33"
+# SDK Platform Android 15, API 35
+echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "platforms;android-35"
 # Android Support Library Repository
 echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "extras;android;m2repository"
 # Google Repository
@@ -68,7 +68,7 @@ echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "cmake;3.22.1"
 
 msg " [3] Installing Android NDK"
 
-echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "ndk;21.4.7075529"
+echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "ndk;24.0.8215888"
 
 cd ..
 
