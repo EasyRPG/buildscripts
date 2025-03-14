@@ -59,13 +59,12 @@ function build() {
 	# $2: Toolchain architecture
 	# $3: Android arch
 	# $4: host for configure
-	# $5: additional CPP flags
 
 	cd $WORKSPACE
 
 	echo "Preparing $1 toolchain"
 
-	export TARGET_API=16
+	export TARGET_API=19
 	if [ "$3" = "arm64" ]; then
 		# Minimum API 21 on ARM64
 		export TARGET_API=21
@@ -84,7 +83,7 @@ function build() {
 	export NM=$NDK_PATH/llvm-nm
 	export RANLIB=$NDK_PATH/llvm-ranlib
 
-	export CFLAGS="-no-integrated-as -g0 -O2 -fPIC $5"
+	export CFLAGS="-g0 -O2 -fPIC"
 	export CXXFLAGS="$CFLAGS"
 	export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$ANDROID_NDK/sources/android/cpufeatures"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
@@ -125,7 +124,7 @@ function build() {
 }
 
 export SDK_ROOT=$WORKSPACE/android-sdk
-export ANDROID_NDK=$SDK_ROOT/ndk/21.4.7075529
+export ANDROID_NDK=$SDK_ROOT/ndk/24.0.8215888
 
 export MAKEFLAGS="-j${nproc:-2}"
 
@@ -147,13 +146,13 @@ export ac_cv_func_mmap_fixed_mapped=yes
 export CMAKE_SYSTEM_NAME=Android
 
 # ARMeabi-v7a
-build "ARMeabi-v7a" "armeabi-v7a" "arm" "armv7a-linux-androideabi" "-march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3"
+build "ARMeabi-v7a" "armeabi-v7a" "arm" "armv7a-linux-androideabi"
 
 # arm64-v8a
-build "AArch64" "arm64-v8a" "arm64" "aarch64-linux-android" ""
+build "AArch64" "arm64-v8a" "arm64" "aarch64-linux-android"
 
 # x86
-build "x86" "x86" "x86" "i686-linux-android" ""
+build "x86" "x86" "x86" "i686-linux-android"
 
 # x86_64
-build "x86_64" "x86_64" "x86_64" "x86_64-linux-android" ""
+build "x86_64" "x86_64" "x86_64" "x86_64-linux-android"
