@@ -25,10 +25,10 @@ PIXMAN_URL="https://cairographics.org/releases/pixman-0.44.2.tar.gz"
 PIXMAN_ARGS="-Dtests=disabled -Ddemos=disabled -Dlibpng=disabled"
 PIXMAN_DIR="pixman-0.44.2"
 
-EXPAT_URL="https://github.com/libexpat/libexpat/releases/download/R_2_6_4/expat-2.6.4.tar.bz2"
+EXPAT_URL="https://github.com/libexpat/libexpat/releases/download/R_2_7_0/expat-2.7.0.tar.bz2"
 EXPAT_ARGS="-DEXPAT_BUILD_TOOLS=OFF -DEXPAT_BUILD_EXAMPLES=OFF \
 -DEXPAT_BUILD_TESTS=OFF -DEXPAT_BUILD_DOCS=OFF -DEXPAT_SHARED_LIBS=OFF"
-EXPAT_DIR="expat-2.6.4"
+EXPAT_DIR="expat-2.7.0"
 
 LIBOGG_URL="https://downloads.xiph.org/releases/ogg/libogg-1.3.5.tar.xz"
 LIBOGG_DIR="libogg-1.3.5"
@@ -94,14 +94,14 @@ INIH_DIR="inih-r58"
 LHASA_URL="https://github.com/fragglet/lhasa/releases/download/v0.4.0/lhasa-0.4.0.tar.gz"
 LHASA_DIR="lhasa-0.4.0"
 
-ICU_URL="https://github.com/unicode-org/icu/releases/download/release-76-1/icu4c-76_1-src.tgz"
+ICU_URL="https://github.com/unicode-org/icu/releases/download/release-77-1/icu4c-77_1-src.tgz"
 ICU_DIR="icu"
 ICU_ARGS="--enable-strict=no --disable-tests --disable-samples \
 --disable-dyload --disable-extras --disable-icuio \
 --with-data-packaging=static --disable-layout --disable-layoutex \
 --enable-draft=no"
 
-ICUDATA_URL=https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata76_all.tar.gz
+ICUDATA_URL=https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata77_all.tar.gz
 ICUDATA_FILES="icudt*.dat"
 
 SDL2_URL="https://libsdl.org/release/SDL2-2.32.2.tar.gz"
