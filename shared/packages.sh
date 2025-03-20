@@ -25,10 +25,10 @@ PIXMAN_URL="https://cairographics.org/releases/pixman-0.44.2.tar.gz"
 PIXMAN_ARGS="-Dtests=disabled -Ddemos=disabled -Dlibpng=disabled"
 PIXMAN_DIR="pixman-0.44.2"
 
-EXPAT_URL="https://github.com/libexpat/libexpat/releases/download/R_2_6_4/expat-2.6.4.tar.bz2"
+EXPAT_URL="https://github.com/libexpat/libexpat/releases/download/R_2_7_0/expat-2.7.0.tar.bz2"
 EXPAT_ARGS="-DEXPAT_BUILD_TOOLS=OFF -DEXPAT_BUILD_EXAMPLES=OFF \
 -DEXPAT_BUILD_TESTS=OFF -DEXPAT_BUILD_DOCS=OFF -DEXPAT_SHARED_LIBS=OFF"
-EXPAT_DIR="expat-2.6.4"
+EXPAT_DIR="expat-2.7.0"
 
 LIBOGG_URL="https://downloads.xiph.org/releases/ogg/libogg-1.3.5.tar.xz"
 LIBOGG_DIR="libogg-1.3.5"
