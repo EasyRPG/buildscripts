@@ -72,9 +72,9 @@ OPUSFILE_URL="https://github.com/xiph/opusfile/releases/download/v0.12/opusfile-
 OPUSFILE_ARGS="--disable-http --disable-examples"
 OPUSFILE_DIR="opusfile-0.12"
 
-FLUIDSYNTH_URL="https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v2.4.3.tar.gz"
+FLUIDSYNTH_URL="https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v2.4.4.tar.gz"
 FLUIDSYNTH_ARGS="-DLIB_SUFFIX=''"
-FLUIDSYNTH_DIR="fluidsynth-2.4.3"
+FLUIDSYNTH_DIR="fluidsynth-2.4.4"
 
 FLUIDLITE_URL="https://github.com/divideconcept/FluidLite/archive/57a0e74e708f699b13d7c85b28a4e1ff5b71887c.zip"
 FLUIDLITE_ARGS="-DFLUIDLITE_BUILD_STATIC=ON -DFLUIDLITE_BUILD_SHARED=OFF"
@@ -94,14 +94,14 @@ INIH_DIR="inih-r58"
 LHASA_URL="https://github.com/fragglet/lhasa/releases/download/v0.4.0/lhasa-0.4.0.tar.gz"
 LHASA_DIR="lhasa-0.4.0"
 
-ICU_URL="https://github.com/unicode-org/icu/releases/download/release-76-1/icu4c-76_1-src.tgz"
+ICU_URL="https://github.com/unicode-org/icu/releases/download/release-77-1/icu4c-77_1-src.tgz"
 ICU_DIR="icu"
 ICU_ARGS="--enable-strict=no --disable-tests --disable-samples \
 --disable-dyload --disable-extras --disable-icuio \
 --with-data-packaging=static --disable-layout --disable-layoutex \
 --enable-draft=no"
 
-ICUDATA_URL=https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata76_all.tar.gz
+ICUDATA_URL=https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata77_all.tar.gz
 ICUDATA_FILES="icudt*.dat"
 
 SDL2_URL="https://libsdl.org/release/SDL2-2.32.2.tar.gz"
