@@ -37,6 +37,9 @@ if [ ! -f .patches-applied ]; then
 	)
 
 	# Fix icu build
+	# Remove mutexes (crashes)
+	patch -Np0 < $SCRIPT_DIR/../shared/extra/icu-no-mutex.patch
+	# Vita specific fixes
 	patch -Np0 < $SCRIPT_DIR/icu-vita.patch
 
 	# Disable vita2dlib jpeg dependency
