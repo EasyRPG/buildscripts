@@ -9,9 +9,9 @@ ZLIB_URL="https://zlib.net/fossils/zlib-1.3.1.tar.gz"
 ZLIB_ARGS="-DZLIB_BUILD_EXAMPLES=OFF"
 ZLIB_DIR="zlib-1.3.1"
 
-LIBPNG_URL="https://download.sourceforge.net/libpng/libpng-1.6.39.tar.xz"
+LIBPNG_URL="https://download.sourceforge.net/libpng/libpng-1.6.47.tar.xz"
 LIBPNG_ARGS="-DPNG_SHARED=OFF -DPNG_EXECUTABLES=OFF -DPNG_TESTS=OFF"
-LIBPNG_DIR="libpng-1.6.39"
+LIBPNG_DIR="libpng-1.6.47"
 
 FREETYPE_URL="https://download.savannah.gnu.org/releases/freetype/freetype-2.13.3.tar.xz"
 FREETYPE_ARGS="-DFT_DISABLE_BZIP2=ON -DFT_DISABLE_BROTLI=ON"

@@ -1,6 +1,6 @@
-diff -Nur libpng-1.6.39-orig/scripts/genout.cmake.in libpng-1.6.39/scripts/genout.cmake.in
---- libpng-1.6.39-orig/scripts/genout.cmake.in	2022-11-20 22:53:23.000000000 +0100
-+++ libpng-1.6.39/scripts/genout.cmake.in	2024-06-09 18:38:38.953706845 +0200
+diff -Nur libpng-1.6.39-orig/scripts/cmake/genout.cmake.in libpng-1.6.39/scripts/cmake/genout.cmake.in
+--- libpng-1.6.39-orig/scripts/cmake/genout.cmake.in	2022-11-20 22:53:23.000000000 +0100
++++ libpng-1.6.39/scripts/cmake/genout.cmake.in	2024-06-09 18:38:38.953706845 +0200
 @@ -14,6 +14,7 @@
  
  set(AWK "@AWK@")
