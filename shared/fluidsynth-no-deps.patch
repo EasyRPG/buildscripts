@@ -1,17 +1,17 @@
-From 379520cc8fe8fb35542bd5273d3d6d81cf4e8d61 Mon Sep 17 00:00:00 2001
+From 2ea138dfcb72e765a24fc205798d0b2dfa5c5a3a Mon Sep 17 00:00:00 2001
 From: Ghabry
 Date: Fri, 17 Mar 2023 14:02:43 +0100
 Subject: [PATCH 2/2] Disable most features
 
 ---
- CMakeLists.txt | 52 +++++++++++++++++++++++++-------------------------
- 1 file changed, 26 insertions(+), 26 deletions(-)
+ CMakeLists.txt | 54 +++++++++++++++++++++++++-------------------------
+ 1 file changed, 27 insertions(+), 27 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 8d48251..eb2da3b 100644
+index 9c655a7..9259e38 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -76,41 +76,41 @@ option ( enable-trap-on-fpe "enable SIGFPE trap on Floating Point Exceptions" of
+@@ -76,42 +76,42 @@ option ( enable-trap-on-fpe "enable SIGFPE trap on Floating Point Exceptions" of
  option ( enable-ubsan "compile and link against UBSan (for debugging fluidsynth internals)" off )
  
  # Options enabled by default
@@ -50,12 +50,14 @@ index 8d48251..eb2da3b 100644
 +option ( enable-waveout "compile Windows WaveOut support (if it is available)" off )
 +option ( enable-winmidi "compile Windows MIDI support (if it is available)" off )
  option ( enable-sdl2 "compile SDL2 audio support (if it is available)" off )
+-option ( enable-sdl3 "compile SDL3 audio support (if it is available)" on )
 -option ( enable-pulseaudio "compile PulseAudio support (if it is available)" on )
 -option ( enable-pipewire "compile PipeWire support (if it is available)" on )
 -option ( enable-readline "compile readline lib line editing (if it is available)" on )
 -option ( enable-threads "enable multi-threading support (such as parallel voice synthesis)" on )
 -option ( enable-openmp "enable OpenMP support (parallelization of soundfont decoding, vectorization of voice mixing, etc.)" on )
 -option ( enable-unicode "enable UNICODE build for Windows" on )
++option ( enable-sdl3 "compile SDL3 audio support (if it is available)" off )
 +option ( enable-pulseaudio "compile PulseAudio support (if it is available)" off )
 +option ( enable-pipewire "compile PipeWire support (if it is available)" off )
 +option ( enable-readline "compile readline lib line editing (if it is available)" off )
@@ -80,5 +82,5 @@ index 8d48251..eb2da3b 100644
  
  if ( CMAKE_SYSTEM MATCHES "OS2" )
 -- 
-2.48.1
+2.49.0
 
