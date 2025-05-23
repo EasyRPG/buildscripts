@@ -138,6 +138,10 @@ download_and_extract $OPUSFILE_URL
 rm -rf $FLUIDSYNTH_DIR
 download_and_extract $FLUIDSYNTH_URL
 
+# nlohmann-json
+rm -rf $NLOHMANNJSON_DIR
+download_and_extract $NLOHMANNJSON_URL
+
 # inih
 rm -rf $INIH_DIR
 download_and_extract $INIH_URL
