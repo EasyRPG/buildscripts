@@ -9,9 +9,9 @@ ZLIB_URL="https://zlib.net/fossils/zlib-1.3.1.tar.gz"
 ZLIB_ARGS="-DZLIB_BUILD_EXAMPLES=OFF"
 ZLIB_DIR="zlib-1.3.1"
 
-LIBPNG_URL="https://download.sourceforge.net/libpng/libpng-1.6.48.tar.xz"
+LIBPNG_URL="https://download.sourceforge.net/libpng/libpng-1.6.49.tar.xz"
 LIBPNG_ARGS="-DPNG_SHARED=OFF -DPNG_EXECUTABLES=OFF -DPNG_TESTS=OFF"
-LIBPNG_DIR="libpng-1.6.48"
+LIBPNG_DIR="libpng-1.6.49"
 
 FREETYPE_URL="https://download.savannah.gnu.org/releases/freetype/freetype-2.13.3.tar.xz"
 FREETYPE_ARGS="-DFT_DISABLE_BZIP2=ON -DFT_DISABLE_BROTLI=ON"
@@ -21,9 +21,9 @@ HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/11.2.1/harf
 HARFBUZZ_ARGS="-Dfreetype=enabled -Dicu=disabled -Dtests=disabled -Dutilities=disabled" # TODO disable subset
 HARFBUZZ_DIR="harfbuzz-11.2.1"
 
-PIXMAN_URL="https://cairographics.org/releases/pixman-0.46.0.tar.gz"
+PIXMAN_URL="https://cairographics.org/releases/pixman-0.46.2.tar.gz"
 PIXMAN_ARGS="-Dtests=disabled -Ddemos=disabled -Dlibpng=disabled"
-PIXMAN_DIR="pixman-0.46.0"
+PIXMAN_DIR="pixman-0.46.2"
 
 EXPAT_URL="https://github.com/libexpat/libexpat/releases/download/R_2_7_1/expat-2.7.1.tar.bz2"
 EXPAT_ARGS="-DEXPAT_BUILD_TOOLS=OFF -DEXPAT_BUILD_EXAMPLES=OFF \
@@ -39,11 +39,11 @@ LIBVORBIS_DIR="libvorbis-1.3.7"
 TREMOR_URL="https://gitlab.xiph.org/xiph/tremor/-/archive/7c30a66346199f3f09017a09567c6c8a3a0eedc8/tremor-7c30a66346199f3f09017a09567c6c8a3a0eedc8.tar.bz2"
 TREMOR_DIR="tremor-7c30a66346199f3f09017a09567c6c8a3a0eedc8"
 
-MPG123_URL="https://www.mpg123.de/download/mpg123-1.32.10.tar.bz2"
+MPG123_URL="https://www.mpg123.de/download/mpg123-1.33.0.tar.bz2"
 MPG123_ARGS="--with-cpu=generic --disable-fifo --disable-ipv6 --disable-network \
 --disable-int-quality --with-default-audio=dummy --with-optimization=2 \
 --disable-components --enable-libmpg123"
-MPG123_DIR="mpg123-1.32.10"
+MPG123_DIR="mpg123-1.33.0"
 
 LIBSNDFILE_URL="https://github.com/libsndfile/libsndfile/releases/download/1.2.2/libsndfile-1.2.2.tar.xz"
 LIBSNDFILE_ARGS="--disable-alsa --disable-sqlite --disable-full-suite --disable-external-libs --disable-mpeg"
@@ -104,8 +104,8 @@ ICU_ARGS="--enable-strict=no --disable-tests --disable-samples \
 ICUDATA_URL=https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata77_all.tar.gz
 ICUDATA_FILES="icudt*.dat"
 
-SDL2_URL="https://libsdl.org/release/SDL2-2.32.6.tar.gz"
-SDL2_DIR="SDL2-2.32.6"
+SDL2_URL="https://libsdl.org/release/SDL2-2.32.8.tar.gz"
+SDL2_DIR="SDL2-2.32.8"
 
 # 3.18.0, only needed for lmu2png tool
 FREEIMAGE_URL="https://github.com/carstene1ns/freeimage-easyrpg/archive/d82954e4adcb6c1b223bd3cb2e953b6bbf54dfcd.zip"
