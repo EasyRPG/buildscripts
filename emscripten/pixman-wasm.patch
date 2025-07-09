@@ -1,46 +1,34 @@
 --- a/pixman/pixman/pixman-x86.c
 +++ b/pixman/pixman/pixman-x86.c
-@@ -74,10 +74,12 @@ detect_cpu_features (void)
+@@ -74,12 +74,18 @@
  
  #else
  
 -#if defined (__GNUC__)
 +#if defined (__GNUC__) && !defined(__EMSCRIPTEN__)
  #include <cpuid.h>
+ #elif defined(_MSC_VER)
+ #include <intrin.h>
  #endif
  
-+#if !defined(__EMSCRIPTEN__)
-+
++#if defined(__EMSCRIPTEN__)
++static cpu_features_t
++detect_cpu_features (void) {
++    return X86_SSE | X86_SSE2 | X86_SSSE3;
++}
++#else // !defined(__EMSCRIPTEN__)
  static void
  pixman_cpuid (uint32_t feature,
  	      uint32_t *a, uint32_t *b, uint32_t *c, uint32_t *d)
-@@ -98,10 +100,17 @@ pixman_cpuid (uint32_t feature,
- #error Unknown compiler
- #endif
- }
-+ 
-+#endif // !__EMSCRIPTEN__
- 
- static cpu_features_t
- detect_cpu_features (void)
- {
-+#if defined(__EMSCRIPTEN__)
-+
-+    return X86_MMX | X86_MMX_EXTENSIONS | X86_SSE | X86_SSE2;
-+
-+#else
-     uint32_t a, b, c, d;
-     cpu_features_t features = 0;
- 
-@@ -147,6 +156,8 @@ detect_cpu_features (void)
-     }
+@@ -150,6 +156,7 @@
  
      return features;
-+
-+#endif // !__EMSCRIPTEN__
  }
++#endif
  
  #endif
+
+
 --- a/pixman/pixman/pixman-ssse3.c
 +++ b/pixman/pixman/pixman-ssse3.c
 @@ -28,7 +28,9 @@
