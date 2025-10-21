@@ -26,26 +26,26 @@ if [ ! -f .patches-applied ]; then
 
 	patches_common
 
-	# Fix pixman
+	verbosemsg "pixman"
 	patch -d $PIXMAN_DIR -Np1 < $SCRIPT_DIR/../shared/extra/pixman-no-tls.patch
 
-	# Fix mpg123
+	verbosemsg "mpg123"
 	(cd $MPG123_DIR
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/mpg123.patch
 		autoreconf -fi
 	)
 
-	# Fix opus
+	verbosemsg "opus"
 	(cd $OPUS_DIR
 		# do not fortify source
 		perl -pi -e 's/AX_ADD_FORTIFY_SOURCE//' configure.ac
 		autoreconf -fi
 	)
 
-	# Fix lhasa
+	verbosemsg "lhasa"
 	patch -d $LHASA_DIR -Np1 < $SCRIPT_DIR/../shared/extra/lhasa.patch
 
-	# Fix icu build
+	verbosemsg "ICU"
 	# Do not write objects, but source files
 	perl -pi -e 's|#ifndef U_DISABLE_OBJ_CODE|#if 0 // U_DISABLE_OBJ_CODE|' icu/source/tools/toolutil/pkg_genc.h
 	# Emit correct bigendian icudata header
