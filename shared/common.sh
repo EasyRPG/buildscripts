@@ -366,7 +366,7 @@ function patches_common {
 		verbosemsg "tremor"
 
 		(cd $TREMOR_DIR
-			perl -pi -e 's/XIPH_PATH_OGG.*//' configure.in
+			perl -pi -e 's/XIPH_PATH_OGG.*//' configure.ac
 			autoreconf -fi
 		)
 	fi

@@ -42,12 +42,6 @@ if [ ! -f .patches-applied ]; then
 		autoreconf -fi
 	)
 
-	# Fix Fluidlite
-	(cd $FLUIDLITE_DIR
-		# enable big endian
-		perl -pi -e 's/#undef WORDS_BIGENDIAN/#define WORDS_BIGENDIAN/' src/fluid_config.h
-	)
-
 	# Fix lhasa
 	patch -d $LHASA_DIR -Np1 < $SCRIPT_DIR/../shared/extra/lhasa.patch
 

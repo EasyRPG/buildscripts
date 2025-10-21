@@ -36,8 +36,8 @@ LIBOGG_DIR="libogg-1.3.6"
 LIBVORBIS_URL="https://downloads.xiph.org/releases/vorbis/libvorbis-1.3.7.tar.xz"
 LIBVORBIS_DIR="libvorbis-1.3.7"
 
-TREMOR_URL="https://gitlab.xiph.org/xiph/tremor/-/archive/7c30a66346199f3f09017a09567c6c8a3a0eedc8/tremor-7c30a66346199f3f09017a09567c6c8a3a0eedc8.tar.bz2"
-TREMOR_DIR="tremor-7c30a66346199f3f09017a09567c6c8a3a0eedc8"
+TREMOR_URL="https://gitlab.xiph.org/xiph/tremor/-/archive/820fb3237ea81af44c9cc468c8b4e20128e3e5ad/tremor-820fb3237ea81af44c9cc468c8b4e20128e3e5ad.tar.bz2"
+TREMOR_DIR="tremor-820fb3237ea81af44c9cc468c8b4e20128e3e5ad"
 
 MPG123_URL="https://www.mpg123.de/download/mpg123-1.33.3.tar.bz2"
 MPG123_ARGS="--with-cpu=generic --disable-fifo --disable-ipv6 --disable-network \
@@ -77,9 +77,9 @@ FLUIDSYNTH_URL="https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v2.4.
 FLUIDSYNTH_ARGS="-DLIB_SUFFIX=''"
 FLUIDSYNTH_DIR="fluidsynth-2.4.6"
 
-FLUIDLITE_URL="https://github.com/divideconcept/FluidLite/archive/57a0e74e708f699b13d7c85b28a4e1ff5b71887c.zip"
+FLUIDLITE_URL="https://github.com/divideconcept/FluidLite/archive/4a01cf1c67419e71da971d209f2855bbf4f3bab8.zip"
 FLUIDLITE_ARGS="-DFLUIDLITE_BUILD_STATIC=ON -DFLUIDLITE_BUILD_SHARED=OFF"
-FLUIDLITE_DIR="FluidLite-57a0e74e708f699b13d7c85b28a4e1ff5b71887c"
+FLUIDLITE_DIR="FluidLite-4a01cf1c67419e71da971d209f2855bbf4f3bab8"
 
 NLOHMANNJSON_URL="https://github.com/nlohmann/json/archive/v3.12.0.tar.gz"
 NLOHMANNJSON_DIR="json-3.12.0"
