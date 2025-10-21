@@ -35,13 +35,6 @@ if [ ! -f .patches-applied ]; then
 		autoreconf -fi
 	)
 
-	verbosemsg "opus"
-	(cd $OPUS_DIR
-		# do not fortify source
-		perl -pi -e 's/AX_ADD_FORTIFY_SOURCE//' configure.ac
-		autoreconf -fi
-	)
-
 	verbosemsg "lhasa"
 	patch -d $LHASA_DIR -Np1 < $SCRIPT_DIR/../shared/extra/lhasa.patch
 
@@ -98,8 +91,8 @@ install_lib_cmake $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
 install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
 install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS
 install_lib_cmake $FLUIDLITE_DIR $FLUIDLITE_ARGS
-install_lib $OPUS_DIR $OPUS_ARGS
-install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
+install_lib_cmake $OPUS_DIR $OPUS_ARGS -DOPUS_FIXED_POINT=ON -DOPUS_FORTIFY_SOURCE=OFF
+install_lib $OPUSFILE_DIR $OPUSFILE_ARGS --enable-fixed-point
 install_lib_meson $INIH_DIR $INIH_ARGS
 install_lib $LHASA_DIR $LHASA_ARGS
 install_lib_cmake $FMT_DIR $FMT_ARGS

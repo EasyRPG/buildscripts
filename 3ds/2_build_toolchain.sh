@@ -106,8 +106,10 @@ install_lib $MPG123_DIR $MPG123_ARGS
 install_lib_cmake $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
 install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
 install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS
-install_lib $OPUS_DIR $OPUS_ARGS --disable-asm
-install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
+# asm support is missing in opus cmake, but might be added one day,
+# likely -DOPUS_ASM=OFF then, beware if switching to meson
+install_lib_cmake $OPUS_DIR $OPUS_ARGS -DOPUS_FIXED_POINT=ON
+install_lib $OPUSFILE_DIR $OPUSFILE_ARGS --enable-fixed-point
 install_lib_cmake $FLUIDLITE_DIR $FLUIDLITE_ARGS
 install_lib_meson $INIH_DIR $INIH_ARGS
 install_lib $LHASA_DIR $LHASA_ARGS

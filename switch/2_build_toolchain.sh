@@ -89,7 +89,7 @@ install_lib $MPG123_DIR $MPG123_ARGS
 install_lib_cmake $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
 install_lib_cmake $LIBSAMPLERATE_DIR $LIBSAMPLERATE_ARGS
 install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS
-install_lib $OPUS_DIR $OPUS_ARGS
+install_lib_cmake $OPUS_DIR $OPUS_ARGS
 install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 install_lib_cmake $FLUIDSYNTH_DIR $FLUIDSYNTH_ARGS
 install_lib_meson $INIH_DIR $INIH_ARGS

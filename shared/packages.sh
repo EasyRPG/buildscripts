@@ -66,7 +66,7 @@ WILDMIDI_DIR="wildmidi-wildmidi-0.4.6"
 WILDMIDI_ARGS="-DWANT_PLAYER=OFF -DWANT_STATIC=ON"
 
 OPUS_URL="https://downloads.xiph.org/releases/opus/opus-1.5.2.tar.gz"
-OPUS_ARGS="--disable-intrinsics --disable-extra-programs"
+OPUS_ARGS="-DOPUS_DISABLE_INTRINSICS=ON"
 OPUS_DIR="opus-1.5.2"
 
 OPUSFILE_URL="https://github.com/xiph/opusfile/releases/download/v0.12/opusfile-0.12.tar.gz"

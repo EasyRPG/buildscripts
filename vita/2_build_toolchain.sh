@@ -104,7 +104,7 @@ install_lib_cmake $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
 install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
 install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS
 install_lib_cmake $FLUIDLITE_DIR $FLUIDLITE_ARGS -DENABLE_SF3=ON
-install_lib $OPUS_DIR $OPUS_ARGS
+install_lib_cmake $OPUS_DIR $OPUS_ARGS
 install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 install_lib_meson $INIH_DIR $INIH_ARGS
 install_lib $LHASA_DIR $LHASA_ARGS
