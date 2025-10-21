@@ -42,7 +42,7 @@ download_and_extract $EXPAT_URL
 rm -rf $LIBOGG_DIR
 download_and_extract $LIBOGG_URL
 
-# tremor
+# libvorbis
 rm -rf $LIBVORBIS_DIR
 download_and_extract $LIBVORBIS_URL
 
@@ -89,8 +89,6 @@ download_and_extract $ICU_URL
 # icudata
 rm -f $ICUDATA_FILES
 download_and_extract $ICUDATA_URL
-
-msg " [3] Downloading platform libraries"
 
 # liblcf
 rm -rf liblcf

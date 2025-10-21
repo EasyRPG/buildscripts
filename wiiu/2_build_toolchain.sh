@@ -26,27 +26,27 @@ if [ ! -f .patches-applied ]; then
 
 	patches_common
 
-	# Fix pixman
+	verbosemsg "pixman"
 	(cd $PIXMAN_DIR
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/pixman-no-tls.patch
 	)
 
-	# Fix expat
+	verbosemsg "expat"
 	(cd $EXPAT_DIR
 		perl -pi -e 's/.*arc4random.*//g' ConfigureChecks.cmake
 	)
 
-	# Fix lhasa
+	verbosemsg "lhasa"
 	(cd $LHASA_DIR
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/lhasa.patch
 	)
 
-	# Fix fluidsynth
+	verbosemsg "fluidsynth"
 	(cd $FLUIDSYNTH_DIR
 		patch -Np1 < $SCRIPT_DIR/fluidsynth-no-pthread.patch
 	)
 
-	# Fix icu build
+	verbosemsg "ICU"
 	# Do not write objects, but source files
 	perl -pi -e 's|#ifndef U_DISABLE_OBJ_CODE.*|#if 0 // U_DISABLE_OBJ_CODE|' icu/source/tools/toolutil/pkg_genc.h
 	# Emit correct bigendian icudata header
