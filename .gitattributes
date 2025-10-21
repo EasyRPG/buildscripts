@@ -3,3 +3,5 @@
 
 # do not convert line ending of windows batch files
 *.cmd -text
+
+/shared/packages.sh -diff -linguist-generated
