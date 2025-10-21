@@ -19,30 +19,30 @@ if [ ! -f .patches-applied ]; then
 
 	patches_common
 
-	# Fix mpg123
+	verbosemsg "mpg123"
 	(cd $MPG123_DIR
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/mpg123.patch
 		autoreconf -fi
 	)
 
-	# Fix lhasa
+	verbosemsg "lhasa"
 	(cd $LHASA_DIR
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/lhasa.patch
 	)
 
-	# Fix fmt
+	verbosemsg "fmt"
 	(cd $FMT_DIR
 		# Fix undefined reference to funlockfile
 		perl -pi -e 's/define FMT_USE_FALLBACK_FILE 0/define FMT_USE_FALLBACK_FILE 1/' include/fmt/format-inl.h
 	)
 
-	# Fix icu build
+	verbosemsg "ICU"
 	# Remove mutexes (crashes)
 	patch -Np0 < $SCRIPT_DIR/../shared/extra/icu-no-mutex.patch
 	# Vita specific fixes
 	patch -Np0 < $SCRIPT_DIR/icu-vita.patch
 
-	# Disable vita2dlib jpeg dependency
+	verbosemsg "vita2d"
 	patch -Np0 < $SCRIPT_DIR/libvita2d-no-jpeg.patch
 
 	# Allow the cmake toolchain finding libfmt
