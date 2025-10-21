@@ -4,7 +4,7 @@
 
 ### Prequisites:
 
-- Install devkitA64, libnx, switch-tools, switch-cmake.
+- Install devkitA64, libnx, switch-tools, switch-glad and switch-cmake.
   (Environment variables `DEVKITPRO` needs to be set)
 
 ### Local build process:

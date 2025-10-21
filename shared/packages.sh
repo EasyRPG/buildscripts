@@ -58,6 +58,7 @@ SPEEXDSP_ARGS="--disable-sse --disable-neon"
 SPEEXDSP_DIR="speexdsp-1.2.1"
 
 LIBSAMPLERATE_URL="https://github.com/libsndfile/libsamplerate/releases/download/0.2.2/libsamplerate-0.2.2.tar.xz"
+LIBSAMPLERATE_ARGS="-DLIBSAMPLERATE_EXAMPLES=OFF -DBUILD_TESTING=OFF"
 LIBSAMPLERATE_DIR="libsamplerate-0.2.2"
 
 WILDMIDI_URL="https://github.com/Mindwerks/wildmidi/archive/wildmidi-0.4.6.tar.gz"

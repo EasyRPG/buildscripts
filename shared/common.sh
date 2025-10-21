@@ -371,16 +371,6 @@ function patches_common {
 		)
 	fi
 
-	# libsamplerate: disable examples
-	if [ -d "$LIBSAMPLERATE_DIR" ]; then
-		verbosemsg "libsamplerate"
-
-		(cd $LIBSAMPLERATE_DIR
-			patch -Np1 < $_SCRIPT_DIR/libsamplerate-no-examples.patch
-			autoreconf -fi
-		)
-	fi
-
 	# Expat: Disable error when high entropy randomness is unavailable
 	if [ -d "$EXPAT_DIR" ]; then
 		verbosemsg "expat"
