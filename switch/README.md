@@ -10,3 +10,13 @@
 ### Local build process:
 
 - Run `0_build_everything.sh` in a terminal
+
+## Developer's notes
+
+The switch supports:
+- ✔ ARM NEON intrinsiscs
+- ✔ TLS (thread local storage)
+- ✔ PIC (position independent code)
+- ✔ floating point hardware
+
+These often need to be patched in or out of the libraries.
