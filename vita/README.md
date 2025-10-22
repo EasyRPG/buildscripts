@@ -12,8 +12,9 @@ when targetting our builds.
 
 ## Developer's notes
 
-The switch supports:
+The PSVita supports:
 - ✔ ARM NEON intrinsiscs
+- ✘ PIC (position independent code)
 - ✔ floating point hardware
 - ✘ problematic file access (slow, partly unsupported posix stuff)
 

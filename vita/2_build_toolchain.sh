@@ -71,7 +71,7 @@ function set_build_flags {
 	export CXXFLAGS="$CFLAGS"
 	export CPPFLAGS="-DPSP2"
 	export CMAKE_SYSTEM_NAME="Generic"
-	export CMAKE_EXTRA_ARGS="-DCMAKE_SYSTEM_PROCESSOR=arm64"
+	export CMAKE_EXTRA_ARGS="-DCMAKE_SYSTEM_PROCESSOR=arm64 -DCMAKE_POSITION_INDEPENDENT_CODE=OFF"
 
 	make_meson_cross vita > $PLATFORM_PREFIX/meson-cross.txt
 }
