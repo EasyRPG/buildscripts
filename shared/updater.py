@@ -24,7 +24,7 @@ def query_anitya(id):
 	if not response:
 		print("Error querying Anitya!")
 		return None
-	return response.json()["version"]
+	return response.json()["stable_versions"][0]
 
 
 if __name__ == '__main__':

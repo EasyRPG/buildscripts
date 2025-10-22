@@ -366,17 +366,7 @@ function patches_common {
 		verbosemsg "tremor"
 
 		(cd $TREMOR_DIR
-			perl -pi -e 's/XIPH_PATH_OGG.*//' configure.in
-			autoreconf -fi
-		)
-	fi
-
-	# libsamplerate: disable examples
-	if [ -d "$LIBSAMPLERATE_DIR" ]; then
-		verbosemsg "libsamplerate"
-
-		(cd $LIBSAMPLERATE_DIR
-			patch -Np1 < $_SCRIPT_DIR/libsamplerate-no-examples.patch
+			perl -pi -e 's/XIPH_PATH_OGG.*//' configure.ac
 			autoreconf -fi
 		)
 	fi

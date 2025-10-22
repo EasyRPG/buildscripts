@@ -1,7 +1,7 @@
-diff '--color=auto' -Naur mpg123-1.28.1-orig/configure.ac mpg123-1.28.1/configure.ac
---- mpg123-1.28.1-orig/configure.ac	2021-07-12 00:49:40.906632272 +0200
-+++ mpg123-1.28.1/configure.ac	2021-07-12 00:52:50.956634812 +0200
-@@ -1318,6 +1318,20 @@
+diff --color -Naur mpg123-1.33.3.orig/configure.ac mpg123-1.33.3/configure.ac
+--- mpg123-1.33.3.orig/configure.ac	2025-10-05 22:59:02.000000000 +0200
++++ mpg123-1.33.3/configure.ac	2025-10-21 14:49:00.629579286 +0200
+@@ -1582,6 +1582,20 @@
  # Optionally use platform macros for byte swapping.
  AC_CHECK_HEADERS([byteswap.h])
  
@@ -22,10 +22,22 @@ diff '--color=auto' -Naur mpg123-1.28.1-orig/configure.ac mpg123-1.28.1/configur
  dnl ############## Choose compiler flags and CPU
  
  # do not assume gcc here, so no flags by default
-diff '--color=auto' -Naur mpg123-1.28.1-orig/src/compat/compat.h mpg123-1.28.1/src/compat/compat.h
---- mpg123-1.28.1-orig/src/compat/compat.h	2021-07-12 00:49:40.876632271 +0200
-+++ mpg123-1.28.1/src/compat/compat.h	2021-07-12 00:52:50.956634812 +0200
-@@ -86,7 +86,8 @@
+diff --color -Naur mpg123-1.33.3.orig/src/compat/compat.c mpg123-1.33.3/src/compat/compat.c
+--- mpg123-1.33.3.orig/src/compat/compat.c	2025-10-05 22:59:02.000000000 +0200
++++ mpg123-1.33.3/src/compat/compat.c	2025-10-21 15:10:38.369364458 +0200
+@@ -520,7 +520,7 @@
+ 
+ #ifdef DONT_CATCH_SIGNALS
+ 	fprintf (stderr, "Not catching any signals.\n");
+-	return ((void (*)()) -1);
++	return ((void (*)(int)) -1);
+ #endif
+ 
+ 	new_sa.sa_handler = handler;
+diff --color -Naur mpg123-1.33.3.orig/src/compat/compat.h mpg123-1.33.3/src/compat/compat.h
+--- mpg123-1.33.3.orig/src/compat/compat.h	2025-10-05 22:59:02.000000000 +0200
++++ mpg123-1.33.3/src/compat/compat.h	2025-10-21 14:49:00.630023566 +0200
+@@ -94,7 +94,8 @@
  #include <sys/time.h>
  #endif
  /* For select(), I need select.h according to POSIX 2001, else: sys/time.h sys/types.h unistd.h */
@@ -35,12 +47,12 @@ diff '--color=auto' -Naur mpg123-1.28.1-orig/src/compat/compat.h mpg123-1.28.1/s
  #include <sys/select.h>
  #endif
  
-diff '--color=auto' -Naur mpg123-1.28.1-orig/src/control_generic.c mpg123-1.28.1/src/control_generic.c
---- mpg123-1.28.1-orig/src/control_generic.c	2021-07-12 00:49:40.876632271 +0200
-+++ mpg123-1.28.1/src/control_generic.c	2021-07-12 00:54:20.726636012 +0200
-@@ -28,8 +28,10 @@
+diff --color -Naur mpg123-1.33.3.orig/src/control_generic.c mpg123-1.33.3/src/control_generic.c
+--- mpg123-1.33.3.orig/src/control_generic.c	2025-10-05 22:59:02.000000000 +0200
++++ mpg123-1.33.3/src/control_generic.c	2025-10-21 14:49:00.630277569 +0200
+@@ -29,8 +29,10 @@
  #include <ctype.h>
- #if !defined (WIN32) || defined (__CYGWIN__)
+ #if !defined (_WIN32) || defined (__CYGWIN__)
  #include <sys/wait.h>
 +#ifdef NETWORK
  #include <sys/socket.h>
@@ -49,7 +61,7 @@ diff '--color=auto' -Naur mpg123-1.28.1-orig/src/control_generic.c mpg123-1.28.1
  #include <errno.h>
  #include <string.h>
  
-@@ -397,7 +399,10 @@
+@@ -408,7 +410,10 @@
  		outstream = stdout;
  		out_is_term = stdout_is_term;
  	}
@@ -61,10 +73,10 @@ diff '--color=auto' -Naur mpg123-1.28.1-orig/src/control_generic.c mpg123-1.28.1
   	setlinebuf(outstream);
  #else /* perhaps just use setvbuf as it's C89 */
  	/*
-diff '--color=auto' -Naur mpg123-1.28.1-orig/src/mpg123.c mpg123-1.28.1/src/mpg123.c
---- mpg123-1.28.1-orig/src/mpg123.c	2021-07-12 00:49:40.876632271 +0200
-+++ mpg123-1.28.1/src/mpg123.c	2021-07-12 00:52:50.956634812 +0200
-@@ -1353,6 +1353,8 @@
+diff --color -Naur mpg123-1.33.3.orig/src/mpg123.c mpg123-1.33.3/src/mpg123.c
+--- mpg123-1.33.3.orig/src/mpg123.c	2025-10-05 22:59:02.000000000 +0200
++++ mpg123-1.33.3/src/mpg123.c	2025-10-21 14:49:00.630634577 +0200
+@@ -1341,6 +1341,8 @@
  			if(param.verbose > 2) fprintf(stderr, "Note: pausing %i seconds before next track.\n", param.delay);
  #ifdef WIN32
  			Sleep(param.delay*1000);

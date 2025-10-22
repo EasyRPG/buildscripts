@@ -19,30 +19,30 @@ if [ ! -f .patches-applied ]; then
 
 	patches_common
 
-	# Fix mpg123
+	verbosemsg "mpg123"
 	(cd $MPG123_DIR
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/mpg123.patch
 		autoreconf -fi
 	)
 
-	# Fix lhasa
+	verbosemsg "lhasa"
 	(cd $LHASA_DIR
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/lhasa.patch
 	)
 
-	# Fix fmt
+	verbosemsg "fmt"
 	(cd $FMT_DIR
 		# Fix undefined reference to funlockfile
 		perl -pi -e 's/define FMT_USE_FALLBACK_FILE 0/define FMT_USE_FALLBACK_FILE 1/' include/fmt/format-inl.h
 	)
 
-	# Fix icu build
+	verbosemsg "ICU"
 	# Remove mutexes (crashes)
 	patch -Np0 < $SCRIPT_DIR/../shared/extra/icu-no-mutex.patch
 	# Vita specific fixes
 	patch -Np0 < $SCRIPT_DIR/icu-vita.patch
 
-	# Disable vita2dlib jpeg dependency
+	verbosemsg "vita2d"
 	patch -Np0 < $SCRIPT_DIR/libvita2d-no-jpeg.patch
 
 	# Allow the cmake toolchain finding libfmt
@@ -71,7 +71,7 @@ function set_build_flags {
 	export CXXFLAGS="$CFLAGS"
 	export CPPFLAGS="-DPSP2"
 	export CMAKE_SYSTEM_NAME="Generic"
-	export CMAKE_EXTRA_ARGS="-DCMAKE_SYSTEM_PROCESSOR=arm64"
+	export CMAKE_EXTRA_ARGS="-DCMAKE_SYSTEM_PROCESSOR=arm64 -DCMAKE_POSITION_INDEPENDENT_CODE=OFF"
 
 	make_meson_cross vita > $PLATFORM_PREFIX/meson-cross.txt
 }
@@ -104,7 +104,7 @@ install_lib_cmake $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
 install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
 install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS
 install_lib_cmake $FLUIDLITE_DIR $FLUIDLITE_ARGS -DENABLE_SF3=ON
-install_lib $OPUS_DIR $OPUS_ARGS
+install_lib_cmake $OPUS_DIR $OPUS_ARGS
 install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 install_lib_meson $INIH_DIR $INIH_ARGS
 install_lib $LHASA_DIR $LHASA_ARGS

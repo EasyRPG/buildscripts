@@ -44,9 +44,9 @@ download_and_extract $EXPAT_URL
 rm -rf $LIBOGG_DIR
 download_and_extract $LIBOGG_URL
 
-# tremor
-rm -rf $TREMOR_DIR
-download_and_extract $TREMOR_URL
+# libvorbis
+rm -rf $LIBVORBIS_DIR
+download_and_extract $LIBVORBIS_URL
 
 # mpg123
 rm -rf $MPG123_DIR

@@ -28,24 +28,18 @@ if [ ! -f .patches-applied ]; then
 
 	patches_common
 
-	# Fix mpg123
+	verbosemsg "mpeg123"
 	(cd $MPG123_DIR
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/mpg123.patch
 		autoreconf -fi
 	)
 
-	# Fix opusfile
+	verbosemsg "opusfile"
 	(cd $OPUSFILE_DIR
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/opusfile-devkit.patch
 	)
 
-	# disable libsamplerate examples and tests
-	(cd $LIBSAMPLERATE_DIR
-		perl -pi -e 's/examples tests//' Makefile.am
-		autoreconf -fi
-	)
-
-	# Fix lhasa
+	verbosemsg "lhasa"
 	(cd $LHASA_DIR
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/lhasa.patch
 	)
@@ -90,12 +84,12 @@ install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=OFF
 install_lib_meson $PIXMAN_DIR $PIXMAN_ARGS
 install_lib_cmake $EXPAT_DIR $EXPAT_ARGS
 install_lib $LIBOGG_DIR $LIBOGG_ARGS
-install_lib $TREMOR_DIR $TREMOR_ARGS
+install_lib $LIBVORBIS_DIR $LIBVORBIS_ARGS
 install_lib $MPG123_DIR $MPG123_ARGS
 install_lib_cmake $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
-install_lib $LIBSAMPLERATE_DIR $LIBSAMPLERATE_ARGS
+install_lib_cmake $LIBSAMPLERATE_DIR $LIBSAMPLERATE_ARGS
 install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS
-install_lib $OPUS_DIR $OPUS_ARGS
+install_lib_cmake $OPUS_DIR $OPUS_ARGS
 install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 install_lib_cmake $FLUIDSYNTH_DIR $FLUIDSYNTH_ARGS
 install_lib_meson $INIH_DIR $INIH_ARGS
