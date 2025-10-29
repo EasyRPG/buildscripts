@@ -25,7 +25,6 @@ else
 	msg "The following tools need to be installed to allow building .cia"
 	msg "bundles or creating custom banners:"
 	msg "  https://github.com/dnasdw/3dstool"
-	#msg "  https://github.com/Steveice10/bannertool"
 	msg "  https://github.com/carstene1ns/3ds-bannertool"
 	msg "  https://github.com/profi200/Project_CTR"
 fi
@@ -37,31 +36,29 @@ if [ ! -f .patches-applied ]; then
 
 	patches_common
 
-	# Fix pixman
+	verbosemsg "pixman"
 	(cd $PIXMAN_DIR
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/pixman-no-tls.patch
 		patch -Np1 < $SCRIPT_DIR/pixman-fix-types.patch
 	)
 
-	# Fix mpg123
+	verbosemsg "mpg123"
 	(cd $MPG123_DIR
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/mpg123.patch
 		autoreconf -fi
 	)
 
-	# Fix tremor
+	verbosemsg "tremor"
 	patch -d $TREMOR_DIR -Np1 < $SCRIPT_DIR/tremor-fix-types.patch
 
-	# Fix opusfile
+	verbosemsg "opusfile"
 	patch -d $OPUSFILE_DIR -Np1 < $SCRIPT_DIR/../shared/extra/opusfile-devkit.patch
 
-	# Fix lhasa
+	verbosemsg "lhasa"
 	patch -d $LHASA_DIR -Np1 < $SCRIPT_DIR/../shared/extra/lhasa.patch
 
-	# Fix icu build
-	# Remove mutexes (crashes)
+	verbosemsg "ICU"
 	patch -Np0 < $SCRIPT_DIR/../shared/extra/icu-no-mutex.patch
-	# Fix char16 detection
 	patch -Np0 < $SCRIPT_DIR/icu-data-char16.patch
 
 	touch .patches-applied
@@ -101,7 +98,7 @@ install_lib_cmake $LIBPNG_DIR $LIBPNG_ARGS
 install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=ON
 #install_lib_meson $HARFBUZZ_DIR $HARFBUZZ_ARGS
 #install_lib_cmake $FREETYPE_DIR $FREETYPE_ARGS -DFT_DISABLE_HARFBUZZ=OFF
-install_lib_meson $PIXMAN_DIR $PIXMAN_ARGS
+install_lib_meson $PIXMAN_DIR $PIXMAN_ARGS -Dneon=disabled
 install_lib_cmake $EXPAT_DIR $EXPAT_ARGS
 install_lib $LIBOGG_DIR $LIBOGG_ARGS
 install_lib $TREMOR_DIR $TREMOR_ARGS
@@ -109,8 +106,10 @@ install_lib $MPG123_DIR $MPG123_ARGS
 install_lib_cmake $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
 install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
 install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS
-install_lib $OPUS_DIR $OPUS_ARGS --disable-asm
-install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
+# asm support is missing in opus cmake, but might be added one day,
+# likely -DOPUS_ASM=OFF then, beware if switching to meson
+install_lib_cmake $OPUS_DIR $OPUS_ARGS -DOPUS_FIXED_POINT=ON
+install_lib $OPUSFILE_DIR $OPUSFILE_ARGS --enable-fixed-point
 install_lib_cmake $FLUIDLITE_DIR $FLUIDLITE_ARGS
 install_lib_meson $INIH_DIR $INIH_ARGS
 install_lib $LHASA_DIR $LHASA_ARGS
