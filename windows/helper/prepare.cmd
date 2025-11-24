@@ -18,6 +18,9 @@ git restore -s 50ca16008cebab427e90a98f8ffc34208b215dba ports/fmt
 :: Optimize the debug libraries
 copy ..\helper\windows.cmake scripts\toolchains\windows.cmake
 
+:: add custom editor triplet
+copy ..\helper\x64-windows-static-easyrpgeditor.cmake triplets\x64-windows-static-easyrpgeditor.cmake
+
 :: Copy custom portfiles
 :: ICU static data file
 xcopy /Y /I /E ..\icu-easyrpg ports\icu-easyrpg
