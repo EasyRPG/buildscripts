@@ -1,6 +1,6 @@
-diff -Naur icu-orig/source/common/umutex.cpp icu/source/common/umutex.cpp
---- icu-orig/source/common/umutex.cpp	2024-09-01 18:41:49.755849773 +0200
-+++ icu/source/common/umutex.cpp	2024-09-01 18:42:05.278763995 +0200
+diff '--color=auto' -Naur icu-orig/source/common/umutex.cpp icu/source/common/umutex.cpp
+--- icu-orig/source/common/umutex.cpp	2026-01-10 13:01:30.482645434 +0100
++++ icu/source/common/umutex.cpp	2026-01-10 13:02:25.470686875 +0100
 @@ -44,20 +44,25 @@
   *************************************************************************************************/
  
@@ -90,37 +90,31 @@ diff -Naur icu-orig/source/common/umutex.cpp icu/source/common/umutex.cpp
  
  U_NAMESPACE_END
 diff '--color=auto' -Naur icu-orig/source/common/umutex.h icu/source/common/umutex.h
---- icu-orig/source/common/umutex.h	2024-09-01 18:41:49.732517070 +0200
-+++ icu/source/common/umutex.h	2024-09-01 18:42:05.278763995 +0200
-@@ -227,15 +227,22 @@
+--- icu-orig/source/common/umutex.h	2026-01-10 13:01:30.439842550 +0100
++++ icu/source/common/umutex.h	2026-01-10 13:05:18.460584542 +0100
+@@ -213,15 +213,18 @@
  
      // requirements for C++ BasicLockable, allows UMutex to work with std::lock_guard
-     void lock() {
+     U_COMMON_API void lock() {
 +#if 0
          std::mutex *m = fMutex.load(std::memory_order_acquire);
          if (m == nullptr) { m = getMutex(); }
          m->lock();
 +#endif
-+    }
-+    void unlock() {
-+#if 0
-+        fMutex.load(std::memory_order_relaxed)->unlock();
-+#endif
      }
--    void unlock() { fMutex.load(std::memory_order_relaxed)->unlock(); }
+-    U_COMMON_API void unlock() { fMutex.load(std::memory_order_relaxed)->unlock(); }
++    U_COMMON_API void unlock() { }
  
-     static void cleanup();
+     U_COMMON_API static void cleanup();
  
  private:
 +#if 0
      alignas(std::mutex) char fStorage[sizeof(std::mutex)] {};
      std::atomic<std::mutex *> fMutex { nullptr };
  
-@@ -250,6 +257,7 @@
+@@ -236,6 +239,7 @@
       * be nullptr.
       */
      std::mutex *getMutex();
 +#endif
  };
- 
- 
