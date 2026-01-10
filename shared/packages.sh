@@ -5,9 +5,9 @@
 #######################################
 
 
-ZLIB_URL="https://zlib.net/fossils/zlib-1.3.1.2.tar.gz"
+ZLIB_URL="https://zlib.net/fossils/zlib-1.3.1.tar.gz"
 ZLIB_ARGS="-DZLIB_BUILD_EXAMPLES=OFF"
-ZLIB_DIR="zlib-1.3.1.2"
+ZLIB_DIR="zlib-1.3.1"
 
 LIBPNG_URL="https://download.sourceforge.net/libpng/libpng-1.6.53.tar.xz"
 LIBPNG_ARGS="-DPNG_SHARED=OFF -DPNG_TOOLS=OFF -DPNG_TESTS=OFF"
@@ -95,14 +95,14 @@ INIH_DIR="inih-r62"
 LHASA_URL="https://github.com/fragglet/lhasa/releases/download/v0.5.0/lhasa-0.5.0.tar.gz"
 LHASA_DIR="lhasa-0.5.0"
 
-ICU_URL="https://github.com/unicode-org/icu/releases/download/release-78-2/icu4c-78_2-src.tgz"
+ICU_URL="https://github.com/unicode-org/icu/releases/download/release-78.2/icu4c-78.2-sources.tgz"
 ICU_DIR="icu"
 ICU_ARGS="--enable-strict=no --disable-tests --disable-samples \
 --disable-dyload --disable-extras --disable-icuio \
 --with-data-packaging=static --disable-layout --disable-layoutex \
 --enable-draft=no"
 
-ICUDATA_URL=https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata77_all.tar.gz
+ICUDATA_URL=https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata78_all.tar.gz
 ICUDATA_FILES="icudt*.dat"
 
 SDL2_URL="https://libsdl.org/release/SDL2-2.32.10.tar.gz"
