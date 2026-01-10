@@ -74,7 +74,7 @@ OPUSFILE_ARGS="--disable-http --disable-examples"
 OPUSFILE_DIR="opusfile-0.12"
 
 FLUIDSYNTH_URL="https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v2.5.2.tar.gz"
-FLUIDSYNTH_ARGS="-DLIB_SUFFIX=''"
+FLUIDSYNTH_ARGS="-DLIB_SUFFIX='' -Denable-alsa=OFF -Denable-aufile=OFF -Denable-dbus=OFF -Denable-ipv6=OFF -Denable-jack=OFF -Denable-ladspa=OFF -Denable-libinstpatch=OFF -Denable-libsndfile=OFF -Denable-midishare=OFF -Denable-network=OFF -Denable-oss=OFF -Denable-dsound=OFF -Denable-wasapi=OFF -Denable-waveout=OFF -Denable-winmidi=OFF -Denable-sdl3=OFF -Denable-pulseaudio=OFF -Denable-pipewire=OFF -Denable-readline=OFF -Denable-threads=OFF -Denable-openmp=OFF -Denable-unicode=OFF -Denable-native-dls=OFF"
 FLUIDSYNTH_DIR="fluidsynth-2.5.2"
 
 FLUIDLITE_URL="https://github.com/divideconcept/FluidLite/archive/4a01cf1c67419e71da971d209f2855bbf4f3bab8.zip"

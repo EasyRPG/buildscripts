@@ -380,16 +380,6 @@ function patches_common {
 		)
 	fi
 
-	# FluidSynth: Shim glib and disable all optional features
-	if [ -d "$FLUIDSYNTH_DIR" ]; then
-		verbosemsg "fluidsynth"
-
-		(cd $FLUIDSYNTH_DIR
-			patch -Np1 < $_SCRIPT_DIR/fluidsynth-no-glib.patch
-			patch -Np1 < $_SCRIPT_DIR/fluidsynth-no-deps.patch
-		)
-	fi
-
 	# nlohmann json: Install pkgconfig/cmake into lib (share is deleted by us)
 	if [ -d "$NLOHMANNJSON_DIR" ]; then
 		verbosemsg "nlohmann_json"

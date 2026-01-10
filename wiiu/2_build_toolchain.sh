@@ -97,7 +97,7 @@ install_lib $LIBVORBIS_DIR $LIBVORBIS_ARGS
 install_lib $MPG123_DIR $MPG123_ARGS
 install_lib_cmake $LIBXMP_LITE_DIR $LIBXMP_LITE_ARGS
 install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
-install_lib_cmake $FLUIDSYNTH_DIR $FLUIDSYNTH_ARGS
+install_lib_cmake $FLUIDSYNTH_DIR $FLUIDSYNTH_ARGS -Dosal=embedded
 install_lib_cmake $OPUS_DIR $OPUS_ARGS
 install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
 install_lib_meson $INIH_DIR $INIH_ARGS
