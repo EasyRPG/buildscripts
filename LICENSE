@@ -6,12 +6,12 @@ expat: MIT
 FluidLite: LGPLv2.1+
 FluidSynth: LGPLv2.1+
 fmt: MIT
+freeimage: FreeImage Public License or GPLv3 (see license-fi.txt)
 freetype: FreeType License or GPLv2 or later (see docs/LICENSE.TXT)
 harfbuzz: MIT
 icu4c: ICU license
 inih: BSD
 lhasa: ISC
-modplug: Public Domain
 mpg123: LGPLv2.1+
 nlohmann-json: MIT
 ogg: BSD
@@ -20,7 +20,6 @@ opusfile: BSD
 pixman: MIT
 png: zlib
 samplerate: BSD
-SDL2 image: zlib
 SDL2: zlib
 sndfile: LGPLv2.1+
 speexdsp: BSD
@@ -28,4 +27,3 @@ vorbis: BSD
 wildmidi: LGPLv3+
 xmp-lite: MIT
 zlib: zlib
-
