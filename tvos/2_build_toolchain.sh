@@ -22,6 +22,12 @@ if [ ! -f .patches-applied ]; then
 
 	patches_common
 
+	verbosemsg "FluidSynth"
+	(cd $FLUIDSYNTH_DIR
+		# Fix using unsupported flag
+		perl -pi -e "s#Darwin|iOS#Darwin|iOS|tvOS#" CMakeLists.txt
+	)
+
 	touch .patches-applied
 fi
 
@@ -76,7 +82,7 @@ function build() {
 	install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS
 	install_lib_cmake $OPUS_DIR $OPUS_ARGS
 	install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
-	install_lib_cmake $FLUIDSYNTH_DIR $FLUIDSYNTH_ARGS -Dosal=embedded -DCMAKE_MACOSX_BUNDLE=OFF
+	install_lib_cmake $FLUIDSYNTH_DIR $FLUIDSYNTH_ARGS -Dosal=embedded -DCMAKE_MACOSX_BUNDLE=OFF -Denable-coreaudio=OFF -Denable-coremidi=OFF
 	install_lib_cmake $NLOHMANNJSON_DIR $NLOHMANNJSON_ARGS
 	install_lib_meson $INIH_DIR $INIH_ARGS
 	install_lib $LHASA_DIR $LHASA_ARGS
