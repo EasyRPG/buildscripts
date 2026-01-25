@@ -62,9 +62,7 @@ if __name__ == '__main__':
 			comma = ", "
 		# check for special handling
 		if cp.has_option(lib, "version_major"):
-			v = ver.split(".") # expat
-			if v[0] == ver:
-				v = ver.split("-") # ICU
+			v = ver.split(".") # expat, zlib
 			cp.set(lib, "version_major", v[0])
 			if cp.has_option(lib, "version_minor"):
 				cp.set(lib, "version_minor", v[1])

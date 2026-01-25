@@ -58,7 +58,7 @@ if [ ! -f .patches-applied ]; then
 	patch -d $LHASA_DIR -Np1 < $SCRIPT_DIR/../shared/extra/lhasa.patch
 
 	verbosemsg "ICU"
-	patch -Np0 < $SCRIPT_DIR/../shared/extra/icu-no-mutex.patch
+	patch -Np0 < $SCRIPT_DIR/icu77-no-mutex.patch
 	patch -Np0 < $SCRIPT_DIR/icu-data-char16.patch
 
 	touch .patches-applied

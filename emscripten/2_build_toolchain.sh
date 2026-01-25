@@ -111,7 +111,7 @@ install_lib $SPEEXDSP_DIR $SPEEXDSP_ARGS
 #install_lib_cmake $WILDMIDI_DIR $WILDMIDI_ARGS
 install_lib_cmake $OPUS_DIR $OPUS_ARGS -DOPUS_STACK_PROTECTOR=OFF
 install_lib $OPUSFILE_DIR $OPUSFILE_ARGS
-install_lib_cmake $FLUIDSYNTH_DIR $FLUIDSYNTH_ARGS
+install_lib_cmake $FLUIDSYNTH_DIR $FLUIDSYNTH_ARGS -Dosal=embedded
 install_lib_cmake $NLOHMANNJSON_DIR $NLOHMANNJSON_ARGS
 install_lib_meson $INIH_DIR $INIH_ARGS
 #install_lib $LHASA_DIR $LHASA_ARGS

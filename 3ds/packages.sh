@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ICU_URL="https://github.com/unicode-org/icu/releases/download/release-77-1/icu4c-77_1-src.tgz"
