@@ -73,6 +73,20 @@ Studio (``[PRESET]`` is equal to the value after ``--preset`` above).
 
 ## Compile instructions for EasyRPG Editor
 
+### Enabling Long Path Support
+
+Compiling the editor fails because the path length of the Kirigami dependency
+exceeds the legacy Windows limit of 260 characters.
+
+To resolve this issue, either enable long path support in the Windows 11
+Developer Settings, or run the following command in PowerShell as an
+administrator:
+
+```psh
+New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" `
+  -Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force
+```
+
 ### Configuring
 
 Open the "Developer Command Prompt for Visual Studio 2022" from the Start menu
