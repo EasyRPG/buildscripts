@@ -11,8 +11,8 @@ The ARM architecture is not supported.
 
 ## Compiling
 
- - For EasyRPG Player: Run build.cmd
- - For EasyRPG Editor: (currently unsupported)
+ - For EasyRPG Player: Run `build.cmd`
+ - For EasyRPG Editor: Run `download_qt6.cmd` and `build_editor.cmd` 
 
 This bootstraps vcpkg and builds all required libraries.
 
@@ -26,13 +26,13 @@ prebuilt version. Run ``download_prebuilt.cmd`` to obtain them.
 This precompiled version will only work on the latest version of Visual Studio
 2022. If you are using a different version, please compile it yourself.
 
-## After compiling
-
-### Environment setup
+## Environment setup
 
 Run ``setup_env.cmd`` once to configure the necessary environment variables.
 
 Then log out of Windows to ensure that the changes take effect.
+
+## Compile instructions for EasyRPG Player
 
 ### Configuring
 
@@ -71,5 +71,44 @@ Player.
 Open the ``EasyRPG_Player.sln`` file created in ``build\[PRESET]`` in Visual
 Studio (``[PRESET]`` is equal to the value after ``--preset`` above).
 
-When the build type is different to Debug, you must set the correct build type
-manually in Visual Studio, otherwise you will get strange build errors.
+## Compile instructions for EasyRPG Editor
+
+### Enabling Long Path Support
+
+Compiling the editor fails because the path length of the Kirigami dependency
+exceeds the legacy Windows limit of 260 characters.
+
+To resolve this issue, either enable long path support in the Windows 11
+Developer Settings, or run the following command in PowerShell as an
+administrator:
+
+```psh
+New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" `
+  -Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force
+```
+
+### Configuring
+
+Open the "Developer Command Prompt for Visual Studio 2022" from the Start menu
+and navigate to your _EasyRPG Editor_ directory.
+
+To configure the editor run:
+
+```
+cmake --preset windows-x64-vs2022-[BUILD_TYPE]
+```
+
+liblcf is not provided by the buildscript. Either compile it yourself or use
+the triplet `windows-x64-vs2022-liblcf-[BUILD_TYPE]` to build it as part of
+the Editor.
+
+Options for ``[BUILD_TYPE]``:
+
+- ``debug``: Debug build
+- ``relwithdebinfo``: Release build with debug symbols
+- ``release``: Release build without debug symbols
+
+### Building
+
+Open the ``EasyRPG_Editor.sln`` file created in ``build\[PRESET]`` in Visual
+Studio (``[PRESET]`` is equal to the value after ``--preset`` above).
