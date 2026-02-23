@@ -6,7 +6,7 @@
 
 
 ZLIB_URL="https://zlib.net/fossils/zlib-1.3.2.tar.gz"
-ZLIB_ARGS="-DZLIB_BUILD_EXAMPLES=OFF"
+ZLIB_ARGS="-DZLIB_BUILD_TESTING=OFF -DZLIB_BUILD_SHARED=OFF -DZLIB_BUILD_STATIC=ON"
 ZLIB_DIR="zlib-1.3.2"
 
 LIBPNG_URL="https://download.sourceforge.net/libpng/libpng-1.6.55.tar.xz"
@@ -73,9 +73,9 @@ OPUSFILE_URL="https://github.com/xiph/opusfile/releases/download/v0.12/opusfile-
 OPUSFILE_ARGS="--disable-http --disable-examples"
 OPUSFILE_DIR="opusfile-0.12"
 
-FLUIDSYNTH_URL="https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v2.5.2.tar.gz"
+FLUIDSYNTH_URL="https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v2.5.3.tar.gz"
 FLUIDSYNTH_ARGS="-DLIB_SUFFIX='' -Denable-alsa=OFF -Denable-aufile=OFF -Denable-dbus=OFF -Denable-ipv6=OFF -Denable-jack=OFF -Denable-ladspa=OFF -Denable-libinstpatch=OFF -Denable-libsndfile=OFF -Denable-midishare=OFF -Denable-network=OFF -Denable-oss=OFF -Denable-dsound=OFF -Denable-wasapi=OFF -Denable-waveout=OFF -Denable-winmidi=OFF -Denable-sdl3=OFF -Denable-pulseaudio=OFF -Denable-pipewire=OFF -Denable-readline=OFF -Denable-threads=OFF -Denable-openmp=OFF -Denable-unicode=OFF -Denable-native-dls=OFF"
-FLUIDSYNTH_DIR="fluidsynth-2.5.2"
+FLUIDSYNTH_DIR="fluidsynth-2.5.3"
 
 FLUIDLITE_URL="https://github.com/divideconcept/FluidLite/archive/4a01cf1c67419e71da971d209f2855bbf4f3bab8.zip"
 FLUIDLITE_ARGS="-DFLUIDLITE_BUILD_STATIC=ON -DFLUIDLITE_BUILD_SHARED=OFF"
