@@ -321,16 +321,6 @@ function icu_force_data_install {
 function patches_common {
 	_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-	# zlib: Install pkgconfig into lib and only build static library
-	if [ -d "$ZLIB_DIR" ]; then
-		verbosemsg "zlib"
-
-		(cd $ZLIB_DIR
-			perl -pi -e 's#/share/pkgconfig#/lib/pkgconfig#' CMakeLists.txt
-			patch -Np1 < $_SCRIPT_DIR/zlib-only-static.patch
-		)
-	fi
-
 	# png: move cmake configuration, fix using compiler with arguments
 	if [ -d "$LIBPNG_DIR" ]; then
 		verbosemsg "libpng"
