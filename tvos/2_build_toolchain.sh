@@ -22,12 +22,6 @@ if [ ! -f .patches-applied ]; then
 
 	patches_common
 
-	verbosemsg "FluidSynth"
-	(cd $FLUIDSYNTH_DIR
-		# Fix using unsupported flag
-		perl -pi -e "s#Darwin|iOS#Darwin|iOS|tvOS#" CMakeLists.txt
-	)
-
 	touch .patches-applied
 fi
 
