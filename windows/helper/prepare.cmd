@@ -20,6 +20,8 @@ copy ..\helper\windows.cmake scripts\toolchains\windows.cmake
 
 :: add custom editor triplet
 copy ..\helper\x64-windows-static-easyrpgeditor.cmake triplets\x64-windows-static-easyrpgeditor.cmake
+:: shorter version until MAX_PATH limits in the MSVC Linker are fixed (Kirigami paths are extremely long)
+copy ..\helper\x64-windows-static-easyrpgeditor.cmake triplets\x64-windows-eze.cmake
 
 :: Copy custom portfiles
 :: ICU static data file
