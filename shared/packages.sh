@@ -49,9 +49,9 @@ LIBSNDFILE_URL="https://github.com/libsndfile/libsndfile/releases/download/1.2.2
 LIBSNDFILE_ARGS="--disable-alsa --disable-sqlite --disable-full-suite --disable-external-libs --disable-mpeg"
 LIBSNDFILE_DIR="libsndfile-1.2.2"
 
-LIBXMP_LITE_URL="https://github.com/libxmp/libxmp/releases/download/libxmp-4.6.3/libxmp-lite-4.6.3.tar.gz"
+LIBXMP_LITE_URL="https://github.com/libxmp/libxmp/releases/download/libxmp-4.7.0/libxmp-lite-4.7.0.tar.gz"
 LIBXMP_LITE_ARGS="-DBUILD_STATIC=ON -DBUILD_SHARED=OFF"
-LIBXMP_LITE_DIR="libxmp-lite-4.6.3"
+LIBXMP_LITE_DIR="libxmp-lite-4.7.0"
 
 SPEEXDSP_URL="https://downloads.xiph.org/releases/speex/speexdsp-1.2.1.tar.gz"
 SPEEXDSP_ARGS="--disable-sse --disable-neon"
