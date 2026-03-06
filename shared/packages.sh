@@ -13,13 +13,13 @@ LIBPNG_URL="https://download.sourceforge.net/libpng/libpng-1.6.55.tar.xz"
 LIBPNG_ARGS="-DPNG_SHARED=OFF -DPNG_TOOLS=OFF -DPNG_TESTS=OFF"
 LIBPNG_DIR="libpng-1.6.55"
 
-FREETYPE_URL="https://download.savannah.gnu.org/releases/freetype/freetype-2.14.1.tar.xz"
+FREETYPE_URL="https://download.savannah.gnu.org/releases/freetype/freetype-2.14.2.tar.xz"
 FREETYPE_ARGS="-DFT_DISABLE_BZIP2=ON -DFT_DISABLE_BROTLI=ON"
-FREETYPE_DIR="freetype-2.14.1"
+FREETYPE_DIR="freetype-2.14.2"
 
-HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/12.3.2/harfbuzz-12.3.2.tar.xz"
+HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/13.0.0/harfbuzz-13.0.0.tar.xz"
 HARFBUZZ_ARGS="-Dfreetype=enabled -Dicu=disabled -Dtests=disabled -Dutilities=disabled" # TODO disable subset
-HARFBUZZ_DIR="harfbuzz-12.3.2"
+HARFBUZZ_DIR="harfbuzz-13.0.0"
 
 PIXMAN_URL="https://cairographics.org/releases/pixman-0.46.4.tar.gz"
 PIXMAN_ARGS="-Dtests=disabled -Ddemos=disabled -Dlibpng=disabled"
@@ -49,9 +49,9 @@ LIBSNDFILE_URL="https://github.com/libsndfile/libsndfile/releases/download/1.2.2
 LIBSNDFILE_ARGS="--disable-alsa --disable-sqlite --disable-full-suite --disable-external-libs --disable-mpeg"
 LIBSNDFILE_DIR="libsndfile-1.2.2"
 
-LIBXMP_LITE_URL="https://github.com/libxmp/libxmp/releases/download/libxmp-4.6.3/libxmp-lite-4.6.3.tar.gz"
+LIBXMP_LITE_URL="https://github.com/libxmp/libxmp/releases/download/libxmp-4.7.0/libxmp-lite-4.7.0.tar.gz"
 LIBXMP_LITE_ARGS="-DBUILD_STATIC=ON -DBUILD_SHARED=OFF"
-LIBXMP_LITE_DIR="libxmp-lite-4.6.3"
+LIBXMP_LITE_DIR="libxmp-lite-4.7.0"
 
 SPEEXDSP_URL="https://downloads.xiph.org/releases/speex/speexdsp-1.2.1.tar.gz"
 SPEEXDSP_ARGS="--disable-sse --disable-neon"
