@@ -42,7 +42,6 @@ jobs:
           labels: |
             update
             automated pr
-          reviewers: carstene1ns, Ghabry, fdelapena
 
       - name: Check outputs
         if: ${{ steps.cpr.outputs.pull-request-number }}
