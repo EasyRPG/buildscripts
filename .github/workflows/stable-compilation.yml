@@ -28,10 +28,12 @@ jobs:
       fail-fast: false
       matrix:
         image:
-          #   version of: # gcc/g++ |     support end  #
-          # --------------------------------------------
-          - ubuntu:22.04  # 11.2.0  | LTS       (6/27) #
-          - debian:12     # 12.2.0  | stable    (6/26) #
+          #   version of: # gcc/g++ |     support end
+          # ------------------------------------------------------
+          - ubuntu:22.04  # 11.2.0  | LTS       (6/27)
+          - debian:12     # 12.2.0  | oldstable (6/26), LTS (6/28)
+          # ubuntu:24.04  # 13.2.0  | LTS       (5/29)
+          # debian:13     # 14.2.0  | stable    (8/30)
 
     steps:
       - name: Install dependencies
