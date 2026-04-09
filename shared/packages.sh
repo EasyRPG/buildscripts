@@ -110,6 +110,7 @@ SDL2_URL="https://libsdl.org/release/SDL2-2.32.10.tar.gz"
 SDL2_DIR="SDL2-2.32.10"
 
 SDL3_URL="https://libsdl.org/release/SDL3-3.4.4.tar.gz"
+SDL3_ARGS="-DSDL_TEST_LIBRARY=OFF -DSDL_EXAMPLES=OFF"
 SDL3_DIR="SDL3-3.4.4"
 
 # 3.18.0, only needed for lmu2png tool
