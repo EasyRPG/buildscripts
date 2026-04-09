@@ -104,6 +104,10 @@ msg " [3] Downloading platform libraries"
 rm -rf $SDL2_DIR
 download_and_extract $SDL2_URL
 
+# SDL3
+rm -rf $SDL3_DIR
+download_and_extract $SDL3_URL
+
 # liblcf
 rm -rf liblcf
 download_liblcf

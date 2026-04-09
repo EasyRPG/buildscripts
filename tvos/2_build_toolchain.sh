@@ -85,6 +85,7 @@ function build() {
 	icu_force_data_install
 	install_lib_liblcf
 	install_lib_cmake $SDL2_DIR $SDL2_ARGS
+	install_lib_cmake $SDL3_DIR $SDL3_ARGS
 }
 
 export MAKEFLAGS="-j${nproc:-2}"

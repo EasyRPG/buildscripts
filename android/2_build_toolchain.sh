@@ -41,6 +41,7 @@ if [ ! -f .patches-applied ]; then
 fi
 
 # Install SDL2
+# FIXME: Remove this when SDL3 migration is done
 function install_lib_sdl {
 	# $1: platform (armeabi-v7a aarch64 x86 x86_x64)
 

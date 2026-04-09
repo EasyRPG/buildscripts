@@ -124,6 +124,8 @@ install_lib $SDL2_DIR $SDL2_ARGS --disable-assembly --disable-threads --disable-
 rm -f config.cache
 unset TARGET_HOST
 
+install_lib_cmake $SDL3_DIR $SDL3_ARGS
+
 install_lib_icu_cross
 icu_force_data_install
 
