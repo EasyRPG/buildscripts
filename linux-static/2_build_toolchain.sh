@@ -67,5 +67,5 @@ install_lib_cmake $FMT_DIR $FMT_ARGS
 install_lib $ICU_DIR/source $ICU_ARGS
 install_lib_liblcf
 install_lib $SDL2_DIR $SDL2_ARGS PULSEAUDIO_CFLAGS=-Ixxxdir PULSEAUDIO_LIBS=-lxxxlib
-install_lib_cmake $SDL3_DIR $SDL3_ARGS
+install_lib_cmake $SDL3_DIR $SDL3_ARGS -DSDL_X11_XSCRNSAVER=OFF -DSDL_X11_XTEST=OFF
 install_lib_cmake $FREEIMAGE_DIR $FREEIMAGE_ARGS
