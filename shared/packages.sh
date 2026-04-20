@@ -9,26 +9,26 @@ ZLIB_URL="https://zlib.net/fossils/zlib-1.3.2.tar.gz"
 ZLIB_ARGS="-DZLIB_BUILD_TESTING=OFF -DZLIB_BUILD_SHARED=OFF -DZLIB_BUILD_STATIC=ON"
 ZLIB_DIR="zlib-1.3.2"
 
-LIBPNG_URL="https://download.sourceforge.net/libpng/libpng-1.6.55.tar.xz"
+LIBPNG_URL="https://download.sourceforge.net/libpng/libpng-1.6.58.tar.xz"
 LIBPNG_ARGS="-DPNG_SHARED=OFF -DPNG_TOOLS=OFF -DPNG_TESTS=OFF"
-LIBPNG_DIR="libpng-1.6.55"
+LIBPNG_DIR="libpng-1.6.58"
 
-FREETYPE_URL="https://download.savannah.gnu.org/releases/freetype/freetype-2.14.2.tar.xz"
+FREETYPE_URL="https://download.savannah.gnu.org/releases/freetype/freetype-2.14.3.tar.xz"
 FREETYPE_ARGS="-DFT_DISABLE_BZIP2=ON -DFT_DISABLE_BROTLI=ON"
-FREETYPE_DIR="freetype-2.14.2"
+FREETYPE_DIR="freetype-2.14.3"
 
-HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/13.0.0/harfbuzz-13.0.0.tar.xz"
+HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/14.1.0/harfbuzz-14.1.0.tar.xz"
 HARFBUZZ_ARGS="-Dfreetype=enabled -Dicu=disabled -Dtests=disabled -Dutilities=disabled -Draster=disabled -Dvector=disabled -Dsubset=disabled"
-HARFBUZZ_DIR="harfbuzz-13.0.0"
+HARFBUZZ_DIR="harfbuzz-14.1.0"
 
 PIXMAN_URL="https://cairographics.org/releases/pixman-0.46.4.tar.gz"
 PIXMAN_ARGS="-Dtests=disabled -Ddemos=disabled -Dlibpng=disabled"
 PIXMAN_DIR="pixman-0.46.4"
 
-EXPAT_URL="https://github.com/libexpat/libexpat/releases/download/R_2_7_4/expat-2.7.4.tar.bz2"
+EXPAT_URL="https://github.com/libexpat/libexpat/releases/download/R_2_7_5/expat-2.7.5.tar.bz2"
 EXPAT_ARGS="-DEXPAT_BUILD_TOOLS=OFF -DEXPAT_BUILD_EXAMPLES=OFF \
 -DEXPAT_BUILD_TESTS=OFF -DEXPAT_BUILD_DOCS=OFF -DEXPAT_SHARED_LIBS=OFF"
-EXPAT_DIR="expat-2.7.4"
+EXPAT_DIR="expat-2.7.5"
 
 LIBOGG_URL="https://downloads.xiph.org/releases/ogg/libogg-1.3.6.tar.xz"
 LIBOGG_DIR="libogg-1.3.6"
@@ -95,7 +95,7 @@ INIH_DIR="inih-r62"
 LHASA_URL="https://github.com/fragglet/lhasa/releases/download/v0.5.0/lhasa-0.5.0.tar.gz"
 LHASA_DIR="lhasa-0.5.0"
 
-ICU_URL="https://github.com/unicode-org/icu/releases/download/release-78.2/icu4c-78.2-sources.tgz"
+ICU_URL="https://github.com/unicode-org/icu/releases/download/release-78.3/icu4c-78.3-sources.tgz"
 ICU_DIR="icu"
 ICU_ARGS="--enable-strict=no --disable-tests --disable-samples \
 --disable-dyload --disable-extras --disable-icuio \

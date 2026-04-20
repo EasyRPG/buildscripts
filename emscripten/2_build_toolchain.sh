@@ -36,9 +36,14 @@ if [ ! -f .patches-applied ]; then
 	# (see https://groups.google.com/forum/#!topic/emscripten-discuss/YM3jC_qQoPk)
 	perl -pi -e 's/HAVE_ARC4RANDOM\)/NO_ARC4RANDOM\)/' $EXPAT_DIR/ConfigureChecks.cmake
 
+	# Fix ICU (Remove when 79.1 is released)
+	(cd $ICU_DIR
+		patch -Np2 < $SCRIPT_DIR/../shared/extra/icu-fix-data.patch
+	)
+
 	if [ "$USE_WASM_SIMD" == "1" ]; then
 		(cd $PIXMAN_DIR
-			patch -Np2 < ../pixman-wasm.patch
+			patch -Np2 < $SCRIPT_DIR/pixman-wasm.patch
 		)
 	fi
 
