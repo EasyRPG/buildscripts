@@ -22,6 +22,11 @@ if [ ! -f .patches-applied ]; then
 
 	patches_common
 
+	# Fix ICU (Remove when 79.1 is released)
+	(cd $ICU_DIR
+		patch -Np2 < $SCRIPT_DIR/../shared/extra/icu-fix-data.patch
+	)
+
 	touch .patches-applied
 fi
 
