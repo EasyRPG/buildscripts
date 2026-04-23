@@ -102,6 +102,10 @@ download_and_extract $ICUDATA_URL
 rm -rf $SDL2_DIR
 download_and_extract $SDL2_URL
 
+# SDL3
+rm -rf $SDL3_DIR
+download_and_extract $SDL3_URL
+
 # freeimage (only needed for lmu2png tool!)
 rm -rf $FREEIMAGE_DIR
 download_and_extract $FREEIMAGE_URL

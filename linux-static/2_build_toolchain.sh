@@ -68,3 +68,9 @@ install_lib $ICU_DIR/source $ICU_ARGS
 install_lib_liblcf
 install_lib $SDL2_DIR $SDL2_ARGS PULSEAUDIO_CFLAGS=-Ixxxdir PULSEAUDIO_LIBS=-lxxxlib
 install_lib_cmake $FREEIMAGE_DIR $FREEIMAGE_ARGS
+
+# Ensure that SDL3 finds the system libraries
+# They are loaded dynamically and don't add hard dependencies
+unset PKG_CONFIG_PATH
+unset PKG_CONFIG_LIBDIR
+install_lib_cmake $SDL3_DIR $SDL3_ARGS -DSDL_X11_XSCRNSAVER=OFF -DSDL_X11_XTEST=OFF

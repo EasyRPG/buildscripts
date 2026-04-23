@@ -43,8 +43,8 @@ else
 	touch .emscripten
 
 	# Download and install the latest SDK tools and set up the compiler configuration to point to it.
-	./emsdk install 3.1.74
-	./emsdk activate 3.1.74
+	./emsdk install 5.0.5
+	./emsdk activate 5.0.5
 
 	# Set the current Emscripten path
 	source ./emsdk_env.sh
@@ -145,6 +145,10 @@ download_and_extract $ICUDATA_URL
 # SDL2
 rm -rf $SDL2_DIR
 download_and_extract $SDL2_URL
+
+# SDL3
+rm -rf $SDL3_DIR
+download_and_extract $SDL3_URL
 
 # liblcf
 rm -rf liblcf

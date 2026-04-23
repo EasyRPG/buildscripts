@@ -64,6 +64,7 @@ jobs:
       - name: Build and Install
         run: |
           cd linux-static
+          sed -i 's/SDL3_ARGS/SDL3_ARGS -DSDL_UNIX_CONSOLE_BUILD=ON/g' ./2_build_toolchain.sh
           ./2_build_toolchain.sh
 
       - name: Cleanup
