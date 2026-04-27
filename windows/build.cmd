@@ -8,7 +8,7 @@ call helper\prepare.cmd
 vcpkg install --triplet x86-windows-static --recurse^
  libpng[core] expat[core] pixman[core] freetype[core,zlib] harfbuzz[freetype]^
  libvorbis[core] libsndfile[core] wildmidi[core] libxmp[core]^
- speexdsp[core] mpg123[core] opusfile[core] fluidsynth-easyrpg[core]^
+ speexdsp[core] mpg123[core] opusfile[core] fluidsynth[core]^
  inih[cpp] lhasa-easyrpg[core]^
  sdl2[core] sdl3[core] icu-easyrpg[core] nlohmann-json[core] fmt[core]
 
@@ -16,6 +16,6 @@ vcpkg install --triplet x86-windows-static --recurse^
 vcpkg install --triplet x64-windows-static --recurse^
  libpng[core] expat[core] pixman[core] freetype[core,zlib] harfbuzz[freetype]^
  libvorbis[core] libsndfile[core] wildmidi[core] libxmp[core]^
- speexdsp[core] mpg123[core] opusfile[core] fluidsynth-easyrpg[core]^
+ speexdsp[core] mpg123[core] opusfile[core] fluidsynth[core]^
  inih[cpp] lhasa-easyrpg[core]^
  sdl2[core] sdl3[core] icu-easyrpg[core] nlohmann-json[core] fmt[core]
