@@ -38,7 +38,7 @@ else
 	exit 1
 fi
 
-SDK_VERSION="9477386_latest"
+SDK_VERSION="14742923_latest"
 SDK_URL="https://dl.google.com/android/repository/commandlinetools-${SDK_PLATFORM}-${SDK_VERSION}.zip"
 curl -sSLOR "$SDK_URL"
 unzip commandlinetools-${SDK_PLATFORM}-${SDK_VERSION}.zip
@@ -68,7 +68,7 @@ echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "cmake;3.22.1"
 
 msg " [3] Installing Android NDK"
 
-echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "ndk;21.4.7075529"
+echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "ndk;28.2.13676358"
 
 cd ..
 
