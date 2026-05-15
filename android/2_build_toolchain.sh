@@ -85,7 +85,7 @@ function build() {
 	export NM=$NDK_PATH/llvm-nm
 	export RANLIB=$NDK_PATH/llvm-ranlib
 
-	export CFLAGS="-no-integrated-as -g0 -O2 -fPIC $5"
+	export CFLAGS="-g0 -O2 -fPIC $5"
 	export CXXFLAGS="$CFLAGS"
 	export CPPFLAGS="-I$PLATFORM_PREFIX/include -I$ANDROID_NDK/sources/android/cpufeatures"
 	export LDFLAGS="-L$PLATFORM_PREFIX/lib"
