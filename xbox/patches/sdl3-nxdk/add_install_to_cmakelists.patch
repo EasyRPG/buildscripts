@@ -1,0 +1,59 @@
+115a116,119
+> set_target_properties(SDL3-static PROPERTIES
+>     OUTPUT_NAME SDL3
+> )
+> 
+119c123,126
+< target_include_directories(SDL3_Headers INTERFACE ${SDL3_DIR}/include)
+---
+> target_include_directories(SDL3_Headers INTERFACE
+>     $<BUILD_INTERFACE:${SDL3_DIR}/include>
+>     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+> )
+124a132
+> 
+127a136
+> 
+144a154,194
+> 
+> include(GNUInstallDirs)
+> 
+> install(TARGETS SDL3-static SDL3_Headers
+>     EXPORT SDL3Targets
+>     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+>     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+>     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+> )
+> 
+> install(DIRECTORY "${SDL3_DIR}/include/SDL3"
+>     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+> )
+> 
+> install(EXPORT SDL3Targets
+>     FILE SDL3Targets.cmake
+>     NAMESPACE SDL3::
+>     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/SDL3
+> )
+> 
+> include(CMakePackageConfigHelpers)
+> 
+> file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/SDL3Config.cmake"
+> "include(\"\${CMAKE_CURRENT_LIST_DIR}/SDL3Targets.cmake\")\n"
+> "if(TARGET SDL3::SDL3-static AND NOT TARGET SDL3::SDL3)\n"
+> "    add_library(SDL3::SDL3 INTERFACE IMPORTED)\n"
+> "    target_link_libraries(SDL3::SDL3 INTERFACE SDL3::SDL3-static)\n"
+> "endif()\n"
+> )
+> 
+> write_basic_package_version_file(
+>     "${CMAKE_CURRENT_BINARY_DIR}/SDL3ConfigVersion.cmake"
+>     VERSION 3.0.0
+>     COMPATIBILITY AnyNewerVersion
+> )
+> 
+> install(FILES
+>     "${CMAKE_CURRENT_BINARY_DIR}/SDL3Config.cmake"
+>     "${CMAKE_CURRENT_BINARY_DIR}/SDL3ConfigVersion.cmake"
+>     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/SDL3
+> )
+\ No newline at end of file

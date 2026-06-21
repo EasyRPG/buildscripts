@@ -1,0 +1,65 @@
+3573,3576c3573,3574
+<   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+< printf "%s\n" "no" >&6; }
+< printf "%s\n" "$as_me: failed program was:" >&5
+< sed 's/^/| /' conftest.$ac_ext >&5
+---
+>   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes, patched for NXDK cross build" >&5
+> printf "%s\n" "yes, patched for NXDK cross build" >&6; }
+3578,3581c3576,3587
+< { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: error: in '$ac_pwd':" >&5
+< printf "%s\n" "$as_me: error: in '$ac_pwd':" >&2;}
+< as_fn_error 77 "C compiler cannot create executables
+< See 'config.log' for more details" "$LINENO" 5; }
+---
+>   ac_file=conftest.exe
+>   ac_cv_exeext=.exe
+> # then :
+> #   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+> # printf "%s\n" "no" >&6; }
+> # printf "%s\n" "$as_me: failed program was:" >&5
+> # sed 's/^/| /' conftest.$ac_ext >&5
+> 
+> # { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: error: in '$ac_pwd':" >&5
+> # printf "%s\n" "$as_me: error: in '$ac_pwd':" >&2;}
+> # as_fn_error 77 "C compiler cannot create executables
+> # See 'config.log' for more details" "$LINENO" 5; }
+3622,3627c3628,3637
+< else case e in #(
+<   e) { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: error: in '$ac_pwd':" >&5
+< printf "%s\n" "$as_me: error: in '$ac_pwd':" >&2;}
+< as_fn_error $? "cannot compute suffix of executables: cannot compile and link
+< See 'config.log' for more details" "$LINENO" 5; } ;;
+< esac
+---
+> # else case e in #(
+> #   e) { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: error: in '$ac_pwd':" >&5
+> # printf "%s\n" "$as_me: error: in '$ac_pwd':" >&2;}
+> # as_fn_error $? "cannot compute suffix of executables: cannot compile and link
+> # See 'config.log' for more details" "$LINENO" 5; } ;;
+> # esac
+> # fi
+> else
+>   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: patched: assuming .exe suffix for NXDK" >&5; }
+>   ac_cv_exeext=.exe
+5132a5143,5150
+> # case "${host}" in
+> #     *-*-cygwin*|*-*-mingw*)
+> #         if test "$GCC" != yes && test -n "`link --version 2>&1 | grep 'GNU coreutils'`"; then
+> #             as_fn_error $? "link.exe is not a valid linker. Your PATH is incorrect.
+> #                   Please follow the directions in ICU's readme." "$LINENO" 5
+> #         fi;;
+> #     *);;
+> # esac
+5135,5138c5153,5154
+<         if test "$GCC" != yes && test -n "`link --version 2>&1 | grep 'GNU coreutils'`"; then
+<             as_fn_error $? "link.exe is not a valid linker. Your PATH is incorrect.
+<                   Please follow the directions in ICU's readme." "$LINENO" 5
+<         fi;;
+---
+>         : # patched for NXDK: ignore GNU coreutils link check
+>         ;;
+5806c5822
+< 		*-*-mingw*) icu_cv_host_frag=mh-msys-msvc ;;
+---
+> 		*-*-mingw*) icu_cv_host_frag=mh-mingw ;;

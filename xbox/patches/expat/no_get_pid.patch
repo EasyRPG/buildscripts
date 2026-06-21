@@ -1,0 +1,8 @@
+110c110
+< #ifdef _WIN32
+---
+> #ifdef _WIN32 && !defined NXDK
+1235c1235
+< #  if ! defined(__wasi__)
+---
+> #  if ! defined(__wasi__) && !defined(NXDK)

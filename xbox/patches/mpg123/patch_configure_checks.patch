@@ -1,0 +1,225 @@
+4868,4910c4868,4916
+< if { { ac_try="$ac_link_default"
+< case "(($ac_try" in
+<   *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+<   *) ac_try_echo=$ac_try;;
+< esac
+< eval ac_try_echo="\"\$as_me:${as_lineno-$LINENO}: $ac_try_echo\""
+< printf "%s\n" "$ac_try_echo"; } >&5
+<   (eval "$ac_link_default") 2>&5
+<   ac_status=$?
+<   printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+<   test $ac_status = 0; }
+< then :
+<   # Autoconf-2.13 could set the ac_cv_exeext variable to `no'.
+< # So ignore a value of `no', otherwise this would lead to `EXEEXT = no'
+< # in a Makefile.  We should not override ac_cv_exeext if it was cached,
+< # so that the user can short-circuit this test for compilers unknown to
+< # Autoconf.
+< for ac_file in $ac_files ''
+< do
+<   test -f "$ac_file" || continue
+<   case $ac_file in
+<     *.$ac_ext | *.xcoff | *.tds | *.d | *.pdb | *.xSYM | *.bb | *.bbg | *.map | *.inf | *.dSYM | *.o | *.obj )
+< 	;;
+<     [ab].out )
+< 	# We found the default executable, but exeext='' is most
+< 	# certainly right.
+< 	break;;
+<     *.* )
+< 	if test ${ac_cv_exeext+y} && test "$ac_cv_exeext" != no;
+< 	then :; else
+< 	   ac_cv_exeext=`expr "$ac_file" : '[^.]*\(\..*\)'`
+< 	fi
+< 	# We set ac_cv_exeext here because the later test for it is not
+< 	# safe: cross compilers may not add the suffix if given an `-o'
+< 	# argument, so we may need to know it at that point already.
+< 	# Even if this section looks crufty: it has the advantage of
+< 	# actually working.
+< 	break;;
+<     * )
+< 	break;;
+<   esac
+< done
+< test "$ac_cv_exeext" = no && ac_cv_exeext=
+---
+> # if { { ac_try="$ac_link_default"
+> # case "(($ac_try" in
+> #   *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+> #   *) ac_try_echo=$ac_try;;
+> # esac
+> # eval ac_try_echo="\"\$as_me:${as_lineno-$LINENO}: $ac_try_echo\""
+> # printf "%s\n" "$ac_try_echo"; } >&5
+> #   (eval "$ac_link_default") 2>&5
+> #   ac_status=$?
+> #   printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+> #   test $ac_status = 0; }
+> # then :
+> #   # Autoconf-2.13 could set the ac_cv_exeext variable to `no'.
+> # # So ignore a value of `no', otherwise this would lead to `EXEEXT = no'
+> # # in a Makefile.  We should not override ac_cv_exeext if it was cached,
+> # # so that the user can short-circuit this test for compilers unknown to
+> # # Autoconf.
+> # for ac_file in $ac_files ''
+> # do
+> #   test -f "$ac_file" || continue
+> #   case $ac_file in
+> #     *.$ac_ext | *.xcoff | *.tds | *.d | *.pdb | *.xSYM | *.bb | *.bbg | *.map | *.inf | *.dSYM | *.o | *.obj )
+> # 	;;
+> #     [ab].out )
+> # 	# We found the default executable, but exeext='' is most
+> # 	# certainly right.
+> # 	break;;
+> #     *.* )
+> # 	if test ${ac_cv_exeext+y} && test "$ac_cv_exeext" != no;
+> # 	then :; else
+> # 	   ac_cv_exeext=`expr "$ac_file" : '[^.]*\(\..*\)'`
+> # 	fi
+> # 	# We set ac_cv_exeext here because the later test for it is not
+> # 	# safe: cross compilers may not add the suffix if given an `-o'
+> # 	# argument, so we may need to know it at that point already.
+> # 	# Even if this section looks crufty: it has the advantage of
+> # 	# actually working.
+> # 	break;;
+> #     * )
+> # 	break;;
+> #   esac
+> # done
+> # test "$ac_cv_exeext" = no && ac_cv_exeext=
+> #
+> # else $as_nop
+> #   ac_file=''
+> # fi
+> ac_file=conftest.exe
+> ac_cv_exeext=.exe
+4912,4914d4917
+< else $as_nop
+<   ac_file=''
+< fi
+4940,4970c4943,4974
+< if { { ac_try="$ac_link"
+< case "(($ac_try" in
+<   *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+<   *) ac_try_echo=$ac_try;;
+< esac
+< eval ac_try_echo="\"\$as_me:${as_lineno-$LINENO}: $ac_try_echo\""
+< printf "%s\n" "$ac_try_echo"; } >&5
+<   (eval "$ac_link") 2>&5
+<   ac_status=$?
+<   printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+<   test $ac_status = 0; }
+< then :
+<   # If both `conftest.exe' and `conftest' are `present' (well, observable)
+< # catch `conftest.exe'.  For instance with Cygwin, `ls conftest' will
+< # work properly (i.e., refer to `conftest.exe'), while it won't with
+< # `rm'.
+< for ac_file in conftest.exe conftest conftest.*; do
+<   test -f "$ac_file" || continue
+<   case $ac_file in
+<     *.$ac_ext | *.xcoff | *.tds | *.d | *.pdb | *.xSYM | *.bb | *.bbg | *.map | *.inf | *.dSYM | *.o | *.obj ) ;;
+<     *.* ) ac_cv_exeext=`expr "$ac_file" : '[^.]*\(\..*\)'`
+< 	  break;;
+<     * ) break;;
+<   esac
+< done
+< else $as_nop
+<   { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+< printf "%s\n" "$as_me: error: in \`$ac_pwd':" >&2;}
+< as_fn_error $? "cannot compute suffix of executables: cannot compile and link
+< See \`config.log' for more details" "$LINENO" 5; }
+< fi
+---
+> # if { { ac_try="$ac_link"
+> # case "(($ac_try" in
+> #   *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+> #   *) ac_try_echo=$ac_try;;
+> # esac
+> # eval ac_try_echo="\"\$as_me:${as_lineno-$LINENO}: $ac_try_echo\""
+> # printf "%s\n" "$ac_try_echo"; } >&5
+> #   (eval "$ac_link") 2>&5
+> #   ac_status=$?
+> #   printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+> #   test $ac_status = 0; }
+> # then :
+> #   # If both `conftest.exe' and `conftest' are `present' (well, observable)
+> # # catch `conftest.exe'.  For instance with Cygwin, `ls conftest' will
+> # # work properly (i.e., refer to `conftest.exe'), while it won't with
+> # # `rm'.
+> # for ac_file in conftest.exe conftest conftest.*; do
+> #   test -f "$ac_file" || continue
+> #   case $ac_file in
+> #     *.$ac_ext | *.xcoff | *.tds | *.d | *.pdb | *.xSYM | *.bb | *.bbg | *.map | *.inf | *.dSYM | *.o | *.obj ) ;;
+> #     *.* ) ac_cv_exeext=`expr "$ac_file" : '[^.]*\(\..*\)'`
+> # 	  break;;
+> #     * ) break;;
+> #   esac
+> # done
+> # else $as_nop
+> #   { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+> # printf "%s\n" "$as_me: error: in \`$ac_pwd':" >&2;}
+> # as_fn_error $? "cannot compute suffix of executables: cannot compile and link
+> # See \`config.log' for more details" "$LINENO" 5; }
+> # fi
+> ac_cv_exeext=.exe
+17438,17457c17442,17462
+< { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for basic C99 features" >&5
+< printf %s "checking for basic C99 features... " >&6; }
+< cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+< /* end confdefs.h.  */
+< `cat "$srcdir/test_c99.c"`
+< _ACEOF
+< if ac_fn_c_try_link "$LINENO"
+< then :
+<   have_c99=yes; { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+< printf "%s\n" "yes" >&6; }
+< else $as_nop
+<   have_c99=no; { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+< printf "%s\n" "no" >&6; }
+< 
+< fi
+< rm -f core conftest.err conftest.$ac_objext conftest.beam \
+<     conftest$ac_exeext conftest.$ac_ext
+< if test "x$have_c99" = xno; then
+<   as_fn_error $? "Your toolchain lacks basic C99 features. See test_c99.c for the requirements." "$LINENO" 5
+< fi
+---
+> # { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for basic C99 features" >&5
+> # printf %s "checking for basic C99 features... " >&6; }
+> # cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+> # /* end confdefs.h.  */
+> # `cat "$srcdir/test_c99.c"`
+> # _ACEOF
+> # if ac_fn_c_try_link "$LINENO"
+> # then :
+> #   have_c99=yes; { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+> # printf "%s\n" "yes" >&6; }
+> # else $as_nop
+> #   have_c99=no; { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+> # printf "%s\n" "no" >&6; }
+> #
+> # fi
+> # rm -f core conftest.err conftest.$ac_objext conftest.beam \
+> #     conftest$ac_exeext conftest.$ac_ext
+> # if test "x$have_c99" = xno; then
+> #   as_fn_error $? "Your toolchain lacks basic C99 features. See test_c99.c for the requirements." "$LINENO" 5
+> # fi
+> have_c99=yes
+17629a17635,17637
+> # if test "x$ac_cv_sizeof_off_t" = x0; then
+> #   as_fn_error $? "Not even off_t found. I need some POSIX." "$LINENO" 5
+> # fi
+17631c17639
+<   as_fn_error $? "Not even off_t found. I need some POSIX." "$LINENO" 5
+---
+>   ac_cv_sizeof_off_t=4
+17632a17641
+> 
+17640c17649
+<     as_fn_error $? "bad switched off_t size" "$LINENO" 5
+---
+>     switched_off_size=$ac_cv_sizeof_off_t
+21001c21010,21011
+<     as_fn_error $? "Unicode File Open for Win32 not available" "$LINENO" 5
+---
+>     #as_fn_error $? "Unicode File Open for Win32 not available" "$LINENO" 5
+>     win32_unicode=disabled

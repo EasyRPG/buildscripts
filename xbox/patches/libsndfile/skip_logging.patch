@@ -1,0 +1,18 @@
+105c105,107
+< {	va_list		ap ;
+---
+> {	
+> #ifndef NXDK
+> 	va_list		ap ;
+173a176
+> 
+390a394
+> #endif
+1832c1836
+< 
+---
+> #ifndef NXDK
+1838c1842
+< 
+---
+> #endif

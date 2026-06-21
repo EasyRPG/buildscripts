@@ -84,6 +84,14 @@ case "$1" in
 	esac
 	STRIP="llvm-strip"
 	;;
+"xbox")
+	PLAT_SYSTEM="windows"
+	PLAT_CPU_FAMILY="x86"
+	PLAT_CPU="i686"
+	AR="llvm-lib"
+	STRIP="llvm-strip"
+	PLAT_OPTIONS_ADD="b_staticpic = false"
+	;;
 *apple-darwin)
 	PLAT_SYSTEM="darwin"
 	case "$1" in

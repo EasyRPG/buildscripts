@@ -1,0 +1,11 @@
+130a131,140
+> #undef _WIN32
+> #undef USE_WINDOWS_API
+> #define USE_WINDOWS_API 0
+> #undef OS_IS_WIN32
+> #define OS_IS_WIN32 0
+> #define __GNUC__ 0
+> #define HAVE_GETTIMEOFDAY 0
+> #define HAVE_SYS_TIME_H 0
+> 
+> 

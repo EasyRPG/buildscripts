@@ -1,0 +1,8 @@
+347c347
+<         const Normalizer2WithImpl *n2wi=dynamic_cast<const Normalizer2WithImpl *>(n2);
+---
+>         const Normalizer2WithImpl *n2wi=static_cast<const Normalizer2WithImpl *>(n2);
+384c384
+<         const Normalizer2WithImpl* n2wi = dynamic_cast<const Normalizer2WithImpl*>(n2);
+---
+>         const Normalizer2WithImpl* n2wi = static_cast<const Normalizer2WithImpl*>(n2);

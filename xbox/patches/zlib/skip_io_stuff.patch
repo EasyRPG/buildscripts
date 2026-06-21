@@ -1,0 +1,143 @@
+diff -ruN zlib-1.3.2/gzlib.c zlib-1.3.2-good/gzlib.c
+--- zlib-1.3.2/gzlib.c	2026-02-17 07:47:06.000000000 -0500
++++ zlib-1.3.2-good/gzlib.c	2026-05-22 18:13:27.797310000 -0400
+@@ -85,6 +85,9 @@
+ 
+ /* Open a gzip file either by name or file descriptor. */
+ local gzFile gz_open(const void *path, int fd, const char *mode) {
++#ifdef NXDK
++    return 0;
++#else
+     gz_statep state;
+     z_size_t len;
+     int oflag = 0;
+@@ -282,6 +285,7 @@
+ 
+     /* return stream */
+     return (gzFile)state;
++#endif
+ }
+ 
+ /* -- see zlib.h -- */
+@@ -344,6 +348,7 @@
+ 
+ /* -- see zlib.h -- */
+ int ZEXPORT gzrewind(gzFile file) {
++#ifndef NXDK
+     gz_statep state;
+ 
+     /* get internal structure */
+@@ -360,11 +365,15 @@
+     if (LSEEK(state->fd, state->start, SEEK_SET) == -1)
+         return -1;
+     gz_reset(state);
++#endif
+     return 0;
+ }
+ 
+ /* -- see zlib.h -- */
+ z_off64_t ZEXPORT gzseek64(gzFile file, z_off64_t offset, int whence) {
++#ifdef NXDK
++    return 0;
++#else
+     unsigned n;
+     z_off64_t ret;
+     gz_statep state;
+@@ -432,6 +441,7 @@
+     /* request skip (if not zero) */
+     state->skip = offset;
+     return state->x.pos + offset;
++#endif
+ }
+ 
+ /* -- see zlib.h -- */
+@@ -467,6 +477,9 @@
+ 
+ /* -- see zlib.h -- */
+ z_off64_t ZEXPORT gzoffset64(gzFile file) {
++#ifdef NXDK
++    return 0;
++#else
+     z_off64_t offset;
+     gz_statep state;
+ 
+@@ -484,6 +497,7 @@
+     if (state->mode == GZ_READ)             /* reading */
+         offset -= state->strm.avail_in;     /* don't count buffered input */
+     return offset;
++#endif
+ }
+ 
+ /* -- see zlib.h -- */
+diff -ruN zlib-1.3.2/gzread.c zlib-1.3.2-good/gzread.c
+--- zlib-1.3.2/gzread.c	2026-02-17 07:47:06.000000000 -0500
++++ zlib-1.3.2-good/gzread.c	2026-05-22 18:09:47.918869000 -0400
+@@ -17,6 +17,7 @@
+    signaled from read().  *have is set to the number of bytes read. */
+ local int gz_load(gz_statep state, unsigned char *buf, unsigned len,
+                   unsigned *have) {
++#ifndef NXDK
+     int ret;
+     unsigned get, max = ((unsigned)-1 >> 2) + 1;
+ 
+@@ -43,6 +44,7 @@
+     }
+     if (ret == 0)
+         state->eof = 1;
++#endif
+     return 0;
+ }
+ 
+@@ -643,6 +645,9 @@
+ 
+ /* -- see zlib.h -- */
+ int ZEXPORT gzclose_r(gzFile file) {
++#ifdef NXDK
++    return 0;
++#else
+     int ret, err;
+     gz_statep state;
+ 
+@@ -665,4 +670,5 @@
+     ret = close(state->fd);
+     free(state);
+     return ret ? Z_ERRNO : err;
++#endif
+ }
+diff -ruN zlib-1.3.2/gzwrite.c zlib-1.3.2-good/gzwrite.c
+--- zlib-1.3.2/gzwrite.c	2026-02-17 07:47:06.000000000 -0500
++++ zlib-1.3.2-good/gzwrite.c	2026-05-22 18:08:23.437023800 -0400
+@@ -63,6 +63,9 @@
+    reset to start a new gzip stream.  If gz->direct is true, then simply write
+    to the output file without compressing, and ignore flush. */
+ local int gz_comp(gz_statep state, int flush) {
++#ifdef NXDK
++    return 0;
++#else
+     int ret, writ;
+     unsigned have, put, max = ((unsigned)-1 >> 2) + 1;
+     z_streamp strm = &(state->strm);
+@@ -145,6 +148,7 @@
+ 
+     /* all done, no errors */
+     return 0;
++#endif
+ }
+ 
+ /* Compress state->skip (> 0) zeros to output.  Return -1 on a write error or
+@@ -665,6 +669,9 @@
+ 
+ /* -- see zlib.h -- */
+ int ZEXPORT gzclose_w(gzFile file) {
++#ifdef NXDK
++    return 0;
++#else
+     int ret = Z_OK;
+     gz_statep state;
+ 
+@@ -697,4 +704,5 @@
+         ret = Z_ERRNO;
+     free(state);
+     return ret;
++#endif
+ }

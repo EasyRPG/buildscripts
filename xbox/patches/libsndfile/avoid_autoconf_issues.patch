@@ -1,0 +1,28 @@
+4939c4939,4940
+< if test -z "$ac_file"
+---
+> #if test -z "$ac_file"
+> ac_file=conftest.exe; if false
+4992,4993c4993,4995
+< as_fn_error $? "cannot compute suffix of executables: cannot compile and link
+< See \`config.log' for more details" "$LINENO" 5; }
+---
+> # as_fn_error $? "cannot compute suffix of executables: cannot compile and link
+> # See \`config.log' for more details" "$LINENO" 5; }
+> ac_cv_exeext=.exe;}
+14641c14643
+< 	libext=lib
+---
+> 	libext=a
+14649c14651
+< 	old_archive_cmds='lib -OUT:$oldlib$oldobjs$old_deplibs'
+---
+> 	old_archive_cmds='llvm-ar cr $oldlib $oldobjs $old_deplibs'
+24319,24320c24321,24322
+<   USE_WIN_VERSION_FILE_TRUE=
+<   USE_WIN_VERSION_FILE_FALSE='#'
+---
+>   USE_WIN_VERSION_FILE_TRUE='#'
+>   USE_WIN_VERSION_FILE_FALSE=
+26829d26830
+<     "src/version-metadata.rc") CONFIG_FILES="$CONFIG_FILES src/version-metadata.rc" ;;

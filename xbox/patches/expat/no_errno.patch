@@ -1,0 +1,8 @@
+9257c9257,9259
+< 
+---
+> #ifdef NXDK
+>   int errno = 0;
+> #else
+9258a9261
+> #endif

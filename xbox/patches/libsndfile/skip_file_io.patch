@@ -1,0 +1,244 @@
+diff -ruN libsndfile-1.2.2/src/file_io.c libsndfile-1.2.2-nofileio/src/file_io.c
+--- libsndfile-1.2.2/src/file_io.c	2022-09-12 14:17:56.000000000 -0400
++++ libsndfile-1.2.2-nofileio/src/file_io.c	2026-05-22 12:44:09.021690900 -0400
+@@ -34,6 +34,8 @@
+ 
+ #include "sfconfig.h"
+ 
++#undef USE_WINDOWS_API
++#define USE_WINDOWS_API 1
+ #if USE_WINDOWS_API
+ 
+ /* Don't include rarely used headers, speed up build */
+@@ -786,7 +788,11 @@
+ 
+ /* USE_WINDOWS_API */ static HANDLE
+ psf_open_handle (PSF_FILE * pfile)
+-{	DWORD dwDesiredAccess ;
++{	
++#ifdef NXDK
++	return 0;
++#else
++	DWORD dwDesiredAccess ;
+ 	DWORD dwShareMode ;
+ 	DWORD dwCreationDistribution ;
+ 	HANDLE handle ;
+@@ -846,12 +852,14 @@
+ 	free (pwszPath) ;
+ 
+ 	return handle ;
++#endif
+ } /* psf_open_handle */
+ 
+ /* USE_WINDOWS_API */ static void
+ psf_log_syserr (SF_PRIVATE *psf, int error)
+-{	LPVOID lpMsgBuf ;
+-
++{	
++#ifndef NXDK // We shouldn't be getting windows system errors with virtual IO
++	LPVOID lpMsgBuf ;
+ 	/* Only log an error if no error has been set yet. */
+ 	if (psf->error == 0)
+ 	{	psf->error = SFE_SYSTEM ;
+@@ -869,7 +877,7 @@
+ 		snprintf (psf->syserr, sizeof (psf->syserr), "System error : %s", (char*) lpMsgBuf) ;
+ 		LocalFree (lpMsgBuf) ;
+ 		} ;
+-
++#endif
+ 	return ;
+ } /* psf_log_syserr */
+ 
+@@ -886,7 +894,7 @@
+ psf_set_stdio (SF_PRIVATE *psf)
+ {	HANDLE	handle = INVALID_HANDLE_VALUE ;
+ 	int	error = 0 ;
+-
++#ifndef NXDK
+ 	switch (psf->file.mode)
+ 	{	case SFM_RDWR :
+ 				error = SFE_OPEN_PIPE_RDWR ;
+@@ -906,22 +914,24 @@
+ 				error = SFE_BAD_OPEN_MODE ;
+ 				break ;
+ 		} ;
+-
++#endif
+ 	psf->file.handle = handle ;
+ 	psf->filelength = 0 ;
+-
+ 	return error ;
+ } /* psf_set_stdio */
+ 
+ /* USE_WINDOWS_API */ void
+ psf_set_file (SF_PRIVATE *psf, int fd)
+-{	HANDLE handle ;
++{	
++#ifndef NXDK
++	HANDLE handle ;
+ 	intptr_t osfhandle ;
+ 
+ 	osfhandle = _get_osfhandle (fd) ;
+ 	handle = (HANDLE) osfhandle ;
+ 
+ 	psf->file.handle = handle ;
++#endif
+ } /* psf_set_file */
+ 
+ /* USE_WINDOWS_API */ int
+@@ -933,15 +943,18 @@
+ 
+ /* USE_WINDOWS_API */ sf_count_t
+ psf_fseek (SF_PRIVATE *psf, sf_count_t offset, int whence)
+-{	sf_count_t new_position ;
++{	
++#ifndef NXDK
++	sf_count_t new_position ;
+ 	LARGE_INTEGER liDistanceToMove, liNewFilePointer ;
+ 	DWORD dwMoveMethod ;
+ 	BOOL fResult ;
+ 	DWORD dwError ;
+-
++#endif
+ 	if (psf->virtual_io)
+ 		return psf->vio.seek (offset, whence, psf->vio_user_data) ;
+-
++	return 0;
++#ifndef NXDK
+ 	switch (whence)
+ 	{	case SEEK_SET :
+ 				offset += psf->fileoffset ;
+@@ -974,17 +987,21 @@
+ 	new_position = liNewFilePointer.QuadPart - psf->fileoffset ;
+ 
+ 	return new_position ;
++#endif
+ } /* psf_fseek */
+ 
+ /* USE_WINDOWS_API */ sf_count_t
+ psf_fread (void *ptr, sf_count_t bytes, sf_count_t items, SF_PRIVATE *psf)
+-{	sf_count_t total = 0 ;
++{	
++#ifndef NXDK
++	sf_count_t total = 0 ;
+ 	ssize_t count ;
+ 	DWORD dwNumberOfBytesRead ;
+-
++#endif
+ 	if (psf->virtual_io)
+ 		return psf->vio.read (ptr, bytes*items, psf->vio_user_data) / bytes ;
+-
++	return 0;
++#ifndef NXDK
+ 	items *= bytes ;
+ 
+ 	/* Do this check after the multiplication above. */
+@@ -1013,17 +1030,21 @@
+ 		psf->pipeoffset += total ;
+ 
+ 	return total / bytes ;
++#endif
+ } /* psf_fread */
+ 
+ /* USE_WINDOWS_API */ sf_count_t
+ psf_fwrite (const void *ptr, sf_count_t bytes, sf_count_t items, SF_PRIVATE *psf)
+-{	sf_count_t total = 0 ;
++{	
++#ifndef NXDK
++	sf_count_t total = 0 ;
+ 	ssize_t	count ;
+ 	DWORD dwNumberOfBytesWritten ;
+-
++#endif
+ 	if (psf->virtual_io)
+ 		return psf->vio.write (ptr, bytes * items, psf->vio_user_data) / bytes ;
+-
++	return 0;
++#ifndef NXDK
+ 	items *= bytes ;
+ 
+ 	/* Do this check after the multiplication above. */
+@@ -1052,18 +1073,22 @@
+ 		psf->pipeoffset += total ;
+ 
+ 	return total / bytes ;
++#endif
+ } /* psf_fwrite */
+ 
+ /* USE_WINDOWS_API */ sf_count_t
+ psf_ftell (SF_PRIVATE *psf)
+-{	sf_count_t pos ;
++{	
++#ifndef NXDK
++	sf_count_t pos ;
+ 	LARGE_INTEGER liDistanceToMove, liNewFilePointer ;
+ 	BOOL fResult ;
+ 	DWORD dwError ;
+-
++#endif
+ 	if (psf->virtual_io)
+ 		return psf->vio.tell (psf->vio_user_data) ;
+-
++	return 0;
++#ifndef NXDK
+ 	if (psf->is_pipe)
+ 		return psf->pipeoffset ;
+ 
+@@ -1084,6 +1109,7 @@
+ 	pos = liNewFilePointer.QuadPart ;
+ 
+ 	return pos - psf->fileoffset ;
++#endif
+ } /* psf_ftell */
+ 
+ /* USE_WINDOWS_API */ static int
+@@ -1126,10 +1152,10 @@
+ {
+ 	if (psf->virtual_io)
+ 		return SF_FALSE ;
+-
++#ifndef NXDK
+ 	if (GetFileType (psf->file.handle) == FILE_TYPE_DISK)
+ 		return SF_FALSE ;
+-
++#endif
+ 	/* Default to maximum safety. */
+ 	return SF_TRUE ;
+ } /* psf_is_pipe */
+@@ -1156,7 +1182,10 @@
+ 
+ /* USE_WINDOWS_API */ void
+ psf_fsync (SF_PRIVATE *psf)
+-{	FlushFileBuffers (psf->file.handle) ;
++{	
++	#ifndef NXDK
++	FlushFileBuffers (psf->file.handle) ;
++	#endif
+ } /* psf_fsync */
+ 
+ 
+diff -ruN libsndfile-1.2.2/src/sndfile.c libsndfile-1.2.2-nofileio/src/sndfile.c
+--- libsndfile-1.2.2/src/sndfile.c	2023-08-12 11:14:09.000000000 -0400
++++ libsndfile-1.2.2-nofileio/src/sndfile.c	2026-05-22 14:02:00.192603700 -0400
+@@ -438,8 +438,11 @@
+ 
+ SNDFILE*
+ sf_open_fd	(int fd, int mode, SF_INFO *sfinfo, int close_desc)
+-{	SF_PRIVATE 	*psf ;
+-
++{	
++#ifdef NXDK
++	return NULL;
++#else
++	SF_PRIVATE 	*psf ;
+ 	if ((SF_CONTAINER (sfinfo->format)) == SF_FORMAT_SD2)
+ 	{	sf_errno = SFE_SD2_FD_DISALLOWED ;
+ 		if (close_desc)
+@@ -466,6 +469,7 @@
+ 	psf->fileoffset = psf_ftell (psf) ;
+ 
+ 	return psf_open_file (psf, sfinfo) ;
++#endif
+ } /* sf_open_fd */
+ 
+ SNDFILE*

@@ -1,0 +1,12 @@
+13631c13631
+< 	libext=lib
+---
+> 	libext=a #lib
+13670c13670
+< 	libext=lib
+---
+> 	libext=a #lib
+13678c13678
+< 	old_archive_cmds='lib -OUT:$oldlib$oldobjs$old_deplibs'
+---
+>   old_archive_cmds='llvm-ar cr $oldlib $oldobjs $old_deplibs'

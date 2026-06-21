@@ -1,0 +1,161 @@
+diff -ruN mpg123-1.33.4/src/compat/compat.c mpg123-1.33.4-filesystem/src/compat/compat.c
+--- mpg123-1.33.4/src/compat/compat.c	2025-12-19 17:23:34.000000000 -0500
++++ mpg123-1.33.4-filesystem/src/compat/compat.c	2026-05-21 15:58:29.783660800 -0400
+@@ -9,6 +9,11 @@
+ 	initially written by Thomas Orgis, Windows Unicode stuff by JonY.
+ */
+ 
++#ifdef NXDK
++#define WINDOWS_UWP
++#define NO_CATCHSIGNAL
++#endif
++
+ #include "config.h"
+ /* This source file does need _POSIX_SOURCE to get some sigaction. */
+ #define _POSIX_SOURCE
+@@ -71,6 +76,9 @@
+ /* Always add a default permission mask in case of flags|O_CREAT. */
+ int INT123_compat_open(const char *filename, int flags)
+ {
++#ifdef NXDK
++	return 0;
++#else
+ 	int ret;
+ #if defined (WANT_WIN32_UNICODE)
+ 	wchar_t *frag = NULL;
+@@ -102,6 +110,7 @@
+ #endif
+ 
+ 	return ret;
++#endif // ifdef NXDK
+ }
+ 
+ /* Moved over from wav.c, logic with fallbacks added from the
+@@ -138,20 +147,28 @@
+ 
+ FILE* INT123_compat_fdopen(int fd, const char *mode)
+ {
++#ifdef NXDK
++	return 0;
++#else
+ #if defined(MPG123_COMPAT_MSVCRT_IO)
+ 	return _fdopen(fd, mode);
+ #else
+ 	return fdopen(fd, mode);
+ #endif
++#endif // ifdef NXDK
+ }
+ 
+ int INT123_compat_close(int infd)
+ {
++#ifdef NXDK
++	return 0;
++#else
+ #if defined(MPG123_COMPAT_MSVCRT_IO)
+ 	return _close(infd);
+ #else
+ 	return close(infd);
+ #endif
++#endif // endif NXDK
+ }
+ 
+ int INT123_compat_fclose(FILE *stream)
+@@ -444,6 +461,9 @@
+ 
+ size_t INT123_unintr_write(int fd, void const *buffer, size_t bytes)
+ {
++#ifdef NXDK
++	return 0;
++#else
+ 	size_t written = 0;
+ 	errno = 0;
+ 	while(bytes)
+@@ -467,11 +487,15 @@
+ 			break;
+ 	}
+ 	return written;
++#endif // ifdef NXDK
+ }
+ 
+ /* Same for reading the data. */
+ size_t INT123_unintr_read(int fd, void *buffer, size_t bytes)
+ {
++#ifdef NXDK
++	return 0;
++#else
+ 	size_t got = 0;
+ 	errno = 0;
+ 	while(bytes)
+@@ -490,6 +514,7 @@
+ 			break;
+ 	}
+ 	return got;
++#endif // ifdef NXDK
+ }
+ 
+ // and again for streams
+diff -ruN mpg123-1.33.4/src/compat/compat.h mpg123-1.33.4-filesystem/src/compat/compat.h
+--- mpg123-1.33.4/src/compat/compat.h	2025-12-19 17:23:34.000000000 -0500
++++ mpg123-1.33.4-filesystem/src/compat/compat.h	2026-05-21 15:53:42.140992500 -0400
+@@ -116,7 +116,7 @@
+ #define INT123_compat_strtok(a, b, c) strtok_r((a), (b), (c))
+ #endif
+ 
+-#if (defined(_UCRT) || defined(_MSC_VER) || (defined(__MINGW32__) || defined(__MINGW64__)) || (defined(__WATCOMC__) && defined(__NT__))) && !defined(__CYGWIN__)
++#if ((defined(_UCRT) || defined(_MSC_VER) || (defined(__MINGW32__) || defined(__MINGW64__)) || (defined(__WATCOMC__) && defined(__NT__))) && !defined(__CYGWIN__)) && !defined(NXDK)
+ #define MPG123_COMPAT_MSVCRT_IO
+ #ifndef INT123_compat_strtok
+ #define INT123_compat_strtok(a, b, c) strtok_s((a), (b), (c))
+diff -ruN mpg123-1.33.4/src/libmpg123/lfs_wrap.c mpg123-1.33.4-filesystem/src/libmpg123/lfs_wrap.c
+--- mpg123-1.33.4/src/libmpg123/lfs_wrap.c	2025-12-19 17:23:34.000000000 -0500
++++ mpg123-1.33.4-filesystem/src/libmpg123/lfs_wrap.c	2026-05-21 16:03:50.413260200 -0400
+@@ -120,6 +120,9 @@
+    That is stored in the frame and only deleted on mpg123_delete(). */
+ static void wrap_io_cleanup(void *handle)
+ {
++#ifdef NXDK
++	return;
++#else
+ 	struct wrap_data *ioh = handle;
+ 	debug("wrapper I/O cleanup");
+ 	if(ioh->iotype == IO_HANDLE
+@@ -144,6 +147,7 @@
+ #endif
+ 		ioh->my_fd = -1;
+ 	}
++#endif // ifdef NXDK
+ }
+ 
+ /* Really finish off the handle... freeing all memory. */
+@@ -710,6 +714,9 @@
+ // specifics.
+ static mpg123_ssize_t fallback_read(int fd, void *buf, size_t count)
+ {
++#ifdef NXDK
++	return 0;
++#else
+ #if defined(MPG123_COMPAT_MSVCRT_IO)
+ 	if(count > UINT_MAX)
+ 	{
+@@ -720,16 +727,21 @@
+ #else
+ 	return read(fd, buf, count);
+ #endif
++#endif // ifdef NXDK
+ }
+ 
+ static off_t fallback_lseek(int fd, off_t offset, int whence)
+ {
++#ifdef NXDK
++	return 0;
++#else
+ #if defined(MPG123_COMPAT_MSVCRT_IO)
+ 	// Off_t is 32 bit and does fit into long. We know that.
+ 	return _lseek(fd, (long)offset, whence);
+ #else
+ 	return lseek(fd, offset, whence);
+ #endif
++#endif // ifdef NXDK
+ }
+ 
+ // This is assuming an internally opened file, which usually will be
