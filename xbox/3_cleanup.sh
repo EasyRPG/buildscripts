@@ -8,6 +8,5 @@ headermsg "Cleaning up library build folders and other stuff..."
 cleanup
 
 rm -rf ./tool-overrides
-rm -rf ./nxdk
 
 echo " -> done"
