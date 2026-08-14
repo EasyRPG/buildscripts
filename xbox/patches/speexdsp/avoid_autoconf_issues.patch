@@ -1,0 +1,21 @@
+4576c4576,4577
+< if test -z "$ac_file"
+---
+> #if test -z "$ac_file"
+> ac_file=conftest.exe; if false
+4629,4630c4630,4633
+< as_fn_error $? "cannot compute suffix of executables: cannot compile and link
+< See \`config.log' for more details" "$LINENO" 5; }
+---
+> #as_fn_error $? "cannot compute suffix of executables: cannot compile and link
+> ac_cv_exeext=.exe;
+> #See \`config.log' for more details" "$LINENO" 5; 
+> }
+10685c10688
+< 	libext=lib
+---
+> 	libext=a
+10693c10696
+< 	old_archive_cmds='lib -OUT:$oldlib$oldobjs$old_deplibs'
+---
+> 	old_archive_cmds='llvm-ar cr $oldlib $oldobjs $old_deplibs'

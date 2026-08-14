@@ -1,0 +1,18 @@
+20a21,22
+> #undef _WIN32
+> 
+30a33,34
+> 
+> 
+98a103,104
+> #elif NXDK
+>   return 0;
+113a120,121
+> #elif NXDK
+>   return 0;
+305a314,316
+> #ifdef NXDK
+>   return 0;
+> #else
+309a321
+> #endif

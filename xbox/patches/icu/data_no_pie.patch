@@ -1,0 +1,4 @@
+29c29
+< 	@echo LIBFLAGS="-I$(prefix)/include $(SHAREDLIBCPPFLAGS) $(SHAREDLIBCFLAGS)" >> $(OUTPUTFILE)
+---
+> 	@echo LIBFLAGS="-I$(prefix)/include $(LIBCPPFLAGS) $(LIBCFLAGS)" >> $(OUTPUTFILE)

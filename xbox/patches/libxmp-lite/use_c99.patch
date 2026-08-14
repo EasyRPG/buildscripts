@@ -1,0 +1,4 @@
+64c64
+<     set_target_properties(xmp_lite_static PROPERTIES C_STANDARD 90)
+---
+>     set_target_properties(xmp_lite_static PROPERTIES C_STANDARD 99)

@@ -1,0 +1,8 @@
+125c125
+<     return typeid(*this) == typeid(that); 
+---
+>     return this == &that;//typeid(*this) == typeid(that); 
+130c130
+<     return !operator==(that);
+---
+>     return this == &that;//!operator==(that);

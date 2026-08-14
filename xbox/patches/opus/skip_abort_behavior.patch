@@ -1,0 +1,4 @@
+76c76
+< #if defined(_MSC_VER)
+---
+> #if defined(_MSC_VER) && !defined(NXDK)

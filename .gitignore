@@ -6,6 +6,11 @@
 !/windows/fluidsynth-easyrpg/
 !/windows/helper/
 
+# And some Original Xbox ones
+!/xbox/patches/
+!/xbox/compat_headers/
+!/xbox/scripts/
+
 # Except everything in shared
 !/shared/*
 

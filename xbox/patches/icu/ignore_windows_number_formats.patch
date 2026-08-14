@@ -1,0 +1,36 @@
+diff -ruN icu/source/i18n/numfmt.cpp "icu - numbersonly/source/i18n/numfmt.cpp"
+--- icu/source/i18n/numfmt.cpp	2026-03-17 13:44:50.000000000 -0400
++++ "icu - numbersonly/source/i18n/numfmt.cpp"	2026-05-19 02:50:00.308519900 -0400
+@@ -1332,7 +1332,7 @@
+         return nullptr;
+     }
+ 
+-#if U_PLATFORM_USES_ONLY_WIN32_API
++#if U_PLATFORM_USES_ONLY_WIN32_API && !defined(NXDK)
+     if (!mustBeDecimalFormat) {
+         char buffer[8];
+         int32_t count = desiredLocale.getKeywordValue("compat", buffer, sizeof(buffer), status);
+diff -ruN icu/source/i18n/winnmfmt.cpp "icu - numbersonly/source/i18n/winnmfmt.cpp"
+--- icu/source/i18n/winnmfmt.cpp	2026-03-17 13:44:50.000000000 -0400
++++ "icu - numbersonly/source/i18n/winnmfmt.cpp"	2026-05-19 02:42:14.812600300 -0400
+@@ -13,7 +13,7 @@
+ 
+ #include "unicode/utypes.h"
+ 
+-#if U_PLATFORM_USES_ONLY_WIN32_API
++#if U_PLATFORM_USES_ONLY_WIN32_API && !defined(NXDK)
+ 
+ #if !UCONFIG_NO_FORMATTING
+ 
+diff -ruN icu/source/i18n/winnmfmt.h "icu - numbersonly/source/i18n/winnmfmt.h"
+--- icu/source/i18n/winnmfmt.h	2026-03-17 13:44:50.000000000 -0400
++++ "icu - numbersonly/source/i18n/winnmfmt.h"	2026-05-19 02:43:27.421861400 -0400
+@@ -16,7 +16,7 @@
+ 
+ #include "unicode/utypes.h"
+ 
+-#if U_PLATFORM_USES_ONLY_WIN32_API
++#if U_PLATFORM_USES_ONLY_WIN32_API && !defined(NXDK)
+ 
+ #include "unicode/format.h"
+ #include "unicode/datefmt.h"

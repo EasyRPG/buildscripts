@@ -1,0 +1,74 @@
+diff -ruN harfbuzz-14.1.0/src/hb-glib.cc harfbuzz-14.1.0-noglib/src/hb-glib.cc
+--- harfbuzz-14.1.0/src/hb-glib.cc	2026-04-04 14:31:18.000000000 -0400
++++ harfbuzz-14.1.0-noglib/src/hb-glib.cc	2026-05-22 17:20:51.403134500 -0400
+@@ -26,10 +26,11 @@
+  * Google Author(s): Behdad Esfahbod
+  */
+ 
++#ifndef NXDK
+ #include "hb.hh"
+ 
+ #ifdef HAVE_GLIB
+-
++#error
+ #include "hb-glib.h"
+ 
+ #include "hb-machinery.hh"
+@@ -222,3 +223,4 @@
+ 
+ 
+ #endif
++#endif
+\ No newline at end of file
+diff -ruN harfbuzz-14.1.0/src/hb-glib.h harfbuzz-14.1.0-noglib/src/hb-glib.h
+--- harfbuzz-14.1.0/src/hb-glib.h	2026-04-04 14:31:18.000000000 -0400
++++ harfbuzz-14.1.0-noglib/src/hb-glib.h	2026-05-22 17:21:04.329903100 -0400
+@@ -25,32 +25,33 @@
+  * Red Hat Author(s): Behdad Esfahbod
+  * Google Author(s): Behdad Esfahbod
+  */
+-
++#ifndef NXDK
+ #ifndef HB_GLIB_H
+ #define HB_GLIB_H
+ 
+ #include "hb.h"
+ 
+-#include <glib.h>
++//#include <glib.h>
+ 
+-HB_BEGIN_DECLS
++// HB_BEGIN_DECLS
+ 
+ 
+-HB_EXTERN hb_script_t
+-hb_glib_script_to_script (GUnicodeScript script);
++// HB_EXTERN hb_script_t
++// hb_glib_script_to_script (GUnicodeScript script);
+ 
+-HB_EXTERN GUnicodeScript
+-hb_glib_script_from_script (hb_script_t script);
++// HB_EXTERN GUnicodeScript
++// hb_glib_script_from_script (hb_script_t script);
+ 
+ 
+-HB_EXTERN hb_unicode_funcs_t *
+-hb_glib_get_unicode_funcs (void);
++// HB_EXTERN hb_unicode_funcs_t *
++// hb_glib_get_unicode_funcs (void);
+ 
+-#if GLIB_CHECK_VERSION(2,31,10)
+-HB_EXTERN hb_blob_t *
+-hb_glib_blob_create (GBytes *gbytes);
+-#endif
++// #if GLIB_CHECK_VERSION(2,31,10)
++// HB_EXTERN hb_blob_t *
++// hb_glib_blob_create (GBytes *gbytes);
++// #endif
+ 
+-HB_END_DECLS
++// HB_END_DECLS
+ 
+ #endif /* HB_GLIB_H */
++#endif
+\ No newline at end of file

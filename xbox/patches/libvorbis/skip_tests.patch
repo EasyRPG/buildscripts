@@ -1,0 +1,98 @@
+108c108
+< am__EXEEXT_1 = test_sharedbook$(EXEEXT)
+---
+> #am__EXEEXT_1 = test_sharedbook$(EXEEXT)
+175,181c175,181
+< am_test_sharedbook_OBJECTS = test_sharedbook-sharedbook.$(OBJEXT)
+< test_sharedbook_OBJECTS = $(am_test_sharedbook_OBJECTS)
+< test_sharedbook_DEPENDENCIES =
+< test_sharedbook_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+< 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+< 	$(test_sharedbook_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
+< 	-o $@
+---
+> #am_test_sharedbook_OBJECTS = test_sharedbook-sharedbook.$(OBJEXT)
+> #test_sharedbook_OBJECTS = $(am_test_sharedbook_OBJECTS)
+> #test_sharedbook_DEPENDENCIES =
+> #test_sharedbook_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+> #	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+> #	$(test_sharedbook_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
+> #	-o $@
+211c211
+< 	./$(DEPDIR)/test_sharedbook-sharedbook.Po ./$(DEPDIR)/tone.Po \
+---
+> 	./$(DEPDIR)/tone.Po \
+235c235
+< 	$(psytune_SOURCES) $(test_sharedbook_SOURCES) $(tone_SOURCES)
+---
+> 	$(psytune_SOURCES) $(tone_SOURCES)
+238c238
+< 	$(psytune_SOURCES) $(test_sharedbook_SOURCES) $(tone_SOURCES)
+---
+> 	$(psytune_SOURCES) $(tone_SOURCES)
+479c479
+< vorbis_selftests = test_sharedbook
+---
+> #vorbis_selftests = test_sharedbook
+483,485c483,485
+< test_sharedbook_SOURCES = sharedbook.c
+< test_sharedbook_CFLAGS = -D_V_SELFTEST
+< test_sharedbook_LDADD = @VORBIS_LIBS@
+---
+> #test_sharedbook_SOURCES = sharedbook.c
+> #test_sharedbook_CFLAGS = -D_V_SELFTEST
+> #test_sharedbook_LDADD = @VORBIS_LIBS@
+581,583c581,583
+< test_sharedbook$(EXEEXT): $(test_sharedbook_OBJECTS) $(test_sharedbook_DEPENDENCIES) $(EXTRA_test_sharedbook_DEPENDENCIES) 
+< 	@rm -f test_sharedbook$(EXEEXT)
+< 	$(AM_V_CCLD)$(test_sharedbook_LINK) $(test_sharedbook_OBJECTS) $(test_sharedbook_LDADD) $(LIBS)
+---
+> #test_sharedbook$(EXEEXT): $(test_sharedbook_OBJECTS) $(test_sharedbook_DEPENDENCIES) $(EXTRA_test_sharedbook_DEPENDENCIES) 
+> #	@rm -f test_sharedbook$(EXEEXT)
+> #	$(AM_V_CCLD)$(test_sharedbook_LINK) $(test_sharedbook_OBJECTS) $(test_sharedbook_LDADD) $(LIBS)
+616c616
+< @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_sharedbook-sharedbook.Po@am__quote@ # am--include-marker
+---
+> #@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_sharedbook-sharedbook.Po@am__quote@ # am--include-marker
+649,661c649,661
+< test_sharedbook-sharedbook.o: sharedbook.c
+< @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_sharedbook_CFLAGS) $(CFLAGS) -MT test_sharedbook-sharedbook.o -MD -MP -MF $(DEPDIR)/test_sharedbook-sharedbook.Tpo -c -o test_sharedbook-sharedbook.o `test -f 'sharedbook.c' || echo '$(srcdir)/'`sharedbook.c
+< @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test_sharedbook-sharedbook.Tpo $(DEPDIR)/test_sharedbook-sharedbook.Po
+< @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='sharedbook.c' object='test_sharedbook-sharedbook.o' libtool=no @AMDEPBACKSLASH@
+< @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+< @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_sharedbook_CFLAGS) $(CFLAGS) -c -o test_sharedbook-sharedbook.o `test -f 'sharedbook.c' || echo '$(srcdir)/'`sharedbook.c
+< 
+< test_sharedbook-sharedbook.obj: sharedbook.c
+< @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_sharedbook_CFLAGS) $(CFLAGS) -MT test_sharedbook-sharedbook.obj -MD -MP -MF $(DEPDIR)/test_sharedbook-sharedbook.Tpo -c -o test_sharedbook-sharedbook.obj `if test -f 'sharedbook.c'; then $(CYGPATH_W) 'sharedbook.c'; else $(CYGPATH_W) '$(srcdir)/sharedbook.c'; fi`
+< @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test_sharedbook-sharedbook.Tpo $(DEPDIR)/test_sharedbook-sharedbook.Po
+< @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='sharedbook.c' object='test_sharedbook-sharedbook.obj' libtool=no @AMDEPBACKSLASH@
+< @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+< @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_sharedbook_CFLAGS) $(CFLAGS) -c -o test_sharedbook-sharedbook.obj `if test -f 'sharedbook.c'; then $(CYGPATH_W) 'sharedbook.c'; else $(CYGPATH_W) '$(srcdir)/sharedbook.c'; fi`
+---
+> #test_sharedbook-sharedbook.o: sharedbook.c
+> #@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_sharedbook_CFLAGS) $(CFLAGS) -MT test_sharedbook-sharedbook.o -MD -MP -MF $(DEPDIR)/test_sharedbook-sharedbook.Tpo -c -o test_sharedbook-sharedbook.o `test -f 'sharedbook.c' || echo '$(srcdir)/'`sharedbook.c
+> #@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test_sharedbook-sharedbook.Tpo $(DEPDIR)/test_sharedbook-sharedbook.Po
+> #@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='sharedbook.c' object='test_sharedbook-sharedbook.o' libtool=no @AMDEPBACKSLASH@
+> #@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+> #@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_sharedbook_CFLAGS) $(CFLAGS) -c -o test_sharedbook-sharedbook.o `test -f 'sharedbook.c' || echo '$(srcdir)/'`sharedbook.c
+> 
+> #test_sharedbook-sharedbook.obj: sharedbook.c
+> #@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_sharedbook_CFLAGS) $(CFLAGS) -MT test_sharedbook-sharedbook.obj -MD -MP -MF $(DEPDIR)/test_sharedbook-sharedbook.Tpo -c -o test_sharedbook-sharedbook.obj `if test -f 'sharedbook.c'; then $(CYGPATH_W) 'sharedbook.c'; else $(CYGPATH_W) '$(srcdir)/sharedbook.c'; fi`
+> #@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test_sharedbook-sharedbook.Tpo $(DEPDIR)/test_sharedbook-sharedbook.Po
+> #@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='sharedbook.c' object='test_sharedbook-sharedbook.obj' libtool=no @AMDEPBACKSLASH@
+> #@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+> #@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_sharedbook_CFLAGS) $(CFLAGS) -c -o test_sharedbook-sharedbook.obj `if test -f 'sharedbook.c'; then $(CYGPATH_W) 'sharedbook.c'; else $(CYGPATH_W) '$(srcdir)/sharedbook.c'; fi`
+892c892
+< 	-rm -f ./$(DEPDIR)/test_sharedbook-sharedbook.Po
+---
+> #	-rm -f ./$(DEPDIR)/test_sharedbook-sharedbook.Po
+963c963
+< 	-rm -f ./$(DEPDIR)/test_sharedbook-sharedbook.Po
+---
+> #	-rm -f ./$(DEPDIR)/test_sharedbook-sharedbook.Po
+1007,1008c1007,1008
+< check: $(noinst_PROGRAMS)
+< 	./test_sharedbook$(EXEEXT)
+---
+> #check: $(noinst_PROGRAMS)
+> #	./test_sharedbook$(EXEEXT)

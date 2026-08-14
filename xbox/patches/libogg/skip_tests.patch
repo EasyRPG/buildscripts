@@ -1,0 +1,28 @@
+12c12
+< noinst_PROGRAMS = test_bitwise test_framing
+---
+> #noinst_PROGRAMS = test_bitwise test_framing
+14,15c14,15
+< test_bitwise_SOURCES = bitwise.c
+< test_bitwise_CFLAGS = -D_V_SELFTEST
+---
+> #test_bitwise_SOURCES = bitwise.c
+> #test_bitwise_CFLAGS = -D_V_SELFTEST
+17,18c17,18
+< test_framing_SOURCES = framing.c crctable.h
+< test_framing_CFLAGS = -D_V_SELFTEST
+---
+> #test_framing_SOURCES = framing.c crctable.h
+> #test_framing_CFLAGS = -D_V_SELFTEST
+20,21c20,21
+< TEST_ENV = @TEST_ENV@
+< LOG_COMPILER=$(LIBTOOL) --mode=execute $(VALGRIND) $(TEST_ENV)
+---
+> #TEST_ENV = @TEST_ENV@
+> #LOG_COMPILER=$(LIBTOOL) --mode=execute $(VALGRIND) $(TEST_ENV)
+23,24c23,24
+< TESTS = $(noinst_PROGRAMS)
+< check_PROGRAMS = $(noinst_PROGRAMS)
+---
+> #TESTS = $(noinst_PROGRAMS)
+> #check_PROGRAMS = $(noinst_PROGRAMS)

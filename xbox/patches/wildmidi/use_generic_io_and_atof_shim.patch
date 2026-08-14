@@ -1,0 +1,8 @@
+31a32,38
+> #undef _WIN32
+> 
+> // Fixes atof being compiled as _atof
+> double atof(const char* s) {
+>     return atof(s);
+> }
+> 

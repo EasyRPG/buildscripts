@@ -1,0 +1,7 @@
+530a531,535
+> 
+> #ifdef NXDK
+> # define strcasecmp _stricmp
+> # define strncasecmp _strnicmp
+> #endif
+\ No newline at end of file

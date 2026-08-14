@@ -7,7 +7,7 @@ echo "REMOVE THIS LINE";exit 1
 # Remove _cmake when the lib uses autotools for building
 NAME=lhasa
 LIBVAR=LHASA
-TOOLCHAIN_DIRS=(linux-static macos android emscripten 3ds switch vita wii ios)
+TOOLCHAIN_DIRS=(linux-static macos android emscripten 3ds switch vita wii ios xbox)
 CMAKE=
 
 #-------
